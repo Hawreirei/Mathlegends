@@ -46,5 +46,20 @@
   "settings.extraTime": "Waktu tambahan",
   "settings.extraTimeHint": "Waktu menjawab setiap soal ×{x}.",
   "settings.on": "Nyala",
-  "settings.off": "Mati"
+  "settings.off": "Mati",
+  "placement.title": "Kuis Penempatan",
+  "placement.intro": "10 soal singkat untuk menemukan Kelas yang pas untukmu. Soalnya makin sulit kalau jawabanmu benar, dan makin mudah kalau salah. Tidak apa-apa kalau salah!",
+  "placement.start": "Mulai",
+  "placement.back": "Kembali",
+  "placement.progress": "Soal {n} dari {total}",
+  "placement.doneTitle": "Siap bertanding!",
+  "placement.result": "Kamu mulai di {year}.",
+  "placement.score": "Benar {correct} dari {total} soal.",
+  "placement.note": "Kumpulkan bintang di setiap pertandingan untuk naik Kelas.",
+  "placement.play": "Main!",
+  "settings.yearTitle": "Kelas",
+  "settings.yearInfo": "Sekarang: {rank}",
+  "settings.retake": "Ulangi kuis penempatan",
+  "settings.retakeConfirm": "Ketuk lagi untuk mulai",
+  "settings.retakeHint": "Kelasmu ditentukan ulang dan bintang kembali ke 0."
 }

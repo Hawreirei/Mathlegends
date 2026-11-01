@@ -190,6 +190,7 @@ export class MatchHudScene extends Phaser.Scene {
     }));
     this.minimap = new Minimap(this, l.minimap, m.cfg.map);
 
+    this.question?.destroy();
     this.question = new QuestionOverlay(this, l.questionCard, (slot) =>
       this.match.answerSlot(slot),
     );

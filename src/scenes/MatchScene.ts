@@ -56,7 +56,7 @@ import type { Progress } from '../systems/progression';
 import { isTargetable, type StructureState } from '../systems/structures';
 import { hex, theme } from '../ui/theme';
 import { ATTACK_EVENT, ATTACK_RELEASE_EVENT, type MatchHudScene } from './MatchHudScene';
-import { getState, setState, tr } from './shared';
+import { getState, setStateAndSaveProfile, tr } from './shared';
 
 /** Fired on game.events when a question ends: (resolution). The HUD shows the feedback. */
 export const QUESTION_RESOLVED_EVENT = 'ml-question-resolved';
@@ -452,7 +452,7 @@ export class MatchScene extends Phaser.Scene {
     // Missed questions come back in the next matches (#29); the queue is saved on the device.
     const review = updateReviewQueue(this.session.engine.review, missed, loadRanks(ranksJson));
     saveReviewRaw(browserStorage(), serializeReviewQueue(review));
-    setState(
+    setStateAndSaveProfile(
       this,
       recordMatch(
         getState(this),

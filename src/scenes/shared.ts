@@ -1,9 +1,15 @@
 import Phaser from 'phaser';
-import { setLang, setSettings, type GameState, type Lang } from '../systems/gameState';
+import {
+  serializeProfile,
+  setLang,
+  setSettings,
+  type GameState,
+  type Lang,
+} from '../systems/gameState';
 import { serializeSettings, type Settings } from '../systems/settings';
 import { applyAccessibility } from '../ui/theme';
 import { t, type StringKey } from '../utils/i18n';
-import { browserStorage, saveLang, saveSettingsRaw } from '../utils/storage';
+import { browserStorage, saveLang, saveProfileRaw, saveSettingsRaw } from '../utils/storage';
 
 /** Fired on game.events after the language changes; every responsive scene rebuilds. */
 export const LANG_EVENT = 'ml-lang';
@@ -14,6 +20,12 @@ export const getState = (scene: Phaser.Scene): GameState => scene.registry.get(K
 export const setState = (scene: Phaser.Scene, s: GameState): void => {
   scene.registry.set(KEY, s);
 };
+
+/** Sets the game state and saves the profile (Year, stars) on the device (#38). */
+export function setStateAndSaveProfile(scene: Phaser.Scene, s: GameState): void {
+  setState(scene, s);
+  saveProfileRaw(browserStorage(), serializeProfile(s.profile));
+}
 
 /** Translated string in the current language. */
 export const tr = (scene: Phaser.Scene, key: StringKey, vars?: Record<string, string | number>) =>

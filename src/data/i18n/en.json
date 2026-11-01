@@ -46,5 +46,20 @@
   "settings.extraTime": "Extra time",
   "settings.extraTimeHint": "Every question gets ×{x} the time.",
   "settings.on": "On",
-  "settings.off": "Off"
+  "settings.off": "Off",
+  "placement.title": "Placement Quiz",
+  "placement.intro": "10 short questions to find the right Year for you. They get harder when you answer right and easier when you answer wrong. It's fine to get some wrong!",
+  "placement.start": "Start",
+  "placement.back": "Back",
+  "placement.progress": "Question {n} of {total}",
+  "placement.doneTitle": "Ready to battle!",
+  "placement.result": "You start in {year}.",
+  "placement.score": "{correct} of {total} answers right.",
+  "placement.note": "Collect stars in every match to move up a Year.",
+  "placement.play": "Play!",
+  "settings.yearTitle": "Year",
+  "settings.yearInfo": "Now: {rank}",
+  "settings.retake": "Retake placement quiz",
+  "settings.retakeConfirm": "Tap again to start",
+  "settings.retakeHint": "Your Year is set again and stars go back to 0."
 }

@@ -8,7 +8,9 @@ import { bodyFont, displayFont, hex, theme, ts } from '../ui/theme';
 import { downloadText } from '../utils/download';
 import type { StringKey } from '../utils/i18n';
 import { browserStorage, loadAnswerLogRaw, saveAnswerLogRaw } from '../utils/storage';
-import { changeSettings, getState, responsive, tr } from './shared';
+import ranks from '../data/ranks.json';
+import { resetPlacement } from '../systems/gameState';
+import { changeSettings, getState, responsive, setStateAndSaveProfile, tr } from './shared';
 
 const TEXT_KEYS: StringKey[] = ['settings.text1', 'settings.text2', 'settings.text3'];
 
@@ -18,7 +20,7 @@ const TEXT_KEYS: StringKey[] = ['settings.text1', 'settings.text2', 'settings.te
  * Landscape shows the two sections side by side, portrait one above the other.
  */
 export class SettingsScene extends Phaser.Scene {
-  private note: 'exported' | 'cleared' | 'confirm' | null = null;
+  private note: 'exported' | 'cleared' | 'confirm' | 'retake' | null = null;
 
   constructor() {
     super('Settings');
@@ -50,11 +52,13 @@ export class SettingsScene extends Phaser.Scene {
     if (portrait) {
       const colW = panelW - 2 * pad;
       const end = this.accessibility(left + pad, top + 120, colW);
-      this.answerData(left + pad, end + 30, colW);
+      const yearEnd = this.year(left + pad, end + 30, colW);
+      this.answerData(left + pad, yearEnd + 20, colW);
     } else {
       const colW = (panelW - 3 * pad) / 2;
       this.accessibility(left + pad, top + 120, colW);
-      this.answerData(left + 2 * pad + colW, top + 120, colW);
+      const yearEnd = this.year(left + 2 * pad + colW, top + 120, colW);
+      this.answerData(left + 2 * pad + colW, yearEnd + 20, colW);
     }
 
     new Button(
@@ -130,6 +134,40 @@ export class SettingsScene extends Phaser.Scene {
       () => set({ extraTime: !s.extraTime }),
     );
     return y + 440;
+  }
+
+  /** Current Year and "Retake placement quiz" (tap twice) (#38). Returns the y below. */
+  private year(x: number, y: number, colW: number): number {
+    const c = theme.colors;
+    const st = getState(this);
+    const tier = ranks.tiers.find((t) => t.tier === st.profile.tier) ?? ranks.tiers[0]!;
+    const confirm = this.note === 'retake';
+    this.add.text(x, y, tr(this, 'settings.yearTitle'), bodyFont(32, c.white, '800'));
+    this.add
+      .text(
+        x,
+        y + 50,
+        confirm
+          ? tr(this, 'settings.retakeHint')
+          : tr(this, 'settings.yearInfo', {
+              rank: tr(this, 'menu.rank', { year: tier.label[st.lang], stars: st.profile.stars }),
+            }),
+        bodyFont(24, confirm ? c.gold : c.paper, '600'),
+      )
+      .setWordWrapWidth(colW, true);
+    new Button(
+      this,
+      x + colW / 2,
+      y + 130,
+      tr(this, confirm ? 'settings.retakeConfirm' : 'settings.retake'),
+      () => {
+        if (!confirm) return this.setNote('retake');
+        setStateAndSaveProfile(this, resetPlacement(getState(this)));
+        this.scene.start('Placement');
+      },
+      { width: colW, height: 64, fontSize: 24, style: confirm ? 'primary' : 'secondary' },
+    );
+    return y + 170;
   }
 
   /** The answer log (#30). */

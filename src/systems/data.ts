@@ -180,6 +180,11 @@ export const ranksFileSchema = z
         /** Start tier = estimated mastery + startOffset, then capped. */
         startOffset: z.number().int(),
         maxStartTier: z.number().int().positive(),
+        /** The Year of the first question (#38). */
+        firstTier: z.number().int().positive(),
+        /** Timer per placement question; a timeout counts as wrong. */
+        secondsPerQuestion: z.number().positive(),
+        questionType: z.enum(['fluency', 'application', 'multistep']),
       })
       .strict(),
     stars: z

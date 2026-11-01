@@ -4,9 +4,10 @@ import { BootScene } from './scenes/BootScene';
 import { MatchHudScene } from './scenes/MatchHudScene';
 import { MatchScene } from './scenes/MatchScene';
 import { MenuScene } from './scenes/MenuScene';
+import { PlacementScene } from './scenes/PlacementScene';
 import { ResultScene } from './scenes/ResultScene';
 import { SettingsScene } from './scenes/SettingsScene';
-import { createGameState } from './systems/gameState';
+import { createGameState, parseProfile } from './systems/gameState';
 import { logicalSize } from './systems/layout';
 import { loadFonts } from './ui/fonts';
 import ranksJson from './data/ranks.json';
@@ -15,7 +16,13 @@ import { curriculumTopicTiers } from './systems/questionBank';
 import { parseReviewQueue } from './systems/reviewQueue';
 import { parseSettings } from './systems/settings';
 import { applyAccessibility } from './ui/theme';
-import { browserStorage, initialLang, loadReviewRaw, loadSettingsRaw } from './utils/storage';
+import {
+  browserStorage,
+  initialLang,
+  loadProfileRaw,
+  loadReviewRaw,
+  loadSettingsRaw,
+} from './utils/storage';
 
 declare global {
   interface Window {
@@ -42,7 +49,15 @@ void loadFonts().then(() => {
       width: size.width,
       height: size.height,
     },
-    scene: [BootScene, MenuScene, MatchScene, MatchHudScene, ResultScene, SettingsScene],
+    scene: [
+      BootScene,
+      MenuScene,
+      PlacementScene,
+      MatchScene,
+      MatchHudScene,
+      ResultScene,
+      SettingsScene,
+    ],
     // Use real frame time: Phaser's default smoothing treats slow frames as 60 fps,
     // which made heroes move at a fraction of their speed on slower devices (#17).
     fps: { smoothStep: false },
@@ -54,16 +69,15 @@ void loadFonts().then(() => {
         const store = browserStorage();
         const lang = initialLang(store, navigator.language);
         document.documentElement.lang = lang;
+        const ranks = loadRanks(ranksJson);
         // Missed questions from earlier matches (#29), checked like the bank.
-        const review = parseReviewQueue(
-          loadReviewRaw(store),
-          loadRanks(ranksJson),
-          curriculumTopicTiers(),
-        );
+        const review = parseReviewQueue(loadReviewRaw(store), ranks, curriculumTopicTiers());
         // Accessibility settings (#31) apply before any screen is drawn.
         const settings = parseSettings(loadSettingsRaw(store), theme.textScales);
         applyAccessibility(settings);
-        g.registry.set('state', createGameState(lang, review, settings));
+        // Year and stars (#38; versioned save with export/import in #41).
+        const profile = parseProfile(loadProfileRaw(store), ranks.tiers.length);
+        g.registry.set('state', createGameState(lang, review, settings, profile));
       },
     },
   });

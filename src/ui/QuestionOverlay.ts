@@ -41,10 +41,17 @@ export class QuestionOverlay {
       .setOrigin(1, 0)
       .setDepth(101)
       .setVisible(false);
-    scene.input.keyboard?.on('keydown', (e: KeyboardEvent) => {
-      const n = Number(e.key);
-      if (this.root.visible && this.answering && n >= 1 && n <= 4) this.onAnswer(n - 1);
-    });
+    scene.input.keyboard?.on('keydown', this.onKey);
+  }
+
+  private readonly onKey = (e: KeyboardEvent): void => {
+    const n = Number(e.key);
+    if (this.root.visible && this.answering && n >= 1 && n <= 4) this.onAnswer(n - 1);
+  };
+
+  /** Stops listening for keys 1-4 (call before the layout is rebuilt, e.g. on resize). */
+  destroy(): void {
+    this.scene.input.keyboard?.off('keydown', this.onKey);
   }
 
   get visible(): boolean {

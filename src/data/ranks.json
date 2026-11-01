@@ -54,7 +54,10 @@
   "placement": {
     "questions": 10,
     "startOffset": -1,
-    "maxStartTier": 5
+    "maxStartTier": 5,
+    "firstTier": 3,
+    "secondsPerQuestion": 15,
+    "questionType": "fluency"
   },
   "stars": {
     "win": 1,

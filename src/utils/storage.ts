@@ -15,6 +15,7 @@ const LANG_KEY = 'mathlegends.lang';
 const REVIEW_KEY = 'mathlegends.review';
 const ANSWER_LOG_KEY = 'mathlegends.answers';
 const SETTINGS_KEY = 'mathlegends.settings';
+const PROFILE_KEY = 'mathlegends.profile';
 
 /** The browser's localStorage, or null if it is unavailable. */
 export function browserStorage(): KeyValueStore | null {
@@ -89,3 +90,10 @@ export const loadSettingsRaw = (store: KeyValueStore | null): unknown =>
 
 export const saveSettingsRaw = (store: KeyValueStore | null, data: unknown): boolean =>
   saveJson(store, SETTINGS_KEY, data);
+
+/** Saved profile (#38; versioned save in #41) as parsed JSON, or null. Validate with parseProfile. */
+export const loadProfileRaw = (store: KeyValueStore | null): unknown =>
+  loadJson(store, PROFILE_KEY);
+
+export const saveProfileRaw = (store: KeyValueStore | null, data: unknown): boolean =>
+  saveJson(store, PROFILE_KEY, data);
