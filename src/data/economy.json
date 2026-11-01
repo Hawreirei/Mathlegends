@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "match": {
+    "targetMinutes": 10,
+    "firstWaveSeconds": 15,
+    "waveIntervalSeconds": 30,
+    "cannonEveryNthWave": 3,
+    "wave": { "infantry": 3, "lancer": 2, "cannon": 1 }
+  },
+  "passiveGoldPerSecond": 3,
+  "startingGold": 300,
+  "lastHitGold": { "infantry": 14, "lancer": 24, "cannon": 45 },
+  "otherGold": { "heroKill": 150, "tower": 120 },
+  "reward": {
+    "correct": 1.5,
+    "wrong": 0.5,
+    "timeout": 0.5,
+    "streakBonusPerCorrect": 0.05,
+    "streakBonusCap": 0.25
+  },
+  "fairness": { "mathShareTarget": [0.3, 0.4], "mathShareCap": 0.4 },
+  "questionSeconds": { "infantry": 5, "lancer": 8, "cannon": 12 },
+  "exp": {
+    "minion": { "infantry": 30, "lancer": 40, "cannon": 70 },
+    "heroKill": 150,
+    "shareRangePx": 600,
+    "baseToLevel2": 100,
+    "growthPerLevel": 40,
+    "levelCap": 15
+  },
+  "combat": {
+    "armorConstant": 100,
+    "minDamage": 1,
+    "respawnBaseSeconds": 5,
+    "respawnPerLevelSeconds": 1
+  },
+  "shop": { "slots": 6, "sellRefund": 0.7 },
+  "estimate": {
+    "_note": "Assumptions for the paper model in docs/ECONOMY.md only. Not used by the game.",
+    "lastHitRate": 0.5,
+    "expShareRate": 0.8,
+    "heroKills": 3,
+    "towersDestroyed": 2
+  }
+}

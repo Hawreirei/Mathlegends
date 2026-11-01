@@ -1,6 +1,6 @@
 # MathLegends: Game Design Document (one page)
 
-Status: **DRAFT, waiting for approval** (issue #7). Items marked **[DECIDE]** are my proposed defaults. Change any of them and I will update this file.
+Status: **APPROVED** by the project owner on 2026-11-01 (issue #7), including all four defaults marked **[DECIDE]** below.
 
 ## 1. Pitch
 A single-player, 1-lane MOBA for Indonesian primary students (Year/Kelas 1 to 6). You fight a computer opponent in a lane. Every time **you** land the final hit on an enemy minion, a math question appears. A correct answer pays out more gold and EXP than a wrong one, so being good at math makes you stronger, but fighting still matters.
@@ -86,8 +86,8 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 ## 14. Success test
 After the core slice (M2 + M3), test with students from Year 1 to 6. **Go/no-go: 60% or more say they would play again.** If not, fix the loop before adding content.
 
-## Open decisions for you
-1. Shop open any time (default) or only at base?
-2. Top bar shows Nexus health (default) instead of a team score?
-3. No named rank tiers in the MVP (default)?
-4. Sudden death if matches run long (default: add only if testing shows it is needed)?
+## Decisions (approved)
+1. Shop opens at any time through a HUD button.
+2. Top bar shows Nexus health, not a team score.
+3. No named rank tiers in the MVP.
+4. No sudden death unless testing shows matches run past about 12 minutes.
