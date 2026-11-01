@@ -1,5 +1,16 @@
 import Phaser from 'phaser';
+import heroesJson from '../data/heroes.json';
 import mapJson from '../data/map.json';
+import { HeroView } from '../entities/Hero';
+import { loadHeroes } from '../systems/data';
+import {
+  createHeroState,
+  directionFromKeys,
+  moveHero,
+  walkableArea,
+  type HeroState,
+  type Rect,
+} from '../systems/hero';
 import { buildMap, cameraZoom, type LaneMap, type MapConfig } from '../systems/map';
 import { recordMatch, type MatchResult } from '../systems/gameState';
 import { hex, theme } from '../ui/theme';
@@ -7,13 +18,21 @@ import { getState, setState } from './shared';
 
 /**
  * The match world (#16): grass, river and lane, both bases with a Nexus and 2 towers each,
- * and a camera that follows the player. The HUD is a separate scene (MatchHudScene) so it
+ * a camera that follows the player, and the heroes (#17, WASD or arrow keys). The HUD is a separate scene (MatchHudScene) so it
  * stays fixed while the world scrolls and zooms. Units and combat arrive in #17 to #21.
  */
 export class MatchScene extends Phaser.Scene {
   map!: LaneMap;
-  /** The followed player hero sprite (becomes a Hero entity in #17). */
-  player!: Phaser.GameObjects.Image;
+  /** Player hero: rules state (src/systems/hero.ts) and its view. Exposed for browser tests. */
+  playerState!: HeroState;
+  player!: HeroView;
+  botState!: HeroState;
+  bot!: HeroView;
+  private area!: Rect;
+  private keys!: Record<
+    'W' | 'A' | 'S' | 'D' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT',
+    Phaser.Input.Keyboard.Key
+  >;
   startedAt = 0;
 
   constructor() {
@@ -22,8 +41,11 @@ export class MatchScene extends Phaser.Scene {
 
   create(): void {
     this.map = buildMap(mapJson as MapConfig);
+    this.area = walkableArea(this.map);
     this.startedAt = this.time.now;
     this.drawWorld();
+    this.spawnHeroes();
+    this.keys = this.input.keyboard!.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT') as typeof this.keys;
 
     const cam = this.cameras.main;
     cam.startFollow(this.player, true, this.map.config.camera.lerp, this.map.config.camera.lerp);
@@ -34,6 +56,34 @@ export class MatchScene extends Phaser.Scene {
     );
 
     this.scene.launch('MatchHud');
+  }
+
+  update(_time: number, deltaMs: number): void {
+    const k = this.keys;
+    const dir = directionFromKeys({
+      up: k.W.isDown || k.UP.isDown,
+      down: k.S.isDown || k.DOWN.isDown,
+      left: k.A.isDown || k.LEFT.isDown,
+      right: k.D.isDown || k.RIGHT.isDown,
+    });
+    // Cap the step so a long frame (tab switch) cannot teleport the hero.
+    this.playerState = moveHero(this.playerState, dir, Math.min(deltaMs, 100) / 1000, this.area);
+    this.player.sync(this.playerState);
+  }
+
+  private spawnHeroes(): void {
+    const data = loadHeroes(heroesJson);
+    const find = (id: string | undefined, role: string) => {
+      const h = data.heroes.find((x) => x.id === id);
+      if (!h) throw new Error(`heroes.json must set ${role} to an existing hero`);
+      return h;
+    };
+    const p = find(data.playerHero, 'playerHero');
+    const b = find(data.botHero, 'botHero');
+    this.playerState = createHeroState(p, this.map.heroSpawn.blue);
+    this.botState = createHeroState(b, this.map.heroSpawn.red);
+    this.bot = new HeroView(this, this.botState, b.sprite, 'red');
+    this.player = new HeroView(this, this.playerState, p.sprite, 'blue');
   }
 
   /** Zoom out on narrow (portrait) screens so enough of the lane is visible. */
@@ -78,11 +128,6 @@ export class MatchScene extends Phaser.Scene {
         .setOrigin(0.5, s.kind === 'nexus' ? 0.8 : 0.85)
         .setDepth(s.y);
     }
-
-    const blueSpawn = this.map.heroSpawn.blue;
-    const redSpawn = this.map.heroSpawn.red;
-    this.add.image(redSpawn.x, redSpawn.y, 'hero-mira').setDepth(redSpawn.y);
-    this.player = this.add.image(blueSpawn.x, blueSpawn.y, 'hero-nova').setDepth(blueSpawn.y);
   }
 
   finish(outcome: MatchResult['outcome']): void {

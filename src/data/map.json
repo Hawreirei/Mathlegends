@@ -1,14 +1,27 @@
 {
   "version": 1,
   "_note": "Blue side only; the red side is mirrored across the middle of the world (src/systems/map.ts).",
-  "world": { "width": 4400, "height": 1400 },
-  "lane": { "y": 700, "thickness": 360 },
-  "river": { "y": 1060, "thickness": 140 },
+  "world": {
+    "width": 4400,
+    "height": 1400
+  },
+  "lane": {
+    "y": 700,
+    "thickness": 360,
+    "walkMargin": 60
+  },
+  "river": {
+    "y": 1060,
+    "thickness": 140
+  },
   "blue": {
     "nexusX": 300,
     "towerXs": [1000, 1750],
     "heroSpawnX": 520,
     "minionSpawnX": 460
   },
-  "camera": { "minVisibleWidth": 1150, "lerp": 0.12 }
+  "camera": {
+    "minVisibleWidth": 1150,
+    "lerp": 0.12
+  }
 }

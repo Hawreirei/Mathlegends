@@ -89,9 +89,27 @@ export const heroSchema = z
   .strict();
 
 export const heroesFileSchema = z
-  .object({ version: z.literal(1), heroes: z.array(heroSchema) })
+  .object({
+    version: z.literal(1),
+    /** Hero the player controls (#17). One playable hero in the MVP. */
+    playerHero: id.optional(),
+    /** Hero the bot plays (#24). */
+    botHero: id.optional(),
+    heroes: z.array(heroSchema),
+  })
   .strict()
-  .superRefine((f, ctx) => uniqueIds(f.heroes, ctx, 'heroes'));
+  .superRefine((f, ctx) => {
+    uniqueIds(f.heroes, ctx, 'heroes');
+    for (const key of ['playerHero', 'botHero'] as const) {
+      const ref = f[key];
+      if (ref !== undefined && !f.heroes.some((h) => h.id === ref))
+        ctx.addIssue({
+          code: 'custom',
+          path: [key],
+          message: `"${ref}" is not a hero in this file`,
+        });
+    }
+  });
 
 export type Hero = z.infer<typeof heroSchema>;
 export type HeroesFile = z.infer<typeof heroesFileSchema>;

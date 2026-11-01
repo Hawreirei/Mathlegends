@@ -12,7 +12,7 @@ Invalid heroes.json (2 problems):
 
 ## heroes.json
 
-Empty for now; the player hero and the bot hero are added in #32.
+`playerHero` names the hero the player controls and `botHero` the one the bot plays; both must exist in the file. Two starter heroes are in place (#17): **Nova** (player, blue) and **Mira** (bot, red), both Fighters with identical placeholder stats so the lane stays fair. #32 sets their final stats and lore.
 
 | Field | Meaning |
 |---|---|
@@ -70,6 +70,7 @@ The single lane, loaded by [`src/systems/map.ts`](../src/systems/map.ts). Only t
 |---|---|---|
 | `world.width` / `world.height` | 4400 / 1400 | World size in pixels |
 | `lane.y` / `lane.thickness` | 700 / 360 | Horizontal lane centre and width |
+| `lane.walkMargin` | 60 | Heroes stay this far from the lane edges and world ends (about one token radius) |
 | `river.y` / `river.thickness` | 1060 / 140 | Decorative river below the lane |
 | `blue.nexusX` | 300 | Blue Nexus (red: 4100) |
 | `blue.towerXs` | 1000, 1750 | Inner and outer blue towers (red: 3400, 2650) |

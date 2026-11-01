@@ -30,6 +30,9 @@ void loadFonts().then(() => {
       height: size.height,
     },
     scene: [BootScene, MenuScene, MatchScene, MatchHudScene, ResultScene],
+    // Use real frame time: Phaser's default smoothing treats slow frames as 60 fps,
+    // which made heroes move at a fraction of their speed on slower devices (#17).
+    fps: { smoothStep: false },
     callbacks: {
       preBoot: (g) => g.registry.set('state', createGameState(detectLang(navigator.language))),
     },

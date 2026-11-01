@@ -8,7 +8,8 @@ export type Team = 'blue' | 'red';
 export interface MapConfig {
   version: number;
   world: { width: number; height: number };
-  lane: { y: number; thickness: number };
+  /** walkMargin: how far heroes must stay from the lane edges and world ends. */
+  lane: { y: number; thickness: number; walkMargin: number };
   river: { y: number; thickness: number };
   blue: { nexusX: number; towerXs: number[]; heroSpawnX: number; minionSpawnX: number };
   camera: { minVisibleWidth: number; lerp: number };

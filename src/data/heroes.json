@@ -1,4 +1,69 @@
 {
   "version": 1,
-  "heroes": []
+  "playerHero": "nova",
+  "botHero": "mira",
+  "heroes": [
+    {
+      "id": "nova",
+      "name": {
+        "id": "Nova",
+        "en": "Nova"
+      },
+      "role": "fighter",
+      "lore": {
+        "id": "Pelajar akademi yang mengubah jawaban cepat menjadi serangan bintang.",
+        "en": "An academy student who turns quick answers into starlight strikes."
+      },
+      "base": {
+        "hp": 620,
+        "mana": 200,
+        "atk": 55,
+        "armor": 18,
+        "moveSpeed": 240,
+        "attackRange": 140,
+        "attackSpeed": 1.0,
+        "hpRegen": 3,
+        "manaRegen": 2
+      },
+      "growth": {
+        "hp": 70,
+        "mana": 15,
+        "atk": 5,
+        "armor": 2.5
+      },
+      "skills": [],
+      "sprite": "hero-nova"
+    },
+    {
+      "id": "mira",
+      "name": {
+        "id": "Mira",
+        "en": "Mira"
+      },
+      "role": "fighter",
+      "lore": {
+        "id": "Penjaga gerbang merah yang menantang setiap murid baru.",
+        "en": "Keeper of the red gate, who challenges every new student."
+      },
+      "base": {
+        "hp": 620,
+        "mana": 200,
+        "atk": 55,
+        "armor": 18,
+        "moveSpeed": 240,
+        "attackRange": 140,
+        "attackSpeed": 1.0,
+        "hpRegen": 3,
+        "manaRegen": 2
+      },
+      "growth": {
+        "hp": 70,
+        "mana": 15,
+        "atk": 5,
+        "armor": 2.5
+      },
+      "skills": [],
+      "sprite": "hero-mira"
+    }
+  ]
 }
