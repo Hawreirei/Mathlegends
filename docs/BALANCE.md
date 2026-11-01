@@ -43,11 +43,13 @@ Default: 200 matches per scenario, 20-minute limit, CSV to `balance-sim.csv` (gi
 | new-vs-y2 | 72.5% | 200/200 | 10:07 | +165 | 30.1% |
 | new-vs-y3 | 42.0% | 200/200 | 10:09 | -33 | 30.0% |
 | new-vs-y4 | 25.5% | 200/200 | 10:07 | -75 | 30.3% |
-<!-- Y5 Y6 -->
+| new-vs-y5 | 18.0% | 200/200 | 10:03 | -235 | 28.9% |
+| new-vs-y6 | 11.0% | 200/200 | 9:56 | -354 | 27.5% |
 
 - **Mirror match:** at equal combat skill and equal economy (50% right) the player wins 46.5%: near 50%.
 - **Math skill is a modest edge, not decisive:** from 30% to 90% right answers the win rate goes from 35.5% to 60.0%; the gold lead moves by about 600 out of roughly 4,000 earned.
-- **Difficulty by Year:** a new player wins 90% against the Year 1 bot and falls steadily as the Year rises.
+- **Difficulty by Year:** a new player wins 90% against the Year 1 bot, then 72.5, 42, 25.5, 18 and 11% against Years 2 to 6: every Year is harder than the one before.
+- 2,000 matches took 7.5 minutes.
 
 ## What the simulator changed: sudden death
 
