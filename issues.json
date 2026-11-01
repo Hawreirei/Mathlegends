@@ -1,0 +1,586 @@
+{
+ "labels": [
+  "ai",
+  "backlog",
+  "balance",
+  "data",
+  "deploy",
+  "design",
+  "docs",
+  "engine",
+  "gameplay",
+  "math",
+  "qa",
+  "setup",
+  "ui"
+ ],
+ "milestones": [
+  {
+   "title": "M0 Foundation",
+   "description": "Repo, tooling, CI, and a live hello-world on GitHub Pages."
+  },
+  {
+   "title": "M1 Design & Data",
+   "description": "Design doc, economy numbers, curriculum map, data schemas, bilingual seed content."
+  },
+  {
+   "title": "M2 Core Slice",
+   "description": "Playable 1-lane 1v1 slice: move, fight, minions, towers, win/lose."
+  },
+  {
+   "title": "M3 Math Engine",
+   "description": "Last-hit questions, rewards, logging, accessibility."
+  },
+  {
+   "title": "M4 Hero & Items",
+   "description": "One original hero, skills, shop, items, first balance pass."
+  },
+  {
+   "title": "M5 Rank System",
+   "description": "Year 1-6 ranks, placement quiz, persistence."
+  },
+  {
+   "title": "M6 AI & Match Flow",
+   "description": "Rank-scaled bot difficulty, full match flow, audio and juice."
+  },
+  {
+   "title": "M7 QA & Release",
+   "description": "Tests, performance, playtests, PWA, v0.1.0 live on GitHub Pages."
+  },
+  {
+   "title": "M8 Post-MVP Backlog",
+   "description": "Do only after the classroom pilot proves the core loop."
+  }
+ ],
+ "issues": [
+  {
+   "title": "[01] Create repository, README, license and branch rules",
+   "milestone": "M0 Foundation",
+   "labels": [
+    "setup"
+   ],
+   "body": "Create the GitHub repo (working title MathLegends). Add README (vision, how to run), MIT license, .gitignore (node, dist), and a main-branch protection rule requiring CI to pass.\n\n**Estimate:** 2h\n**Depends on:** none\n\n**Acceptance criteria**\n- [ ] Repo exists with README, LICENSE, .gitignore\n- [ ] main requires a PR + passing CI\n- [ ] Default branch is main\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[02] Scaffold Vite + TypeScript + Phaser 3 project",
+   "milestone": "M0 Foundation",
+   "labels": [
+    "setup"
+   ],
+   "body": "npm create vite (vanilla-ts), add phaser. Folder layout: src/{scenes,entities,systems,data,ui,utils}, tests/, docs/, scripts/. Set vite base to '/<repo-name>/' for Pages.\n\n**Estimate:** 3h\n**Depends on:** #1\n\n**Acceptance criteria**\n- [ ] npm run dev shows a Phaser canvas\n- [ ] npm run build outputs dist/\n- [ ] Folders from PLAN.md exist\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[03] Add ESLint, Prettier, Vitest and npm scripts",
+   "milestone": "M0 Foundation",
+   "labels": [
+    "setup"
+   ],
+   "body": "Scripts: lint, format, test, build, dev. Strict TypeScript.\n\n**Estimate:** 2h\n**Depends on:** #2\n\n**Acceptance criteria**\n- [ ] npm run lint and npm test pass on a clean checkout\n- [ ] tsconfig strict: true\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[04] Add CI workflow (lint, test, build) on every PR",
+   "milestone": "M0 Foundation",
+   "labels": [
+    "setup",
+    "deploy"
+   ],
+   "body": "Copy .github/workflows/ci.yml from the starter kit.\n\n**Estimate:** 2h\n**Depends on:** #3\n\n**Acceptance criteria**\n- [ ] PR shows green check when lint, test and build pass\n- [ ] Fails on a deliberate lint error\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[05] Deploy hello-world to GitHub Pages (deploy early)",
+   "milestone": "M0 Foundation",
+   "labels": [
+    "deploy"
+   ],
+   "body": "Copy deploy.yml. In repo Settings > Pages set Source = GitHub Actions. Merge to main and confirm the live URL.\n\n**Estimate:** 2h\n**Depends on:** #4\n\n**Acceptance criteria**\n- [ ] Live URL loads the Phaser canvas\n- [ ] Every merge to main redeploys automatically\n- [ ] URL added to README\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[06] Add AGENTS.md, issue/PR templates and labels",
+   "milestone": "M0 Foundation",
+   "labels": [
+    "setup",
+    "docs"
+   ],
+   "body": "AGENTS.md tells AI coding agents the rules: one issue = one branch = one PR, data-driven config, tests for systems, no copyrighted assets.\n\n**Estimate:** 1h\n**Depends on:** #1\n\n**Acceptance criteria**\n- [ ] AGENTS.md, ISSUE_TEMPLATE, PULL_REQUEST_TEMPLATE committed\n- [ ] Labels created\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[07] Write one-page game design doc",
+   "milestone": "M1 Design & Data",
+   "labels": [
+    "design",
+    "docs"
+   ],
+   "body": "Core loop, win condition (destroy enemy Nexus), match length target 8-10 min, controls, what is OUT of MVP (jungle, online, 3v3/5v5, extra heroes, Year 7-12, accounts). Single player vs bot only; no server. Include original game name and IP rules: no Mobile Legends names, heroes, art or audio.\n\n**Estimate:** 4h\n**Depends on:** #1\n\n**Acceptance criteria**\n- [ ] docs/GDD.md approved by you\n- [ ] MVP scope list and out-of-scope list present\n- [ ] IP rules stated\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[08] Define economy and combat formulas as config",
+   "milestone": "M1 Design & Data",
+   "labels": [
+    "design",
+    "balance",
+    "data"
+   ],
+   "body": "Create src/data/economy.json with: passive gold/s, last-hit base gold per minion type, correct/wrong multipliers, streak bonus and cap, EXP curve, damage formula. Mirror in a spreadsheet.\n\n**Estimate:** 5h\n**Depends on:** #7\n\n**Acceptance criteria**\n- [ ] All numbers live in economy.json, none hard-coded\n- [ ] Documented in docs/ECONOMY.md with a worked example\n- [ ] Math share of income target stated (about 30-40%)\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[09] Indonesian curriculum topic map for Year 1-6 (Kurikulum Merdeka)",
+   "milestone": "M1 Design & Data",
+   "labels": [
+    "math",
+    "design",
+    "docs"
+   ],
+   "body": "Map Kelas 1-6 (Fase A: 1-2, Fase B: 3-4, Fase C: 5-6) to topics from the Capaian Pembelajaran elements (Bilangan, Aljabar, Pengukuran, Geometri, Analisis Data dan Peluang). Write docs/CURRICULUM.md with 4-6 topics per tier and mark which have a generator. The draft table in PLAN.md must be verified by a teacher against the official CP before questions are written.\n\n**Estimate:** 4h\n**Depends on:** #7\n\n**Acceptance criteria**\n- [ ] docs/CURRICULUM.md covers tiers 1-6\n- [ ] Each topic has an id used by the question schema\n- [ ] Teacher sign-off recorded in the file\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[10] Question bank JSON schema + validator script",
+   "milestone": "M1 Design & Data",
+   "labels": [
+    "data",
+    "math"
+   ],
+   "body": "Fields: id, tier (1-6), type (fluency|application|multistep), topic, stem {id,en}, choices[4] (numbers or {id,en}), answerIndex, explanation {id,en}, timeSec, tags. Validator rejects duplicates, bad answerIndex, missing explanation or missing either language.\n\n**Estimate:** 4h\n**Depends on:** #9\n\n**Acceptance criteria**\n- [ ] scripts/validate-questions.ts runs in CI\n- [ ] Fails on a deliberately broken item\n- [ ] Fails if id or en text is missing\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[11] Bilingual procedural question generators",
+   "milestone": "M1 Design & Data",
+   "labels": [
+    "math",
+    "data"
+   ],
+   "body": "Parametric generators for the Year 1-6 topics in docs/CURRICULUM.md (e.g. addition, a x b, fraction add, percent, perimeter/area) with distractors from common errors. Each template outputs Indonesian and English text from one source. Use Indonesian contexts (Rp, local names). Deterministic with a seed so tests are repeatable.\n\n**Estimate:** 10h\n**Depends on:** #10\n\n**Acceptance criteria**\n- [ ] Generators for at least 12 topic families covering all 6 tiers\n- [ ] Every output has id and en text\n- [ ] Distractors are plausible, never equal to the answer\n- [ ] Unit tests with a fixed seed\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[12] Seed question bank: minimum 15 items per (tier x type), ID + EN",
+   "milestone": "M1 Design & Data",
+   "labels": [
+    "math",
+    "data"
+   ],
+   "body": "6 tiers x 3 types x 15 = 270 items minimum, each in Indonesian and English (mix of generated and handwritten, reuse GenSoal output where possible). Handwrite application and multistep items; generators cover fluency. Topics follow docs/CURRICULUM.md.\n\n**Estimate:** 10h\n**Depends on:** #10, #11\n\n**Acceptance criteria**\n- [ ] 270+ items pass the validator\n- [ ] Each tier has 15+ items per type\n- [ ] Both languages present on every item\n- [ ] Spot-check of 10% by a teacher\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[13] Hero, item and rank data schemas",
+   "milestone": "M1 Design & Data",
+   "labels": [
+    "data"
+   ],
+   "body": "TypeScript types + JSON files: heroes.json (one hero), items.json, ranks.json (6 tiers). Loader with runtime validation (zod).\n\n**Estimate:** 3h\n**Depends on:** #7\n\n**Acceptance criteria**\n- [ ] Loader throws a clear error on bad data\n- [ ] Empty-but-valid files committed\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[14] Original placeholder art and audio plan",
+   "milestone": "M1 Design & Data",
+   "labels": [
+    "design",
+    "docs"
+   ],
+   "body": "Use CC0 packs (e.g. Kenney) or your own AI-generated originals. Record the license for every asset in docs/ASSETS.md. No ripped game assets.\n\n**Estimate:** 3h\n**Depends on:** #7\n\n**Acceptance criteria**\n- [ ] docs/ASSETS.md lists source and license per asset\n- [ ] Placeholder sprite set for 1 hero, the bot hero, 3 minions, tower, Nexus, map tiles\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[15] Scene manager: Boot, Menu, Match, Result",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "engine"
+   ],
+   "body": "Phaser scenes with a typed shared GameState. Responsive scaling for portrait and landscape phones.\n\n**Estimate:** 4h\n**Depends on:** #2\n\n**Acceptance criteria**\n- [ ] Navigate Menu > Match > Result\n- [ ] Scale mode FIT works at 360x640 and 1280x720\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[16] Single-lane map with bases and tower slots",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "engine"
+   ],
+   "body": "Horizontal lane, two Nexus, 2 towers per side, camera follow, world bounds.\n\n**Estimate:** 5h\n**Depends on:** #15, #14\n\n**Acceptance criteria**\n- [ ] Map renders with correct entity slots\n- [ ] Camera follows the player smoothly\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[17] Hero entity: movement and base stats",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "engine",
+    "gameplay"
+   ],
+   "body": "Hero class driven by heroes.json: HP, mana, attack, armor, speed. Keyboard movement first.\n\n**Estimate:** 5h\n**Depends on:** #16, #13\n\n**Acceptance criteria**\n- [ ] Hero moves with WASD and arrows\n- [ ] Stats come from JSON\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[18] Mobile touch controls (joystick, attack, skill buttons)",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "engine",
+    "ui"
+   ],
+   "body": "Virtual joystick left, attack and 3 skill buttons right, safe-area aware.\n\n**Estimate:** 6h\n**Depends on:** #17\n\n**Acceptance criteria**\n- [ ] Playable on a real phone browser\n- [ ] No accidental page scroll or zoom\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[19] Combat: basic attack, damage formula, death and respawn",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "engine",
+    "gameplay"
+   ],
+   "body": "Auto-target nearest enemy in range, damage = atk x 100/(100+armor), respawn timer scales with level.\n\n**Estimate:** 8h\n**Depends on:** #17, #8\n\n**Acceptance criteria**\n- [ ] Damage matches economy.json formula (unit-tested)\n- [ ] Hero dies and respawns at base\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[20] Minion waves: Infantry, Lancer, Cannon",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "engine",
+    "gameplay"
+   ],
+   "body": "Wave spawner on a timer, lane pathing, aggro on nearest enemy, each type with its own stats and sprite.\n\n**Estimate:** 8h\n**Depends on:** #16, #19\n\n**Acceptance criteria**\n- [ ] Waves spawn on both sides and fight in the middle\n- [ ] Cannon minion appears every Nth wave\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[21] Towers, Nexus and win/lose condition",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "engine",
+    "gameplay"
+   ],
+   "body": "Towers attack nearest enemy, prioritise minions. Destroying the enemy Nexus ends the match.\n\n**Estimate:** 6h\n**Depends on:** #19, #20\n\n**Acceptance criteria**\n- [ ] Match ends with a Victory/Defeat result\n- [ ] Tower shots are visible and readable\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[22] Gold, EXP and hero levelling",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "engine",
+    "gameplay"
+   ],
+   "body": "Passive gold, kill gold, EXP curve, stat growth per level, cap at level 15.\n\n**Estimate:** 5h\n**Depends on:** #19, #8\n\n**Acceptance criteria**\n- [ ] Level-up applies stat growth\n- [ ] Values come from economy.json\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[23] Language support: Indonesian and English",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "ui",
+    "engine"
+   ],
+   "body": "i18n helper plus src/data/i18n/id.json and en.json. Language toggle in Menu, saved in the profile. Default from browser language, falling back to Indonesian.\n\n**Estimate:** 3h\n**Depends on:** #15\n\n**Acceptance criteria**\n- [ ] All UI strings come from the i18n files\n- [ ] Switching language updates the UI without reload\n- [ ] Question text uses the chosen language\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[24] Basic bot opponent: lane farming and attack",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "ai",
+    "gameplay"
+   ],
+   "body": "Simple finite-state bot hero: walk to lane, farm minions, attack the player in range, retreat at low HP. Fixed difficulty for now; rank scaling comes later. This makes the slice playable single-player.\n\n**Estimate:** 8h\n**Depends on:** #20, #21\n\n**Acceptance criteria**\n- [ ] Bot farms and fights without crashing for a full match\n- [ ] Bot behaviour is parameterised from data, not hard-coded\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[25] HUD: HP/mana bars, gold, level, timer, mini-map",
+   "milestone": "M2 Core Slice",
+   "labels": [
+    "ui"
+   ],
+   "body": "Readable on a 6-inch phone, minimal clutter.\n\n**Estimate:** 5h\n**Depends on:** #22\n\n**Acceptance criteria**\n- [ ] All elements visible in portrait and landscape\n- [ ] Mini-map shows towers and heroes\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[26] Question engine: selection by tier, type and difficulty",
+   "milestone": "M3 Math Engine",
+   "labels": [
+    "math",
+    "engine"
+   ],
+   "body": "Pure TypeScript module (no Phaser). Inputs: tier, minion type, recent history. Avoids repeats within a window, applies the 70/20/10 on-level/review/stretch mix.\n\n**Estimate:** 6h\n**Depends on:** #12, #22\n\n**Acceptance criteria**\n- [ ] Unit tests prove no repeat within 30 questions\n- [ ] Mix ratio verified over 1000 draws within 3%\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[27] Last-hit trigger and non-pausing question overlay",
+   "milestone": "M3 Math Engine",
+   "labels": [
+    "math",
+    "ui",
+    "gameplay"
+   ],
+   "body": "On last hit, show 4 large tap buttons with a timer bar. Game never pauses. Only one question at a time, queue max 1.\n\n**Estimate:** 8h\n**Depends on:** #26, #25, #18\n\n**Acceptance criteria**\n- [ ] Question appears only on the player's last hit\n- [ ] Timer by type: Infantry 5s, Lancer 8s, Cannon 12s (tunable)\n- [ ] Playable one-handed\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[28] Reward resolver: correct, wrong, timeout, streak, math-share cap",
+   "milestone": "M3 Math Engine",
+   "labels": [
+    "math",
+    "balance",
+    "gameplay"
+   ],
+   "body": "Correct = 1.5x, wrong or timeout = 0.5x, streak +5% per answer capped at +25%. Cap total math-derived income share per match.\n\n**Estimate:** 5h\n**Depends on:** #27, #8\n\n**Acceptance criteria**\n- [ ] Unit tests for every branch\n- [ ] Math-derived share stays under the cap in a simulation\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[29] Answer feedback, explanations and review queue",
+   "milestone": "M3 Math Engine",
+   "labels": [
+    "math",
+    "ui"
+   ],
+   "body": "Instant correct/wrong cue. Wrong answers stored; show explanation on the Result screen and re-queue the item later.\n\n**Estimate:** 5h\n**Depends on:** #27\n\n**Acceptance criteria**\n- [ ] Result screen lists missed questions with explanations\n- [ ] Missed items return within the next 3 matches\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[30] Local answer logging and CSV export for research",
+   "milestone": "M3 Math Engine",
+   "labels": [
+    "math",
+    "qa"
+   ],
+   "body": "Log tier, type, item id, correct, response ms, match id. Export CSV from a settings screen. No personal data.\n\n**Estimate:** 4h\n**Depends on:** #27\n\n**Acceptance criteria**\n- [ ] CSV downloads on desktop and mobile\n- [ ] Schema documented in docs/DATA.md\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[31] Accessibility: text size, colour-blind palette, extra time",
+   "milestone": "M3 Math Engine",
+   "labels": [
+    "ui",
+    "math"
+   ],
+   "body": "Font scale, colour-blind-safe palette, optional extended timer.\n\n**Estimate:** 3h\n**Depends on:** #27, #23\n\n**Acceptance criteria**\n- [ ] Font scale option works in both languages\n- [ ] Extended timer multiplies time by 1.5\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[32] Define the single original hero (data)",
+   "milestone": "M4 Hero & Items",
+   "labels": [
+    "gameplay",
+    "data"
+   ],
+   "body": "One original hero (a balanced Fighter) plus a second hero entry for the bot, using the same schema. Original name, lore, stats. No resemblance to existing MOBA heroes. More heroes are post-MVP.\n\n**Estimate:** 2h\n**Depends on:** #13, #17\n\n**Acceptance criteria**\n- [ ] Player hero and bot hero in heroes.json\n- [ ] Adding a hero needs JSON only\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[33] Skill framework: cooldown, mana, targeting, ultimate",
+   "milestone": "M4 Hero & Items",
+   "labels": [
+    "gameplay",
+    "engine"
+   ],
+   "body": "Data-driven skills (projectile, AoE, dash, buff, shield). Cooldown and mana handled by one system.\n\n**Estimate:** 8h\n**Depends on:** #32, #19\n\n**Acceptance criteria**\n- [ ] Add a new skill by JSON only\n- [ ] Cooldown UI on skill buttons\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[34] Implement the hero's skills",
+   "milestone": "M4 Hero & Items",
+   "labels": [
+    "gameplay"
+   ],
+   "body": "3 skills + 1 ultimate for the hero, using the framework, no hero-specific hacks.\n\n**Estimate:** 4h\n**Depends on:** #33\n\n**Acceptance criteria**\n- [ ] Every skill works with touch input\n- [ ] No skill deals damage beyond the DPS budget in docs/ECONOMY.md\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[35] Item shop UI: buy, sell, categories",
+   "milestone": "M4 Hero & Items",
+   "labels": [
+    "ui",
+    "gameplay"
+   ],
+   "body": "Open at base or any time via a button (decide in GDD). Categories: Attack, Magic, Defense, Movement, Support.\n\n**Estimate:** 6h\n**Depends on:** #22, #25\n\n**Acceptance criteria**\n- [ ] Purchase deducts gold, sell refunds 70%\n- [ ] 6 item slots\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[36] Item effects: 8 items with stat stacking and unique passives",
+   "milestone": "M4 Hero & Items",
+   "labels": [
+    "gameplay",
+    "balance"
+   ],
+   "body": "Items suit the single hero, with a mix of attack, defense, speed and sustain. Unique passives do not stack.\n\n**Estimate:** 4h\n**Depends on:** #35, #13\n\n**Acceptance criteria**\n- [ ] 8 items in items.json\n- [ ] Stat stacking unit-tested\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[37] Headless bot-vs-bot simulation for balance",
+   "milestone": "M4 Hero & Items",
+   "labels": [
+    "balance",
+    "qa"
+   ],
+   "body": "Script runs thousands of simulated matches with scripted answer accuracy (30%, 60%, 90%) and outputs win-rate and economy CSV.\n\n**Estimate:** 5h\n**Depends on:** #36, #34\n\n**Acceptance criteria**\n- [ ] Mirror match (hero vs hero) stays near 50% at equal accuracy\n- [ ] Math-skill advantage is a modest edge, not decisive, at equal combat skill\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[38] Adaptive placement quiz (10 questions)",
+   "milestone": "M5 Rank System",
+   "labels": [
+    "math",
+    "gameplay"
+   ],
+   "body": "Staircase difficulty over Year 1-6 questions. Starting tier = estimated mastery minus 1, capped so nobody starts above Year 5.\n\n**Estimate:** 6h\n**Depends on:** #26\n\n**Acceptance criteria**\n- [ ] Same answers always give the same tier (deterministic test)\n- [ ] Takes under 3 minutes\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[39] Rank model: 6 tiers x 5 stars, promotion and demotion",
+   "milestone": "M5 Rank System",
+   "labels": [
+    "gameplay",
+    "math"
+   ],
+   "body": "Win +1 star, win with 80%+ accuracy +1 bonus, loss -1. Demotion across a tier only after 2 straight losses at 0 stars. Pure TS module.\n\n**Estimate:** 6h\n**Depends on:** #8\n\n**Acceptance criteria**\n- [ ] Unit tests cover promotion, demotion, floor at Year 1\n- [ ] Config in ranks.json\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[40] Wire rank to question difficulty mix",
+   "milestone": "M5 Rank System",
+   "labels": [
+    "math"
+   ],
+   "body": "Question tier = current rank tier. Review items from below, stretch items from above.\n\n**Estimate:** 3h\n**Depends on:** #39, #26\n\n**Acceptance criteria**\n- [ ] Year 4 player sees Year 4 questions plus review (Years 1-3) and stretch (Year 5); Year 6 stretch draws harder Year 6 items\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[41] Profile persistence with versioned save and export/import",
+   "milestone": "M5 Rank System",
+   "labels": [
+    "engine"
+   ],
+   "body": "localStorage, schema version, migration function, JSON export/import for device changes.\n\n**Estimate:** 5h\n**Depends on:** #39\n\n**Acceptance criteria**\n- [ ] Refresh keeps rank\n- [ ] Old save versions migrate without data loss\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[42] Rank badges, progress bar and post-match summary",
+   "milestone": "M5 Rank System",
+   "labels": [
+    "ui"
+   ],
+   "body": "Badges Year 1-6, star animation, accuracy summary.\n\n**Estimate:** 5h\n**Depends on:** #39, #41, #23\n\n**Acceptance criteria**\n- [ ] Summary shows stars gained and accuracy\n- [ ] Badges distinguishable for colour-blind users\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[43] Bot upgrade: skills, item buying and rank-scaled difficulty",
+   "milestone": "M6 AI & Match Flow",
+   "labels": [
+    "ai",
+    "gameplay"
+   ],
+   "body": "Upgrade the basic bot with skill use and item purchases. Difficulty is looked up from the player's Year tier (Year 1 easiest, Year 6 hardest): last-hit accuracy, reaction time, item timing, aggression. Values live in src/data/bot.json. Since there is no human opponent, this is how matches stay fair across ranks.\n\n**Estimate:** 8h\n**Depends on:** #24, #34, #36, #39\n\n**Acceptance criteria**\n- [ ] Six difficulty steps, one per Year tier\n- [ ] Bot uses skills and buys items\n- [ ] Year 1 bot is beatable by a new player; Year 6 bot is a real challenge (checked with the simulator)\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[44] Full match flow: placement, match, result, rematch",
+   "milestone": "M6 AI & Match Flow",
+   "labels": [
+    "gameplay",
+    "ui"
+   ],
+   "body": "Smooth transitions, quit and rematch.\n\n**Estimate:** 5h\n**Depends on:** #15, #42, #38\n\n**Acceptance criteria**\n- [ ] No dead ends in any flow\n- [ ] Back button behaves sensibly on mobile\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[45] Audio and game feel: SFX, music, damage numbers, screen shake",
+   "milestone": "M6 AI & Match Flow",
+   "labels": [
+    "ui",
+    "engine"
+   ],
+   "body": "Licensed or original audio only. Mute toggle.\n\n**Estimate:** 6h\n**Depends on:** #44, #14\n\n**Acceptance criteria**\n- [ ] Mute persists\n- [ ] Damage numbers readable but not cluttered\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[46] Unit tests for economy, rank, question engine, items",
+   "milestone": "M7 QA & Release",
+   "labels": [
+    "qa"
+   ],
+   "body": "Target 80%+ coverage on src/systems.\n\n**Estimate:** 6h\n**Depends on:** #28, #39, #36\n\n**Acceptance criteria**\n- [ ] Coverage gate in CI at 80% for src/systems\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[47] Playwright smoke test on desktop and mobile viewport",
+   "milestone": "M7 QA & Release",
+   "labels": [
+    "qa"
+   ],
+   "body": "Boot, start match, last-hit one minion, answer, finish a short test match, in both languages.\n\n**Estimate:** 6h\n**Depends on:** #44\n\n**Acceptance criteria**\n- [ ] Runs in CI\n- [ ] Mobile viewport 390x844 passes\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[48] Performance budget and optimisation",
+   "milestone": "M7 QA & Release",
+   "labels": [
+    "qa",
+    "engine"
+   ],
+   "body": "Targets: 60 fps on a mid-range Android, bundle under 5 MB, first load under 5 s on 4G. Object pooling for minions and projectiles.\n\n**Estimate:** 6h\n**Depends on:** #44\n\n**Acceptance criteria**\n- [ ] Budget measured and written in docs/PERF.md\n- [ ] No frame under 30 fps during 1v1 fights\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[49] Student playtest protocol and feedback form",
+   "milestone": "M7 QA & Release",
+   "labels": [
+    "qa",
+    "math",
+    "docs"
+   ],
+   "body": "Pre/post test, 15-minute play session, replay-intent question ('Would you play again?'), short survey. Consent per your school and ethics process.\n\n**Estimate:** 5h\n**Depends on:** #44, #30\n\n**Acceptance criteria**\n- [ ] Protocol in docs/PLAYTEST.md\n- [ ] Replay-intent threshold defined (for example 60%+)\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[50] Balance pass v2 from playtest data",
+   "milestone": "M7 QA & Release",
+   "labels": [
+    "balance"
+   ],
+   "body": "Adjust economy.json, timers and item costs from playtest and CSV data.\n\n**Estimate:** 6h\n**Depends on:** #49, #37\n\n**Acceptance criteria**\n- [ ] Change log of every number changed and why\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[51] PWA: manifest, service worker, offline play",
+   "milestone": "M7 QA & Release",
+   "labels": [
+    "deploy",
+    "engine"
+   ],
+   "body": "Installable on Android, works offline after first load. Mind the Pages base path.\n\n**Estimate:** 4h\n**Depends on:** #48\n\n**Acceptance criteria**\n- [ ] Lighthouse PWA checks pass\n- [ ] Game launches in airplane mode\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[52] Release checklist, CHANGELOG and v0.1.0 tag",
+   "milestone": "M7 QA & Release",
+   "labels": [
+    "deploy",
+    "docs"
+   ],
+   "body": "Semantic version, CHANGELOG.md, GitHub Release with notes and a known-issues list.\n\n**Estimate:** 3h\n**Depends on:** #46, #47, #50, #51\n\n**Acceptance criteria**\n- [ ] Tag v0.1.0 and GitHub Release published\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[53] Production deploy to GitHub Pages and public play link",
+   "milestone": "M7 QA & Release",
+   "labels": [
+    "deploy"
+   ],
+   "body": "Verify the live build equals the tag. Add the play link and screenshots to README.\n\n**Estimate:** 2h\n**Depends on:** #52, #5\n\n**Acceptance criteria**\n- [ ] Live URL plays the full flow on a phone\n- [ ] README has Play link, screenshots and credits\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[54] Supabase auth and cloud save",
+   "milestone": "M8 Post-MVP Backlog",
+   "labels": [
+    "backlog"
+   ],
+   "body": "Accounts and cloud rank. Needs privacy review for minors.\n\n**Estimate:** 12h\n**Depends on:** #53\n\n**Acceptance criteria**\n- [ ] Login and cloud save work\n- [ ] Privacy notice published\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[55] Teacher dashboard: class accuracy by topic",
+   "milestone": "M8 Post-MVP Backlog",
+   "labels": [
+    "backlog",
+    "math"
+   ],
+   "body": "Aggregate answer logs per class and topic.\n\n**Estimate:** 16h\n**Depends on:** #54\n\n**Acceptance criteria**\n- [ ] Teacher sees weak topics per class\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[56] Online multiplayer prototype",
+   "milestone": "M8 Post-MVP Backlog",
+   "labels": [
+    "backlog"
+   ],
+   "body": "Authoritative server (Colyseus or similar). Large cost, only if the pilot justifies it.\n\n**Estimate:** 60h\n**Depends on:** #53\n\n**Acceptance criteria**\n- [ ] Two players complete a match online\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[57] Jungle camps and objectives (Turtle/Lord-style, original names)",
+   "milestone": "M8 Post-MVP Backlog",
+   "labels": [
+    "backlog",
+    "gameplay"
+   ],
+   "body": "Original neutral objectives with their own questions.\n\n**Estimate:** 20h\n**Depends on:** #53\n\n**Acceptance criteria**\n- [ ] Objectives give team buffs and bonus questions\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[58] More heroes and Year 7-12 content",
+   "milestone": "M8 Post-MVP Backlog",
+   "labels": [
+    "backlog",
+    "gameplay",
+    "math"
+   ],
+   "body": "Four more original heroes, hero select, tiers 7-12 with their question banks. Only after the pilot.\n\n**Estimate:** 40h\n**Depends on:** #53\n\n**Acceptance criteria**\n- [ ] Hero select works\n- [ ] Tiers 7-12 pass the validator\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[59] 3v3 mode with three lanes",
+   "milestone": "M8 Post-MVP Backlog",
+   "labels": [
+    "backlog",
+    "gameplay",
+    "engine"
+   ],
+   "body": "Extend the map to three lanes.\n\n**Estimate:** 14h\n**Depends on:** #58\n\n**Acceptance criteria**\n- [ ] 3v3 match completes end to end\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  },
+  {
+   "title": "[60] Naming, trademark and original art review",
+   "milestone": "M8 Post-MVP Backlog",
+   "labels": [
+    "backlog",
+    "docs"
+   ],
+   "body": "Confirm the name is not confusingly similar to existing games. Replace placeholders with original art.\n\n**Estimate:** 6h\n**Depends on:** #53\n\n**Acceptance criteria**\n- [ ] Written check completed\n\n**Definition of done:** merged via PR, CI green, docs updated if behaviour changed."
+  }
+ ]
+}
