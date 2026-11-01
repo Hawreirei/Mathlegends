@@ -68,5 +68,18 @@
   "result.bonus": "(bonus akurasi)",
   "result.promoted": "Naik ke {year}!",
   "result.demoted": "Turun ke {year}.",
-  "result.rankNow": "Sekarang: {rank}"
+  "result.rankNow": "Sekarang: {rank}",
+  "settings.transfer": "Pindah perangkat",
+  "transfer.title": "Pindah perangkat",
+  "transfer.info": "Simpan progresmu (Kelas, bintang, pengaturan dan soal yang perlu diulang) ke sebuah file, lalu muat file itu di perangkat lain. Data jawaban untuk penelitian tidak ikut.",
+  "transfer.export": "Simpan ke file",
+  "transfer.import": "Muat dari file",
+  "transfer.exported": "File progres sudah diunduh.",
+  "transfer.confirm": "Ketuk lagi untuk memuat",
+  "transfer.confirmHint": "File berisi {rank}. Progres di perangkat ini akan diganti.",
+  "transfer.loaded": "Progres dimuat: {rank}",
+  "transfer.notASave": "File ini bukan file progres MathLegends.",
+  "transfer.tooNew": "File ini dari versi game yang lebih baru. Perbarui game dulu.",
+  "transfer.invalid": "File progres ini rusak dan tidak bisa dimuat.",
+  "transfer.back": "Kembali"
 }

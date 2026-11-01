@@ -32,7 +32,7 @@ Starting one Year below mastery gives an easy first win; stars then move the chi
 
 **Retake:** Settings → Year → "Retake placement quiz" (tap twice) runs the quiz again; the Year is set again and stars go back to 0. Useful when a device moves to another child.
 
-**Saved:** the Year, stars and whether the quiz is done are saved on the device (`localStorage` `mathlegends.profile`). The versioned save with export/import comes in #41.
+**Saved:** the Year, stars and whether the quiz is done are saved on the device in the versioned save, which can be moved to another device ([SAVE.md](SAVE.md), #41).
 
 **Logged:** placement answers go to the anonymous answer log (#30) with band `placement` and a `p-` match id.
 

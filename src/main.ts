@@ -7,22 +7,15 @@ import { MenuScene } from './scenes/MenuScene';
 import { PlacementScene } from './scenes/PlacementScene';
 import { ResultScene } from './scenes/ResultScene';
 import { SettingsScene } from './scenes/SettingsScene';
-import { createGameState, parseProfile } from './systems/gameState';
+import { createGameState } from './systems/gameState';
 import { logicalSize } from './systems/layout';
 import { loadFonts } from './ui/fonts';
 import ranksJson from './data/ranks.json';
 import { loadRanks } from './systems/data';
 import { curriculumTopicTiers } from './systems/questionBank';
-import { parseReviewQueue } from './systems/reviewQueue';
-import { parseSettings } from './systems/settings';
 import { applyAccessibility } from './ui/theme';
-import {
-  browserStorage,
-  initialLang,
-  loadProfileRaw,
-  loadReviewRaw,
-  loadSettingsRaw,
-} from './utils/storage';
+import { loadGame } from './utils/saveStore';
+import { browserStorage, initialLang } from './utils/storage';
 
 declare global {
   interface Window {
@@ -69,14 +62,14 @@ void loadFonts().then(() => {
         const store = browserStorage();
         const lang = initialLang(store, navigator.language);
         document.documentElement.lang = lang;
+        // Progress (#41): Year, stars, settings and missed questions from the versioned save,
+        // migrating older saves; checked like the bank.
         const ranks = loadRanks(ranksJson);
-        // Missed questions from earlier matches (#29), checked like the bank.
-        const review = parseReviewQueue(loadReviewRaw(store), ranks, curriculumTopicTiers());
+        const ctx = { ranks, topicTiers: curriculumTopicTiers(), textScales: theme.textScales };
+        const { data } = loadGame(store, ctx, new Date());
+        const { profile, settings, review } = data;
         // Accessibility settings (#31) apply before any screen is drawn.
-        const settings = parseSettings(loadSettingsRaw(store), theme.textScales);
         applyAccessibility(settings);
-        // Year and stars (#38; versioned save with export/import in #41).
-        const profile = parseProfile(loadProfileRaw(store), ranks.tiers.length, ranks.starsPerTier);
         g.registry.set('state', createGameState(lang, review, settings, profile));
       },
     },

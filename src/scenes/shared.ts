@@ -1,15 +1,10 @@
 import Phaser from 'phaser';
-import {
-  serializeProfile,
-  setLang,
-  setSettings,
-  type GameState,
-  type Lang,
-} from '../systems/gameState';
-import { serializeSettings, type Settings } from '../systems/settings';
+import { setLang, setSettings, type GameState, type Lang } from '../systems/gameState';
+import type { Settings } from '../systems/settings';
 import { applyAccessibility } from '../ui/theme';
 import { t, type StringKey } from '../utils/i18n';
-import { browserStorage, saveLang, saveProfileRaw, saveSettingsRaw } from '../utils/storage';
+import { saveGame } from '../utils/saveStore';
+import { browserStorage, saveLang } from '../utils/storage';
 
 /** Fired on game.events after the language changes; every responsive scene rebuilds. */
 export const LANG_EVENT = 'ml-lang';
@@ -21,10 +16,19 @@ export const setState = (scene: Phaser.Scene, s: GameState): void => {
   scene.registry.set(KEY, s);
 };
 
-/** Sets the game state and saves the profile (Year, stars) on the device (#38). */
-export function setStateAndSaveProfile(scene: Phaser.Scene, s: GameState): void {
+/** Writes the player's progress (profile, settings, review queue) as the versioned save (#41). */
+export function persist(s: GameState): void {
+  saveGame(
+    browserStorage(),
+    { profile: s.profile, settings: s.settings, review: s.review },
+    new Date(),
+  );
+}
+
+/** Sets the game state and saves the progress on the device. */
+export function setStateAndSave(scene: Phaser.Scene, s: GameState): void {
   setState(scene, s);
-  saveProfileRaw(browserStorage(), serializeProfile(s.profile));
+  persist(s);
 }
 
 /** Translated string in the current language. */
@@ -44,8 +48,7 @@ export const SETTINGS_EVENT = 'ml-settings';
 
 /** Applies and saves new accessibility settings and redraws every visible screen (#31). */
 export function changeSettings(scene: Phaser.Scene, settings: Settings): void {
-  setState(scene, setSettings(getState(scene), settings));
-  saveSettingsRaw(browserStorage(), serializeSettings(settings));
+  setStateAndSave(scene, setSettings(getState(scene), settings));
   applyAccessibility(settings);
   scene.game.events.emit(SETTINGS_EVENT, settings);
 }

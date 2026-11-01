@@ -5,12 +5,17 @@ import { fmt } from '../systems/generators/core';
 import type { Settings } from '../systems/settings';
 import { Button } from '../ui/Button';
 import { bodyFont, displayFont, hex, theme, ts } from '../ui/theme';
-import { downloadText } from '../utils/download';
+import { downloadText, pickTextFile } from '../utils/download';
+import { curriculumTopicTiers } from '../systems/questionBank';
+import { readSave, saveFileName, writeSave, type SaveData } from '../systems/save';
 import type { StringKey } from '../utils/i18n';
 import { browserStorage, loadAnswerLogRaw, saveAnswerLogRaw } from '../utils/storage';
 import ranks from '../data/ranks.json';
+import { loadRanks } from '../systems/data';
 import { resetPlacement } from '../systems/gameState';
-import { changeSettings, getState, responsive, setStateAndSaveProfile, tr } from './shared';
+import { changeSettings, getState, responsive, setStateAndSave, tr } from './shared';
+
+type TransferNote = 'exported' | 'loaded' | 'confirmHint' | 'notASave' | 'tooNew' | 'invalid';
 
 const TEXT_KEYS: StringKey[] = ['settings.text1', 'settings.text2', 'settings.text3'];
 
@@ -21,6 +26,10 @@ const TEXT_KEYS: StringKey[] = ['settings.text1', 'settings.text2', 'settings.te
  */
 export class SettingsScene extends Phaser.Scene {
   private note: 'exported' | 'cleared' | 'confirm' | 'retake' | null = null;
+  private page: 'main' | 'transfer' = 'main';
+  private transferNote: TransferNote | null = null;
+  /** A checked save picked for import, waiting for the second tap. */
+  private pendingImport: SaveData | null = null;
 
   constructor() {
     super('Settings');
@@ -28,6 +37,9 @@ export class SettingsScene extends Phaser.Scene {
 
   create(): void {
     this.note = null;
+    this.page = 'main';
+    this.transferNote = null;
+    this.pendingImport = null;
     responsive(this, () => this.layout());
   }
 
@@ -44,9 +56,27 @@ export class SettingsScene extends Phaser.Scene {
     this.add
       .rectangle(w / 2, h / 2, panelW, panelH, hex(c.night), 0.95)
       .setStrokeStyle(4, hex(c.violet));
+    const onTransfer = this.page === 'transfer';
     this.add
-      .text(w / 2, top + 55, tr(this, 'settings.title'), displayFont(52, c.gold))
+      .text(
+        w / 2,
+        top + 55,
+        tr(this, onTransfer ? 'transfer.title' : 'settings.title'),
+        displayFont(52, c.gold),
+      )
       .setOrigin(0.5);
+    if (onTransfer) {
+      this.transfer(w / 2, top + 130, Math.min(panelW - 80, 760), portrait);
+      new Button(
+        this,
+        w / 2,
+        top + panelH - 64,
+        tr(this, 'transfer.back'),
+        () => this.showPage('main'),
+        { width: 320, height: 76, style: 'secondary' },
+      );
+      return;
+    }
 
     const pad = 40;
     if (portrait) {
@@ -155,17 +185,27 @@ export class SettingsScene extends Phaser.Scene {
         bodyFont(24, confirm ? c.gold : c.paper, '600'),
       )
       .setWordWrapWidth(colW, true);
+    const half = (colW - 16) / 2;
     new Button(
       this,
-      x + colW / 2,
+      x + half / 2,
       y + 130,
       tr(this, confirm ? 'settings.retakeConfirm' : 'settings.retake'),
       () => {
         if (!confirm) return this.setNote('retake');
-        setStateAndSaveProfile(this, resetPlacement(getState(this)));
+        setStateAndSave(this, resetPlacement(getState(this)));
         this.scene.start('Placement');
       },
-      { width: colW, height: 64, fontSize: 24, style: confirm ? 'primary' : 'secondary' },
+      { width: half, height: 64, fontSize: 20, style: confirm ? 'primary' : 'secondary' },
+    );
+    // Export / import the versioned save (#41) on its own page.
+    new Button(
+      this,
+      x + colW - half / 2,
+      y + 130,
+      tr(this, 'settings.transfer'),
+      () => this.showPage('transfer'),
+      { width: half, height: 64, fontSize: 20, style: 'secondary' },
     );
     return y + 170;
   }
@@ -225,6 +265,119 @@ export class SettingsScene extends Phaser.Scene {
         .setOrigin(0.5, 0)
         .setWordWrapWidth(colW, true)
         .setAlign('center');
+  }
+
+  /** Save to file / Load from file (#41). Load asks for a second tap before replacing progress. */
+  private transfer(cx: number, y: number, colW: number, portrait: boolean): void {
+    const c = theme.colors;
+    const x = cx - colW / 2;
+    const info = this.add
+      .text(x, y, tr(this, 'transfer.info'), bodyFont(26, c.paper, '600'))
+      .setWordWrapWidth(colW, true);
+    const btnY = info.y + info.height + 70;
+    const bw = portrait ? colW : (colW - 24) / 2;
+    const pending = this.pendingImport;
+    new Button(
+      this,
+      portrait ? cx : x + bw / 2,
+      btnY,
+      tr(this, 'transfer.export'),
+      () => {
+        const st = getState(this);
+        const now = new Date();
+        const file = writeSave(
+          { profile: st.profile, settings: st.settings, review: st.review },
+          now,
+        );
+        downloadText(saveFileName(now), JSON.stringify(file, null, 2), 'application/json');
+        this.pendingImport = null;
+        this.setTransferNote('exported');
+      },
+      { width: bw, height: 76, fontSize: 28 },
+    );
+    const importY = portrait ? btnY + 110 : btnY;
+    new Button(
+      this,
+      portrait ? cx : x + colW - bw / 2,
+      importY,
+      tr(this, pending ? 'transfer.confirm' : 'transfer.import'),
+      () => {
+        if (pending) return this.applyImport(pending);
+        void pickTextFile('.json,application/json').then((text) => {
+          if (text === null) return;
+          let raw: unknown;
+          try {
+            raw = JSON.parse(text);
+          } catch {
+            return this.setTransferNote('notASave');
+          }
+          const r = readSave(raw, {
+            ranks: loadRanks(ranks),
+            topicTiers: curriculumTopicTiers(),
+            textScales: theme.textScales,
+          });
+          if (!r.ok) return this.setTransferNote(r.reason);
+          this.pendingImport = r.data;
+          this.setTransferNote('confirmHint');
+        });
+      },
+      {
+        width: bw,
+        height: 76,
+        fontSize: pending ? 24 : 28,
+        style: pending ? 'primary' : 'secondary',
+      },
+    );
+    const n = this.transferNote;
+    if (!n) return;
+    const st = getState(this);
+    const shown = n === 'confirmHint' && pending ? pending.profile : st.profile;
+    const rank = this.rankText(shown.tier, shown.stars);
+    const good = n === 'exported' || n === 'loaded';
+    this.add
+      .text(
+        cx,
+        importY + 70,
+        tr(this, `transfer.${n}`, { rank }),
+        bodyFont(24, good ? c.mint : c.gold, '700'),
+      )
+      .setOrigin(0.5, 0)
+      .setWordWrapWidth(colW, true)
+      .setAlign('center');
+  }
+
+  private rankText(tier: number, stars: number): string {
+    const t = ranks.tiers.find((k) => k.tier === tier) ?? ranks.tiers[0]!;
+    return tr(this, 'menu.rank', { year: t.label[getState(this).lang], stars });
+  }
+
+  private applyImport(data: SaveData): void {
+    const st = getState(this);
+    this.pendingImport = null;
+    this.transferNote = 'loaded';
+    setStateAndSave(this, {
+      ...st,
+      profile: data.profile,
+      settings: data.settings,
+      review: data.review,
+    });
+    // The loaded settings (text size, colours) apply at once; every screen redraws.
+    changeSettings(this, data.settings);
+  }
+
+  private setTransferNote(n: TransferNote): void {
+    this.transferNote = n;
+    this.children.removeAll(true);
+    this.layout();
+  }
+
+  private showPage(p: 'main' | 'transfer'): void {
+    this.page = p;
+    this.note = null;
+    this.transferNote = null;
+    this.pendingImport = null;
+    this.children.removeAll(true);
+    this.layout();
   }
 
   private setNote(n: SettingsScene['note']): void {

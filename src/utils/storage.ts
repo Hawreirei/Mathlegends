@@ -16,6 +16,8 @@ const REVIEW_KEY = 'mathlegends.review';
 const ANSWER_LOG_KEY = 'mathlegends.answers';
 const SETTINGS_KEY = 'mathlegends.settings';
 const PROFILE_KEY = 'mathlegends.profile';
+/** The versioned save (#41): profile, settings and review queue in one document. */
+export const SAVE_KEY = 'mathlegends.save';
 
 /** The browser's localStorage, or null if it is unavailable. */
 export function browserStorage(): KeyValueStore | null {
@@ -69,13 +71,8 @@ export function saveJson(store: KeyValueStore | null, key: string, data: unknown
   }
 }
 
-/** The saved review queue (#29) as parsed JSON, or null. Validate it with parseReviewQueue. */
+/** Pre-#41 review queue key (read once to migrate into the versioned save). */
 export const loadReviewRaw = (store: KeyValueStore | null): unknown => loadJson(store, REVIEW_KEY);
-
-export function saveReviewRaw(store: KeyValueStore | null, data: unknown): void {
-  // If storage is blocked or full the queue still works until the page is closed.
-  saveJson(store, REVIEW_KEY, data);
-}
 
 /** The anonymous answer log (#30) as parsed JSON, or null. Validate it with parseLog. */
 export const loadAnswerLogRaw = (store: KeyValueStore | null): unknown =>
@@ -84,16 +81,10 @@ export const loadAnswerLogRaw = (store: KeyValueStore | null): unknown =>
 export const saveAnswerLogRaw = (store: KeyValueStore | null, data: unknown): boolean =>
   saveJson(store, ANSWER_LOG_KEY, data);
 
-/** Saved accessibility settings (#31) as parsed JSON, or null. Validate with parseSettings. */
+/** Pre-#41 settings key (read once to migrate into the versioned save). */
 export const loadSettingsRaw = (store: KeyValueStore | null): unknown =>
   loadJson(store, SETTINGS_KEY);
 
-export const saveSettingsRaw = (store: KeyValueStore | null, data: unknown): boolean =>
-  saveJson(store, SETTINGS_KEY, data);
-
-/** Saved profile (#38; versioned save in #41) as parsed JSON, or null. Validate with parseProfile. */
+/** Pre-#41 profile key (read once to migrate into the versioned save). */
 export const loadProfileRaw = (store: KeyValueStore | null): unknown =>
   loadJson(store, PROFILE_KEY);
-
-export const saveProfileRaw = (store: KeyValueStore | null, data: unknown): boolean =>
-  saveJson(store, PROFILE_KEY, data);

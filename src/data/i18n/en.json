@@ -68,5 +68,18 @@
   "result.bonus": "(accuracy bonus)",
   "result.promoted": "Up to {year}!",
   "result.demoted": "Down to {year}.",
-  "result.rankNow": "Now: {rank}"
+  "result.rankNow": "Now: {rank}",
+  "settings.transfer": "Move to another device",
+  "transfer.title": "Move to another device",
+  "transfer.info": "Save your progress (Year, stars, settings and questions to review) to a file, then load that file on another device. Research answer data is not included.",
+  "transfer.export": "Save to file",
+  "transfer.import": "Load from file",
+  "transfer.exported": "The progress file has been downloaded.",
+  "transfer.confirm": "Tap again to load",
+  "transfer.confirmHint": "The file holds {rank}. The progress on this device will be replaced.",
+  "transfer.loaded": "Progress loaded: {rank}",
+  "transfer.notASave": "This is not a MathLegends progress file.",
+  "transfer.tooNew": "This file is from a newer version of the game. Update the game first.",
+  "transfer.invalid": "This progress file is damaged and cannot be loaded.",
+  "transfer.back": "Back"
 }

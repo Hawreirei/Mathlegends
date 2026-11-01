@@ -30,7 +30,7 @@ import { Button } from '../ui/Button';
 import { QuestionOverlay } from '../ui/QuestionOverlay';
 import { bodyFont, displayFont, hex, textScale, theme } from '../ui/theme';
 import { browserStorage, loadAnswerLogRaw, saveAnswerLogRaw } from '../utils/storage';
-import { getState, responsive, setStateAndSaveProfile, tr } from './shared';
+import { getState, responsive, setStateAndSave, tr } from './shared';
 
 type Phase = 'intro' | 'quiz' | 'done';
 
@@ -220,7 +220,7 @@ export class PlacementScene extends Phaser.Scene {
 
   private finish(): void {
     const tier = placementTier(this.quiz.answers, this.ranks);
-    setStateAndSaveProfile(this, applyPlacement(getState(this), tier));
+    setStateAndSave(this, applyPlacement(getState(this), tier));
     const store = browserStorage();
     saveAnswerLogRaw(
       store,

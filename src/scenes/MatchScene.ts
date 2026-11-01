@@ -22,15 +22,10 @@ import {
   type AnswerRow,
   type MatchLogInfo,
 } from '../systems/answerLog';
-import { serializeReviewQueue, updateReviewQueue } from '../systems/reviewQueue';
+import { updateReviewQueue } from '../systems/reviewQueue';
 import { applyMatch } from '../systems/rank';
 import { timeScale } from '../systems/settings';
-import {
-  browserStorage,
-  loadAnswerLogRaw,
-  saveAnswerLogRaw,
-  saveReviewRaw,
-} from '../utils/storage';
+import { browserStorage, loadAnswerLogRaw, saveAnswerLogRaw } from '../utils/storage';
 import { directionFromKeys, type HeroState } from '../systems/hero';
 import { buildMap, cameraZoom, type MapConfig, type Point } from '../systems/map';
 import {
@@ -57,7 +52,7 @@ import type { Progress } from '../systems/progression';
 import { isTargetable, type StructureState } from '../systems/structures';
 import { hex, theme } from '../ui/theme';
 import { ATTACK_EVENT, ATTACK_RELEASE_EVENT, type MatchHudScene } from './MatchHudScene';
-import { getState, setStateAndSaveProfile, tr } from './shared';
+import { getState, setStateAndSave, tr } from './shared';
 
 /** Fired on game.events when a question ends: (resolution). The HUD shows the feedback. */
 export const QUESTION_RESOLVED_EVENT = 'ml-question-resolved';
@@ -459,8 +454,7 @@ export class MatchScene extends Phaser.Scene {
       { won: outcome === 'victory', answered: this.session.asked, correct: this.session.correct },
       ranks,
     );
-    saveReviewRaw(browserStorage(), serializeReviewQueue(review));
-    setStateAndSaveProfile(
+    setStateAndSave(
       this,
       recordMatch(
         getState(this),
