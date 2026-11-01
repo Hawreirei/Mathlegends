@@ -61,7 +61,9 @@ export class HeroView extends Phaser.GameObjects.Container {
   /** Short white flash when hit. */
   flash(): void {
     this.img.setTint(0xffffff).setTintMode(Phaser.TintModes.FILL);
-    this.scene.time.delayedCall(80, () => this.img.clearTint().setTintMode(Phaser.TintModes.MULTIPLY));
+    this.scene.time.delayedCall(80, () =>
+      this.img.clearTint().setTintMode(Phaser.TintModes.MULTIPLY),
+    );
   }
 }
 
