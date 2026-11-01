@@ -32,6 +32,18 @@
       "stats": {
         "atk": 26,
         "attackSpeed": 0.15
+      },
+      "passive": {
+        "id": "comet-strike",
+        "unique": true,
+        "description": {
+          "id": "Unik: setiap serangan biasa memberi 18 kerusakan tambahan.",
+          "en": "Unique: every basic attack deals 18 extra damage."
+        },
+        "effect": {
+          "kind": "onHitDamage",
+          "amount": 18
+        }
       }
     },
     {
@@ -49,6 +61,18 @@
       "stats": {
         "mana": 150,
         "manaRegen": 2
+      },
+      "passive": {
+        "id": "quick-thinking",
+        "unique": true,
+        "description": {
+          "id": "Unik: jeda skill 12% lebih singkat.",
+          "en": "Unique: skill cooldowns are 12% shorter."
+        },
+        "effect": {
+          "kind": "cooldownReduction",
+          "amount": 0.12
+        }
       }
     },
     {
@@ -66,6 +90,18 @@
       "stats": {
         "atk": 14,
         "mana": 200
+      },
+      "passive": {
+        "id": "rainbow-power",
+        "unique": true,
+        "description": {
+          "id": "Unik: skill memberi 15% kerusakan lebih besar.",
+          "en": "Unique: skills deal 15% more damage."
+        },
+        "effect": {
+          "kind": "skillPower",
+          "amount": 0.15
+        }
       }
     },
     {
@@ -99,6 +135,21 @@
       "stats": {
         "hp": 250,
         "armor": 10
+      },
+      "passive": {
+        "id": "last-stand",
+        "unique": true,
+        "description": {
+          "id": "Unik: saat darah di bawah 30%, dapat perisai 15% darah maksimum selama 3 detik (sekali tiap 30 detik).",
+          "en": "Unique: below 30% HP, gain a shield of 15% max HP for 3 seconds (once every 30 seconds)."
+        },
+        "effect": {
+          "kind": "lowHpShield",
+          "hpBelow": 0.3,
+          "maxHpRatio": 0.15,
+          "duration": 3,
+          "cooldown": 30
+        }
       }
     },
     {
@@ -124,14 +175,15 @@
         "en": "Leaf Charm"
       },
       "description": {
-        "id": "Jimat daun segar. Menambah darah dan memulihkannya lebih cepat.",
-        "en": "A fresh leaf charm. More HP, and it heals faster."
+        "id": "Jimat daun segar. Menambah darah, memulihkannya lebih cepat, dan setiap serangan mengembalikan sedikit darah.",
+        "en": "A fresh leaf charm. More HP, faster healing, and every attack gives back a little HP."
       },
       "category": "support",
       "cost": 450,
       "stats": {
         "hp": 100,
-        "hpRegen": 4
+        "hpRegen": 3,
+        "lifesteal": 0.06
       }
     }
   ]

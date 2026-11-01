@@ -5,6 +5,7 @@
 import type { Hero } from './data';
 import type { Combatant } from './combat';
 import type { LaneMap, Point, Team } from './map';
+import { NO_ITEMS, type ItemEffects } from './items';
 
 export interface HeroStats {
   maxHp: number;
@@ -34,6 +35,10 @@ export interface HeroState extends HeroStats, Combatant {
   /** Match time each skill slot is ready again (#33). */
   skillReadyAt: number[];
   buffs: ActiveBuff[];
+  /** What the hero's items add (#36); recomputed when items change. */
+  items: ItemEffects;
+  /** Match time the low-HP shield passive can trigger again (#36). */
+  passiveReadyAt: number;
 }
 
 export interface Rect {
@@ -72,6 +77,8 @@ export function createHeroState(h: Hero, spawn: Point, team: Team, level = 1): H
     facing: { x: team === 'blue' ? 1 : -1, y: 0 },
     skillReadyAt: h.skills.map(() => 0),
     buffs: [],
+    items: NO_ITEMS,
+    passiveReadyAt: 0,
     shield: 0,
     shieldUntil: 0,
     ...stats,

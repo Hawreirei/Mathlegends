@@ -291,7 +291,24 @@ export class ShopPanel {
           `+${fmt(k === 'lifesteal' ? Math.round((v as number) * 100) : (v as number), this.lang)}${k === 'lifesteal' ? '%' : ''} ${this.tr(`stat.${k}` as StringKey)}`,
       )
       .join('\n');
-    add(scene.add.text(dx + 16, desc.y + desc.height + 8, stats, bodyFont(20, c.mint, '800')));
+    const statText = add(
+      scene.add.text(dx + 16, desc.y + desc.height + 8, stats, bodyFont(20, c.mint, '800')),
+    );
+    // The passive (#36), in gold, shrunk to fit above the button.
+    if (item.passive) {
+      const pt = add(
+        scene.add
+          .text(
+            dx + 16,
+            statText.y + statText.height + 6,
+            item.passive.description[this.lang],
+            bodyFont(18, c.gold, '700'),
+          )
+          .setWordWrapWidth(detailW - 32, true),
+      );
+      const room = dy + detailH - 76 - pt.y;
+      for (let size = 18; size > 13 && pt.height > room; size--) pt.setFontSize(size);
+    }
     const btnY = dy + detailH - 40;
     if (this.sel?.from === 'slot') {
       const slot = this.sel.slot;

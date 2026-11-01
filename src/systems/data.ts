@@ -255,6 +255,28 @@ const itemStats = z
   .partial()
   .strict();
 
+/** What an item passive does (#36). Implemented in src/systems/items.ts and match.ts. */
+const passiveEffect = z.discriminatedUnion('kind', [
+  /** Extra damage on every basic attack (through armour). */
+  z.object({ kind: z.literal('onHitDamage'), amount: positive }).strict(),
+  /** Skill cooldowns shorter by this fraction (all sources together at most 40%). */
+  z.object({ kind: z.literal('cooldownReduction'), amount: z.number().gt(0).max(0.4) }).strict(),
+  /** Skill damage x (1 + amount). */
+  z.object({ kind: z.literal('skillPower'), amount: z.number().gt(0).max(1) }).strict(),
+  /** When HP falls below hpBelow x max HP: a shield of maxHpRatio x max HP for duration s; then wait cooldown s. */
+  z
+    .object({
+      kind: z.literal('lowHpShield'),
+      hpBelow: z.number().gt(0).lt(1),
+      maxHpRatio: z.number().gt(0).max(1),
+      duration: positive,
+      cooldown: positive,
+    })
+    .strict(),
+]);
+
+export type PassiveEffect = z.infer<typeof passiveEffect>;
+
 export const itemSchema = z
   .object({
     id,
@@ -263,8 +285,11 @@ export const itemSchema = z
     category: z.enum(ITEM_CATEGORIES),
     cost: z.number().int().positive(),
     stats: itemStats,
-    /** Unique passives with the same id do not stack (#36). */
-    passive: z.object({ id, unique: z.boolean(), description: localized }).strict().optional(),
+    /** A passive (#36). Unique passives with the same id count once, however many you own. */
+    passive: z
+      .object({ id, unique: z.boolean(), description: localized, effect: passiveEffect })
+      .strict()
+      .optional(),
     icon: id.optional(),
   })
   .strict()

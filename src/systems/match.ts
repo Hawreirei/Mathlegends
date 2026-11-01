@@ -17,6 +17,7 @@ import {
 } from './combat';
 import type { BotConfig, Hero, ItemsFile, MinionsFile, SkillsFile, StructuresFile } from './data';
 import { buyItem, emptyInventory, sellItem, type Inventory, type ShopResult } from './inventory';
+import { itemEffects, withItems } from './items';
 import { damage, type EconomyConfig, type MinionType } from './economy';
 import { createHeroState, moveHero, walkableArea, type HeroState, type Rect } from './hero';
 import type { LaneMap, Point, Team } from './map';
@@ -245,6 +246,26 @@ function grantKill(w: Work, victim: Unit, killerId: string, cfg: MatchConfig): v
 function heroHits(w: Work, who: 'player' | 'bot', target: Unit, cfg: MatchConfig): void {
   const attacker = who === 'player' ? w.player : w.bot;
   const r = resolveAttack(attacker, target, w.now, cfg.econ);
+  // Item passives (#36): extra on-hit damage, then lifesteal on everything dealt.
+  let dealt = r.damage;
+  if (attacker.items.onHitDamage > 0 && !r.killed) {
+    const extra = damage(
+      attacker.items.onHitDamage,
+      target.armor,
+      cfg.econ.combat.armorConstant,
+      cfg.econ.combat.minDamage,
+    );
+    const hit = takeDamage(r.target, extra, w.now, cfg.econ);
+    r.target = hit.target;
+    r.killed = hit.killed;
+    r.damage += extra;
+    dealt += extra;
+  }
+  if (attacker.items.lifesteal > 0 && r.attacker.alive)
+    r.attacker = {
+      ...r.attacker,
+      hp: Math.min(r.attacker.maxHp, r.attacker.hp + dealt * attacker.items.lifesteal),
+    };
   if (who === 'player') w.player = r.attacker;
   else w.bot = r.attacker;
   if (target.id === w.player.id) w.player = r.target as HeroState;
@@ -270,6 +291,18 @@ function heroHits(w: Work, who: 'player' | 'bot', target: Unit, cfg: MatchConfig
     team: attacker.team,
   });
   if (r.killed) grantKill(w, target, attacker.id, cfg);
+}
+
+/** Guardian Cloak's passive (#36): below hpBelow x max HP, a shield; then a cooldown. */
+function lowHpShield(h: HeroState, now: number): HeroState {
+  const p = h.items.lowHpShield;
+  if (!p || !h.alive || now < h.passiveReadyAt || h.hp >= p.hpBelow * h.maxHp) return h;
+  return {
+    ...h,
+    shield: Math.max(h.shield ?? 0, p.maxHpRatio * h.maxHp),
+    shieldUntil: now + p.duration,
+    passiveReadyAt: now + p.cooldown,
+  };
 }
 
 const heroOf = (w: Work, who: 'player' | 'bot') => (who === 'player' ? w.player : w.bot);
@@ -322,7 +355,9 @@ function castSkill(w: Work, who: 'player' | 'bot', slot: number, cfg: MatchConfi
   const from = { x: caster.x, y: caster.y };
   let aim = target ? direction(caster, target, caster.facing) : caster.facing;
   const readyAt = [...caster.skillReadyAt];
-  readyAt[slot] = w.now + skill.cooldown;
+  // Item passives (#36): shorter cooldowns, stronger skill damage.
+  readyAt[slot] = w.now + skill.cooldown * (1 - caster.items.cooldownReduction);
+  const power = 1 + caster.items.skillPower;
   caster = { ...caster, mana: caster.mana - skill.mana, skillReadyAt: readyAt, facing: aim };
   setHero(w, who, caster);
 
@@ -347,7 +382,7 @@ function castSkill(w: Work, who: 'player' | 'bot', slot: number, cfg: MatchConfi
     } else if (e.kind === 'aoe') {
       const c = e.centre === 'self' ? { x: caster.x, y: caster.y } : aimPoint;
       blasts.push({ ...c, radius: e.radius });
-      const raw = scaled(e.damage, caster);
+      const raw = scaled(e.damage, caster) * power;
       const victims = [heroOf(w, who === 'player' ? 'bot' : 'player'), ...w.minions].filter(
         (u) => u.alive && u.team !== caster.team && Math.hypot(u.x - c.x, u.y - c.y) <= e.radius,
       );
@@ -374,7 +409,7 @@ function castSkill(w: Work, who: 'player' | 'bot', slot: number, cfg: MatchConfi
           speed: e.speed,
           left: Math.max(skill.range, 1),
           radius: e.radius,
-          damage: scaled(e.damage, caster),
+          damage: scaled(e.damage, caster) * power,
           pierce: e.pierce,
           hit: [],
         },
@@ -571,6 +606,10 @@ export function stepMatch(
   w.player = heal(w.player);
   w.bot = heal(w.bot);
 
+  // Item passive (#36): an emergency shield when HP falls low.
+  w.player = lowHpShield(w.player, now);
+  w.bot = lowHpShield(w.bot, now);
+
   // 6. Winner.
   const win = winner(w.structures);
   if (win) {
@@ -623,8 +662,9 @@ export function playerBuy(
 ): { state: MatchState; result: ShopResult } {
   const r = buyItem(state.playerProgress, state.playerItems, cfg.items, itemId);
   if (!r.ok) return { state, result: r };
+  const player = withItems(state.player, cfg.playerHero, itemEffects(r.inventory, cfg.items));
   return {
-    state: { ...state, playerProgress: r.progress, playerItems: r.inventory },
+    state: { ...state, player, playerProgress: r.progress, playerItems: r.inventory },
     result: r,
   };
 }
@@ -637,8 +677,9 @@ export function playerSell(
 ): { state: MatchState; result: ShopResult } {
   const r = sellItem(state.playerProgress, state.playerItems, cfg.items, slot, cfg.econ);
   if (!r.ok) return { state, result: r };
+  const player = withItems(state.player, cfg.playerHero, itemEffects(r.inventory, cfg.items));
   return {
-    state: { ...state, playerProgress: r.progress, playerItems: r.inventory },
+    state: { ...state, player, playerProgress: r.progress, playerItems: r.inventory },
     result: r,
   };
 }

@@ -4,7 +4,8 @@
  */
 import type { Hero } from './data';
 import { levelForExp, type EconomyConfig, type MinionType } from './economy';
-import { statsAtLevel, type HeroState } from './hero';
+import { NO_ITEMS, heroStats } from './items';
+import type { HeroState } from './hero';
 import type { Team } from './map';
 
 export type GoldSource = 'start' | 'passive' | 'lastHit' | 'heroKill' | 'tower';
@@ -54,9 +55,8 @@ export function addExp(
  * missing HP/mana and gains the extra max HP/mana as current HP/mana.
  */
 export function applyLevel(s: HeroState, def: Hero, level: number): HeroState {
-  const next = statsAtLevel(def, level);
-  // Active skill buffs (#33) stay on top of the new level's stats.
-  for (const b of s.buffs ?? []) next[b.stat] += b.delta;
+  // Items (#36) and active skill buffs (#33) stay on top of the new level's stats.
+  const next = heroStats(def, level, s.items ?? NO_ITEMS, s);
   const out = { ...s, ...next, level };
   if (!s.alive) return { ...out, hp: s.hp, mana: s.mana };
   return {

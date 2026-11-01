@@ -55,18 +55,18 @@ Nova hits harder, Mira is tougher. Damage output x effective health (HP x (1 + a
 
 ## items.json
 
-The 8 MVP items (#35). What they do to the hero (stats adding up, passives) is #36.
+The 8 MVP items (#35), with their effects (#36):
 
-| Item | Category | Cost | Stats |
-|---|---|---|---|
-| Training Sword / Pedang Latihan | Attack | 300 | +12 ATK |
-| Comet Spear / Tombak Komet | Attack | 950 | +26 ATK, +0.15 attack speed |
-| Formula Book / Buku Rumus | Magic | 400 | +150 mana, +2 mana regen |
-| Rainbow Wand / Tongkat Pelangi | Magic | 850 | +14 ATK, +200 mana |
-| Bamboo Vest / Rompi Bambu | Defense | 300 | +15 armour |
-| Guardian Cloak / Jubah Penjaga | Defense | 950 | +250 HP, +10 armour |
-| Wind Sandals / Sandal Angin | Movement | 400 | +30 move speed |
-| Leaf Charm / Jimat Daun | Support | 450 | +100 HP, +4 HP regen |
+| Item | Category | Cost | Stats | Passive |
+|---|---|---|---|---|
+| Training Sword / Pedang Latihan | Attack | 300 | +12 ATK | |
+| Comet Spear / Tombak Komet | Attack | 950 | +26 ATK, +0.15 attack speed | Unique: every basic attack deals 18 extra damage |
+| Formula Book / Buku Rumus | Magic | 400 | +150 mana, +2 mana regen | Unique: skill cooldowns 12% shorter |
+| Rainbow Wand / Tongkat Pelangi | Magic | 850 | +14 ATK, +200 mana | Unique: skills deal 15% more damage |
+| Bamboo Vest / Rompi Bambu | Defense | 300 | +15 armour | |
+| Guardian Cloak / Jubah Penjaga | Defense | 950 | +250 HP, +10 armour | Unique: below 30% HP, a shield of 15% max HP for 3 s (once every 30 s) |
+| Wind Sandals / Sandal Angin | Movement | 400 | +30 move speed | |
+| Leaf Charm / Jimat Daun | Support | 450 | +100 HP, +3 HP regen, 6% lifesteal | |
 
 The two starter items cost exactly the starting gold (300), so one can be bought at the first second (tested).
 
@@ -76,7 +76,7 @@ The two starter items cost exactly the starting gold (300), so one can be bought
 | `category` | `attack`, `magic`, `defense`, `movement` or `support` (shop tabs) |
 | `cost` | Whole number of gold. Selling refunds `economy.json` `shop.sellRefund` (70%). |
 | `stats` | Any of `hp`, `mana`, `atk`, `armor`, `moveSpeed`, `attackSpeed`, `hpRegen`, `manaRegen`, `lifesteal` (0 to 1) |
-| `passive` | Optional `{ "id", "unique", "description" }`. Unique passives with the same id do not stack. |
+| `passive` | Optional `{ "id", "unique", "description", "effect" }`. `effect.kind`: `onHitDamage` (`amount`), `cooldownReduction` (`amount`, at most 0.4), `skillPower` (`amount`), `lowHpShield` (`hpBelow`, `maxHpRatio`, `duration`, `cooldown`). |
 | `icon` | Optional texture key |
 
 An item needs at least one stat or a passive.
@@ -190,5 +190,16 @@ Rules in [`src/systems/inventory.ts`](../src/systems/inventory.ts) (pure, tested
 - **Tabs:** All, Attack, Magic, Defense, Move, Support. Item cards show a category icon (blade, star, shield, wing, leaf: shapes, not just colours), the name and the cost (gold when you can afford it).
 - **Buy:** pick an item, then **Buy · 300**. It costs the item's price and fills the first free slot. The button says **Not enough gold (300)** or **Slots full** instead when it cannot.
 - **Sell:** tap one of your items in the slot row, then **Sell · 210**: 70% of the price back (`economy.json` `shop.sellRefund`, rounded down), and the slot empties.
-- **6 slots** (`economy.json` `shop.slots`); the same item can be bought more than once (stacking rules: #36).
+- **6 slots** (`economy.json` `shop.slots`); the same item can be bought more than once.
+- The details pane shows the item's stats and, in gold, its passive.
+
+## Item effects (issue #36)
+
+[`src/systems/items.ts`](../src/systems/items.ts) (pure, tested in `tests/items.test.ts`):
+
+- **Stats stack.** A hero's stats are base + growth x (level - 1) + every item's stats + active skill buffs. Two Training Swords give +24 ATK. Buying applies the stats at once and selling takes them away; extra max HP or mana also fills the current amount by the same number, and selling clamps it. Items stay through level-ups.
+- **Unique passives count once** however many copies you own (two Comet Spears: +52 ATK but still 18 on-hit). A non-unique passive would add up. Cooldown reduction from all items is capped at 40%.
+- **Where each effect applies:** on-hit damage and lifesteal on basic attacks (lifesteal heals a share of all damage the attack dealt); cooldown reduction and skill power when a skill is cast; the low-HP shield is checked every step.
+- Items are not part of the skill damage budget, which is measured "with no items" (docs/ECONOMY.md).
+- The bot buys items from #43; until then only the player has them.
 - Spending and refunds change only the gold you hold, not the earned-gold totals used by the math-share cap (#28).
