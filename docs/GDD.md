@@ -48,8 +48,12 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 - **Fairness:** math-derived income stays at about 30 to 40% of total gold, so combat skill still matters.
 
 ## 7. Rank and the bot
-- 6 tiers (Year 1 to Year 6), 5 stars each. Floor at Year 1; the placement quiz never starts anyone above Year 5.
-- Demotion across a tier only after 2 straight losses at 0 stars.
+- 6 tiers (Year 1 to Year 6), 5 stars each. Floor at Year 1.
+- **Placement quiz (kept, decided 2026-11-01):** the first time a child plays, 10 adaptive questions set the starting Year (estimated level minus 1, never above Year 5). Starting everyone at Year 1 was rejected: Year 5 and 6 students would need about 25 stars (2 to 4 hours) of Year 1 sums before reaching their level.
+- **Stars:** win +1; win with 80% or more correct answers +1 bonus (2 in total); loss -1.
+- **Climbing (decided 2026-11-01):** reaching the 5th star moves you up at once to the next Year with 0 stars. A 2-star win that crosses the line carries the extra star over (4 stars + 2 = next Year with 1 star).
+- **Year 6 has no star cap (decided 2026-11-01):** stars keep counting. The badge always shows 5 filled star icons, plus a gold "×N" label with the real total from the 6th star on (for example 5 stars plus "×9" for 9 stars), and the text reads "Kelas 6 · 9 bintang" / "Year 6 · 9 stars". The real total is saved, so it can be shown on a leaderboard or teacher view later. A loss at Year 6 takes one star off the total.
+- **Dropping a Year:** only after 2 straight losses at 0 stars; never below Year 1.
 - **Tier names [DECIDE]:** none in the MVP. Rank is shown as "Year 4, 2 stars" with a badge. Named tiers (the prototype's "Scholar") can be added later in `ranks.json`.
 - There is no human opponent, so the **bot is the matchmaking**: six difficulty steps, one per Year tier (last-hit accuracy, reaction time, item timing, aggression). Year 1 must be easy to beat; Year 6 a real challenge.
 
