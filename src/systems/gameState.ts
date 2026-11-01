@@ -3,6 +3,7 @@
  * Persistence (localStorage) comes in #41; rank changes in #39.
  */
 import type { MissedQuestion, ReviewItem } from './reviewQueue';
+import { DEFAULT_SETTINGS, type Settings } from './settings';
 
 export type Lang = 'id' | 'en';
 
@@ -27,10 +28,26 @@ export interface GameState {
   lastMatch: MatchResult | null;
   /** Missed questions waiting to come back in the next matches (#29). */
   review: ReviewItem[];
+  /** Accessibility options (#31). */
+  settings: Settings;
 }
 
-export function createGameState(lang: Lang, review: ReviewItem[] = []): GameState {
-  return { lang, profile: { tier: 1, stars: 0, matchesPlayed: 0 }, lastMatch: null, review };
+export function createGameState(
+  lang: Lang,
+  review: ReviewItem[] = [],
+  settings: Settings = DEFAULT_SETTINGS,
+): GameState {
+  return {
+    lang,
+    profile: { tier: 1, stars: 0, matchesPlayed: 0 },
+    lastMatch: null,
+    review,
+    settings: { ...settings },
+  };
+}
+
+export function setSettings(s: GameState, settings: Settings): GameState {
+  return { ...s, settings: { ...settings } };
 }
 
 export function setLang(s: GameState, lang: Lang): GameState {

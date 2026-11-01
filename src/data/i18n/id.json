@@ -34,5 +34,17 @@
   "settings.exported": "File CSV sudah diunduh.",
   "settings.clear": "Hapus data",
   "settings.clearConfirm": "Ketuk lagi untuk menghapus",
-  "settings.cleared": "Data jawaban sudah dihapus."
+  "settings.cleared": "Data jawaban sudah dihapus.",
+  "settings.a11yTitle": "Kemudahan bermain",
+  "settings.textSize": "Ukuran huruf soal",
+  "settings.text1": "Biasa",
+  "settings.text2": "Besar",
+  "settings.text3": "Sangat besar",
+  "settings.textSample": "Contoh: Berapa 8 + 5?",
+  "settings.colorBlind": "Warna ramah buta warna",
+  "settings.colorBlindHint": "Benar jadi biru, salah jadi oranye.",
+  "settings.extraTime": "Waktu tambahan",
+  "settings.extraTimeHint": "Waktu menjawab setiap soal ×{x}.",
+  "settings.on": "Nyala",
+  "settings.off": "Mati"
 }

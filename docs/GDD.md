@@ -69,7 +69,7 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 
 ## 10. Languages and accessibility
 - Indonesian and English, switchable from the menu. Default from the browser language, falling back to Indonesian. All strings from `src/data/i18n/`.
-- Font size option, colour-blind-safe palette, optional extended answer timer (x1.5).
+- Font size option, colour-blind-safe palette, optional extended answer timer (x1.5). See `docs/ACCESSIBILITY.md`.
 
 ## 11. Data and privacy
 - Everything runs in the browser. Progress is saved in `localStorage` with an export/import file for changing devices.

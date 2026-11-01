@@ -4,7 +4,7 @@ import type { Rect } from '../systems/hudLayout';
 import type { MissedQuestion } from '../systems/reviewQueue';
 import { choiceText, localize, t } from '../utils/i18n';
 import { Button } from './Button';
-import { bodyFont, displayFont, hex, theme } from './theme';
+import { bodyFont, displayFont, hex, theme, ts } from './theme';
 
 const PAD = 24;
 const NAV_H = 72;
@@ -107,7 +107,7 @@ export class MissedReview {
     ];
     const texts = lines.map((l) =>
       scene.add
-        .text(r.x + PAD, 0, l.text, bodyFont(30, l.color, l.weight))
+        .text(r.x + PAD, 0, l.text, bodyFont(ts(30), l.color, l.weight))
         .setWordWrapWidth(width, true),
     );
     // Shrink everything together until the four blocks fit between the title and the footer.
@@ -116,7 +116,7 @@ export class MissedReview {
       texts.forEach((x, i) => x.setFontSize(Math.round(size * lines[i]!.scale)));
       return texts.reduce((h, x) => h + x.height, 0) + gap * (texts.length - 1);
     };
-    let size = 30;
+    let size = ts(30);
     while (size > 16 && layout(size) > bottom - top) size -= 2;
     let y = top;
     for (const x of texts) {

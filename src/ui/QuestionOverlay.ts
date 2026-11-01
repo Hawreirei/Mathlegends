@@ -3,7 +3,7 @@ import type { Lang } from '../systems/gameState';
 import type { Rect } from '../systems/hudLayout';
 import type { ActiveQuestion, Reveal } from '../systems/questionSession';
 import { choiceText, localize } from '../utils/i18n';
-import { bodyFont, displayFont, hex, theme } from './theme';
+import { bodyFont, displayFont, hex, textScale, theme, ts } from './theme';
 
 const PAD = 20;
 const GAP = 16;
@@ -92,7 +92,7 @@ export class QuestionOverlay {
     this.root.add(card);
 
     // Answers: 2 x 2 grid at the bottom.
-    const btnH = Math.max(80, Math.min(120, (r.h - 2 * PAD) * 0.22));
+    const btnH = Math.max(80, Math.min(120 * textScale(), (r.h - 2 * PAD) * 0.22));
     const btnW = (r.w - 2 * PAD - GAP) / 2;
     const gridTop = r.y + r.h - PAD - 2 * btnH - GAP;
 
@@ -104,10 +104,11 @@ export class QuestionOverlay {
       r.x + PAD,
       stemTop,
       localize(q.question.stem, lang),
-      bodyFont(40, c.ink, '800'),
+      bodyFont(ts(40), c.ink, '800'),
     );
     stem.setWordWrapWidth(stemMaxW, true);
-    for (let size = 40; size > 18 && stem.height > stemMaxH; size -= 2) stem.setFontSize(size);
+    // Text size setting (#31) sets the starting size; long questions still shrink to fit.
+    for (let size = ts(40); size > 18 && stem.height > stemMaxH; size -= 2) stem.setFontSize(size);
     this.root.add(stem);
 
     q.order.forEach((choiceIndex, slot) => {
@@ -148,11 +149,12 @@ export class QuestionOverlay {
           x + btnW / 2,
           y + btnH / 2,
           choiceText(q.question.choices[choiceIndex]!, lang),
-          displayFont(38, look === 'right' || look === 'wrongPick' ? c.white : c.ink),
+          displayFont(ts(38), look === 'right' || look === 'wrongPick' ? c.white : c.ink),
         )
         .setOrigin(0.5)
         .setAlpha(look === 'dim' ? 0.45 : 1);
-      for (let size = 38; size > 18 && label.width > btnW - 40; size -= 2) label.setFontSize(size);
+      for (let size = ts(38); size > 18 && label.width > btnW - 40; size -= 2)
+        label.setFontSize(size);
       if (reveal) {
         // Tick on the right answer, cross on a wrong pick, at the right-hand end of the button.
         const m = scene.add.graphics().lineStyle(8, hex(c.white), 1);

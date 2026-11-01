@@ -50,7 +50,17 @@ const SKILL_RADIUS = 52;
 const SKILL_DISTANCE = 180;
 const TOUCH_MARGIN = 40;
 
-export function computeHudLayout(w: number, h: number, safe: Insets, touch: boolean): HudLayout {
+/** `textScale` (#31): the question card grows with the player's text size, as space allows. */
+/** Game px kept clear above a grown question card so the hero stays visible (#31). */
+export const HERO_BAND = 300;
+
+export function computeHudLayout(
+  w: number,
+  h: number,
+  safe: Insets,
+  touch: boolean,
+  textScale = 1,
+): HudLayout {
   const portrait = h > w;
   const left = safe.left + PAD;
   const right = w - safe.right - PAD;
@@ -111,7 +121,11 @@ export function computeHudLayout(w: number, h: number, safe: Insets, touch: bool
   // Compact and anchored to the bottom, so the lane above it stays visible: the camera moves
   // the hero into that gap while a question is showing (MatchScene).
   const cardW = Math.min(900, cardRight - cardLeft);
-  const cardH = Math.min(portrait ? 560 : 380, cardBottom - cardTop);
+  // A larger text size (#31) grows the card, but only while HERO_BAND stays free above it for the
+  // hero; otherwise the card keeps its normal size and long text shrinks to fit as before.
+  const room = cardBottom - cardTop;
+  const baseH = Math.min(portrait ? 560 : 380, room);
+  const cardH = Math.max(baseH, Math.min(baseH * textScale, room - HERO_BAND));
   const questionCard = {
     x: cardLeft + (cardRight - cardLeft - cardW) / 2,
     y: cardBottom - cardH,

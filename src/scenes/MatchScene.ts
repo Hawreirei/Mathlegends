@@ -23,6 +23,7 @@ import {
   type MatchLogInfo,
 } from '../systems/answerLog';
 import { serializeReviewQueue, updateReviewQueue } from '../systems/reviewQueue';
+import { timeScale } from '../systems/settings';
 import {
   browserStorage,
   loadAnswerLogRaw,
@@ -166,7 +167,7 @@ export class MatchScene extends Phaser.Scene {
       Date.now() % 2 ** 31,
       getState(this).review,
     );
-    this.session = createSession(engine, econ);
+    this.session = createSession(engine, econ, timeScale(getState(this).settings, econ));
     // Anonymous answer log (#30): kept here, saved on the device when the match ends or is quit.
     this.logInfo = {
       matchId: newMatchId(Date.now()),
@@ -429,7 +430,7 @@ export class MatchScene extends Phaser.Scene {
           res,
           { ...this.logInfo, lang: getState(this).lang },
           this.logRows.length + 1,
-          timeLimit(this.cfg.econ, res.question),
+          timeLimit(this.cfg.econ, res.question) * this.session.timeScale,
         );
       if (row) this.logRows.push(row);
     }

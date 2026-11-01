@@ -18,6 +18,7 @@ All numbers live in [`src/data/economy.json`](../src/data/economy.json). The rul
 | Shop | 6 slots, sell for 70% back | `shop` |
 | Question timer | Infantry 5 s, Lancer 8 s, Cannon 12 s | `questionSeconds` |
 | Right answer shown after each question | 0.8 s | `questionRevealSeconds` |
+| Extra time setting (#31) | every timer x1.5 | `extraTimeMultiplier` |
 
 Changed from the first plan: passive gold went from 2 to **3** gold/s and last-hit gold dropped from 20/35/60 to **14/24/45**. With the original values the model put math income at about 50% of all gold, above the 30 to 40% target.
 

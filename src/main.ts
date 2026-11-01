@@ -13,7 +13,9 @@ import ranksJson from './data/ranks.json';
 import { loadRanks } from './systems/data';
 import { curriculumTopicTiers } from './systems/questionBank';
 import { parseReviewQueue } from './systems/reviewQueue';
-import { browserStorage, initialLang, loadReviewRaw } from './utils/storage';
+import { parseSettings } from './systems/settings';
+import { applyAccessibility } from './ui/theme';
+import { browserStorage, initialLang, loadReviewRaw, loadSettingsRaw } from './utils/storage';
 
 declare global {
   interface Window {
@@ -58,7 +60,10 @@ void loadFonts().then(() => {
           loadRanks(ranksJson),
           curriculumTopicTiers(),
         );
-        g.registry.set('state', createGameState(lang, review));
+        // Accessibility settings (#31) apply before any screen is drawn.
+        const settings = parseSettings(loadSettingsRaw(store), theme.textScales);
+        applyAccessibility(settings);
+        g.registry.set('state', createGameState(lang, review, settings));
       },
     },
   });

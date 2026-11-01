@@ -39,7 +39,7 @@ One row per question that was **shown and ended**: answered right, answered wron
 | `chosenIndex` | 0-3 | The answer picked, as its position in the question's `choices` in the bank (not the shuffled position on screen). Empty on a timeout. |
 | `answerIndex` | 0-3 | Position of the right answer in `choices`. |
 | `responseMs` | integer | Milliseconds from the question appearing to the tap. Empty on a timeout. Game time: it runs with the match, so a stalled browser tab can stretch it. |
-| `timeLimitSec` | number | Seconds the player had (Infantry 5, Lancer 8, Cannon 12; see `economy.json`). |
+| `timeLimitSec` | number | Seconds the player had (Infantry 5, Lancer 8, Cannon 12; see `economy.json`), x1.5 when the Extra time setting is on (#31). |
 | `lang` | `id`/`en` | Language the question was shown in. |
 
 To see the question text, look the `itemId` up in `src/data/questions/t*.json`. Questions the engine generated on the fly (when the bank ran out) have `itemSource` `generated` and may not be in the bank files; their ids are hashes of the English text.

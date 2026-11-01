@@ -34,5 +34,17 @@
   "settings.exported": "The CSV file has been downloaded.",
   "settings.clear": "Delete data",
   "settings.clearConfirm": "Tap again to delete",
-  "settings.cleared": "Answer data deleted."
+  "settings.cleared": "Answer data deleted.",
+  "settings.a11yTitle": "Accessibility",
+  "settings.textSize": "Question text size",
+  "settings.text1": "Normal",
+  "settings.text2": "Large",
+  "settings.text3": "Extra large",
+  "settings.textSample": "Example: What is 8 + 5?",
+  "settings.colorBlind": "Colour-blind colours",
+  "settings.colorBlindHint": "Right turns blue, wrong turns orange.",
+  "settings.extraTime": "Extra time",
+  "settings.extraTimeHint": "Every question gets ×{x} the time.",
+  "settings.on": "On",
+  "settings.off": "Off"
 }

@@ -30,6 +30,8 @@ export interface EconomyConfig {
   questionSeconds: Record<MinionType, number>;
   /** How long the card shows the right answer after an answer or timeout (#29). */
   questionRevealSeconds: number;
+  /** Question timers x this when the Extra time setting is on (#31). */
+  extraTimeMultiplier: number;
   exp: {
     minion: Record<MinionType, number>;
     heroKill: number;
@@ -73,6 +75,7 @@ export function validateEconomy(c: EconomyConfig): string[] {
   }
   pos('passiveGoldPerSecond', c.passiveGoldPerSecond);
   pos('questionRevealSeconds', c.questionRevealSeconds);
+  if (!(c.extraTimeMultiplier >= 1)) e.push('extraTimeMultiplier must be at least 1');
   pos('match.waveIntervalSeconds', c.match?.waveIntervalSeconds);
   pos('combat.armorConstant', c.combat?.armorConstant);
   if (!(c.reward?.correct > 1)) e.push(`reward.correct must be above 1 (got ${c.reward?.correct})`);

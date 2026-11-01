@@ -75,6 +75,8 @@ export interface Resolution {
 export interface Session {
   engine: QuestionEngine;
   econ: EconomyConfig;
+  /** Every timer x this: economy.json extraTimeMultiplier with the Extra time setting (#31), else 1. */
+  timeScale: number;
   active: ActiveQuestion | null;
   queued: Waiting | null;
   reveal: Reveal | null;
@@ -86,9 +88,14 @@ export interface Session {
   correct: number;
 }
 
-export const createSession = (engine: QuestionEngine, econ: EconomyConfig): Session => ({
+export const createSession = (
+  engine: QuestionEngine,
+  econ: EconomyConfig,
+  timeScale = 1,
+): Session => ({
   engine,
   econ,
+  timeScale,
   active: null,
   queued: null,
   reveal: null,
@@ -100,7 +107,7 @@ export const createSession = (engine: QuestionEngine, econ: EconomyConfig): Sess
 
 type Result = { session: Session; resolutions: Resolution[] };
 
-/** Seconds a question gets: its own timeSec, else the timer of the minion matching its type. */
+/** Base seconds a question gets: its own timeSec, else the timer of the minion matching its type (before Extra time). */
 export const timeLimit = (econ: EconomyConfig, q: Question): number =>
   q.timeSec ?? econ.questionSeconds[minionForType(q.type)];
 
@@ -132,7 +139,7 @@ function show(
   }
   // The timer follows the question's own type: a review question can come on another minion.
   const q = pick.question;
-  const seconds = timeLimit(s.econ, q);
+  const seconds = timeLimit(s.econ, q) * s.timeScale;
   return {
     ...s,
     engine: pick.engine,
@@ -168,7 +175,7 @@ function advance(s: Session, a: ActiveQuestion, chosen: number | null, now: numb
   };
   const w = s.queued;
   if (!w) return { session: cleared, resolutions: [] };
-  if (now - w.hitAt > s.econ.questionSeconds[w.kind])
+  if (now - w.hitAt > s.econ.questionSeconds[w.kind] * s.timeScale)
     return { session: cleared, resolutions: [skipped(w)] };
   return { session: show(cleared, w.kind, w.reward, w.tier, until), resolutions: [] };
 }

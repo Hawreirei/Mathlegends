@@ -10,7 +10,7 @@ import { Minimap } from '../ui/Minimap';
 import { QuestionOverlay } from '../ui/QuestionOverlay';
 import { readSafeAreaCss } from '../ui/safeArea';
 import { TouchControls } from '../ui/TouchControls';
-import { bodyFont, displayFont, hex, theme } from '../ui/theme';
+import { bodyFont, displayFont, hex, textScale, theme, ts } from '../ui/theme';
 import { QUESTION_RESOLVED_EVENT, type MatchScene } from './MatchScene';
 import type { Resolution } from '../systems/questionSession';
 import { fmt } from '../systems/generators/core';
@@ -158,7 +158,7 @@ export class MatchHudScene extends Phaser.Scene {
     const cssW = this.game.canvas.getBoundingClientRect().width || w;
     const safe = safeAreaInGame(readSafeAreaCss(), w / cssW);
     const touch = this.sys.game.device.input.touch;
-    const l = computeHudLayout(w, h, safe, touch);
+    const l = computeHudLayout(w, h, safe, touch, textScale());
     this.layoutInfo = l;
     const c = theme.colors;
 
@@ -194,7 +194,7 @@ export class MatchHudScene extends Phaser.Scene {
       this.match.answerSlot(slot),
     );
     this.feedback = this.add
-      .text(0, 0, '', bodyFont(34, c.white, '800'))
+      .text(0, 0, '', bodyFont(ts(34), c.white, '800'))
       .setOrigin(0.5)
       .setPadding(24, 12, 24, 12)
       .setDepth(200)

@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import mapJson from '../src/data/map.json';
+import theme from '../src/data/theme.json';
 import {
   computeHudLayout,
+  HERO_BAND,
   worldToMinimap,
   type HudLayout,
   type Rect,
@@ -78,23 +80,28 @@ describe('HUD layout (#25)', () => {
           bottom: safeCss.bottom * k,
           left: safeCss.left * k,
         };
-        const l = computeHudLayout(w, h, safe, touch);
-        const all = shapes(l);
-        for (const [n, sh] of all) expect(inside(box(sh), w, h), `${n} off screen`).toBe(true);
-        for (let i = 0; i < all.length; i++)
-          for (let j = i + 1; j < all.length; j++)
-            expect(overlap(all[i]![1], all[j]![1]), `${all[i]![0]} overlaps ${all[j]![0]}`).toBe(
-              false,
+        // Every text size setting (#31): the question card grows but must still fit.
+        for (const scale of theme.textScales) {
+          const l = computeHudLayout(w, h, safe, touch, scale);
+          const all = shapes(l);
+          for (const [n, sh] of all) expect(inside(box(sh), w, h), `${n} off screen`).toBe(true);
+          for (let i = 0; i < all.length; i++)
+            for (let j = i + 1; j < all.length; j++)
+              expect(overlap(all[i]![1], all[j]![1]), `${all[i]![0]} overlaps ${all[j]![0]}`).toBe(
+                false,
+              );
+          // Notches: nothing interactive or informative in the unsafe strips.
+          for (const [n, sh] of all) {
+            const r = box(sh);
+            expect(r.y, `${n} under the top notch`).toBeGreaterThanOrEqual(safe.top - 1e-6);
+            expect(r.x, `${n} under the left notch`).toBeGreaterThanOrEqual(safe.left - 1e-6);
+            expect(r.x + r.w, `${n} under the right notch`).toBeLessThanOrEqual(
+              w - safe.right + 1e-6,
             );
-        // Notches: nothing interactive or informative in the unsafe strips.
-        for (const [n, sh] of all) {
-          const r = box(sh);
-          expect(r.y, `${n} under the top notch`).toBeGreaterThanOrEqual(safe.top - 1e-6);
-          expect(r.x, `${n} under the left notch`).toBeGreaterThanOrEqual(safe.left - 1e-6);
-          expect(r.x + r.w, `${n} under the right notch`).toBeLessThanOrEqual(
-            w - safe.right + 1e-6,
-          );
-          expect(r.y + r.h, `${n} under the home bar`).toBeLessThanOrEqual(h - safe.bottom + 1e-6);
+            expect(r.y + r.h, `${n} under the home bar`).toBeLessThanOrEqual(
+              h - safe.bottom + 1e-6,
+            );
+          }
         }
       });
     }
@@ -135,5 +142,23 @@ describe('question card (#27)', () => {
         expect(c.h * cssPerGame, `${sw}x${sh} height`).toBeGreaterThanOrEqual(200);
       }
     }
+  });
+
+  it('grows with the text size setting (#31) only while the hero keeps room above it', () => {
+    for (const [, sw, sh] of SCREENS) {
+      const { width: w, height: h } = logicalSize(sw, sh);
+      for (const touch of [true, false]) {
+        const normal = computeHudLayout(w, h, noSafe, touch, 1);
+        const big = computeHudLayout(w, h, noSafe, touch, 1.4);
+        expect(big.questionCard.h).toBeGreaterThanOrEqual(normal.questionCard.h);
+        // Free band between the hero panel and the card: never smaller than before, or >= HERO_BAND.
+        const band = (l: typeof big) => l.questionCard.y - (l.heroPanel.y + l.heroPanel.h);
+        expect(band(big)).toBeGreaterThanOrEqual(Math.min(band(normal), HERO_BAND));
+      }
+    }
+    const { width: w, height: h } = logicalSize(390, 844);
+    expect(computeHudLayout(w, h, noSafe, true, 1.4).questionCard.h).toBeGreaterThan(
+      computeHudLayout(w, h, noSafe, true, 1).questionCard.h,
+    );
   });
 });
