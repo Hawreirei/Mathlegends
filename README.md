@@ -26,9 +26,12 @@ The site lives at `https://hawreirei.github.io/Mathlegends/`. The Vite `base` in
 Play link: https://hawreirei.github.io/Mathlegends/ (live after the first merge to `main` and the Pages setting above)
 
 ## Scenes and screen sizes (#15)
-Boot (loads art) > Menu > Match > Result, sharing a typed `GameState` (`src/systems/gameState.ts`) through the Phaser registry. The canvas is 1280x720 in landscape and 720x1280 in portrait, with the long side stretched to the screen's shape (`src/systems/layout.ts`), and switches when the device rotates. Scenes lay themselves out from the current size and rebuild on resize. All on-screen text comes from `src/data/i18n/`.
+Boot (loads art) > Menu > Match > Result, sharing a typed `GameState` (`src/systems/gameState.ts`) through the Phaser registry. The canvas is 1280x720 in landscape and 720x1280 in portrait, with the long side stretched to the screen's shape (`src/systems/layout.ts`), and switches when the device rotates. Scenes lay themselves out from the current size and rebuild on resize. All on-screen text comes from `src/data/i18n/` (`id.json`, `en.json`); `tests/i18n.test.ts` fails if a scene passes inline text to a text object or button, or if the two files' keys or `{placeholders}` differ.
 
 `window.mathlegends.game` exposes the Phaser game for automated browser tests.
+
+## Language (#23)
+Indonesian or English, switched with the **ID | EN** toggle on the menu. The change redraws every screen at once and is saved on the device (`localStorage`, key `mathlegends.lang`; it moves into the versioned profile in #41). First visit: the browser language if it is English, otherwise Indonesian. Questions show their stem, explanation and word choices in the chosen language (`localize` and `choiceText` in `src/utils/i18n.ts`).
 
 ## Controls (#17, #18)
 - **Keyboard:** WASD or arrow keys to move, Space to attack (hold to keep attacking).

@@ -8,7 +8,7 @@ import { ResultScene } from './scenes/ResultScene';
 import { createGameState } from './systems/gameState';
 import { logicalSize } from './systems/layout';
 import { loadFonts } from './ui/fonts';
-import { detectLang } from './utils/i18n';
+import { browserStorage, initialLang } from './utils/storage';
 
 declare global {
   interface Window {
@@ -42,7 +42,12 @@ void loadFonts().then(() => {
     // Joystick thumb + a button thumb at the same time (#18).
     input: { activePointers: 3 },
     callbacks: {
-      preBoot: (g) => g.registry.set('state', createGameState(detectLang(navigator.language))),
+      preBoot: (g) => {
+        // Saved choice, else browser language, else Indonesian (#23).
+        const lang = initialLang(browserStorage(), navigator.language);
+        document.documentElement.lang = lang;
+        g.registry.set('state', createGameState(lang));
+      },
     },
   });
 

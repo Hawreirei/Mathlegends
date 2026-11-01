@@ -1,8 +1,11 @@
 import Phaser from 'phaser';
 import ranks from '../data/ranks.json';
 import { Button } from '../ui/Button';
+import { safeAreaInGame } from '../systems/touch';
+import { LangToggle } from '../ui/LangToggle';
+import { readSafeAreaCss } from '../ui/safeArea';
 import { bodyFont, displayFont, hex, theme } from '../ui/theme';
-import { getState, responsive, tr } from './shared';
+import { changeLang, getState, responsive, tr } from './shared';
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -24,6 +27,12 @@ export class MenuScene extends Phaser.Scene {
     this.add.circle(w * 0.85, h * 0.2, Math.min(w, h) * 0.35, hex(c.violet), 0.18);
     this.add.circle(w * 0.1, h * 0.95, Math.min(w, h) * 0.3, hex(theme.teams.blue.main), 0.12);
 
+    // Language switch, top-right (#23).
+    const cssW = this.game.canvas.getBoundingClientRect().width || w;
+    const safe = safeAreaInGame(readSafeAreaCss(), w / cssW);
+    new LangToggle(this, w - safe.right - 120, safe.top + 64, s.lang, (lang) =>
+      changeLang(this, lang),
+    );
     // Portrait: one centred column. Landscape: hero on the left, title and buttons on the right.
     const heroX = portrait ? w / 2 : w * 0.3;
     const heroY = portrait ? h * 0.25 : h * 0.5;

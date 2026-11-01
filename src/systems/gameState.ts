@@ -27,6 +27,10 @@ export function createGameState(lang: Lang): GameState {
   return { lang, profile: { tier: 1, stars: 0, matchesPlayed: 0 }, lastMatch: null };
 }
 
+export function setLang(s: GameState, lang: Lang): GameState {
+  return { ...s, lang };
+}
+
 export function recordMatch(s: GameState, result: MatchResult): GameState {
   return {
     ...s,
