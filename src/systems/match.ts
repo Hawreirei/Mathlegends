@@ -30,6 +30,7 @@ import {
   winner,
   type StructureState,
 } from './structures';
+import { resolveLastHitGold } from './rewards';
 
 export interface MatchConfig {
   econ: EconomyConfig;
@@ -358,15 +359,18 @@ export function stepMatch(
 
 /**
  * Pays a held last-hit reward x the answer multiplier (#27, #28): gold counted as 'lastHit'
- * (math income), EXP with level-ups. Returns the new state and the reward/level-up events.
+ * (math income) after the fairness cap (src/systems/rewards.ts), EXP with level-ups.
+ * Returns the new state, the reward/level-up events and the gold multiplier actually paid.
  */
 export function applyLastHitReward(
   state: MatchState,
   base: { gold: number; exp: number; at: Point },
   multiplier: number,
   cfg: MatchConfig,
-): { state: MatchState; events: MatchEvent[] } {
-  const gold = base.gold * multiplier;
+): { state: MatchState; events: MatchEvent[]; goldMultiplier: number; capped: boolean } {
+  // Gold goes through the fairness cap (#28); EXP keeps the full multiplier.
+  const g = resolveLastHitGold(base.gold, multiplier, state.playerProgress, cfg.econ);
+  const gold = g.gold;
   const exp = base.exp * multiplier;
   const events: MatchEvent[] = [];
   let p = addGold(state.playerProgress, gold, 'lastHit');
@@ -378,5 +382,10 @@ export function applyLastHitReward(
     player = applyLevel(player, cfg.playerHero, p.level);
     events.push({ type: 'levelUp', heroId: player.id, level: p.level });
   }
-  return { state: { ...state, player, playerProgress: p }, events };
+  return {
+    state: { ...state, player, playerProgress: p },
+    events,
+    goldMultiplier: base.gold > 0 ? gold / base.gold : multiplier,
+    capped: g.capped,
+  };
 }

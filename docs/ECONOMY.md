@@ -23,7 +23,7 @@ Changed from the first plan: passive gold went from 2 to **3** gold/s and last-h
 ## Fairness target and cap
 
 **Math-derived income** = all gold paid out through answered last-hit questions.
-**Target:** 30 to 40% of total match gold for a typical student. **Hard cap:** 40% (`fairness.mathShareCap`). When a player's math gold would push their share above the cap, the extra is not paid (the reward resolver in #28 enforces this live).
+**Target:** 30 to 40% of total match gold for a typical student. **Hard cap:** 40% (`fairness.mathShareCap`). When a player's math gold would push their share above the cap, the extra is not paid (the reward resolver enforces this live; see [Reward resolver](#reward-resolver-issue-28)).
 
 ## Worked example: one 10 minute match
 
@@ -65,9 +65,33 @@ Implemented in [`src/systems/progression.ts`](../src/systems/progression.ts) (pu
 | Event | Who gets what |
 |---|---|
 | Every second | Both heroes get `passiveGoldPerSecond` (3) gold, alive or dead |
-| A hero lands the killing blow on an enemy minion (last hit) | That hero: `lastHitGold[type]` gold and `exp.minion[type]` EXP, both x the answer multiplier (1.0 until the question resolver, #28) |
+| A hero lands the killing blow on an enemy minion (last hit) | That hero: `lastHitGold[type]` gold and `exp.minion[type]` EXP, both x the answer multiplier (gold capped by the reward resolver below) |
 | An enemy minion dies to anything else | Every enemy hero within `exp.shareRangePx` (600 px): `exp.minion[type]` EXP, no gold |
 | A hero lands the killing blow on the enemy hero | That hero: `otherGold.heroKill` (150) gold and `exp.heroKill` (150) EXP |
 | A tower falls | Every hero on the other team: `otherGold.tower` (120) gold |
 
 Level-ups use the EXP curve above. A level-up recomputes the hero's stats as base + growth x (level - 1) from `heroes.json` and adds the extra max HP and mana to current HP and mana. Gold is tracked by source (`start`, `passive`, `lastHit`, `heroKill`, `tower`) so the math share of income can be measured in real matches and by the simulator (#37).
+
+## Reward resolver (issue #28)
+
+[`src/systems/rewards.ts`](../src/systems/rewards.ts) (pure, tested) decides what a held last-hit reward pays once its question ends. `applyLastHitReward` in `match.ts` calls it, and the HUD toast shows the multiplier that was really paid.
+
+- **Math share** = `lastHit` gold / (`passive` + `lastHit` + `heroKill` + `tower`) gold. Starting gold is not counted.
+- **Correct answer:** wants `lastHitGold x (reward.correct + streak bonus)`. If paying that would push the share above `fairness.mathShareCap` (40%), only the bonus above x1 is trimmed, down to exactly 40%.
+- **x1 guarantee:** a correct answer never pays less than a skipped question (x1). So the share can go slightly above 40% when gold is far too generous; this is deliberate, a child should never feel punished for a right answer.
+- **Wrong or timeout:** x0.5, never touched by the cap.
+- **EXP is not capped.** It always gets the full multiplier.
+
+### Headless simulation
+
+[`src/systems/simulate.ts`](../src/systems/simulate.ts) plays a whole match with no Phaser: the player hero is driven by the bot brain, and each of its last hits is answered correctly with a fixed probability (seeded). `tests/simulate.test.ts` runs it for 10 minutes.
+
+| Accuracy | Highest math share after minute 2 | Cap trimmed a reward? |
+|---|---|---|
+| 30% | 22.4% | no |
+| 70% | 25.6% (25.5% at the end) | no |
+| 100% | 39.5% | no |
+
+With the current numbers the cap never triggers in real play: it is a safety net. The test also triples `lastHitGold` to check that the cap does trim and keeps the share below an uncapped run.
+
+**Finding for the balance pass (#37, #50):** a 70% student ends at about 25%, below the 30 to 40% target. The simulated player lands only 24 to 31 last hits in 10 minutes, against about 53 in the worked example above. Numbers were not changed here; the simulator in #37 and the playtest should decide whether to raise `lastHitGold` or the correct-answer reward.

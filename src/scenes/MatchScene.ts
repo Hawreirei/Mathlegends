@@ -392,7 +392,8 @@ export class MatchScene extends Phaser.Scene {
       const paid = applyLastHitReward(this.state, res.reward, res.multiplier, this.cfg);
       this.state = paid.state;
       for (const e of paid.events) this.show(e);
-      this.game.events.emit(QUESTION_RESOLVED_EVENT, res);
+      // The HUD shows the multiplier actually paid (the fairness cap may trim the bonus, #28).
+      this.game.events.emit(QUESTION_RESOLVED_EVENT, { ...res, multiplier: paid.goldMultiplier });
     }
   }
 

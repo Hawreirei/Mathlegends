@@ -184,10 +184,24 @@ describe('a full headless match', () => {
     if (hit?.type !== 'lastHit') throw new Error('no last hit');
     expect(hit.gold).toBe(econ.lastHitGold.infantry);
     expect(hit.exp).toBe(econ.exp.minion.infantry);
-    // Paid on answer.
+    // Paid on answer. On a fresh match there is almost no other income yet, so the fairness cap
+    // (#28) trims the bonus: gold pays exactly x1, EXP keeps the full x1.5.
     const paid = applyLastHitReward(r.state, hit, 1.5, cfg);
-    expect(paid.state.playerProgress.goldBySource.lastHit).toBe(econ.lastHitGold.infantry * 1.5);
+    expect(paid.state.playerProgress.goldBySource.lastHit).toBe(econ.lastHitGold.infantry);
+    expect(paid.capped).toBe(true);
+    expect(paid.goldMultiplier).toBe(1);
     expect(paid.state.playerProgress.exp).toBe(econ.exp.minion.infantry * 1.5);
+    // With other income already earned, the full x1.5 is paid.
+    const later = {
+      ...r.state,
+      playerProgress: {
+        ...r.state.playerProgress,
+        goldBySource: { ...r.state.playerProgress.goldBySource, passive: 1000 },
+      },
+    };
+    const full = applyLastHitReward(later, hit, 1.5, cfg);
+    expect(full.goldMultiplier).toBe(1.5);
+    expect(full.capped).toBe(false);
     expect(paid.events.some((e) => e.type === 'reward')).toBe(true);
   });
 

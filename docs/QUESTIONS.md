@@ -180,7 +180,7 @@ Tests (`tests/questionEngine.test.ts`): no repeat within 30 in 2000 mixed draws 
 ## In the match (issue #27)
 
 - **Trigger:** only the player's own last hit on a minion (`lastHit` from `stepMatch`). Skill buttons, tapping the hero and the bot's last hits never ask a question.
-- **Held reward:** the last hit's gold and EXP are held and paid when the question ends, x the multiplier (`applyLastHitReward`): correct `reward.correct` with the streak bonus, wrong `reward.wrong`, timeout `reward.timeout`.
+- **Held reward:** the last hit's gold and EXP are held and paid when the question ends, x the multiplier (`applyLastHitReward`): correct `reward.correct` with the streak bonus (gold limited by the math-share cap, never below x1; see `docs/ECONOMY.md`), wrong `reward.wrong`, timeout `reward.timeout`.
 - **One at a time:** at most one question shows and one waits. A further last hit, or a waiting question older than its own timer, is *skipped*: it pays the normal reward (x1), with no question and no penalty, and does not touch the streak (`src/systems/questionSession.ts`, tested).
 - **Timer:** `economy.json` `questionSeconds`: Infantry 5 s, Lancer 8 s, Cannon 12 s.
 - **Never pauses:** the match keeps running. The card is compact and sits low between the touch controls, and the camera eases the hero into the clear band above it while a question is showing.
