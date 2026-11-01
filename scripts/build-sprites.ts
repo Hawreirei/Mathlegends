@@ -127,24 +127,25 @@ function tile(kind: 'grass' | 'lane' | 'water', t: Theme): string {
   return svg(64, 64, body.join('\n'));
 }
 
-/** Rank badge: a shield with the Year number, darker and with more stars as tiers rise. */
+/**
+ * Rank badge (#42): a shield with the Year number and that many sparkles in an arc, filled from
+ * theme.json badges.fills (lighter to darker as Years rise). Number, sparkle count and lightness
+ * all differ, so the Years are told apart without relying on colour.
+ */
 function badge(t: Theme, tier: number): string {
-  const fill = [
-    t.colors.mint,
-    t.colors.mint,
-    t.teams.blue.main,
-    t.teams.blue.main,
-    t.colors.violet,
-    t.colors.violet,
-  ][tier - 1]!;
-  const stars = tier % 2 === 0 ? 2 : 1;
+  const fill = t.badges.fills[tier - 1]!;
+  // Arc over the number: wider for more sparkles, smaller sparkles when there are many.
+  const spread = Math.min(2.7, 0.6 * (tier - 1));
+  const size = tier > 4 ? 5 : 6;
+  const sparkles = Array.from({ length: tier }, (_, i) => {
+    const a = -Math.PI / 2 + (tier === 1 ? 0 : (i / (tier - 1) - 0.5) * spread);
+    return sparkle(48 + Math.cos(a) * 30, 58 + Math.sin(a) * 30, size, t.colors.gold);
+  });
   const body = [
     `<path d="M48 4 L88 18 V56 Q88 92 48 108 Q8 92 8 56 V18 Z" fill="${t.colors.gold}"/>`,
     `<path d="M48 12 L80 23 V56 Q80 85 48 99 Q16 85 16 56 V23 Z" fill="${fill}"/>`,
-    `<text x="48" y="70" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="44" fill="${t.colors.white}">${tier}</text>`,
-    ...Array.from({ length: stars }, (_, i) =>
-      sparkle(stars === 1 ? 48 : 38 + i * 20, 30, 7, t.colors.gold),
-    ),
+    ...sparkles,
+    `<text x="48" y="84" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="40" fill="${t.colors.white}" stroke="${t.colors.ink}" stroke-width="5" paint-order="stroke">${tier}</text>`,
   ].join('\n');
   return svg(96, 112, body);
 }

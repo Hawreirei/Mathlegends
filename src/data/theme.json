@@ -30,6 +30,10 @@
       "dark": "#c7336b"
     }
   },
+  "badges": {
+    "_note": "Rank badge fill per Year (#42), lightest to darkest so the Years differ in lightness, not only in hue. Each badge also shows its Year number and that many sparkles.",
+    "fills": ["#7fdcc6", "#45b9c9", "#4b8df0", "#4a63d8", "#6a4fc4", "#3e2a8c"]
+  },
   "map": {
     "grass": "#a9d18e",
     "grassDark": "#8cbf72",

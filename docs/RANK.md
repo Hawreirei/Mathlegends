@@ -40,7 +40,7 @@ Code: [`src/systems/placement.ts`](../src/systems/placement.ts) (pure), [`src/sc
 
 ## Stars, moving up and down (issue #39)
 
-[`src/systems/rank.ts`](../src/systems/rank.ts) (pure, tested in `tests/rank.test.ts`) updates the Year and stars after every match. The Result screen shows the change ("Stars +2 (accuracy bonus)", "Up to Year 3!", "Now: Year 3 · 1 stars"); badges and a progress bar come in #42.
+[`src/systems/rank.ts`](../src/systems/rank.ts) (pure, tested in `tests/rank.test.ts`) updates the Year and stars after every match. The Result screen shows the change ("Stars +2 (accuracy bonus)", "Up to Year 3!") above the rank badge (#42).
 
 | Match result | Stars |
 |---|---|
@@ -49,7 +49,7 @@ Code: [`src/systems/placement.ts`](../src/systems/placement.ts) (pure), [`src/sc
 | Loss | -1 (never below 0) |
 
 - **Moving up:** the 5th star moves you to the next Year at once with 0 stars. Extra stars carry over: 4 stars + a 2-star win = next Year with 1 star. Climbing Year 1 to Year 6 one star at a time takes 25 wins.
-- **Year 6 has no star cap:** stars keep counting (6, 7, ... 23 ...) and the real total is saved. A loss takes one star off. (Showing 5 star icons plus "×N" is #42.)
+- **Year 6 has no star cap:** stars keep counting (6, 7, ... 23 ...) and the real total is saved. A loss takes one star off. (Shown as 5 star icons plus "×N", see below.)
 - **Moving down:** a loss at 0 stars takes nothing but is counted. After **2 losses in a row at 0 stars** you drop one Year and land on **3 stars**, so two wins (or one 2-star win) bring you back. A win resets the count. The loss that takes you down to 0 stars does not count.
 - **Floor:** Year 1. Losses at Year 1 with 0 stars change nothing.
 
@@ -70,3 +70,15 @@ Every last-hit question uses the player's current Year from the profile, so the 
 | Stretch | 10% | Year 5 | Harder Year 6 items: the next harder type (word problem instead of a quick fact, two-step instead of a word problem), with that type's timer |
 
 Missed questions from earlier matches (#29) come on top. `tests/rankMix.test.ts` checks the Year 4 and Year 6 cases over 3000 draws, the 70/20/10 shares, and the timer of a harder Year 6 question.
+
+## Badges and summary (issue #42)
+
+[`src/ui/RankBadge.ts`](../src/ui/RankBadge.ts) draws the rank everywhere it appears; what it shows comes from [`src/systems/rankDisplay.ts`](../src/systems/rankDisplay.ts) (pure, tested in `tests/rankDisplay.test.ts`).
+
+- **Badge:** a shield with the Year number and as many sparkles as the Year (1 to 6). The fill gets darker Year by Year (`theme.json` `badges.fills`), so Years differ in number, sparkle count and lightness: readable without colour vision.
+- **Stars:** always 5 star icons; held stars are solid gold, the rest only an outline (shape, not just colour).
+- **Year 6 above 5 stars:** 5 filled icons plus a gold **×N** with the real total; the text reads "Kelas 6 · 9 bintang" / "Year 6 · 9 stars" (Settings, transfer page).
+- **Progress bar** (Result screen): stars / 5 towards the next Year with "2 more stars to Year 4" / "2 bintang lagi ke Kelas 4"; in Year 6 "Top Year! Keep collecting stars."
+- **Menu:** a compact badge (badge, Year, stars, ×N) at the bottom.
+- **Result summary:** Victory/Defeat, time, accuracy with percentage ("Correct answers: 8 of 10 (80%)"), the star change and any Year change, then the large badge. New stars pop in one by one, a lost star fades out, ×N pulses when Year 6 stars grow, and the badge pulses on a promotion or demotion.
+- **Plurals:** "1 star" / "2 stars" in English; Indonesian has one form ("1 bintang", "2 bintang").

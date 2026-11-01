@@ -4,6 +4,7 @@ import { csvFileName, logSummary, parseLog, serializeLog, toCsv } from '../syste
 import { fmt } from '../systems/generators/core';
 import type { Settings } from '../systems/settings';
 import { Button } from '../ui/Button';
+import { rankLabel } from '../ui/rankText';
 import { bodyFont, displayFont, hex, theme, ts } from '../ui/theme';
 import { downloadText, pickTextFile } from '../utils/download';
 import { curriculumTopicTiers } from '../systems/questionBank';
@@ -170,7 +171,6 @@ export class SettingsScene extends Phaser.Scene {
   private year(x: number, y: number, colW: number): number {
     const c = theme.colors;
     const st = getState(this);
-    const tier = ranks.tiers.find((t) => t.tier === st.profile.tier) ?? ranks.tiers[0]!;
     const confirm = this.note === 'retake';
     this.add.text(x, y, tr(this, 'settings.yearTitle'), bodyFont(32, c.white, '800'));
     this.add
@@ -180,7 +180,7 @@ export class SettingsScene extends Phaser.Scene {
         confirm
           ? tr(this, 'settings.retakeHint')
           : tr(this, 'settings.yearInfo', {
-              rank: tr(this, 'menu.rank', { year: tier.label[st.lang], stars: st.profile.stars }),
+              rank: rankLabel(st.lang, st.profile.tier, st.profile.stars),
             }),
         bodyFont(24, confirm ? c.gold : c.paper, '600'),
       )
@@ -347,8 +347,7 @@ export class SettingsScene extends Phaser.Scene {
   }
 
   private rankText(tier: number, stars: number): string {
-    const t = ranks.tiers.find((k) => k.tier === tier) ?? ranks.tiers[0]!;
-    return tr(this, 'menu.rank', { year: t.label[getState(this).lang], stars });
+    return rankLabel(getState(this).lang, tier, stars);
   }
 
   private applyImport(data: SaveData): void {

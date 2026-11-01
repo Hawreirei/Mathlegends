@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
-import ranks from '../data/ranks.json';
 import { Button } from '../ui/Button';
 import { safeAreaInGame } from '../systems/touch';
 import { LangToggle } from '../ui/LangToggle';
+import { RankBadge } from '../ui/RankBadge';
 import { readSafeAreaCss } from '../ui/safeArea';
 import { bodyFont, displayFont, hex, theme } from '../ui/theme';
 import { changeLang, getState, responsive, tr } from './shared';
@@ -73,20 +73,14 @@ export class MenuScene extends Phaser.Scene {
       { width: 300, height: 72, fontSize: 28, style: 'secondary' },
     );
 
-    const tier = ranks.tiers.find((t) => t.tier === s.profile.tier) ?? ranks.tiers[0]!;
+    // Rank badge with star icons (#42).
     const rankY = portrait ? h - 120 : h * 0.9;
-    const label = this.add
-      .text(
-        0,
-        rankY,
-        tr(this, 'menu.rank', { year: tier.label[s.lang], stars: s.profile.stars }),
-        bodyFont(28, c.paper),
-      )
-      .setOrigin(0, 0.5);
-    const badgeW = 56;
-    const total = badgeW + 12 + label.width;
-    this.add.image(cx - total / 2 + badgeW / 2, rankY, tier.badge).setScale(0.5);
-    label.setX(cx - total / 2 + badgeW + 12);
+    new RankBadge(this, cx, rankY, {
+      tier: s.profile.tier,
+      stars: s.profile.stars,
+      lang: s.lang,
+      size: 'small',
+    });
   }
 
   /** "MATH" white + "LEGENDS" gold, centred on x and shrunk to fit maxWidth. */

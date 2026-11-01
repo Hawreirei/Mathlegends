@@ -70,7 +70,8 @@ describe('versioned save (#41)', () => {
   });
 
   it('migrates a profile saved before #39 (no lossesAtZero) by starting the count at 0', () => {
-    const { lossesAtZero: _, ...old } = DATA.profile;
+    const old: Partial<typeof DATA.profile> = { ...DATA.profile };
+    delete old.lossesAtZero;
     const r = readSave(gatherV1({ version: 1, ...old }, null, null), ctx);
     expect(r).toMatchObject({
       ok: true,

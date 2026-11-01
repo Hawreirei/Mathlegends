@@ -22,9 +22,9 @@ npm run build:sprites
 | `tower-blue.svg`, `tower-red.svg` | Tower (arched gate; blue pointed roof, red crown) | 96 x 160 | Original, `build-sprites.ts` | MIT (project) |
 | `nexus-blue.svg`, `nexus-red.svg` | Nexus crystal on a base | 160 x 160 | Original, `build-sprites.ts` | MIT (project) |
 | `tile-grass.svg`, `tile-lane.svg`, `tile-water.svg` | Map tiles | 64 x 64 | Original, `build-sprites.ts` | MIT (project) |
-| `badge-year-1.svg` ... `badge-year-6.svg` | Rank badges (shield, Year number, 1 or 2 stars) | 96 x 112 | Original, `build-sprites.ts` | MIT (project) |
+| `badge-year-1.svg` ... `badge-year-6.svg` | Rank badges (shield, Year number, as many sparkles as the Year, fill from `theme.json` `badges.fills`, lighter to darker) (#42) | 96 x 112 | Original, `build-sprites.ts` | MIT (project) |
 
-Colour-blind check: the two teams differ by **shape** as well as colour (blue tower has a pointed roof, red has a crown; blue hero has a sparkle, red a flower). Minion types differ by symbol (+, ×, ÷) and the Cannon is bigger. Badges differ by number and star count, not only colour. A full palette review is part of #31.
+Colour-blind check: the two teams differ by **shape** as well as colour (blue tower has a pointed roof, red has a crown; blue hero has a sparkle, red a flower). Minion types differ by symbol (+, ×, ÷) and the Cannon is bigger. Badges differ by number, sparkle count (1 to 6) and lightness, not only colour (#42, tested in `tests/rankDisplay.test.ts`). A full palette review is part of #31.
 
 ## Fonts (issue #14)
 

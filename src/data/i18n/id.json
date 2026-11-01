@@ -2,7 +2,7 @@
   "boot.loading": "Memuat...",
   "menu.tagline": "Jawab dengan tepat, kuasai jalurnya.",
   "menu.play": "MAIN",
-  "menu.rank": "{year} · {stars} bintang",
+  "menu.rank": "{year} · {stars}",
   "match.quit": "Keluar",
   "result.victory": "MENANG!",
   "result.defeat": "KALAH",
@@ -68,7 +68,6 @@
   "result.bonus": "(bonus akurasi)",
   "result.promoted": "Naik ke {year}!",
   "result.demoted": "Turun ke {year}.",
-  "result.rankNow": "Sekarang: {rank}",
   "settings.transfer": "Pindah perangkat",
   "transfer.title": "Pindah perangkat",
   "transfer.info": "Simpan progresmu (Kelas, bintang, pengaturan dan soal yang perlu diulang) ke sebuah file, lalu muat file itu di perangkat lain. Data jawaban untuk penelitian tidak ikut.",
@@ -81,5 +80,12 @@
   "transfer.notASave": "File ini bukan file progres MathLegends.",
   "transfer.tooNew": "File ini dari versi game yang lebih baru. Perbarui game dulu.",
   "transfer.invalid": "File progres ini rusak dan tidak bisa dimuat.",
-  "transfer.back": "Kembali"
+  "transfer.back": "Kembali",
+  "rank.starsOne": "{n} bintang",
+  "rank.starsMany": "{n} bintang",
+  "rank.toNextOne": "1 bintang lagi ke {year}",
+  "rank.toNextMany": "{n} bintang lagi ke {year}",
+  "rank.top": "Kelas tertinggi! Terus kumpulkan bintang.",
+  "rank.times": "×{n}",
+  "result.accuracyPct": "Jawaban benar: {correct} dari {answered} ({pct}%)"
 }

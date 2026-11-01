@@ -2,7 +2,7 @@
   "boot.loading": "Loading...",
   "menu.tagline": "Answer right, rule the lane.",
   "menu.play": "PLAY",
-  "menu.rank": "{year} · {stars} stars",
+  "menu.rank": "{year} · {stars}",
   "match.quit": "Quit",
   "result.victory": "VICTORY!",
   "result.defeat": "DEFEAT",
@@ -68,7 +68,6 @@
   "result.bonus": "(accuracy bonus)",
   "result.promoted": "Up to {year}!",
   "result.demoted": "Down to {year}.",
-  "result.rankNow": "Now: {rank}",
   "settings.transfer": "Move to another device",
   "transfer.title": "Move to another device",
   "transfer.info": "Save your progress (Year, stars, settings and questions to review) to a file, then load that file on another device. Research answer data is not included.",
@@ -81,5 +80,12 @@
   "transfer.notASave": "This is not a MathLegends progress file.",
   "transfer.tooNew": "This file is from a newer version of the game. Update the game first.",
   "transfer.invalid": "This progress file is damaged and cannot be loaded.",
-  "transfer.back": "Back"
+  "transfer.back": "Back",
+  "rank.starsOne": "{n} star",
+  "rank.starsMany": "{n} stars",
+  "rank.toNextOne": "1 more star to {year}",
+  "rank.toNextMany": "{n} more stars to {year}",
+  "rank.top": "Top Year! Keep collecting stars.",
+  "rank.times": "×{n}",
+  "result.accuracyPct": "Correct answers: {correct} of {answered} ({pct}%)"
 }
