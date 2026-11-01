@@ -14,6 +14,7 @@ import {
 import { buildMap, cameraZoom, type LaneMap, type MapConfig } from '../systems/map';
 import { recordMatch, type MatchResult } from '../systems/gameState';
 import { hex, theme } from '../ui/theme';
+import { ATTACK_EVENT, type MatchHudScene } from './MatchHudScene';
 import { getState, setState } from './shared';
 
 /**
@@ -34,6 +35,8 @@ export class MatchScene extends Phaser.Scene {
     Phaser.Input.Keyboard.Key
   >;
   startedAt = 0;
+  /** Attack presses so far; combat (#19) turns these into attacks. */
+  attackPresses = 0;
 
   constructor() {
     super('Match');
@@ -55,17 +58,26 @@ export class MatchScene extends Phaser.Scene {
       this.scale.off('resize', this.fitCamera, this),
     );
 
+    const onAttack = () => this.attackPresses++;
+    this.game.events.on(ATTACK_EVENT, onAttack);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () =>
+      this.game.events.off(ATTACK_EVENT, onAttack),
+    );
+
     this.scene.launch('MatchHud');
   }
 
   update(_time: number, deltaMs: number): void {
     const k = this.keys;
-    const dir = directionFromKeys({
+    let dir = directionFromKeys({
       up: k.W.isDown || k.UP.isDown,
       down: k.S.isDown || k.DOWN.isDown,
       left: k.A.isDown || k.LEFT.isDown,
       right: k.D.isDown || k.RIGHT.isDown,
     });
+    // The touch joystick wins when it is being used (analogue: partial tilt = slower walk).
+    const stick = (this.scene.get('MatchHud') as MatchHudScene).touch?.vector;
+    if (stick && (stick.x !== 0 || stick.y !== 0)) dir = stick;
     // Cap the step so a long frame (tab switch) cannot teleport the hero.
     this.playerState = moveHero(this.playerState, dir, Math.min(deltaMs, 100) / 1000, this.area);
     this.player.sync(this.playerState);

@@ -17,6 +17,12 @@ declare global {
   }
 }
 
+// No browser zoom, scroll or long-press menu on the game (#18). The CSS in index.html does most of this;
+// iOS Safari ignores user-scalable=no, so its pinch gesture and double-tap zoom are blocked here too.
+for (const type of ['gesturestart', 'gesturechange', 'dblclick', 'contextmenu'])
+  document.addEventListener(type, (e) => e.preventDefault(), { passive: false });
+document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
 void loadFonts().then(() => {
   const size = logicalSize(window.innerWidth, window.innerHeight);
   const game = new Phaser.Game({
@@ -33,6 +39,8 @@ void loadFonts().then(() => {
     // Use real frame time: Phaser's default smoothing treats slow frames as 60 fps,
     // which made heroes move at a fraction of their speed on slower devices (#17).
     fps: { smoothStep: false },
+    // Joystick thumb + a button thumb at the same time (#18).
+    input: { activePointers: 3 },
     callbacks: {
       preBoot: (g) => g.registry.set('state', createGameState(detectLang(navigator.language))),
     },
