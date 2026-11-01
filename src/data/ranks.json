@@ -67,5 +67,9 @@
     "onLevel": 0.7,
     "review": 0.2,
     "stretch": 0.1
+  },
+  "questionEngine": {
+    "repeatWindow": 30,
+    "reviewPreviousTierShare": 0.7
   }
 }

@@ -159,3 +159,20 @@ There are 40 handwritten questions. They cover the topics without a generator (s
 **Teacher check:** `docs/QUESTION-SPOT-CHECK.md` lists all 40 handwritten items and 5 generated items per Year (70 items, 23% of the bank), each with both languages, the marked answer and the explanation. Record the result in its table. Fix problems in the handwritten files or generators, never in the built bank.
 
 GenSoal output can be added later as another source file (with `"source": "gensoal"`) once it is converted to this format.
+
+## Question engine (issue #26)
+
+[`src/systems/questionEngine.ts`](../src/systems/questionEngine.ts) chooses the question for each last hit. The bank is loaded and validated by `loadQuestionBank()` (`src/systems/questionBank.ts`).
+
+```ts
+let engine = createQuestionEngine(loadQuestionBank(), ranks, seed);
+const pick = nextQuestion(engine, playerTier, 'lancer'); // { question, band, source, engine }
+engine = pick.engine;
+```
+
+1. **Type from the minion:** Infantry = fluency, Lancer = application, Cannon = multistep.
+2. **Band from `ranks.json` `questionMix`:** 70% on-level (the player's Year), 20% review, 10% stretch (the Year above). Review comes from the Year just below `reviewPreviousTierShare` (70%) of the time, otherwise from any lower Year. Year 1 has nothing below, so its review share becomes on-level; at Year 6 stretch stays in Year 6.
+3. **No repeats:** nothing asked in the last `repeatWindow` (30) questions is asked again.
+4. **Never runs dry:** if the bank has nothing fresh for a pick, the engine generates a new question for that Year and type with the #11 generators (`source: 'generated'`). In a realistic mix (mostly Infantry, some Lancers, few Cannons) 800 questions at Year 3 needed no generated questions; the worst case (200 Infantry-only questions) needed 12.
+
+Tests (`tests/questionEngine.test.ts`): no repeat within 30 in 2000 mixed draws and in the worst case for every Year and minion type (checked to fail when the window is shrunk); the 70/20/10 mix within 3% over 1000 draws at Years 2 to 5; band tiers correct; the same seed gives the same questions.

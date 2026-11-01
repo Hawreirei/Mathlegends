@@ -193,6 +193,14 @@ export const ranksFileSchema = z
       })
       .strict(),
     questionMix: z.object({ onLevel: fraction, review: fraction, stretch: fraction }).strict(),
+    questionEngine: z
+      .object({
+        /** No question repeats within this many questions (#26). */
+        repeatWindow: z.number().int().positive(),
+        /** Share of review picks taken from the tier just below; the rest from any lower tier. */
+        reviewPreviousTierShare: fraction,
+      })
+      .strict(),
   })
   .strict()
   .superRefine((r, ctx) => {

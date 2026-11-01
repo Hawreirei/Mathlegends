@@ -59,6 +59,8 @@ Filled in now with the rules approved in `docs/GDD.md`:
 | `stars.bonusAccuracy` / `bonusStars` | 0.8 / +1 | Win with 80%+ accuracy earns an extra star |
 | `stars.demoteAfterLossesAtZero` | 2 | Drop a tier only after 2 straight losses at 0 stars |
 | `questionMix` | 0.7 / 0.2 / 0.1 | On-level / review / stretch; must add up to 1 |
+| `questionEngine.repeatWindow` | 30 | No question repeats within this many questions (#26) |
+| `questionEngine.reviewPreviousTierShare` | 0.7 | Share of review questions from the Year just below; the rest from any lower Year |
 
 The loader also checks that tiers are numbered 1, 2, 3, ... in order and that `maxStartTier` is not above the top tier.
 
