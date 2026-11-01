@@ -70,6 +70,9 @@
   },
   "questionEngine": {
     "repeatWindow": 30,
-    "reviewPreviousTierShare": 0.7
+    "reviewPreviousTierShare": 0.7,
+    "reviewMatches": 3,
+    "reviewEvery": 3,
+    "reviewQueueMax": 40
   }
 }

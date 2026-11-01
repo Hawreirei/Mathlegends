@@ -12,6 +12,7 @@ export interface KeyValueStore {
 }
 
 const LANG_KEY = 'mathlegends.lang';
+const REVIEW_KEY = 'mathlegends.review';
 
 /** The browser's localStorage, or null if it is unavailable. */
 export function browserStorage(): KeyValueStore | null {
@@ -42,4 +43,22 @@ export function saveLang(store: KeyValueStore | null, lang: Lang): void {
 /** Saved choice first, then the browser language, then Indonesian. */
 export function initialLang(store: KeyValueStore | null, browserLang: string | undefined): Lang {
   return loadLang(store) ?? detectLang(browserLang);
+}
+
+/** The saved review queue (#29) as parsed JSON, or null. Validate it with parseReviewQueue. */
+export function loadReviewRaw(store: KeyValueStore | null): unknown {
+  try {
+    const v = store?.getItem(REVIEW_KEY);
+    return v ? (JSON.parse(v) as unknown) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveReviewRaw(store: KeyValueStore | null, data: unknown): void {
+  try {
+    store?.setItem(REVIEW_KEY, JSON.stringify(data));
+  } catch {
+    // Storage blocked or full: the queue still works until the page is closed.
+  }
 }

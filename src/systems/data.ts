@@ -199,6 +199,12 @@ export const ranksFileSchema = z
         repeatWindow: z.number().int().positive(),
         /** Share of review picks taken from the tier just below; the rest from any lower tier. */
         reviewPreviousTierShare: fraction,
+        /** A missed question comes back within this many matches (#29). */
+        reviewMatches: z.number().int().positive(),
+        /** At most one review question in every this many questions, unless one is on its last match. */
+        reviewEvery: z.number().int().positive(),
+        /** Most questions kept in the review queue (the oldest go first). */
+        reviewQueueMax: z.number().int().positive(),
       })
       .strict(),
   })

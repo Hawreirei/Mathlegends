@@ -13,6 +13,8 @@ import { ATTACK_BUFFER_SEC } from '../systems/combat';
 import { loadBot, loadHeroes, loadMinions, loadRanks, loadStructures } from '../systems/data';
 import { validateEconomy, type EconomyConfig } from '../systems/economy';
 import { recordMatch, type MatchResult } from '../systems/gameState';
+import { serializeReviewQueue, updateReviewQueue } from '../systems/reviewQueue';
+import { browserStorage, saveReviewRaw } from '../utils/storage';
 import { directionFromKeys, type HeroState } from '../systems/hero';
 import { buildMap, cameraZoom, type MapConfig, type Point } from '../systems/map';
 import {
@@ -145,6 +147,7 @@ export class MatchScene extends Phaser.Scene {
       loadQuestionBank(),
       loadRanks(ranksJson),
       Date.now() % 2 ** 31,
+      getState(this).review,
     );
     this.session = createSession(engine, econ);
     this.minionViews = new Map();
@@ -398,14 +401,23 @@ export class MatchScene extends Phaser.Scene {
   }
 
   finish(outcome: MatchResult['outcome']): void {
+    const missed = this.session.missed;
+    // Missed questions come back in the next matches (#29); the queue is saved on the device.
+    const review = updateReviewQueue(this.session.engine.review, missed, loadRanks(ranksJson));
+    saveReviewRaw(browserStorage(), serializeReviewQueue(review));
     setState(
       this,
-      recordMatch(getState(this), {
-        outcome,
-        durationSec: this.now,
-        answered: this.session.asked,
-        correct: this.session.correct,
-      }),
+      recordMatch(
+        getState(this),
+        {
+          outcome,
+          durationSec: this.now,
+          answered: this.session.asked,
+          correct: this.session.correct,
+          missed,
+        },
+        review,
+      ),
     );
     this.scene.stop('MatchHud');
     this.scene.start('Result');

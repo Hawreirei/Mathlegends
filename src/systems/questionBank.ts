@@ -11,8 +11,11 @@ import t5 from '../data/questions/t5.json';
 import t6 from '../data/questions/t6.json';
 import { assertValidQuestions, topicTiersFromCurriculum, type Question } from './questions';
 
+/** Topic id -> Year, from curriculum.json (for validating questions outside the bank). */
+export const curriculumTopicTiers = () => topicTiersFromCurriculum(curriculum);
+
 export function loadQuestionBank(): Question[] {
   const all: unknown[] = [...t1, ...t2, ...t3, ...t4, ...t5, ...t6];
-  assertValidQuestions(all, topicTiersFromCurriculum(curriculum), 'question bank');
+  assertValidQuestions(all, curriculumTopicTiers(), 'question bank');
   return all;
 }

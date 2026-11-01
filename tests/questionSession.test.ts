@@ -83,8 +83,10 @@ describe('question session (#27)', () => {
     s = r.session;
     const a = answer(s, correctSlot(s), 3);
     expect(a.session.active!.kind).toBe('lancer');
-    expect(a.session.active!.shownAt).toBe(3);
-    expect(a.session.active!.deadline).toBe(3 + econ.questionSeconds.lancer);
+    // The waiting question appears after the reveal of the answer (#29), with its full timer.
+    const shown = 3 + econ.questionRevealSeconds;
+    expect(a.session.active!.shownAt).toBe(shown);
+    expect(a.session.active!.deadline).toBe(shown + econ.questionSeconds.lancer);
     expect(a.session.queued).toBeNull();
   });
 

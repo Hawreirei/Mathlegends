@@ -184,5 +184,21 @@ Tests (`tests/questionEngine.test.ts`): no repeat within 30 in 2000 mixed draws 
 - **One at a time:** at most one question shows and one waits. A further last hit, or a waiting question older than its own timer, is *skipped*: it pays the normal reward (x1), with no question and no penalty, and does not touch the streak (`src/systems/questionSession.ts`, tested).
 - **Timer:** `economy.json` `questionSeconds`: Infantry 5 s, Lancer 8 s, Cannon 12 s.
 - **Never pauses:** the match keeps running. The card is compact and sits low between the touch controls, and the camera eases the hero into the clear band above it while a question is showing.
-- **Card:** question text (shrunk to fit long word problems), countdown bar with seconds, four large answers in a 2 x 2 grid in shuffled order, keys 1 to 4 on desktop. Text follows the chosen language. A short "Benar! ×1,5" / "Correct! ×1.5", "Kurang tepat ×0,5" / "Not quite ×0.5" or "Waktu habis" / "Time's up" note follows each answer (full feedback and explanations: #29).
+- **Card:** question text (shrunk to fit long word problems), countdown bar with seconds, four large answers in a 2 x 2 grid in shuffled order, keys 1 to 4 on desktop. Text follows the chosen language. A short "Benar! ×1,5" / "Correct! ×1.5", "Kurang tepat ×0,5" / "Not quite ×0.5" or "Waktu habis" / "Time's up" note follows each answer.
 - **Result screen:** "Correct answers: X of Y" now counts the real questions.
+
+## Feedback and the review queue (issue #29)
+
+**On the card.** After every answer or timeout the card stays for `economy.json` `questionRevealSeconds` (0.8 s): the right answer turns green with a tick, a wrong pick turns red with a cross, the others fade (shapes as well as colours, for colour-blind players). A question that was waiting appears after that with its full timer, and taps during the reveal do nothing, so a late tap can't answer the next question by accident.
+
+**On the Result screen.** "Ayo pelajari lagi" / "Let's look again" lists every wrong or timed-out question of the match, one at a time with < and > buttons: the question, the player's answer (or "time ran out"), the right answer and the explanation, in the chosen language. With no misses it says "Semua jawaban benar. Hebat!" / "Every answer right. Great work!".
+
+**Coming back.** [`src/systems/reviewQueue.ts`](../src/systems/reviewQueue.ts) keeps the missed questions, each with the matches it has left (`ranks.json` `questionEngine.reviewMatches`, 3). The question engine serves them as band `missed`:
+
+- at most one in every `reviewEvery` (3) questions, on a minion of the same question type;
+- on its last match, an item may come on any last hit, with the timer of its own type (a Cannon question on an Infantry kill still gets 12 s);
+- served items leave the queue; one missed again is queued afresh for another 3 matches; an item not served in 3 matches drops out.
+
+The queue is saved on the device (`localStorage` `mathlegends.review`, only question data, no personal data) and checked with the question validator when the game loads; anything malformed is dropped. At most `reviewQueueMax` (40) items are kept.
+
+Tests (`tests/review.test.ts`): the reveal and its timing; the missed list; queue counting down, dropping, de-duplicating, the size limit and the storage round trip; review spacing and the last-match rule; and, over 5 seeds, a first match where about a third are missed followed by three matches of only 15 last hits each (real matches have 24 or more): every missed question came back. That test fails if matches have only 3 last hits, so the guarantee depends on the player landing some last hits.

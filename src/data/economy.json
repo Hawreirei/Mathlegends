@@ -20,6 +20,7 @@
   },
   "fairness": { "mathShareTarget": [0.3, 0.4], "mathShareCap": 0.4 },
   "questionSeconds": { "infantry": 5, "lancer": 8, "cannon": 12 },
+  "questionRevealSeconds": 0.8,
   "exp": {
     "minion": { "infantry": 30, "lancer": 40, "cannon": 70 },
     "heroKill": 150,

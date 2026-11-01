@@ -61,6 +61,9 @@ Filled in now with the rules approved in `docs/GDD.md`:
 | `questionMix` | 0.7 / 0.2 / 0.1 | On-level / review / stretch; must add up to 1 |
 | `questionEngine.repeatWindow` | 30 | No question repeats within this many questions (#26) |
 | `questionEngine.reviewPreviousTierShare` | 0.7 | Share of review questions from the Year just below; the rest from any lower Year |
+| `questionEngine.reviewMatches` | 3 | A missed question comes back within this many matches (#29) |
+| `questionEngine.reviewEvery` | 3 | At most one missed question in every this many questions (except on its last match) |
+| `questionEngine.reviewQueueMax` | 40 | Most missed questions kept on the device; the oldest go first |
 
 The loader also checks that tiers are numbered 1, 2, 3, ... in order and that `maxStartTier` is not above the top tier.
 

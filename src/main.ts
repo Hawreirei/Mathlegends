@@ -8,7 +8,11 @@ import { ResultScene } from './scenes/ResultScene';
 import { createGameState } from './systems/gameState';
 import { logicalSize } from './systems/layout';
 import { loadFonts } from './ui/fonts';
-import { browserStorage, initialLang } from './utils/storage';
+import ranksJson from './data/ranks.json';
+import { loadRanks } from './systems/data';
+import { curriculumTopicTiers } from './systems/questionBank';
+import { parseReviewQueue } from './systems/reviewQueue';
+import { browserStorage, initialLang, loadReviewRaw } from './utils/storage';
 
 declare global {
   interface Window {
@@ -44,9 +48,16 @@ void loadFonts().then(() => {
     callbacks: {
       preBoot: (g) => {
         // Saved choice, else browser language, else Indonesian (#23).
-        const lang = initialLang(browserStorage(), navigator.language);
+        const store = browserStorage();
+        const lang = initialLang(store, navigator.language);
         document.documentElement.lang = lang;
-        g.registry.set('state', createGameState(lang));
+        // Missed questions from earlier matches (#29), checked like the bank.
+        const review = parseReviewQueue(
+          loadReviewRaw(store),
+          loadRanks(ranksJson),
+          curriculumTopicTiers(),
+        );
+        g.registry.set('state', createGameState(lang, review));
       },
     },
   });

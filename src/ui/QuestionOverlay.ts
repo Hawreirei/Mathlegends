@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { Lang } from '../systems/gameState';
 import type { Rect } from '../systems/hudLayout';
-import type { ActiveQuestion } from '../systems/questionSession';
+import type { ActiveQuestion, Reveal } from '../systems/questionSession';
 import { choiceText, localize } from '../utils/i18n';
 import { bodyFont, displayFont, hex, theme } from './theme';
 
@@ -12,12 +12,18 @@ const GAP = 16;
  * The last-hit question card (#27): question text, a countdown bar with seconds, and four large
  * answer buttons in a 2 x 2 grid (shuffled order). The match keeps running underneath.
  * Long questions shrink their font to fit. Keys 1-4 answer too (desktop).
+ * After an answer or a timeout the card briefly shows the right answer (#29): green with a tick,
+ * the player's wrong pick red with a cross (shapes as well as colours, for colour-blind players).
  */
+
+type SlotLook = 'normal' | 'right' | 'wrongPick' | 'dim';
 export class QuestionOverlay {
   private readonly root: Phaser.GameObjects.Container;
   private readonly timerBar: Phaser.GameObjects.Graphics;
   private readonly seconds: Phaser.GameObjects.Text;
   private shownId: string | null = null;
+  /** False while the right answer is being shown. */
+  private answering = false;
   private readonly barY: number;
 
   constructor(
@@ -37,7 +43,7 @@ export class QuestionOverlay {
       .setVisible(false);
     scene.input.keyboard?.on('keydown', (e: KeyboardEvent) => {
       const n = Number(e.key);
-      if (this.root.visible && n >= 1 && n <= 4) this.onAnswer(n - 1);
+      if (this.root.visible && this.answering && n >= 1 && n <= 4) this.onAnswer(n - 1);
     });
   }
 
@@ -45,9 +51,17 @@ export class QuestionOverlay {
     return this.root.visible;
   }
 
-  /** Shows `q` (rebuilding only when the question changes), or hides when null. */
-  sync(q: ActiveQuestion | null, now: number, lang: Lang): void {
-    if (!q) {
+  /**
+   * Shows the reveal of the last answer while it lasts, else the active question once it is due
+   * (rebuilding only when what is shown changes), else nothing.
+   */
+  sync(q: ActiveQuestion | null, reveal: Reveal | null, now: number, lang: Lang): void {
+    if (reveal && now < reveal.until) {
+      const key = `reveal:${reveal.question.id}@${reveal.until}`;
+      if (key !== this.shownId) this.build(reveal, lang, key, reveal);
+      return;
+    }
+    if (!q || now < q.shownAt) {
       this.root.setVisible(false);
       this.timerBar.setVisible(false);
       this.seconds.setVisible(false);
@@ -55,15 +69,21 @@ export class QuestionOverlay {
       return;
     }
     const key = `${q.question.id}@${q.shownAt}`;
-    if (key !== this.shownId) this.build(q, lang, key);
+    if (key !== this.shownId) this.build(q, lang, key, null);
     this.drawTimer(q, now);
   }
 
-  private build(q: ActiveQuestion, lang: Lang, key: string): void {
+  private build(
+    q: Pick<ActiveQuestion, 'question' | 'order'>,
+    lang: Lang,
+    key: string,
+    reveal: Reveal | null,
+  ): void {
     const { r, scene } = this;
     const c = theme.colors;
     this.root.removeAll(true);
     this.shownId = key;
+    this.answering = !reveal;
 
     const card = scene.add.graphics();
     card.fillStyle(hex(c.ink), 0.35).fillRoundedRect(r.x + 6, r.y + 10, r.w, r.h, 26);
@@ -95,11 +115,19 @@ export class QuestionOverlay {
       const row = Math.floor(slot / 2);
       const x = r.x + PAD + col * (btnW + GAP);
       const y = gridTop + row * (btnH + GAP);
-      const g = scene.add.graphics();
+      const look: SlotLook = !reveal
+        ? 'normal'
+        : choiceIndex === q.question.answerIndex
+          ? 'right'
+          : choiceIndex === reveal.chosen
+            ? 'wrongPick'
+            : 'dim';
+      const face = look === 'right' ? c.correct : look === 'wrongPick' ? c.wrong : c.white;
+      const g = scene.add.graphics().setAlpha(look === 'dim' ? 0.45 : 1);
       const draw = (pressed: boolean) => {
         g.clear();
         g.fillStyle(hex(c.violet), 1).fillRoundedRect(x, y + 6, btnW, btnH, 18);
-        g.fillStyle(hex(pressed ? c.gold : c.white), 1).fillRoundedRect(
+        g.fillStyle(hex(pressed ? c.gold : face), 1).fillRoundedRect(
           x,
           y + (pressed ? 4 : 0),
           btnW,
@@ -120,10 +148,27 @@ export class QuestionOverlay {
           x + btnW / 2,
           y + btnH / 2,
           choiceText(q.question.choices[choiceIndex]!, lang),
-          displayFont(38, c.ink),
+          displayFont(38, look === 'right' || look === 'wrongPick' ? c.white : c.ink),
         )
-        .setOrigin(0.5);
+        .setOrigin(0.5)
+        .setAlpha(look === 'dim' ? 0.45 : 1);
       for (let size = 38; size > 18 && label.width > btnW - 40; size -= 2) label.setFontSize(size);
+      if (reveal) {
+        // Tick on the right answer, cross on a wrong pick, at the right-hand end of the button.
+        const m = scene.add.graphics().lineStyle(8, hex(c.white), 1);
+        const cx = x + btnW - 34;
+        const cy = y + btnH / 2;
+        if (look === 'right') {
+          m.lineBetween(cx - 16, cy, cx - 4, cy + 12);
+          m.lineBetween(cx - 4, cy + 12, cx + 16, cy - 12);
+        }
+        if (look === 'wrongPick') {
+          m.lineBetween(cx - 12, cy - 12, cx + 12, cy + 12);
+          m.lineBetween(cx - 12, cy + 12, cx + 12, cy - 12);
+        }
+        this.root.add([g, label, m]);
+        return;
+      }
       const hint = scene.add.text(x + 12, y + 8, String(slot + 1), bodyFont(18, c.violet, '800'));
       const zone = scene.add
         .zone(x + btnW / 2, y + btnH / 2, btnW, btnH)
@@ -137,8 +182,9 @@ export class QuestionOverlay {
       this.root.add([g, label, hint, zone]);
     });
     this.root.setVisible(true);
-    this.timerBar.setVisible(true);
-    this.seconds.setVisible(true);
+    // No timer while the right answer is shown.
+    this.timerBar.setVisible(!reveal);
+    this.seconds.setVisible(!reveal);
   }
 
   private drawTimer(q: ActiveQuestion, now: number): void {

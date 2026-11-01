@@ -59,7 +59,10 @@ export class MatchHudScene extends Phaser.Scene {
     );
   }
 
-  /** Short "Correct! x1.5" / "Not quite x0.5" / "Time's up x0.5" note above the card (#27; more in #29). */
+  /**
+   * Short "Correct! x1.5" / "Not quite x0.5" / "Time's up x0.5" note on the card's top edge, while
+   * the card itself marks the right answer (#29).
+   */
   private showFeedback(r: Resolution): void {
     const f = this.feedback;
     const l = this.layoutInfo;
@@ -73,7 +76,7 @@ export class MatchHudScene extends Phaser.Scene {
     f.setText(tr(this, key, { x }))
       .setColor(theme.colors.white)
       .setBackgroundColor(color)
-      .setPosition(l.questionCard.x + l.questionCard.w / 2, l.questionCard.y + l.questionCard.h / 2)
+      .setPosition(l.questionCard.x + l.questionCard.w / 2, l.questionCard.y)
       .setAlpha(1)
       .setScale(1)
       .setVisible(true);
@@ -95,7 +98,12 @@ export class MatchHudScene extends Phaser.Scene {
     this.panel?.update(s.player, s.playerProgress);
     this.minimap?.update(s, m.cameras.main.worldView);
     this.drawNexusBars(s.structures);
-    this.question?.sync(m.session?.active ?? null, s.now, getState(this).lang);
+    this.question?.sync(
+      m.session?.active ?? null,
+      m.session?.reveal ?? null,
+      s.now,
+      getState(this).lang,
+    );
     const p = s.player;
     const show = !p.alive && p.respawnAt !== null;
     this.respawnText?.setVisible(show);
@@ -186,7 +194,7 @@ export class MatchHudScene extends Phaser.Scene {
       this.match.answerSlot(slot),
     );
     this.feedback = this.add
-      .text(0, 0, '', bodyFont(40, c.white, '800'))
+      .text(0, 0, '', bodyFont(34, c.white, '800'))
       .setOrigin(0.5)
       .setPadding(24, 12, 24, 12)
       .setDepth(200)
