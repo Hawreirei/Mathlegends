@@ -1,0 +1,16 @@
+{
+  "boot.loading": "Loading...",
+  "menu.tagline": "Answer right, rule the lane.",
+  "menu.play": "PLAY",
+  "menu.rank": "{year} · {stars} stars",
+  "match.quit": "Quit",
+  "match.placeholder": "Arena under construction",
+  "match.debugWin": "Test: Win",
+  "match.debugLose": "Test: Lose",
+  "result.victory": "VICTORY!",
+  "result.defeat": "DEFEAT",
+  "result.time": "Time: {time}",
+  "result.accuracy": "Correct answers: {correct} of {answered}",
+  "result.again": "Play again",
+  "result.menu": "Menu"
+}

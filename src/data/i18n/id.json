@@ -1,0 +1,16 @@
+{
+  "boot.loading": "Memuat...",
+  "menu.tagline": "Jawab dengan tepat, kuasai jalurnya.",
+  "menu.play": "MAIN",
+  "menu.rank": "{year} · {stars} bintang",
+  "match.quit": "Keluar",
+  "match.placeholder": "Arena sedang dibangun",
+  "match.debugWin": "Tes: Menang",
+  "match.debugLose": "Tes: Kalah",
+  "result.victory": "MENANG!",
+  "result.defeat": "KALAH",
+  "result.time": "Waktu: {time}",
+  "result.accuracy": "Jawaban benar: {correct} dari {answered}",
+  "result.again": "Main lagi",
+  "result.menu": "Menu"
+}

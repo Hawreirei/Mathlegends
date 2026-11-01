@@ -25,5 +25,10 @@ The site lives at `https://hawreirei.github.io/Mathlegends/`. The Vite `base` in
 
 Play link: https://hawreirei.github.io/Mathlegends/ (live after the first merge to `main` and the Pages setting above)
 
+## Scenes and screen sizes (#15)
+Boot (loads art) > Menu > Match > Result, sharing a typed `GameState` (`src/systems/gameState.ts`) through the Phaser registry. The canvas is 1280x720 in landscape and 720x1280 in portrait, with the long side stretched to the screen's shape (`src/systems/layout.ts`), and switches when the device rotates. Scenes lay themselves out from the current size and rebuild on resize. All on-screen text comes from `src/data/i18n/`.
+
+`window.mathlegends.game` exposes the Phaser game for automated browser tests.
+
 ## Project layout
 `src/{scenes,entities,systems,data,ui,utils}`, `tests/`, `docs/`, `scripts/`. Game rules live in `src/systems/` with no Phaser imports.
