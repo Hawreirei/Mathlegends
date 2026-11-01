@@ -1,16 +1,34 @@
 import Phaser from 'phaser';
 import botJson from '../data/bot.json';
+import skillsJson from '../data/skills.json';
 import ranksJson from '../data/ranks.json';
 import economyJson from '../data/economy.json';
 import heroesJson from '../data/heroes.json';
 import mapJson from '../data/map.json';
 import minionsJson from '../data/minions.json';
 import structuresJson from '../data/structures.json';
-import { damageNumber, goldPopup, HeroView, levelUpBurst, slash } from '../entities/Hero';
+import {
+  blastRing,
+  damageNumber,
+  dashTrail,
+  goldPopup,
+  HeroView,
+  levelUpBurst,
+  projectileDot,
+  slash,
+} from '../entities/Hero';
 import { MinionView, shot } from '../entities/Minion';
 import { StructureView, towerShot } from '../entities/Structure';
 import { ATTACK_BUFFER_SEC } from '../systems/combat';
-import { loadBot, loadHeroes, loadMinions, loadRanks, loadStructures } from '../systems/data';
+import {
+  loadBot,
+  loadSkills,
+  checkHeroSkills,
+  loadHeroes,
+  loadMinions,
+  loadRanks,
+  loadStructures,
+} from '../systems/data';
 import { validateEconomy, type EconomyConfig } from '../systems/economy';
 import { recordMatch, type MatchResult } from '../systems/gameState';
 import {
@@ -27,13 +45,14 @@ import { applyMatch } from '../systems/rank';
 import { timeScale } from '../systems/settings';
 import { browserStorage, loadAnswerLogRaw, saveAnswerLogRaw } from '../utils/storage';
 import { directionFromKeys, type HeroState } from '../systems/hero';
-import { buildMap, cameraZoom, type MapConfig, type Point } from '../systems/map';
+import { buildMap, cameraZoom, type MapConfig } from '../systems/map';
 import {
   applyLastHitReward,
   createMatch,
   stepMatch,
   type MatchConfig,
   type MatchEvent,
+  type MatchInput,
   type MatchState,
 } from '../systems/match';
 import type { MinionState } from '../systems/minions';
@@ -51,7 +70,14 @@ import {
 import type { Progress } from '../systems/progression';
 import { isTargetable, type StructureState } from '../systems/structures';
 import { hex, theme } from '../ui/theme';
-import { ATTACK_EVENT, ATTACK_RELEASE_EVENT, type MatchHudScene } from './MatchHudScene';
+import {
+  ATTACK_EVENT,
+  ATTACK_RELEASE_EVENT,
+  SKILL_EVENT,
+  SKILL_FAILED_EVENT,
+  SKILL_KEYS,
+  type MatchHudScene,
+} from './MatchHudScene';
 import { getState, setStateAndSave, tr } from './shared';
 
 /** Fired on game.events when a question ends: (resolution). The HUD shows the feedback. */
@@ -77,6 +103,8 @@ export class MatchScene extends Phaser.Scene {
   cfg!: MatchConfig;
   /** Questions of this match (#27); the HUD's QuestionOverlay draws session.active. */
   session!: Session;
+  /** A skill slot pressed since the last step (#33). */
+  private pendingSkill: number | null = null;
   private logInfo!: MatchLogInfo;
   private logRows: AnswerRow[] = [];
   /** The whole match state; exposed for browser tests. */
@@ -145,6 +173,10 @@ export class MatchScene extends Phaser.Scene {
       return h;
     };
     const structures = loadStructures(structuresJson);
+    // Skills (#33), checked against the heroes at load (AGENTS.md rule 4).
+    const skills = loadSkills(skillsJson);
+    const skillProblems = checkHeroSkills(heroes, skills);
+    if (skillProblems.length) throw new Error(`Invalid skills:\n${skillProblems.join('\n')}`);
     this.cfg = {
       econ,
       map: buildMap(mapJson as MapConfig),
@@ -153,6 +185,7 @@ export class MatchScene extends Phaser.Scene {
       playerHero: find(heroes.playerHero, 'playerHero'),
       botHero: find(heroes.botHero, 'botHero'),
       bot: loadBot(botJson),
+      skills,
     };
     this.dangerRingDistance = structures.dangerRingDistance;
     this.state = createMatch(this.cfg);
@@ -174,6 +207,7 @@ export class MatchScene extends Phaser.Scene {
     this.logRows = [];
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.saveLog());
     this.minionViews = new Map();
+    this.projectileViews = new Map();
     this.structureViews = new Map();
     this.ending = false;
     this.attackHeld = false;
@@ -197,6 +231,11 @@ export class MatchScene extends Phaser.Scene {
       map.heroSpawn.blue,
     );
     this.keys = this.input.keyboard!.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT') as Keys;
+    // Skills (#33): Q, E, R and F on a keyboard (1-4 answer questions); buttons on touch.
+    this.pendingSkill = null;
+    SKILL_KEYS.forEach((key, slot) =>
+      this.input.keyboard!.on(`keydown-${key}`, () => (this.pendingSkill = slot)),
+    );
 
     this.cameras.main.startFollow(
       this.player,
@@ -215,12 +254,15 @@ export class MatchScene extends Phaser.Scene {
     const release = () => {
       this.attackHeld = false;
     };
+    const skill = (slot: number) => (this.pendingSkill = slot);
     this.game.events.on(ATTACK_EVENT, press);
     this.game.events.on(ATTACK_RELEASE_EVENT, release);
+    this.game.events.on(SKILL_EVENT, skill);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.scale.off('resize', this.fitCamera, this);
       this.game.events.off(ATTACK_EVENT, press);
       this.game.events.off(ATTACK_RELEASE_EVENT, release);
+      this.game.events.off(SKILL_EVENT, skill);
     });
 
     this.scene.launch('MatchHud');
@@ -240,10 +282,32 @@ export class MatchScene extends Phaser.Scene {
     this.player.sync(this.state.player, now);
     this.bot.sync(this.state.bot, now);
     for (const m of this.state.minions) this.minionViews.get(m.id)?.sync(m);
+    this.syncProjectiles();
     for (const s of this.state.structures)
       this.structureViews.get(s.id)?.sync(s, isTargetable(s, this.state.structures));
     this.drawDangerRing();
     this.keepHeroInView();
+  }
+
+  /** One dot per skill projectile in flight (#33). */
+  private projectileViews = new Map<string, Phaser.GameObjects.Arc>();
+
+  private syncProjectiles(): void {
+    const live = new Set<string>();
+    for (const p of this.state.projectiles) {
+      live.add(p.id);
+      let v = this.projectileViews.get(p.id);
+      if (!v) {
+        v = projectileDot(this, p.team === 'blue' ? theme.colors.gold : theme.teams.red.main);
+        this.projectileViews.set(p.id, v);
+      }
+      v.setPosition(p.x, p.y);
+    }
+    for (const [id, v] of this.projectileViews)
+      if (!live.has(id)) {
+        v.destroy();
+        this.projectileViews.delete(id);
+      }
   }
 
   private camOffsetY = 0;
@@ -270,7 +334,10 @@ export class MatchScene extends Phaser.Scene {
     cam.setFollowOffset(0, this.camOffsetY);
   }
 
-  private readInput(): { move: Point; attack: boolean } {
+  private readInput(): MatchInput {
+    // One skill press per step (#33); presses while dead or ending are dropped.
+    const skill = this.pendingSkill;
+    this.pendingSkill = null;
     if (this.ending || !this.state.player.alive) return { move: { x: 0, y: 0 }, attack: false };
     const k = this.keys;
     let move = directionFromKeys({
@@ -283,7 +350,7 @@ export class MatchScene extends Phaser.Scene {
     const stick = (this.scene.get('MatchHud') as MatchHudScene).touch?.vector;
     if (stick && (stick.x !== 0 || stick.y !== 0)) move = stick;
     const attack = this.attackHeld || this.now - this.lastAttackPress <= ATTACK_BUFFER_SEC;
-    return { move, attack };
+    return { move, attack, skill };
   }
 
   /** Turns one rules event into visuals. */
@@ -320,6 +387,28 @@ export class MatchScene extends Phaser.Scene {
       case 'reward':
         if (e.heroId === playerId && e.gold > 0) goldPopup(this, e.at, e.gold);
         return;
+      case 'skill': {
+        const color = e.by === 'player' ? theme.colors.gold : theme.teams.red.main;
+        if (e.dashTo) dashTrail(this, e.from, e.dashTo, color);
+        for (const b of e.blasts) blastRing(this, b, b.radius, color);
+        return;
+      }
+      case 'skillFailed':
+        if (e.by === 'player') this.game.events.emit(SKILL_FAILED_EVENT, e.slot, e.reason);
+        return;
+      case 'skillHit': {
+        if (e.team === 'blue' || e.targetId === playerId) damageNumber(this, e.at, e.damage);
+        const mv = this.minionViews.get(e.targetId);
+        if (mv) {
+          mv.flash();
+          if (e.killed) {
+            mv.die();
+            this.minionViews.delete(e.targetId);
+          }
+        } else if (e.targetId === playerId) this.player.flash();
+        else if (e.targetId === botId) this.bot.flash();
+        return;
+      }
       case 'levelUp':
         if (e.heroId === playerId) levelUpBurst(this, this.state.player, tr(this, 'fx.levelUp'));
         return;

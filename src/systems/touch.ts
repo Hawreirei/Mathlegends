@@ -36,10 +36,18 @@ export function safeAreaInGame(css: Insets, gamePxPerCssPx: number): Insets {
   return { top: f(css.top), right: f(css.right), bottom: f(css.bottom), left: f(css.left) };
 }
 
-/** Three skill buttons on a quarter arc to the left of and above the attack button. */
-export function skillButtonPositions(attack: Point, distance: number): Point[] {
-  return [180, 225, 270].map((deg) => {
+/**
+ * Skill buttons around the attack button: three on a quarter arc to its left and above it,
+ * and the ultimate (#33) further out on the same diagonal, at `ultimateDistance`.
+ */
+export function skillButtonPositions(
+  attack: Point,
+  distance: number,
+  ultimateDistance = distance * 1.7,
+): Point[] {
+  const at = (deg: number, d: number) => {
     const a = (deg * Math.PI) / 180;
-    return { x: attack.x + Math.cos(a) * distance, y: attack.y + Math.sin(a) * distance };
-  });
+    return { x: attack.x + Math.cos(a) * d, y: attack.y + Math.sin(a) * d };
+  };
+  return [at(180, distance), at(225, distance), at(270, distance), at(225, ultimateDistance)];
 }

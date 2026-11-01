@@ -7,9 +7,16 @@
  * gold ticks; heroes regenerate, heal in their base and respawn; the winner is checked.
  */
 import { botMoveDir, createBrain, thinkBot, type BotBrain } from './bot';
-import { canAttack, nearestEnemyInRange, regenerate, resolveAttack, tickRespawn } from './combat';
-import type { BotConfig, Hero, MinionsFile, StructuresFile } from './data';
-import type { EconomyConfig, MinionType } from './economy';
+import {
+  canAttack,
+  nearestEnemyInRange,
+  regenerate,
+  resolveAttack,
+  takeDamage,
+  tickRespawn,
+} from './combat';
+import type { BotConfig, Hero, MinionsFile, SkillsFile, StructuresFile } from './data';
+import { damage, type EconomyConfig, type MinionType } from './economy';
 import { createHeroState, moveHero, walkableArea, type HeroState, type Rect } from './hero';
 import type { LaneMap, Point, Team } from './map';
 import { spawnWave, stepMinions, wavesDue, type MinionState } from './minions';
@@ -31,6 +38,19 @@ import {
   type StructureState,
 } from './structures';
 import { resolveLastHitGold } from './rewards';
+import {
+  applyBuff,
+  castProblem,
+  dashEnd,
+  direction,
+  expireEffects,
+  pickTarget,
+  scaled,
+  skillInSlot,
+  stepProjectile,
+  type CastProblem,
+  type ProjectileState,
+} from './skills';
 
 export interface MatchConfig {
   econ: EconomyConfig;
@@ -40,6 +60,8 @@ export interface MatchConfig {
   playerHero: Hero;
   botHero: Hero;
   bot: BotConfig;
+  /** Skill definitions (#33). */
+  skills: SkillsFile;
 }
 
 export type Unit = HeroState | MinionState | StructureState;
@@ -57,6 +79,10 @@ export interface MatchState {
   lastHits: Record<MinionType, number>;
   brain: BotBrain;
   winner: Team | null;
+  /** Skill projectiles in flight (#33). */
+  projectiles: ProjectileState[];
+  /** Counter for projectile ids. */
+  nextProjectile: number;
 }
 
 export interface MatchInput {
@@ -64,6 +90,8 @@ export interface MatchInput {
   move: Point;
   /** True while the player wants to attack (held, or a buffered press). */
   attack: boolean;
+  /** A skill slot the player pressed this step (0-3), if any (#33). */
+  skill?: number | null;
 }
 
 export type MatchEvent =
@@ -95,7 +123,33 @@ export type MatchEvent =
       exp: number;
       at: Point;
     }
-  | { type: 'winner'; team: Team };
+  | { type: 'winner'; team: Team }
+  /** A skill was cast (#33): what to draw. `at` is the aim point. */
+  | {
+      type: 'skill';
+      by: 'player' | 'bot';
+      heroId: string;
+      skillId: string;
+      slot: number;
+      from: Point;
+      at: Point;
+      /** Dash end, if the skill dashed. */
+      dashTo: Point | null;
+      /** AoE circles to flash. */
+      blasts: { x: number; y: number; radius: number }[];
+    }
+  /** A skill could not be cast (for a short UI hint). */
+  | { type: 'skillFailed'; by: 'player' | 'bot'; slot: number; reason: CastProblem }
+  /** Damage dealt by a skill (projectile or AoE). */
+  | {
+      type: 'skillHit';
+      skillId: string;
+      targetId: string;
+      at: Point;
+      damage: number;
+      killed: boolean;
+      team: Team;
+    };
 
 export function createMatch(cfg: MatchConfig): MatchState {
   return {
@@ -109,6 +163,8 @@ export function createMatch(cfg: MatchConfig): MatchState {
     lastHits: { infantry: 0, lancer: 0, cannon: 0 },
     brain: createBrain(),
     winner: null,
+    projectiles: [],
+    nextProjectile: 0,
   };
 }
 
@@ -208,6 +264,161 @@ function heroHits(w: Work, who: 'player' | 'bot', target: Unit, cfg: MatchConfig
   if (r.killed) grantKill(w, target, attacker.id, cfg);
 }
 
+const heroOf = (w: Work, who: 'player' | 'bot') => (who === 'player' ? w.player : w.bot);
+const setHero = (w: Work, who: 'player' | 'bot', h: HeroState) => {
+  if (who === 'player') w.player = h;
+  else w.bot = h;
+};
+
+/** Skill damage to one unit: armour, shield, kill rewards (a player kill is a last hit, #27). */
+function skillDamage(
+  w: Work,
+  casterId: string,
+  skillId: string,
+  target: HeroState | MinionState,
+  raw: number,
+  cfg: MatchConfig,
+): void {
+  const dmg = damage(raw, target.armor, cfg.econ.combat.armorConstant, cfg.econ.combat.minDamage);
+  const hit = takeDamage(target, dmg, w.now, cfg.econ);
+  if (target.id === w.player.id) w.player = hit.target as HeroState;
+  else if (target.id === w.bot.id) w.bot = hit.target as HeroState;
+  else
+    w.minions = hit.killed
+      ? w.minions.filter((m) => m.id !== target.id)
+      : w.minions.map((m) => (m.id === target.id ? (hit.target as MinionState) : m));
+  w.events.push({
+    type: 'skillHit',
+    skillId,
+    targetId: target.id,
+    at: { x: target.x, y: target.y },
+    damage: dmg,
+    killed: hit.killed,
+    team: target.team === 'blue' ? 'red' : 'blue',
+  });
+  if (hit.killed) grantKill(w, target, casterId, cfg);
+}
+
+/** Casts the skill in `slot` for the player or the bot (rules in skills.ts). */
+function castSkill(w: Work, who: 'player' | 'bot', slot: number, cfg: MatchConfig): void {
+  const def = who === 'player' ? cfg.playerHero : cfg.botHero;
+  let caster = heroOf(w, who);
+  const skill = skillInSlot(def.skills, slot, cfg.skills);
+  const problem = castProblem(caster, skill, slot, w.now);
+  if (problem || !skill) {
+    w.events.push({ type: 'skillFailed', by: who, slot, reason: problem ?? 'noSkill' });
+    return;
+  }
+  const enemyHero = who === 'player' ? w.bot : w.player;
+  const target = pickTarget<HeroState | MinionState>(caster, skill.range, enemyHero, w.minions);
+  const from = { x: caster.x, y: caster.y };
+  let aim = target ? direction(caster, target, caster.facing) : caster.facing;
+  const readyAt = [...caster.skillReadyAt];
+  readyAt[slot] = w.now + skill.cooldown;
+  caster = { ...caster, mana: caster.mana - skill.mana, skillReadyAt: readyAt, facing: aim };
+  setHero(w, who, caster);
+
+  let dashTo: Point | null = null;
+  const blasts: { x: number; y: number; radius: number }[] = [];
+  const aimPoint = target
+    ? { x: target.x, y: target.y }
+    : { x: from.x + aim.x * skill.range, y: from.y + aim.y * skill.range };
+  for (const e of skill.effects) {
+    caster = heroOf(w, who);
+    if (e.kind === 'dash') {
+      const end = dashEnd(
+        caster,
+        aim,
+        e.distance,
+        target,
+        caster.attackRange * 0.6,
+        areaOf(cfg.map),
+      );
+      dashTo = end;
+      setHero(w, who, { ...caster, ...end });
+    } else if (e.kind === 'aoe') {
+      const c = e.centre === 'self' ? { x: caster.x, y: caster.y } : aimPoint;
+      blasts.push({ ...c, radius: e.radius });
+      const raw = scaled(e.damage, caster);
+      const victims = [heroOf(w, who === 'player' ? 'bot' : 'player'), ...w.minions].filter(
+        (u) => u.alive && u.team !== caster.team && Math.hypot(u.x - c.x, u.y - c.y) <= e.radius,
+      );
+      for (const v of victims) {
+        const fresh =
+          v.id === w.player.id
+            ? w.player
+            : v.id === w.bot.id
+              ? w.bot
+              : w.minions.find((m) => m.id === v.id);
+        if (fresh?.alive) skillDamage(w, caster.id, skill.id, fresh, raw, cfg);
+      }
+    } else if (e.kind === 'projectile') {
+      w.projectiles = [
+        ...w.projectiles,
+        {
+          id: `p${w.nextProjectile}`,
+          skillId: skill.id,
+          ownerId: caster.id,
+          team: caster.team,
+          x: caster.x,
+          y: caster.y,
+          dir: aim,
+          speed: e.speed,
+          left: Math.max(skill.range, 1),
+          radius: e.radius,
+          damage: scaled(e.damage, caster),
+          pierce: e.pierce,
+          hit: [],
+        },
+      ];
+      w.nextProjectile += 1;
+    } else if (e.kind === 'buff') {
+      setHero(w, who, applyBuff(caster, e, w.now));
+    } else if (e.kind === 'shield') {
+      const amount = scaled(e.amount, caster);
+      setHero(w, who, {
+        ...caster,
+        shield: Math.max(amount, caster.shield ?? 0),
+        shieldUntil: w.now + e.duration,
+      });
+    }
+    aim = heroOf(w, who).facing;
+  }
+  w.events.push({
+    type: 'skill',
+    by: who,
+    heroId: caster.id,
+    skillId: skill.id,
+    slot,
+    from,
+    at: aimPoint,
+    dashTo,
+    blasts,
+  });
+}
+
+/** Moves every projectile; hits deal skill damage to enemies (heroes and minions). */
+function stepProjectiles(w: Work, dt: number, cfg: MatchConfig): void {
+  const kept: ProjectileState[] = [];
+  for (const p of w.projectiles) {
+    const enemies = [w.player, w.bot, ...w.minions];
+    const r = stepProjectile<HeroState | MinionState>(p, dt, enemies, (u) =>
+      'heroId' in u ? cfg.minions.heroBodyRadius : u.radius,
+    );
+    for (const target of r.hits) {
+      const fresh =
+        target.id === w.player.id
+          ? w.player
+          : target.id === w.bot.id
+            ? w.bot
+            : w.minions.find((m) => m.id === target.id);
+      if (fresh?.alive) skillDamage(w, p.ownerId, p.skillId, fresh, p.damage, cfg);
+    }
+    if (r.projectile) kept.push(r.projectile);
+  }
+  w.projectiles = kept;
+}
+
 function inOwnBase(h: HeroState, map: LaneMap): boolean {
   const nexus = map.slots.find((s) => s.kind === 'nexus' && s.team === h.team)!;
   return Math.hypot(h.x - nexus.x, h.y - nexus.y) <= map.config.base.healRadius;
@@ -235,6 +446,7 @@ export function stepMatch(
       if (target) heroHits(w, 'player', target, cfg);
     }
   }
+  if (input.skill !== undefined && input.skill !== null) castSkill(w, 'player', input.skill, cfg);
 
   // 2. Bot.
   w.brain = thinkBot(
@@ -258,6 +470,9 @@ export function stepMatch(
     )
       heroHits(w, 'bot', target, cfg);
   }
+
+  // Skill projectiles (#33).
+  stepProjectiles(w, dt, cfg);
 
   // 3. Waves.
   for (const n of wavesDue(prevNow, now, cfg.econ))
@@ -335,7 +550,9 @@ export function stepMatch(
   w.playerProgress = tickPassiveGold(w.playerProgress, dt, cfg.econ);
   w.botProgress = tickPassiveGold(w.botProgress, dt, cfg.econ);
   const heal = (h: HeroState): HeroState => {
-    let x = regenerate(h, dt);
+    let x = expireEffects(regenerate(h, dt), now);
+    if (x.alive && x.mana < x.maxMana)
+      x = { ...x, mana: Math.min(x.maxMana, x.mana + x.manaRegen * dt) };
     if (x.alive && inOwnBase(x, cfg.map))
       x = {
         ...x,

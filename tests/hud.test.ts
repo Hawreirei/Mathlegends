@@ -65,6 +65,7 @@ function shapes(l: HudLayout): [string, Shape][] {
       out.push([`skill${i + 1}`, { kind: 'circle', c: s, rad: l.touch!.skillRadius }]),
     );
   }
+  l.skillBar?.forEach((r, i) => out.push([`skillBar${i + 1}`, rect(r)]));
   return out;
 }
 

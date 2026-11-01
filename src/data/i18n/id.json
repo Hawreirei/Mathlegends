@@ -87,5 +87,6 @@
   "rank.toNextMany": "{n} bintang lagi ke {year}",
   "rank.top": "Kelas tertinggi! Terus kumpulkan bintang.",
   "rank.times": "×{n}",
-  "result.accuracyPct": "Jawaban benar: {correct} dari {answered} ({pct}%)"
+  "result.accuracyPct": "Jawaban benar: {correct} dari {answered} ({pct}%)",
+  "skill.locked": "Lv {n}"
 }

@@ -18,10 +18,22 @@ export interface HeroStats {
   manaRegen: number;
 }
 
-/** A hero is a Combatant (src/systems/combat.ts) with mana, speed and a hero id. */
+/** A stat raised by a skill for a while (#33). `delta` was added to the stat and is removed at `until`. */
+export interface ActiveBuff {
+  stat: 'atk' | 'armor' | 'moveSpeed' | 'attackSpeed';
+  delta: number;
+  until: number;
+}
+
+/** A hero is a Combatant (src/systems/combat.ts) with mana, speed, skills and a hero id. */
 export interface HeroState extends HeroStats, Combatant {
   heroId: string;
   mana: number;
+  /** Last direction moved (unit vector); skills aim this way when no enemy is near (#33). */
+  facing: Point;
+  /** Match time each skill slot is ready again (#33). */
+  skillReadyAt: number[];
+  buffs: ActiveBuff[];
 }
 
 export interface Rect {
@@ -57,6 +69,11 @@ export function createHeroState(h: Hero, spawn: Point, team: Team, level = 1): H
     respawnAt: null,
     heroId: h.id,
     level,
+    facing: { x: team === 'blue' ? 1 : -1, y: 0 },
+    skillReadyAt: h.skills.map(() => 0),
+    buffs: [],
+    shield: 0,
+    shieldUntil: 0,
     ...stats,
     hp: stats.maxHp,
     mana: stats.maxMana,
@@ -105,6 +122,7 @@ export function moveHero(s: HeroState, dir: Point, dtSec: number, area: Rect): H
   const step = s.moveSpeed * dtSec * k;
   return {
     ...s,
+    facing: { x: dir.x / len, y: dir.y / len },
     x: clamp(s.x + dir.x * step, area.left, area.right),
     y: clamp(s.y + dir.y * step, area.top, area.bottom),
   };

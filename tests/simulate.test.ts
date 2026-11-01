@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import botJson from '../src/data/bot.json';
+import skillsJson from '../src/data/skills.json';
 import economyJson from '../src/data/economy.json';
 import heroesJson from '../src/data/heroes.json';
 import mapJson from '../src/data/map.json';
 import minionsJson from '../src/data/minions.json';
 import structuresJson from '../src/data/structures.json';
-import { loadBot, loadHeroes, loadMinions, loadStructures } from '../src/systems/data';
+import { loadBot, loadSkills, loadHeroes, loadMinions, loadStructures } from '../src/systems/data';
 import type { EconomyConfig } from '../src/systems/economy';
 import { buildMap, type MapConfig } from '../src/systems/map';
 import type { MatchConfig } from '../src/systems/match';
@@ -20,6 +21,7 @@ const base = (econ: EconomyConfig): MatchConfig => ({
   playerHero: heroes.heroes.find((h) => h.id === heroes.playerHero)!,
   botHero: heroes.heroes.find((h) => h.id === heroes.botHero)!,
   bot: loadBot(botJson),
+  skills: loadSkills(skillsJson),
 });
 const econ = economyJson as EconomyConfig;
 const cap = econ.fairness.mathShareCap;

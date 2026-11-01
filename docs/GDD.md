@@ -36,7 +36,7 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 
 ## 5. Controls
 - **Phone:** virtual joystick on the left; attack button and 3 skill buttons on the right; one-handed play is a requirement. Answers are large tap targets.
-- **Desktop:** WASD or arrows to move, mouse or keys to attack and cast skills, 1 to 4 (or click) to answer.
+- **Desktop:** WASD or arrows to move, Space (or click) to attack, Q / E / R / F (or click) for the 3 skills and the ultimate, 1 to 4 (or click) to answer. Phones get 4 skill buttons (the ultimate on an outer ring). See `docs/SKILLS.md`.
 - The hero **auto-targets the nearest enemy in range** when attacking.
 - Both portrait and landscape must work (the prototype fails landscape; see `docs/DESIGN.md`).
 

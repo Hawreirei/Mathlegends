@@ -39,7 +39,7 @@
         "atk": 5,
         "armor": 2.5
       },
-      "skills": [],
+      "skills": ["nova-star-toss", "nova-flash-step", "nova-light-shield", "nova-starfall"],
       "sprite": "hero-nova"
     },
     {
@@ -78,7 +78,7 @@
         "atk": 4.4,
         "armor": 2.7
       },
-      "skills": [],
+      "skills": ["mira-petal-dart", "mira-vine-leap", "mira-bark-guard", "mira-bloom-burst"],
       "sprite": "hero-mira"
     }
   ]

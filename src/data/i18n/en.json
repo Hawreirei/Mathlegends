@@ -87,5 +87,6 @@
   "rank.toNextMany": "{n} more stars to {year}",
   "rank.top": "Top Year! Keep collecting stars.",
   "rank.times": "×{n}",
-  "result.accuracyPct": "Correct answers: {correct} of {answered} ({pct}%)"
+  "result.accuracyPct": "Correct answers: {correct} of {answered} ({pct}%)",
+  "skill.locked": "Lv {n}"
 }

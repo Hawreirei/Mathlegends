@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import type { Point } from '../systems/map';
 import type { TouchLayout } from '../systems/hudLayout';
 import { joystickVector } from '../systems/touch';
+import { SkillButton } from './SkillButton';
 import { displayFont, hex, theme } from './theme';
 
 const KNOB_RADIUS = 48;
@@ -23,6 +24,8 @@ export class TouchControls {
   private readonly joyRadius: number;
   private readonly base: Phaser.GameObjects.Arc;
   private readonly knob: Phaser.GameObjects.Arc;
+  /** One per skill slot (#33); MatchHudScene updates them every frame. */
+  readonly skills: SkillButton[];
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -58,16 +61,12 @@ export class TouchControls {
       1,
       onAttackRelease,
     );
-    l.skills.forEach((p, i) =>
-      this.roundButton(
-        p,
-        l.skillRadius,
-        theme.colors.violet,
-        String(i + 1),
-        36,
-        () => onSkill(i),
-        0.55,
-      ),
+    // Skill buttons with cooldown display (#33); the 4th (outer) one is the ultimate.
+    this.skills = l.skills.map(
+      (p, i) =>
+        new SkillButton(scene, p, l.skillRadius, 'circle', String(i + 1), i === 3, () =>
+          onSkill(i),
+        ),
     );
 
     const zoneTop = topBarHeight;

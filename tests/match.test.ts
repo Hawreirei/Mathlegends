@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import botJson from '../src/data/bot.json';
+import skillsJson from '../src/data/skills.json';
 import economyJson from '../src/data/economy.json';
 import heroesJson from '../src/data/heroes.json';
 import mapJson from '../src/data/map.json';
 import minionsJson from '../src/data/minions.json';
 import structuresJson from '../src/data/structures.json';
 import { isUnsafe, thinkBot, createBrain } from '../src/systems/bot';
-import { loadBot, loadHeroes, loadMinions, loadStructures } from '../src/systems/data';
+import { loadBot, loadSkills, loadHeroes, loadMinions, loadStructures } from '../src/systems/data';
 import { validateEconomy, type EconomyConfig } from '../src/systems/economy';
 import { buildMap, type MapConfig } from '../src/systems/map';
 import { spawnWave } from '../src/systems/minions';
@@ -29,6 +30,7 @@ const cfg: MatchConfig = {
   playerHero: heroes.heroes.find((h) => h.id === heroes.playerHero)!,
   botHero: heroes.heroes.find((h) => h.id === heroes.botHero)!,
   bot: loadBot(botJson),
+  skills: loadSkills(skillsJson),
 };
 const idle = { move: { x: 0, y: 0 }, attack: false };
 const DT = 0.05;

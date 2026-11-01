@@ -40,6 +40,8 @@ export interface HudLayout {
   /** Base font size for HUD text, in game pixels. */
   fontSize: number;
   touch: TouchLayout | null;
+  /** Without touch controls: the Q E R F skill bar (#33), bottom right (landscape) or bottom centre (portrait). One square per slot. */
+  skillBar: Rect[] | null;
 }
 
 const BAR_H = 80;
@@ -48,6 +50,8 @@ const JOY_RADIUS = 110;
 const ATTACK_RADIUS = 88;
 const SKILL_RADIUS = 52;
 const SKILL_DISTANCE = 180;
+/** Desktop skill bar square (#33). */
+const SKILL_SLOT = 84;
 const TOUCH_MARGIN = 40;
 
 /** `textScale` (#31): the question card grows with the player's text size, as space allows. */
@@ -96,7 +100,7 @@ export function computeHudLayout(
       joystickRadius: JOY_RADIUS,
       attack,
       attackRadius: ATTACK_RADIUS,
-      skills: skillButtonPositions(attack, SKILL_DISTANCE),
+      skills: skillButtonPositions(attack, SKILL_DISTANCE, SKILL_DISTANCE + 2 * SKILL_RADIUS + 22),
       skillRadius: SKILL_RADIUS,
     };
   }
@@ -106,6 +110,24 @@ export function computeHudLayout(
   let cardLeft = left;
   let cardRight = right;
   let cardBottom = h - safe.bottom - PAD;
+  // Keyboard players get a skill bar in the bottom-right corner; the card keeps clear of it.
+  let skillBar: Rect[] | null = null;
+  if (!touch) {
+    const size = SKILL_SLOT;
+    const n = 4;
+    const barW = n * size + (n - 1) * 10;
+    const y = h - safe.bottom - PAD - size;
+    // Landscape: bottom-right corner, card to its left. Portrait: centred under the card.
+    const x0 = portrait ? (w - barW) / 2 : right - barW;
+    skillBar = Array.from({ length: n }, (_, i) => ({
+      x: x0 + i * (size + 10),
+      y,
+      w: size,
+      h: size,
+    }));
+    if (portrait) cardBottom = y - PAD;
+    else cardRight = x0 - 2 * PAD;
+  }
   if (touchLayout) {
     const t = touchLayout;
     const lowestTop = Math.min(
@@ -145,6 +167,7 @@ export function computeHudLayout(
     respawn: { x: w / 2, y: portrait ? h * 0.42 : h * 0.5 },
     fontSize: 26,
     touch: touchLayout,
+    skillBar,
   };
 }
 

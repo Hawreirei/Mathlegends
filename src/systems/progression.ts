@@ -55,6 +55,8 @@ export function addExp(
  */
 export function applyLevel(s: HeroState, def: Hero, level: number): HeroState {
   const next = statsAtLevel(def, level);
+  // Active skill buffs (#33) stay on top of the new level's stats.
+  for (const b of s.buffs ?? []) next[b.stat] += b.delta;
   const out = { ...s, ...next, level };
   if (!s.alive) return { ...out, hp: s.hp, mana: s.mana };
   return {

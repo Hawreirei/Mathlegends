@@ -129,6 +129,108 @@ export const heroesFileSchema = z
   });
 
 export type Hero = z.infer<typeof heroSchema>;
+
+// ---------- skills.json (#33)
+
+const scaling = z
+  .object({
+    base: nonNegative,
+    /** Added per hero level above 1. */
+    perLevel: nonNegative,
+    /** x the caster's ATK. */
+    atkRatio: z.number().min(0).optional(),
+    /** x the caster's max HP (shields). */
+    maxHpRatio: z.number().min(0).optional(),
+  })
+  .strict();
+
+export const SKILL_STATS = ['atk', 'armor', 'moveSpeed', 'attackSpeed'] as const;
+
+const effectSchema = z.discriminatedUnion('kind', [
+  /** Flies from the caster towards the target; hits the first enemy it touches (or all, with pierce). */
+  z
+    .object({
+      kind: z.literal('projectile'),
+      damage: scaling,
+      /** Pixels per second; it flies up to the skill's range. */
+      speed: positive,
+      /** Hit radius in pixels. */
+      radius: positive,
+      pierce: z.boolean(),
+    })
+    .strict(),
+  /** Damages every enemy within radius of the caster (`self`) or of the target (`target`). */
+  z
+    .object({
+      kind: z.literal('aoe'),
+      centre: z.enum(['self', 'target']),
+      radius: positive,
+      damage: scaling,
+    })
+    .strict(),
+  /** Moves the caster up to `distance` pixels towards the target (or the way it faces). */
+  z.object({ kind: z.literal('dash'), distance: positive }).strict(),
+  /** Raises one of the caster's stats for `duration` seconds: x mult and/or + add. */
+  z
+    .object({
+      kind: z.literal('buff'),
+      stat: z.enum(SKILL_STATS),
+      mult: positive.optional(),
+      add: z.number().optional(),
+      duration: positive,
+    })
+    .strict(),
+  /** Absorbs damage before HP for `duration` seconds. */
+  z.object({ kind: z.literal('shield'), amount: scaling, duration: positive }).strict(),
+]);
+
+export const skillSchema = z
+  .object({
+    id,
+    name: localized,
+    description: localized,
+    /** The ultimate takes the 4th slot. */
+    ultimate: z.boolean(),
+    /** Hero level needed to cast it. */
+    unlockLevel: z.number().int().min(1),
+    /** Seconds. */
+    cooldown: positive,
+    mana: nonNegative,
+    /** Pixels: how far the skill looks for a target (0 = self only). */
+    range: nonNegative,
+    effects: z.array(effectSchema).min(1),
+  })
+  .strict();
+
+export const skillsFileSchema = z
+  .object({ version: z.literal(1), _note: z.string().optional(), skills: z.array(skillSchema) })
+  .strict()
+  .superRefine((f, ctx) => uniqueIds(f.skills, ctx, 'skills'));
+
+export type Skill = z.infer<typeof skillSchema>;
+export type SkillEffect = z.infer<typeof effectSchema>;
+export type SkillsFile = z.infer<typeof skillsFileSchema>;
+export const loadSkills = (raw: unknown): SkillsFile => parse(skillsFileSchema, raw, 'skills.json');
+
+/**
+ * Every hero's skills exist in skills.json, the ultimate (if any) is last, and there is at most one.
+ * Returns problems; empty means fine (checked at load and in CI).
+ */
+export function checkHeroSkills(heroes: HeroesFile, skills: SkillsFile): string[] {
+  const byId = new Map(skills.skills.map((s) => [s.id, s]));
+  const out: string[] = [];
+  for (const h of heroes.heroes) {
+    const list = h.skills.map((id) => byId.get(id));
+    h.skills.forEach((id, i) => {
+      if (!list[i]) out.push(`${h.id}: skill "${id}" is not in skills.json`);
+    });
+    const ults = list.filter((s) => s?.ultimate);
+    if (ults.length > 1) out.push(`${h.id}: more than one ultimate`);
+    if (ults.length === 1 && !list[list.length - 1]?.ultimate)
+      out.push(`${h.id}: the ultimate must be the last skill`);
+  }
+  return out;
+}
 export type HeroesFile = z.infer<typeof heroesFileSchema>;
 export const loadHeroes = (raw: unknown): HeroesFile => parse(heroesFileSchema, raw, 'heroes.json');
 

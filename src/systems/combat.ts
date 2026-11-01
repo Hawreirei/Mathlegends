@@ -26,6 +26,38 @@ export interface Combatant {
   nextAttackAt: number;
   /** Match time to come back to life; null while alive (or for units that never respawn). */
   respawnAt: number | null;
+  /** Damage absorbed before HP (#33 shield skills), until `shieldUntil`. Heroes only. */
+  shield?: number;
+  shieldUntil?: number;
+}
+
+/**
+ * Takes `dmg` from a unit: an active shield absorbs first, then HP (#33). Returns the new copy,
+ * the damage that reached HP and whether it died. Used by basic attacks and skills alike.
+ */
+export function takeDamage<T extends Combatant>(
+  target: T,
+  dmg: number,
+  now: number,
+  cfg: EconomyConfig,
+): { target: T; killed: boolean } {
+  let rest = dmg;
+  let shield = target.shield ?? 0;
+  if (shield > 0 && now < (target.shieldUntil ?? 0)) {
+    const absorbed = Math.min(shield, rest);
+    shield -= absorbed;
+    rest -= absorbed;
+  }
+  const hp = Math.max(0, target.hp - rest);
+  const killed = hp === 0;
+  const out = {
+    ...target,
+    hp,
+    alive: !killed,
+    respawnAt: killed ? now + respawnSeconds(cfg, target.level) : target.respawnAt,
+  };
+  if (target.shield !== undefined) out.shield = killed ? 0 : shield;
+  return { target: out, killed };
 }
 
 /** An attack pressed during the cooldown still fires if the cooldown ends within this time. */
@@ -70,18 +102,12 @@ export function resolveAttack<A extends Combatant, T extends Combatant>(
 ): AttackResult<A, T> {
   if (!target.alive) throw new Error(`cannot attack ${target.id}: already dead`);
   const dmg = damage(attacker.atk, target.armor, cfg.combat.armorConstant, cfg.combat.minDamage);
-  const hp = Math.max(0, target.hp - dmg);
-  const killed = hp === 0;
+  const hit = takeDamage(target, dmg, now, cfg);
   return {
     attacker: { ...attacker, nextAttackAt: now + 1 / attacker.attackSpeed },
-    target: {
-      ...target,
-      hp,
-      alive: !killed,
-      respawnAt: killed ? now + respawnSeconds(cfg, target.level) : target.respawnAt,
-    },
+    target: hit.target,
     damage: dmg,
-    killed,
+    killed: hit.killed,
   };
 }
 

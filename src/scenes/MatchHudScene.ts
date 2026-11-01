@@ -4,6 +4,8 @@ import { formatDuration } from '../systems/gameState';
 import { computeHudLayout, type HudLayout, type Rect } from '../systems/hudLayout';
 import type { StructureState } from '../systems/structures';
 import { safeAreaInGame } from '../systems/touch';
+import { skillButtonState, skillInSlot } from '../systems/skills';
+import { SkillButton } from '../ui/SkillButton';
 import { Button } from '../ui/Button';
 import { HeroPanel } from '../ui/HeroPanel';
 import { Minimap } from '../ui/Minimap';
@@ -21,6 +23,10 @@ export const ATTACK_EVENT = 'ml-attack';
 /** Fired when the attack button or Space is released (holding attack keeps attacking, #19). */
 export const ATTACK_RELEASE_EVENT = 'ml-attack-release';
 export const SKILL_EVENT = 'ml-skill';
+/** Keyboard keys for skill slots 0-3 (the ultimate is F) (#33). */
+export const SKILL_KEYS = ['Q', 'E', 'R', 'F'] as const;
+/** Fired on game.events when a player skill cannot be cast: (slot, reason) (#33). */
+export const SKILL_FAILED_EVENT = 'ml-skill-failed';
 
 /**
  * Fixed overlay on top of the match world (#25). Top bar: Quit, Nexus health for both teams and
@@ -31,6 +37,7 @@ export const SKILL_EVENT = 'ml-skill';
 export class MatchHudScene extends Phaser.Scene {
   /** Present on touch devices; MatchScene reads its movement vector. */
   touch: TouchControls | null = null;
+  private skillButtons: SkillButton[] = [];
   layoutInfo?: HudLayout;
   private timerText?: Phaser.GameObjects.Text;
   private nexusBars?: Phaser.GameObjects.Graphics;
@@ -52,6 +59,11 @@ export class MatchHudScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-SPACE', () => this.game.events.emit(ATTACK_EVENT));
     this.input.keyboard?.on('keyup-SPACE', () => this.game.events.emit(ATTACK_RELEASE_EVENT));
     responsive(this, () => this.layout());
+    const onFailed = (slot: number) => this.skillButtons[slot]?.nudge();
+    this.game.events.on(SKILL_FAILED_EVENT, onFailed);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () =>
+      this.game.events.off(SKILL_FAILED_EVENT, onFailed),
+    );
     const onResolved = (r: Resolution) => this.showFeedback(r);
     this.game.events.on(QUESTION_RESOLVED_EVENT, onResolved);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () =>
@@ -96,6 +108,17 @@ export class MatchHudScene extends Phaser.Scene {
     const s = m.state;
     this.timerText?.setText(formatDuration(s.now));
     this.panel?.update(s.player, s.playerProgress);
+    // Skill buttons: cooldown sweep, seconds, mana and lock state (#33).
+    const def = m.cfg.playerHero;
+    this.skillButtons.forEach((b, slot) => {
+      const st = skillButtonState(
+        s.player,
+        skillInSlot(def.skills, slot, m.cfg.skills),
+        slot,
+        s.now,
+      );
+      b.update(st, tr(this, 'skill.locked', { n: st.unlockLevel }));
+    });
     this.minimap?.update(s, m.cameras.main.worldView);
     this.drawNexusBars(s.structures);
     this.question?.sync(
@@ -217,6 +240,21 @@ export class MatchHudScene extends Phaser.Scene {
           (i) => this.game.events.emit(SKILL_EVENT, i),
         )
       : null;
+    // Keyboard players: the Q E R F skill bar (#33).
+    this.skillButtons =
+      this.touch?.skills ??
+      (l.skillBar ?? []).map(
+        (r, i) =>
+          new SkillButton(
+            this,
+            { x: r.x + r.w / 2, y: r.y + r.h / 2 },
+            r.w / 2,
+            'square',
+            SKILL_KEYS[i] ?? '',
+            i === 3,
+            () => this.game.events.emit(SKILL_EVENT, i),
+          ),
+      );
     this.update();
   }
 }
