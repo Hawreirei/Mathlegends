@@ -5,6 +5,7 @@ import { MatchHudScene } from './scenes/MatchHudScene';
 import { MatchScene } from './scenes/MatchScene';
 import { MenuScene } from './scenes/MenuScene';
 import { ResultScene } from './scenes/ResultScene';
+import { SettingsScene } from './scenes/SettingsScene';
 import { createGameState } from './systems/gameState';
 import { logicalSize } from './systems/layout';
 import { loadFonts } from './ui/fonts';
@@ -39,7 +40,7 @@ void loadFonts().then(() => {
       width: size.width,
       height: size.height,
     },
-    scene: [BootScene, MenuScene, MatchScene, MatchHudScene, ResultScene],
+    scene: [BootScene, MenuScene, MatchScene, MatchHudScene, ResultScene, SettingsScene],
     // Use real frame time: Phaser's default smoothing treats slow frames as 60 fps,
     // which made heroes move at a fraction of their speed on slower devices (#17).
     fps: { smoothStep: false },

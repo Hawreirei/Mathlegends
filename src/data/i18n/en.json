@@ -23,5 +23,16 @@
   "hud.respawn": "Back in {n} seconds",
   "q.correct": "Correct! ×{x}",
   "q.wrong": "Not quite ×{x}",
-  "q.timeout": "Time's up ×{x}"
+  "q.timeout": "Time's up ×{x}",
+  "menu.settings": "Settings",
+  "settings.title": "Settings",
+  "settings.back": "Back",
+  "settings.dataTitle": "Answer data (for research)",
+  "settings.dataInfo": "Answers saved on this device: {answers}. Matches: {matches}. No names, and nothing is sent anywhere.",
+  "settings.dataEmpty": "No answers saved yet. Play a match first.",
+  "settings.export": "Download CSV",
+  "settings.exported": "The CSV file has been downloaded.",
+  "settings.clear": "Delete data",
+  "settings.clearConfirm": "Tap again to delete",
+  "settings.cleared": "Answer data deleted."
 }

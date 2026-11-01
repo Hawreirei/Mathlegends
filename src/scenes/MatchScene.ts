@@ -13,8 +13,22 @@ import { ATTACK_BUFFER_SEC } from '../systems/combat';
 import { loadBot, loadHeroes, loadMinions, loadRanks, loadStructures } from '../systems/data';
 import { validateEconomy, type EconomyConfig } from '../systems/economy';
 import { recordMatch, type MatchResult } from '../systems/gameState';
+import {
+  appendRows,
+  newMatchId,
+  parseLog,
+  rowFor,
+  serializeLog,
+  type AnswerRow,
+  type MatchLogInfo,
+} from '../systems/answerLog';
 import { serializeReviewQueue, updateReviewQueue } from '../systems/reviewQueue';
-import { browserStorage, saveReviewRaw } from '../utils/storage';
+import {
+  browserStorage,
+  loadAnswerLogRaw,
+  saveAnswerLogRaw,
+  saveReviewRaw,
+} from '../utils/storage';
 import { directionFromKeys, type HeroState } from '../systems/hero';
 import { buildMap, cameraZoom, type MapConfig, type Point } from '../systems/map';
 import {
@@ -33,6 +47,7 @@ import {
   createSession,
   onLastHit,
   tick,
+  timeLimit,
   type Resolution,
   type Session,
 } from '../systems/questionSession';
@@ -65,6 +80,8 @@ export class MatchScene extends Phaser.Scene {
   cfg!: MatchConfig;
   /** Questions of this match (#27); the HUD's QuestionOverlay draws session.active. */
   session!: Session;
+  private logInfo!: MatchLogInfo;
+  private logRows: AnswerRow[] = [];
   /** The whole match state; exposed for browser tests. */
   state!: MatchState;
   player!: HeroView;
@@ -150,6 +167,15 @@ export class MatchScene extends Phaser.Scene {
       getState(this).review,
     );
     this.session = createSession(engine, econ);
+    // Anonymous answer log (#30): kept here, saved on the device when the match ends or is quit.
+    this.logInfo = {
+      matchId: newMatchId(Date.now()),
+      matchStart: new Date().toISOString(),
+      playerTier: getState(this).profile.tier,
+      lang: getState(this).lang,
+    };
+    this.logRows = [];
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.saveLog());
     this.minionViews = new Map();
     this.structureViews = new Map();
     this.ending = false;
@@ -397,7 +423,27 @@ export class MatchScene extends Phaser.Scene {
       for (const e of paid.events) this.show(e);
       // The HUD shows the multiplier actually paid (the fairness cap may trim the bonus, #28).
       this.game.events.emit(QUESTION_RESOLVED_EVENT, { ...res, multiplier: paid.goldMultiplier });
+      const row =
+        res.question &&
+        rowFor(
+          res,
+          { ...this.logInfo, lang: getState(this).lang },
+          this.logRows.length + 1,
+          timeLimit(this.cfg.econ, res.question),
+        );
+      if (row) this.logRows.push(row);
     }
+  }
+
+  /** Adds this match's answers to the log saved on the device (once). */
+  private saveLog(): void {
+    if (!this.logRows.length) return;
+    const store = browserStorage();
+    saveAnswerLogRaw(
+      store,
+      serializeLog(appendRows(parseLog(loadAnswerLogRaw(store)), this.logRows)),
+    );
+    this.logRows = [];
   }
 
   finish(outcome: MatchResult['outcome']): void {

@@ -66,6 +66,10 @@ export interface Resolution {
   chosen: number | null;
   /** Seconds from showing to answering (correct/wrong only). */
   responseSec: number | null;
+  /** How the engine chose it (null when skipped); for the answer log (#30). */
+  band: Band | null;
+  /** Match time the question appeared (null when skipped). */
+  shownAt: number | null;
 }
 
 export interface Session {
@@ -96,6 +100,10 @@ export const createSession = (engine: QuestionEngine, econ: EconomyConfig): Sess
 
 type Result = { session: Session; resolutions: Resolution[] };
 
+/** Seconds a question gets: its own timeSec, else the timer of the minion matching its type. */
+export const timeLimit = (econ: EconomyConfig, q: Question): number =>
+  q.timeSec ?? econ.questionSeconds[minionForType(q.type)];
+
 const skipped = (w: { kind: MinionType; reward: HeldReward }): Resolution => ({
   outcome: 'skipped',
   multiplier: 1,
@@ -104,6 +112,8 @@ const skipped = (w: { kind: MinionType; reward: HeldReward }): Resolution => ({
   question: null,
   chosen: null,
   responseSec: null,
+  band: null,
+  shownAt: null,
 });
 
 function show(
@@ -122,7 +132,7 @@ function show(
   }
   // The timer follows the question's own type: a review question can come on another minion.
   const q = pick.question;
-  const seconds = q.timeSec ?? s.econ.questionSeconds[minionForType(q.type)];
+  const seconds = timeLimit(s.econ, q);
   return {
     ...s,
     engine: pick.engine,
@@ -195,6 +205,8 @@ export function answer(s: Session, slot: number, now: number): Result {
     question: a.question,
     chosen,
     responseSec: now - a.shownAt,
+    band: a.band,
+    shownAt: a.shownAt,
   };
   const next = { ...s, streak: right ? s.streak + 1 : 0, correct: s.correct + (right ? 1 : 0) };
   const r = advance(next, a, chosen, now);
@@ -214,6 +226,8 @@ export function tick(s: Session, now: number): Result {
     question: a.question,
     chosen: null,
     responseSec: null,
+    band: a.band,
+    shownAt: a.shownAt,
   };
   const r = advance({ ...s, streak: 0 }, a, null, now);
   return { session: r.session, resolutions: [res, ...r.resolutions] };

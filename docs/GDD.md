@@ -73,7 +73,7 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 
 ## 11. Data and privacy
 - Everything runs in the browser. Progress is saved in `localStorage` with an export/import file for changing devices.
-- Anonymous answer logs stay on the device and can be exported as CSV for research. No names, no accounts, no network calls.
+- Anonymous answer logs stay on the device and can be exported as CSV for research (schema: `docs/DATA.md`). No names, no accounts, no network calls.
 - Fonts are self-hosted; the game makes no third-party requests.
 
 ## 12. MVP scope

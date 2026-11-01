@@ -56,8 +56,18 @@ export class MenuScene extends Phaser.Scene {
       fontSize: 40,
     });
 
+    // Settings (#30): the answer data export; accessibility options come in #31.
+    new Button(
+      this,
+      cx,
+      playY + (portrait ? 120 : 110),
+      tr(this, 'menu.settings'),
+      () => this.scene.start('Settings'),
+      { width: 300, height: 72, fontSize: 28, style: 'secondary' },
+    );
+
     const tier = ranks.tiers.find((t) => t.tier === s.profile.tier) ?? ranks.tiers[0]!;
-    const rankY = portrait ? h - 120 : h * 0.84;
+    const rankY = portrait ? h - 120 : h * 0.9;
     const label = this.add
       .text(
         0,

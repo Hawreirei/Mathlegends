@@ -23,5 +23,16 @@
   "hud.respawn": "Bangkit lagi dalam {n} detik",
   "q.correct": "Benar! ×{x}",
   "q.wrong": "Kurang tepat ×{x}",
-  "q.timeout": "Waktu habis ×{x}"
+  "q.timeout": "Waktu habis ×{x}",
+  "menu.settings": "Pengaturan",
+  "settings.title": "Pengaturan",
+  "settings.back": "Kembali",
+  "settings.dataTitle": "Data jawaban (untuk penelitian)",
+  "settings.dataInfo": "Jawaban tersimpan di perangkat ini: {answers}. Pertandingan: {matches}. Tanpa nama dan tidak dikirim ke mana pun.",
+  "settings.dataEmpty": "Belum ada jawaban yang tersimpan. Mainkan satu pertandingan dulu.",
+  "settings.export": "Unduh CSV",
+  "settings.exported": "File CSV sudah diunduh.",
+  "settings.clear": "Hapus data",
+  "settings.clearConfirm": "Ketuk lagi untuk menghapus",
+  "settings.cleared": "Data jawaban sudah dihapus."
 }
