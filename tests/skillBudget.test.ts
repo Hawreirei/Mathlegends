@@ -5,12 +5,14 @@ import heroesJson from '../src/data/heroes.json';
 import mapJson from '../src/data/map.json';
 import minionsJson from '../src/data/minions.json';
 import skillsJson from '../src/data/skills.json';
+import itemsJson from '../src/data/items.json';
 import structuresJson from '../src/data/structures.json';
 import {
   loadBot,
   loadHeroes,
   loadMinions,
   loadSkills,
+  loadItems,
   loadStructures,
   type Hero,
 } from '../src/systems/data';
@@ -79,6 +81,7 @@ describe('the budget holds in real fights (#34)', () => {
       botHero: heroes.heroes.find((h) => h.id === heroes.botHero)!,
       bot: loadBot(botJson),
       skills,
+      items: loadItems(itemsJson),
     };
     let s: MatchState = createMatch(cfg);
     const y = map.heroSpawn.blue.y;

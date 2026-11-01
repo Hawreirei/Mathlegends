@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import botJson from '../data/bot.json';
 import skillsJson from '../data/skills.json';
+import itemsJson from '../data/items.json';
 import ranksJson from '../data/ranks.json';
 import economyJson from '../data/economy.json';
 import heroesJson from '../data/heroes.json';
@@ -23,6 +24,7 @@ import { ATTACK_BUFFER_SEC } from '../systems/combat';
 import {
   loadBot,
   loadSkills,
+  loadItems,
   checkHeroSkills,
   loadHeroes,
   loadMinions,
@@ -50,6 +52,8 @@ import { buildMap, cameraZoom, type MapConfig } from '../systems/map';
 import {
   applyLastHitReward,
   createMatch,
+  playerBuy,
+  playerSell,
   stepMatch,
   type MatchConfig,
   type MatchEvent,
@@ -191,6 +195,7 @@ export class MatchScene extends Phaser.Scene {
       botHero: find(heroes.botHero, 'botHero'),
       bot: loadBot(botJson),
       skills,
+      items: loadItems(itemsJson),
     };
     this.dangerRingDistance = structures.dangerRingDistance;
     this.state = createMatch(this.cfg);
@@ -497,6 +502,20 @@ export class MatchScene extends Phaser.Scene {
     this.dangerRing = this.add.graphics().setDepth(1);
     for (const s of this.state.structures)
       this.structureViews.set(s.id, new StructureView(this, s));
+  }
+
+  /** Shop (#35): buy an item for the player. Returns false if it could not be bought. */
+  buyItem(id: string): boolean {
+    const r = playerBuy(this.state, id, this.cfg);
+    this.state = r.state;
+    return r.result.ok;
+  }
+
+  /** Shop (#35): sell the item in a slot. Returns the gold refunded, or null. */
+  sellSlot(slot: number): number | null {
+    const r = playerSell(this.state, slot, this.cfg);
+    this.state = r.state;
+    return r.result.ok ? r.result.gold : null;
   }
 
   /** The player tapped answer slot `slot` on the question card. */

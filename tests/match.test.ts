@@ -1,13 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import botJson from '../src/data/bot.json';
 import skillsJson from '../src/data/skills.json';
+import itemsJson from '../src/data/items.json';
 import economyJson from '../src/data/economy.json';
 import heroesJson from '../src/data/heroes.json';
 import mapJson from '../src/data/map.json';
 import minionsJson from '../src/data/minions.json';
 import structuresJson from '../src/data/structures.json';
 import { isUnsafe, thinkBot, createBrain } from '../src/systems/bot';
-import { loadBot, loadSkills, loadHeroes, loadMinions, loadStructures } from '../src/systems/data';
+import {
+  loadBot,
+  loadSkills,
+  loadItems,
+  loadHeroes,
+  loadMinions,
+  loadStructures,
+} from '../src/systems/data';
 import { validateEconomy, type EconomyConfig } from '../src/systems/economy';
 import { buildMap, type MapConfig } from '../src/systems/map';
 import { spawnWave } from '../src/systems/minions';
@@ -31,6 +39,7 @@ const cfg: MatchConfig = {
   botHero: heroes.heroes.find((h) => h.id === heroes.botHero)!,
   bot: loadBot(botJson),
   skills: loadSkills(skillsJson),
+  items: loadItems(itemsJson),
 };
 const idle = { move: { x: 0, y: 0 }, attack: false };
 const DT = 0.05;
@@ -225,5 +234,23 @@ describe('a full headless match', () => {
     expect(r.state.winner).toBe('blue');
     expect(r.events.some((e) => e.type === 'winner')).toBe(true);
     expect(stepMatch(r.state, idle, DT, cfg).events).toEqual([]);
+  });
+});
+
+describe('shop in the match (#35)', () => {
+  it('the player buys and sells while the match runs', async () => {
+    const { playerBuy, playerSell } = await import('../src/systems/match');
+    let s = createMatch(cfg);
+    const gold = s.playerProgress.gold;
+    const buy = playerBuy(s, 'training-sword', cfg);
+    expect(buy.result.ok).toBe(true);
+    s = buy.state;
+    expect(s.playerProgress.gold).toBe(gold - 300);
+    expect(s.playerItems[0]).toBe('training-sword');
+    s = run(s, 1).state;
+    const sell = playerSell(s, 0, cfg);
+    expect(sell.result).toMatchObject({ ok: true, gold: 210 });
+    expect(sell.state.playerItems[0]).toBeNull();
+    expect(playerBuy(s, 'comet-spear', cfg).result).toEqual({ ok: false, reason: 'gold' });
   });
 });

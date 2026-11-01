@@ -6,6 +6,7 @@ import type { StructureState } from '../systems/structures';
 import { safeAreaInGame } from '../systems/touch';
 import { skillButtonState, skillInSlot } from '../systems/skills';
 import { SkillButton } from '../ui/SkillButton';
+import { ShopPanel } from '../ui/ShopPanel';
 import { Button } from '../ui/Button';
 import { HeroPanel } from '../ui/HeroPanel';
 import { Minimap } from '../ui/Minimap';
@@ -38,6 +39,13 @@ export class MatchHudScene extends Phaser.Scene {
   /** Present on touch devices; MatchScene reads its movement vector. */
   touch: TouchControls | null = null;
   private skillButtons: SkillButton[] = [];
+  private shop?: ShopPanel;
+
+  private toggleShop(): void {
+    if (!this.shop) return;
+    if (this.shop.visible) this.shop.close();
+    else this.shop.open();
+  }
   layoutInfo?: HudLayout;
   private timerText?: Phaser.GameObjects.Text;
   private nexusBars?: Phaser.GameObjects.Graphics;
@@ -58,6 +66,8 @@ export class MatchHudScene extends Phaser.Scene {
   create(): void {
     this.input.keyboard?.on('keydown-SPACE', () => this.game.events.emit(ATTACK_EVENT));
     this.input.keyboard?.on('keyup-SPACE', () => this.game.events.emit(ATTACK_RELEASE_EVENT));
+    this.input.keyboard?.on('keydown-B', () => this.toggleShop());
+    this.input.keyboard?.on('keydown-ESC', () => this.shop?.close());
     responsive(this, () => this.layout());
     const onFailed = (slot: number) => this.skillButtons[slot]?.nudge();
     this.game.events.on(SKILL_FAILED_EVENT, onFailed);
@@ -108,6 +118,7 @@ export class MatchHudScene extends Phaser.Scene {
     const s = m.state;
     this.timerText?.setText(formatDuration(s.now));
     this.panel?.update(s.player, s.playerProgress);
+    this.shop?.sync({ gold: s.playerProgress.gold, inventory: s.playerItems });
     // Skill buttons: cooldown sweep, seconds, mana and lock state (#33).
     const def = m.cfg.playerHero;
     this.skillButtons.forEach((b, slot) => {
@@ -240,6 +251,28 @@ export class MatchHudScene extends Phaser.Scene {
           (i) => this.game.events.emit(SKILL_EVENT, i),
         )
       : null;
+    // Shop (#35): top-bar button, or B; Esc closes. The match keeps running.
+    new Button(
+      this,
+      l.shopButton.x + l.shopButton.w / 2,
+      l.shopButton.y + l.shopButton.h / 2,
+      tr(this, 'hud.shop'),
+      () => this.toggleShop(),
+      { width: l.shopButton.w, height: l.shopButton.h - 8, fontSize: 24 },
+    );
+    const wasOpen = this.shop?.visible ?? false;
+    this.shop = new ShopPanel(
+      this,
+      l.shopPanel,
+      m.cfg.items,
+      m.cfg.econ,
+      getState(this).lang,
+      (id) => this.match.buyItem(id),
+      (slot) => this.match.sellSlot(slot),
+      () => this.shop?.close(),
+    );
+    if (wasOpen) this.shop.open();
+
     // Keyboard players: the Q E R F skill bar (#33).
     this.skillButtons =
       this.touch?.skills ??

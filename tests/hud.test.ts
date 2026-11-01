@@ -57,6 +57,7 @@ function shapes(l: HudLayout): [string, Shape][] {
     ['heroPanel', rect(l.heroPanel)],
     ['minimap', rect(l.minimap)],
     ['questionCard', rect(l.questionCard)],
+    ['shopButton', rect(l.shopButton)],
   ];
   if (l.touch) {
     out.push(['joystick', { kind: 'circle', c: l.touch.joystick, rad: l.touch.joystickRadius }]);
@@ -128,6 +129,30 @@ describe('mini-map', () => {
     const mid = worldToMinimap({ x: world.width / 2, y: world.height / 2 }, world, r);
     expect(mid.x).toBeCloseTo(250);
     expect(mid.y).toBeCloseTo(98);
+  });
+});
+
+describe('shop panel (#35)', () => {
+  it('stays on screen, below the top bar, and clear of the touch controls on every screen', () => {
+    for (const [name, sw, sh] of SCREENS) {
+      const { width: w, height: h } = logicalSize(sw, sh);
+      for (const touch of [true, false]) {
+        const l = computeHudLayout(w, h, noSafe, touch);
+        const p = l.shopPanel;
+        expect(inside(p, w, h), name).toBe(true);
+        expect(p.y).toBeGreaterThanOrEqual(l.topBar.h);
+        expect(p.w, name).toBeGreaterThanOrEqual(520);
+        expect(p.h, name).toBeGreaterThanOrEqual(420);
+        for (const [n, s] of shapes(l))
+          if (
+            ['joystick', 'attack', 'quit', 'timer', 'nexusBlue', 'nexusRed'].includes(n) ||
+            n.startsWith('skill')
+          )
+            expect(overlap({ kind: 'rect', r: p }, s), `${name}: shop panel overlaps ${n}`).toBe(
+              false,
+            );
+      }
+    }
   });
 });
 

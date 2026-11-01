@@ -15,7 +15,8 @@ import {
   takeDamage,
   tickRespawn,
 } from './combat';
-import type { BotConfig, Hero, MinionsFile, SkillsFile, StructuresFile } from './data';
+import type { BotConfig, Hero, ItemsFile, MinionsFile, SkillsFile, StructuresFile } from './data';
+import { buyItem, emptyInventory, sellItem, type Inventory, type ShopResult } from './inventory';
 import { damage, type EconomyConfig, type MinionType } from './economy';
 import { createHeroState, moveHero, walkableArea, type HeroState, type Rect } from './hero';
 import type { LaneMap, Point, Team } from './map';
@@ -62,6 +63,8 @@ export interface MatchConfig {
   bot: BotConfig;
   /** Skill definitions (#33). */
   skills: SkillsFile;
+  /** Shop items (#35). */
+  items: ItemsFile;
 }
 
 export type Unit = HeroState | MinionState | StructureState;
@@ -83,6 +86,9 @@ export interface MatchState {
   projectiles: ProjectileState[];
   /** Counter for projectile ids. */
   nextProjectile: number;
+  /** Item slots (#35): item ids or null. */
+  playerItems: Inventory;
+  botItems: Inventory;
 }
 
 export interface MatchInput {
@@ -165,6 +171,8 @@ export function createMatch(cfg: MatchConfig): MatchState {
     winner: null,
     projectiles: [],
     nextProjectile: 0,
+    playerItems: emptyInventory(cfg.econ),
+    botItems: emptyInventory(cfg.econ),
   };
 }
 
@@ -604,5 +612,33 @@ export function applyLastHitReward(
     events,
     goldMultiplier: base.gold > 0 ? gold / base.gold : multiplier,
     capped: g.capped,
+  };
+}
+
+/** The player buys an item from the shop (#35); the match keeps running. */
+export function playerBuy(
+  state: MatchState,
+  itemId: string,
+  cfg: MatchConfig,
+): { state: MatchState; result: ShopResult } {
+  const r = buyItem(state.playerProgress, state.playerItems, cfg.items, itemId);
+  if (!r.ok) return { state, result: r };
+  return {
+    state: { ...state, playerProgress: r.progress, playerItems: r.inventory },
+    result: r,
+  };
+}
+
+/** The player sells the item in `slot` for 70% of its cost (#35). */
+export function playerSell(
+  state: MatchState,
+  slot: number,
+  cfg: MatchConfig,
+): { state: MatchState; result: ShopResult } {
+  const r = sellItem(state.playerProgress, state.playerItems, cfg.items, slot, cfg.econ);
+  if (!r.ok) return { state, result: r };
+  return {
+    state: { ...state, playerProgress: r.progress, playerItems: r.inventory },
+    result: r,
   };
 }

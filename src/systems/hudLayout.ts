@@ -40,6 +40,10 @@ export interface HudLayout {
   /** Base font size for HUD text, in game pixels. */
   fontSize: number;
   touch: TouchLayout | null;
+  /** The Shop button (#35), at the right end of the top bar. */
+  shopButton: Rect;
+  /** The shop overlay (#35): over the map between the top bar and the bottom, clear of the touch controls. */
+  shopPanel: Rect;
   /** Without touch controls: the Q E R F skill bar (#33), bottom right (landscape) or bottom centre (portrait). One square per slot. */
   skillBar: Rect[] | null;
 }
@@ -78,6 +82,9 @@ export function computeHudLayout(
   // Each box includes the Nexus diamond (24 px tall) at its outer end, so the overlap test covers it.
   const nexusBlue = { x: timer.x - PAD - nexusW, y: barY - 13, w: nexusW, h: 26 };
   const nexusRed = { x: timer.x + timer.w + PAD, y: barY - 13, w: nexusW, h: 26 };
+  // Shop button (#35): the right end of the top bar, mirroring Quit.
+  const shopW = Math.min(150, right - (nexusRed.x + nexusRed.w) - PAD);
+  const shopButton = { x: right - shopW, y: barY - 28, w: shopW, h: 56 };
 
   const panelY = top + BAR_H + 14;
   const panelW = portrait ? 330 : 360;
@@ -168,6 +175,14 @@ export function computeHudLayout(
     fontSize: 26,
     touch: touchLayout,
     skillBar,
+    shopButton,
+    // Same columns as the question card, from just under the top bar to the card's bottom.
+    shopPanel: {
+      x: questionCard.x,
+      y: top + BAR_H + 8,
+      w: questionCard.w,
+      h: questionCard.y + questionCard.h - (top + BAR_H + 8),
+    },
   };
 }
 

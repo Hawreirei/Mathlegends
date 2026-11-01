@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import botJson from '../src/data/bot.json';
 import skillsJson from '../src/data/skills.json';
+import itemsJson from '../src/data/items.json';
 import economyJson from '../src/data/economy.json';
 import heroesJson from '../src/data/heroes.json';
 import mapJson from '../src/data/map.json';
@@ -11,6 +12,7 @@ import {
   DataError,
   loadBot,
   loadSkills,
+  loadItems,
   loadHeroes,
   loadMinions,
   loadStructures,
@@ -141,6 +143,7 @@ describe('adding a hero needs JSON only (#32)', () => {
       botHero: loaded.heroes.find((h) => h.id === loaded.botHero)!,
       bot: loadBot(botJson),
       skills: loadSkills(skillsJson),
+      items: loadItems(itemsJson),
     };
     let s = createMatch(cfg);
     expect(s.player.heroId ?? s.player.id).toBeTruthy();
