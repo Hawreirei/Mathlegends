@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#151b47" />
+    <title>MathLegends — Design Prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <main id="app" aria-live="polite">
+      <section class="screen menu-screen active" id="menu-screen" aria-label="Main menu">
+        <div class="stars"></div>
+        <div class="menu-topbar"><span class="brand-mini">MATH<span>LEGENDS</span></span><button class="icon-button" id="sound-button" aria-label="Toggle sound">♫</button></div>
+        <div class="menu-orb orb-one"></div><div class="menu-orb orb-two"></div>
+        <div class="menu-content">
+          <div class="crest" aria-hidden="true"><span>∑</span></div>
+          <p class="eyebrow">THE ADVENTURE OF A THOUSAND ANSWERS</p>
+          <h1>MATH<span>LEGENDS</span></h1>
+          <p class="tagline">Outsmart the lane. Become the legend.</p>
+          <button class="button button-primary button-large" id="play-button">PLAY ADVENTURE <span>➜</span></button>
+          <div class="menu-actions"><button class="text-action" id="how-button">How to play</button><span></span><button class="text-action">Settings</button></div>
+        </div>
+        <div class="menu-hero" aria-hidden="true"><div class="staff"></div><div class="wizard-head"><i></i></div><div class="wizard-body"></div><div class="wizard-cloak"></div><div class="spark s1">✦</div><div class="spark s2">✧</div></div>
+        <footer class="menu-footer"><span>YEAR 4 • 2 STARS</span><span class="rank-chip">◆ Scholar</span></footer>
+      </section>
+
+      <section class="screen select-screen" id="select-screen" aria-label="Choose a legend">
+        <header class="simple-header"><button class="back-button" data-back="menu-screen">‹ Back</button><span class="brand-mini">MATH<span>LEGENDS</span></span><span></span></header>
+        <div class="select-layout">
+          <div class="select-copy"><p class="eyebrow">CHOOSE YOUR LEGEND</p><h2>Every mind has<br /><em>a magic.</em></h2><p>Each legend learns differently. Pick the style that feels like you.</p></div>
+          <div class="hero-cards" role="list">
+            <button class="hero-card selected" data-hero="nova" role="listitem"><div class="portrait nova"><span class="portrait-symbol">✦</span></div><div><strong>NOVA</strong><small>The Quick Thinker</small></div><b>⚡</b></button>
+            <button class="hero-card" data-hero="orion" role="listitem"><div class="portrait orion"><span class="portrait-symbol">◈</span></div><div><strong>ORION</strong><small>The Pattern Seer</small></div><b>◉</b></button>
+            <button class="hero-card" data-hero="mira" role="listitem"><div class="portrait mira"><span class="portrait-symbol">❋</span></div><div><strong>MIRA</strong><small>The Number Knight</small></div><b>✦</b></button>
+          </div>
+          <div class="hero-detail"><div class="large-portrait nova" id="hero-preview"><span class="portrait-symbol">✦</span></div><div><p class="eyebrow" id="hero-role">THE QUICK THINKER</p><h3 id="hero-name">NOVA</h3><p id="hero-description">Quick casts and bright ideas. Nova turns sharp answers into swift bursts of power.</p><div class="stat-row"><span><i>✦</i> Focus <b id="focus-value">8</b></span><span><i>◒</i> Spark <b id="spark-value">9</b></span></div><button class="button button-primary" id="continue-button">CONTINUE <span>➜</span></button></div></div>
+        </div>
+      </section>
+
+      <section class="screen game-screen" id="game-screen" aria-label="MathLegends match">
+        <div class="game-topbar"><button class="pause" id="pause-button" aria-label="Pause game">Ⅱ</button><div class="scoreboard"><div class="team-score blue-score"><strong>1</strong><small>Team Nova</small></div><div class="match-time">02:48</div><div class="team-score red-score"><strong>0</strong><small>Team Echo</small></div></div><button class="question-count" aria-label="Question accuracy"><span>✦</span><b id="accuracy">100%</b></button></div>
+        <div class="arena">
+          <div class="river"></div><div class="lane lane-path"></div><div class="lane lane-inner"></div><div class="bush bush-left"></div><div class="bush bush-right"></div><div class="rune rune-one">＋</div><div class="rune rune-two">×</div>
+          <div class="tower blue-tower"><i></i><span></span></div><div class="tower red-tower"><i></i><span></span></div>
+          <div class="unit enemy-minion m1"><span>−</span><i class="health"><b></b></i></div><div class="unit enemy-minion m2"><span>÷</span><i class="health"><b></b></i></div><div class="unit enemy-minion m3"><span>+</span><i class="health"><b></b></i></div>
+          <div class="unit ally-minion a1"><span>+</span><i class="health"><b></b></i></div><div class="unit ally-minion a2"><span>×</span><i class="health"><b></b></i></div>
+          <button class="player-unit" id="attack-button" aria-label="Attack minion"><span class="hero-token">✦</span><i class="health"><b></b></i><em>NOVA</em></button>
+          <div class="target-ring"></div><div class="damage-pop" id="damage-pop">-32</div>
+        </div>
+        <aside class="quest-panel"><div class="quest-icon">✦</div><div><small>QUEST</small><strong>Land the final hit!</strong><p>Correct answers boost your gold &amp; EXP.</p></div></aside>
+        <section class="hud"><div class="profile"><div class="avatar nova">✦</div><div><strong>NOVA <span>Lv. 4</span></strong><div class="xp"><b></b></div></div></div><div class="gold"><span>◉</span> <b id="gold-value">240</b></div><button class="shop-button" id="shop-button">SHOP <span>⌄</span></button><div class="abilities"><button class="ability active" id="spell-button" aria-label="Spark shot">✦<small>Q</small></button><button class="ability" aria-label="Focus ability">◈<small>W</small></button><button class="ability" aria-label="Ultimate ability">☄<small>E</small></button></div></section>
+        <section class="question-modal" id="question-modal" aria-modal="true" role="dialog" aria-labelledby="question-title"><div class="question-head"><div><span>LAST-HIT CHALLENGE</span><h2 id="question-title">What is 8 × 7?</h2></div><div class="timer"><b id="timer-value">08</b><small>SECONDS</small></div></div><div class="answers" id="answers"></div><p class="streak" id="streak-text">★ 3 correct in a row! +15% bonus</p></section>
+        <section class="shop-drawer" id="shop-drawer"><div class="drawer-head"><div><small>ARCANE MARKET</small><h3>Spend your gold</h3></div><button id="close-shop">×</button></div><div class="item-list"><button class="item"><i class="item-orb">✦</i><span><b>Focus Orb</b><small>+8 ability power</small></span><em>120</em></button><button class="item"><i class="item-boot">↟</i><span><b>Swift Boots</b><small>+10% movement</small></span><em>180</em></button><button class="item"><i class="item-shield">⬡</i><span><b>Logic Guard</b><small>+60 health</small></span><em>200</em></button></div></section>
+        <section class="pause-modal" id="pause-modal"><div><p class="eyebrow">MATCH PAUSED</p><h2>Take a breath.</h2><button class="button button-primary" id="resume-button">RESUME</button><button class="button button-ghost" data-back="menu-screen">EXIT TO MENU</button></div></section>
+      </section>
+
+      <section class="screen result-screen" id="result-screen"><div class="result-card"><div class="victory-rays"></div><div class="crest victory">✦</div><p class="eyebrow">MATCH COMPLETE</p><h2 id="result-title">BRILLIANT!</h2><p id="result-copy">That answer powered up your legend.</p><div class="reward-row"><div><b>+30</b><small>GOLD</small></div><div><b>+45</b><small>EXP</small></div><div><b>+1</b><small>STREAK</small></div></div><button class="button button-primary" id="play-again">PLAY AGAIN</button><button class="button button-ghost" data-back="menu-screen">MAIN MENU</button></div></section>
+
+      <section class="how-modal" id="how-modal"><div class="how-card"><button class="close-modal" id="close-how">×</button><p class="eyebrow">HOW TO PLAY</p><h2>Win the lane<br />with your brain.</h2><ol><li><i>1</i><span>Attack minions to lower their health.</span></li><li><i>2</i><span>Land the final hit to unlock a math challenge.</span></li><li><i>3</i><span>Answer correctly for bonus gold and EXP.</span></li></ol><button class="button button-primary" id="got-it">GOT IT</button></div></section>
+    </main>
+    <script src="src/game.js"></script>
+  </body>
+</html>
