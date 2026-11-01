@@ -73,10 +73,11 @@ The single lane, loaded by [`src/systems/map.ts`](../src/systems/map.ts). Only t
 | `lane.walkMargin` | 60 | Heroes stay this far from the lane edges and world ends (about one token radius) |
 | `river.y` / `river.thickness` | 1060 / 140 | Decorative river below the lane |
 | `blue.nexusX` | 300 | Blue Nexus (red: 4100) |
-| `blue.towerXs` | 1000, 1750 | Inner and outer blue towers (red: 3400, 2650) |
+| `blue.towerXs` | 900, 1550 | Inner and outer blue towers (red: 3500, 2850). Moved back in #24: at 1000/1750 the outer towers' ranges left only 60 px of untowered lane in the middle, so every fight happened under a tower. Now the middle 460 px (about x 1970 to 2430) is free. |
 | `blue.heroSpawnX` / `minionSpawnX` | 520 / 460 | Spawn points on the lane |
 | `camera.minVisibleWidth` | 1150 | Narrow (portrait) screens zoom out until at least this much lane is visible |
 | `camera.lerp` | 0.12 | How softly the camera follows the player (0 to 1; higher is tighter) |
+| `base.healRadius` / `healFractionPerSec` | 260 / 0.1 | Inside its own base pad a hero heals 10% of max HP per second (#24) |
 
 The loader rejects a lane that does not fit in the world, towers that are not in order from the Nexus towards the middle, or spawns on the wrong half. On tall portrait screens the camera centres the world vertically.
 
@@ -110,4 +111,24 @@ Rules (`src/systems/structures.ts`):
 - **Minion targeting:** enemy minions, then attackable enemy structures, then enemy heroes, so waves push towers.
 - **Win:** destroying the enemy Nexus ends the match (Victory); losing your own ends it (Defeat). The Result screen follows 1.5 s later so the collapse can be seen.
 
-A simulation with blue waves only (no defenders) takes the red outer tower at 103 s, the inner at 191 s and the Nexus at 238 s. With defending minions and a hero, matches should land near the 8 to 10 minute target; the simulator (#37) will measure it.
+A simulation with blue waves only (no defenders, old tower positions) took the red outer tower at 103 s, the inner at 191 s and the Nexus at 238 s. With the bot (#24) and an idle player, the bot's side takes the blue Nexus at about 14 minutes. With defending minions and a hero, matches should land near the 8 to 10 minute target; the simulator (#37) will measure it.
+
+## bot.json (issue #24)
+
+The basic bot (`src/systems/bot.ts`), one fixed difficulty; #43 adds a step per Year tier.
+
+| Field | Value | Meaning |
+|---|---|---|
+| `decisionIntervalSec` | 0.3 | Re-thinks this often (its reaction time) |
+| `retreatHpFraction` / `returnHpFraction` | 0.3 / 0.85 | Walks home below 30% HP; comes back at 85% |
+| `engageRange` | 380 | Fights the player when this close... |
+| `engageMinHpFraction` | 0.5 | ...and at least half HP, and the player is not under their own tower |
+| `acquireRangeBonus` | 120 | Walks up to minions this far beyond its attack range |
+| `holdBackPx` | 120 | Stands this far behind its front minion |
+| `towerSafetyMarginPx` | 60 | Keeps this far outside an enemy tower's range unless a friendly minion is under it |
+
+Priority each decision: a minion it can kill in one blow (last hit), then the player (if the conditions above hold), then the weakest enemy minion in reach, else hold the lane behind its minions (or behind its own outer tower before the first wave).
+
+## minions.json: heroBodyRadius
+
+`heroBodyRadius` (46) keeps minions at least their radius plus this far from any hero, so a hero is never hidden under a wave. Infantry can still hit heroes (26 + 46 = 72 < 90 range).

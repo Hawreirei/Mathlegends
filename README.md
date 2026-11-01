@@ -40,5 +40,8 @@ Indonesian or English, switched with the **ID | EN** toggle on the menu. The cha
 ## Combat (#19)
 Attack hits the nearest living enemy within the hero's attack range, once every 1/attackSpeed seconds; a press during the cooldown is remembered for 0.4 s. Damage = ATK x 100 / (100 + ARMOR) from `economy.json`. Heroes regenerate HP, die at 0 HP and respawn at their own base with full HP after 5 + 1 x level seconds (a countdown shows at the base). Rules: `src/systems/combat.ts`, shared with minions (#20) and towers (#21).
 
+## Match rules and the bot (#24)
+All match rules run in `src/systems/match.ts` (`createMatch`, `stepMatch`): pure TypeScript that takes player input and returns the next state plus events (attacks, spawns, rewards, level-ups, last hits, winner). `MatchScene` only reads input and draws those events, and `tests/match.test.ts` plays full 10-minute matches headless. The bot (`src/systems/bot.ts`, settings in `src/data/bot.json`) holds the lane behind its minions, last-hits, fights the player when close and healthy, avoids standing under the player's towers alone, and walks home to heal in its base below 30% HP.
+
 ## Project layout
 `src/{scenes,entities,systems,data,ui,utils}`, `tests/`, `docs/`, `scripts/`. Game rules live in `src/systems/` with no Phaser imports.

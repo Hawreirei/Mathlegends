@@ -40,7 +40,7 @@ export class MatchHudScene extends Phaser.Scene {
   }
 
   update(): void {
-    this.timerText?.setText(formatDuration((this.match.time.now - this.match.startedAt) / 1000));
+    this.timerText?.setText(formatDuration(this.match.now));
     const p = this.match.playerProgress;
     if (p)
       this.statsText?.setText(

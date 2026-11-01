@@ -146,6 +146,7 @@ export function stepMinions(
   c: EconomyConfig,
   map: LaneMap,
   structuresIn: readonly StructureState[] = [],
+  heroBodyRadius = 0,
 ): StepResult {
   const area = walkableArea(map);
   const minions = minionsIn.map((x) => ({ ...x }));
@@ -225,6 +226,23 @@ export function stepMinions(
       b.x += (dx / d) * push;
       b.y += (dy / d) * push;
     }
+  // Keep minions off heroes' bodies (heroes are not pushed), so a hero is never hidden under a wave.
+  if (heroBodyRadius > 0)
+    for (const m of alive)
+      for (const h of heroes) {
+        if (!h.alive) continue;
+        const min = m.radius + heroBodyRadius;
+        const dx = m.x - h.x;
+        const dy = m.y - h.y;
+        const d = Math.hypot(dx, dy);
+        if (d >= min) continue;
+        if (d === 0) {
+          m.y += min;
+          continue;
+        }
+        m.x = h.x + (dx / d) * min;
+        m.y = h.y + (dy / d) * min;
+      }
   for (const m of alive) {
     m.x = Math.min(area.right, Math.max(area.left, m.x));
     m.y = Math.min(area.bottom, Math.max(area.top, m.y));

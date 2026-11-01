@@ -248,6 +248,8 @@ export const minionsFileSchema = z
     types: z.object({ infantry: minionStats, lancer: minionStats, cannon: minionStats }).strict(),
     /** Pixels between minions in a spawned wave. */
     spacing: positive,
+    /** Minions keep at least their radius plus this from any hero, so heroes stay visible in a fight. */
+    heroBodyRadius: nonNegative,
   })
   .strict();
 
@@ -279,3 +281,35 @@ export const structuresFileSchema = z
 export type StructuresFile = z.infer<typeof structuresFileSchema>;
 export const loadStructures = (raw: unknown): StructuresFile =>
   parse(structuresFileSchema, raw, 'structures.json');
+
+// ---------- bot.json (#24)
+
+export const botFileSchema = z
+  .object({
+    version: z.literal(1),
+    _note: z.string().optional(),
+    /** Seconds between decisions (the bot's reaction time). */
+    decisionIntervalSec: positive,
+    /** Go back to base below this fraction of max HP... */
+    retreatHpFraction: fraction,
+    /** ...and come back to the lane at or above this one. */
+    returnHpFraction: fraction,
+    /** Go after the player when they are this close (pixels). */
+    engageRange: positive,
+    /** Only fight the player at or above this fraction of max HP. */
+    engageMinHpFraction: fraction,
+    /** Walk up to minions this far beyond attack range. */
+    acquireRangeBonus: nonNegative,
+    /** Stand this far behind the front friendly minion. */
+    holdBackPx: nonNegative,
+    /** Stay this much further out than an enemy tower's range when no friendly minion is there. */
+    towerSafetyMarginPx: nonNegative,
+  })
+  .strict()
+  .refine((b) => b.returnHpFraction > b.retreatHpFraction, {
+    message: 'returnHpFraction must be above retreatHpFraction',
+    path: ['returnHpFraction'],
+  });
+
+export type BotConfig = z.infer<typeof botFileSchema>;
+export const loadBot = (raw: unknown): BotConfig => parse(botFileSchema, raw, 'bot.json');

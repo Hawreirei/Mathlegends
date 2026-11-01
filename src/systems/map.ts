@@ -13,6 +13,8 @@ export interface MapConfig {
   river: { y: number; thickness: number };
   blue: { nexusX: number; towerXs: number[]; heroSpawnX: number; minionSpawnX: number };
   camera: { minVisibleWidth: number; lerp: number };
+  /** Heroes inside their own base pad (healRadius around their Nexus) heal this fraction of max HP per second. */
+  base: { healRadius: number; healFractionPerSec: number };
 }
 
 export interface Point {

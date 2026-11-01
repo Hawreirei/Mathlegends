@@ -36,5 +36,6 @@
       "hpRegen": 0
     }
   },
-  "spacing": 70
+  "spacing": 70,
+  "heroBodyRadius": 46
 }

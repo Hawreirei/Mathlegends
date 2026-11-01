@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "_note": "Basic bot (#24), one fixed difficulty. #43 adds a step per Year tier.",
+  "decisionIntervalSec": 0.3,
+  "retreatHpFraction": 0.3,
+  "returnHpFraction": 0.85,
+  "engageRange": 380,
+  "engageMinHpFraction": 0.5,
+  "acquireRangeBonus": 120,
+  "holdBackPx": 120,
+  "towerSafetyMarginPx": 60
+}

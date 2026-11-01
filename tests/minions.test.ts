@@ -209,3 +209,20 @@ describe('fairness over a whole match', () => {
     }
   });
 });
+
+describe('heroes stay visible', () => {
+  it('pushes minions off a hero’s body (the hero does not move)', () => {
+    const hero = createHeroState(nova, { x: 2000, y: 700 }, 'blue');
+    const ms = spawnWave(0, 'red', map, econ, mcfg, 'r').map((m, i) => ({
+      ...m,
+      x: 2000 + i,
+      y: 700 + i,
+    }));
+    const r = stepMinions(ms, [hero], 0.05, 1, econ, map, [], mcfg.heroBodyRadius);
+    expect(r.heroes[0]!.x).toBe(2000);
+    for (const m of r.minions)
+      expect(Math.hypot(m.x - hero.x, m.y - hero.y)).toBeGreaterThanOrEqual(
+        m.radius + mcfg.heroBodyRadius - 1e-6,
+      );
+  });
+});

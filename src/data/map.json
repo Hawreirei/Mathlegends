@@ -16,12 +16,16 @@
   },
   "blue": {
     "nexusX": 300,
-    "towerXs": [1000, 1750],
+    "towerXs": [900, 1550],
     "heroSpawnX": 520,
     "minionSpawnX": 460
   },
   "camera": {
     "minVisibleWidth": 1150,
     "lerp": 0.12
+  },
+  "base": {
+    "healRadius": 260,
+    "healFractionPerSec": 0.1
   }
 }
