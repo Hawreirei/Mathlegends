@@ -12,5 +12,12 @@
     "hp": 4000,
     "armor": 40
   },
-  "dangerRingDistance": 220
+  "dangerRingDistance": 220,
+  "suddenDeath": {
+    "enabled": true,
+    "afterSec": 420,
+    "extraDamagePerMinute": 1.0,
+    "nexusDrainPerSec": 0.003,
+    "drainPerTowerLost": 1.0
+  }
 }

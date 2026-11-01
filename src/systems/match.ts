@@ -181,6 +181,24 @@ export function createMatch(cfg: MatchConfig, seed = 1): MatchState {
   };
 }
 
+/** Structure damage done by `team` (a destroyed structure = 1), then gold, as one number. */
+function sideScore(s: MatchState, team: Team): number {
+  const enemy = team === 'blue' ? 'red' : 'blue';
+  const push = s.structures
+    .filter((x) => x.team === enemy)
+    .reduce((t, x) => t + (x.maxHp - x.hp) / x.maxHp, 0);
+  const p = team === 'blue' ? s.playerProgress : s.botProgress;
+  const gold = Object.values(p.goldBySource).reduce((a, b) => a + b, 0);
+  return push * 1e6 + gold;
+}
+
+/** Damage multiplier on towers and Nexus at match time `now` (1 before sudden death). */
+export function suddenDeathMultiplier(now: number, cfg: MatchConfig): number {
+  const sd = cfg.structures.suddenDeath;
+  if (!sd.enabled || now <= sd.afterSec) return 1;
+  return 1 + (sd.extraDamagePerMinute * (now - sd.afterSec)) / 60;
+}
+
 const areaCache = new WeakMap<LaneMap, Rect>();
 const areaOf = (map: LaneMap) => {
   let a = areaCache.get(map);
@@ -508,6 +526,14 @@ export function stepMatch(
   const area = areaOf(cfg.map);
   const now = w.now;
 
+  // Sudden death (#37): structures take more damage the longer the match runs past afterSec.
+  const sd = cfg.structures.suddenDeath;
+  if (sd.enabled && now > sd.afterSec) {
+    const mult = suddenDeathMultiplier(now, cfg);
+    if (w.structures[0]?.damageTaken !== mult)
+      w.structures = w.structures.map((x) => ({ ...x, damageTaken: mult }));
+  }
+
   // 1. Player.
   if (w.player.alive) {
     w.player = moveHero(w.player, input.move, dt, area);
@@ -645,8 +671,22 @@ export function stepMatch(
   w.player = lowHpShield(w.player, now);
   w.bot = lowHpShield(w.bot, now);
 
-  // 6. Winner.
-  const win = winner(w.structures);
+  // Sudden death (#37): both Nexus drain, faster for a side that has lost towers.
+  if (sd.enabled && now > sd.afterSec && sd.nexusDrainPerSec > 0) {
+    const minutes = (now - sd.afterSec) / 60;
+    w.structures = w.structures.map((x) => {
+      if (x.kind !== 'nexus' || !x.alive) return x;
+      const lost = w.structures.filter(
+        (t) => t.team === x.team && t.kind === 'tower' && !t.alive,
+      ).length;
+      const hp =
+        x.hp - x.maxHp * sd.nexusDrainPerSec * minutes * (1 + sd.drainPerTowerLost * lost) * dt;
+      return hp > 0 ? { ...x, hp } : { ...x, hp: 0, alive: false };
+    });
+  }
+
+  // 6. Winner. Both Nexus down in the same step (sudden death): the side ahead wins.
+  const win = winner(w.structures, (team) => sideScore(w, team));
   if (win) {
     w.winner = win;
     w.events.push({ type: 'winner', team: win });

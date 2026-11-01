@@ -29,6 +29,8 @@ export interface Combatant {
   /** Damage absorbed before HP (#33 shield skills), until `shieldUntil`. Heroes only. */
   shield?: number;
   shieldUntil?: number;
+  /** Damage taken x this (sudden death on towers and Nexus, #37). */
+  damageTaken?: number;
 }
 
 /**
@@ -41,7 +43,7 @@ export function takeDamage<T extends Combatant>(
   now: number,
   cfg: EconomyConfig,
 ): { target: T; killed: boolean } {
-  let rest = dmg;
+  let rest = dmg * (target.damageTaken ?? 1);
   let shield = target.shield ?? 0;
   if (shield > 0 && now < (target.shieldUntil ?? 0)) {
     const absorbed = Math.min(shield, rest);

@@ -21,7 +21,7 @@ Exact numbers live in `src/data/economy.json` (issue #8). They are tunable guess
 ## 3. Win condition and match length
 - Win by destroying the enemy Nexus; lose if yours is destroyed.
 - Target match length: **8 to 10 minutes**.
-- The match ends at once on Nexus destruction. There is no time limit in the MVP. **[DECIDE]** If matches run past 12 minutes in testing, add sudden death (Nexus takes extra damage over time).
+- The match ends at once on Nexus destruction. **Sudden death (added in #37, as decided below):** the balance simulator showed matches never ended on their own, so from 7:00 towers and Nexus take growing extra damage and both Nexus slowly crumble, faster for a side that has lost towers. Matches now end in about 9 to 11 minutes; the side ahead wins. Details: `docs/BALANCE.md`.
 
 ## 4. The map
 One horizontal lane, your base on the left, the enemy base on the right. Each side has one Nexus and **2 towers**. Minion waves spawn on a timer from both bases. Every Nth wave includes a Cannon minion.
@@ -94,4 +94,4 @@ After the core slice (M2 + M3), test with students from Year 1 to 6. **Go/no-go:
 1. Shop opens at any time through a HUD button.
 2. Top bar shows Nexus health, not a team score.
 3. No named rank tiers in the MVP.
-4. No sudden death unless testing shows matches run past about 12 minutes.
+4. No sudden death unless testing shows matches run past about 12 minutes. (Simulation showed they did, so it was added in #37.)

@@ -121,5 +121,6 @@
   "quit.stay": "Keep playing",
   "quit.leave": "Leave",
   "result.forfeit": "You left.",
-  "placement.quit": "Quit"
+  "placement.quit": "Quit",
+  "hud.suddenDeath": "Sudden death! The Nexus starts to crumble."
 }

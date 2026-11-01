@@ -121,5 +121,6 @@
   "quit.stay": "Lanjut main",
   "quit.leave": "Keluar",
   "result.forfeit": "Kamu keluar.",
-  "placement.quit": "Keluar"
+  "placement.quit": "Keluar",
+  "hud.suddenDeath": "Babak penentuan! Nexus mulai runtuh."
 }

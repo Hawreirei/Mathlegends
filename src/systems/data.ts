@@ -458,6 +458,23 @@ export const structuresFileSchema = z
     nexus: z.object({ hp: positive, armor: nonNegative }).strict(),
     /** Show an enemy tower's range ring when the player is within this distance of its edge. */
     dangerRingDistance: nonNegative,
+    /**
+     * Sudden death (#37, GDD section 3). From `afterSec` on:
+     * - towers and Nexus take extra damage: +extraDamagePerMinute x per minute (x2 after one
+     *   minute, x3 after two...);
+     * - each Nexus loses nexusDrainPerSec x max HP per second, times the minutes since sudden
+     *   death began, times (1 + drainPerTowerLost x towers that side has lost). The side behind
+     *   falls first; if both fall at once, the side ahead on score wins.
+     */
+    suddenDeath: z
+      .object({
+        enabled: z.boolean(),
+        afterSec: nonNegative,
+        extraDamagePerMinute: nonNegative,
+        nexusDrainPerSec: nonNegative,
+        drainPerTowerLost: nonNegative,
+      })
+      .strict(),
   })
   .strict();
 

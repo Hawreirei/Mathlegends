@@ -153,6 +153,9 @@ Behaviour (`src/systems/minions.ts`): march towards the enemy base; target the n
 | `tower.attackRange` | 420 | Pixels |
 | `nexus.hp` / `armor` | 4000 / 40 | The Nexus never attacks |
 | `dangerRingDistance` | 220 | Show an enemy tower's red range ring when the player is this close to its edge |
+| `suddenDeath.enabled` / `afterSec` | true / 420 | Sudden death from 7:00 (#37) |
+| `suddenDeath.extraDamagePerMinute` | 1.0 | Towers and Nexus take x2 damage after one minute of sudden death, x3 after two... |
+| `suddenDeath.nexusDrainPerSec` / `drainPerTowerLost` | 0.003 / 1.0 | Each Nexus drains 0.3% of max HP per second x minutes of sudden death x (1 + towers that side lost) |
 
 Rules (`src/systems/structures.ts`):
 - **Protection order:** the outer tower can be attacked first; the inner tower only after the outer falls; the Nexus only after both towers fall. Protected structures show a soft white bubble.
@@ -160,7 +163,7 @@ Rules (`src/systems/structures.ts`):
 - **Minion targeting:** enemy minions, then attackable enemy structures, then enemy heroes, so waves push towers.
 - **Win:** destroying the enemy Nexus ends the match (Victory); losing your own ends it (Defeat). The Result screen follows 1.5 s later so the collapse can be seen.
 
-A simulation with blue waves only (no defenders, old tower positions) took the red outer tower at 103 s, the inner at 191 s and the Nexus at 238 s. With the bot (#24) and an idle player, the bot's side takes the blue Nexus at about 14 minutes. With defending minions and a hero, matches should land near the 8 to 10 minute target; the simulator (#37) will measure it.
+A simulation with blue waves only (no defenders, old tower positions) took the red outer tower at 103 s, the inner at 191 s and the Nexus at 238 s. With a hero on each side the lane stalls: before sudden death, no simulated match out of hundreds ended at a Nexus even in 20 minutes. With sudden death every match ends at a Nexus in about 9 to 11 minutes; see [BALANCE.md](BALANCE.md).
 
 ## bot.json (issues #24, #43)
 

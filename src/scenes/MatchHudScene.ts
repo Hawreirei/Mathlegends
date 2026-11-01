@@ -91,6 +91,27 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
   }
   layoutInfo?: HudLayout;
   private timerText?: Phaser.GameObjects.Text;
+  private suddenDeathShown = false;
+
+  /** A short banner across the middle of the screen (sudden death, #37). */
+  private showBanner(text: string): void {
+    const { width: w, height: h } = this.scale;
+    const t = this.add
+      .text(w / 2, h * 0.38, text, bodyFont(36, theme.colors.white, '800'))
+      .setOrigin(0.5)
+      .setPadding(28, 14, 28, 14)
+      .setBackgroundColor(theme.colors.wrong)
+      .setWordWrapWidth(w - 80, true)
+      .setAlign('center')
+      .setDepth(250);
+    this.tweens.add({
+      targets: t,
+      alpha: 0,
+      delay: 2600,
+      duration: 500,
+      onComplete: () => t.destroy(),
+    });
+  }
   private nexusBars?: Phaser.GameObjects.Graphics;
   private respawnText?: Phaser.GameObjects.Text;
   private panel?: HeroPanel;
@@ -107,6 +128,7 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
   }
 
   create(): void {
+    this.suddenDeathShown = false;
     this.input.keyboard?.on('keydown-SPACE', () => this.game.events.emit(ATTACK_EVENT));
     this.input.keyboard?.on('keyup-SPACE', () => this.game.events.emit(ATTACK_RELEASE_EVENT));
     this.input.keyboard?.on('keydown-B', () => this.toggleShop());
@@ -159,6 +181,14 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
     if (!m.state || !this.layoutInfo) return;
     const s = m.state;
     this.timerText?.setText(formatDuration(s.now));
+    // Sudden death (#37): the timer turns red and a banner says so once.
+    const sd = m.cfg.structures.suddenDeath;
+    const inSd = sd.enabled && s.now >= sd.afterSec;
+    this.timerText?.setColor(inSd ? theme.colors.wrong : theme.colors.white);
+    if (inSd && !this.suddenDeathShown) {
+      this.suddenDeathShown = true;
+      this.showBanner(tr(this, 'hud.suddenDeath'));
+    }
     this.panel?.update(s.player, s.playerProgress);
     this.shop?.sync({ gold: s.playerProgress.gold, inventory: s.playerItems });
     // Skill buttons: cooldown sweep, seconds, mana and lock state (#33).

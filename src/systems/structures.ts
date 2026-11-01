@@ -52,10 +52,18 @@ export function isTargetable(s: StructureState, all: readonly StructureState[]):
 }
 
 /** The team that destroyed the other team's Nexus, or null while both stand. */
-export function winner(all: readonly StructureState[]): Team | null {
-  const dead = all.find((s) => s.kind === 'nexus' && !s.alive);
-  if (!dead) return null;
-  return dead.team === 'blue' ? 'red' : 'blue';
+/**
+ * The winner once a Nexus has fallen. If both fell in the same step (sudden death, #37), the
+ * team with the higher `score` wins (blue on an exact tie).
+ */
+export function winner(
+  all: readonly StructureState[],
+  score: (team: Team) => number = () => 0,
+): Team | null {
+  const dead = all.filter((s) => s.kind === 'nexus' && !s.alive);
+  if (!dead.length) return null;
+  if (dead.length > 1) return score('blue') >= score('red') ? 'blue' : 'red';
+  return dead[0]!.team === 'blue' ? 'red' : 'blue';
 }
 
 const dist = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y);
