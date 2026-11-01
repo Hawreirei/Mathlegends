@@ -11,7 +11,7 @@ Project: MathLegends, a 1-lane MOBA where last-hits trigger math questions. Read
 6. No personal data. Logs are anonymous and stay on the device. There is no server in the MVP.
 6a. Every player-facing string and every question exists in Indonesian and English. Strings come from `src/data/i18n/`, never inline.
 7. Keep `npm run lint`, `npm test` and `npm run build` green.
-8. The Vite `base` must stay `'/<repo-name>/'` so GitHub Pages works.
+8. The Vite `base` must stay `'/Mathlegends/'` (case-sensitive) so GitHub Pages works.
 9. Do not add dependencies without a one-line reason in the PR.
 10. When an acceptance criterion cannot be met, say so in the PR; do not silently skip it.
 
