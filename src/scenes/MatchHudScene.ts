@@ -1,10 +1,15 @@
 import Phaser from 'phaser';
+import { totalExpToLevel } from '../systems/economy';
 import { formatDuration } from '../systems/gameState';
+import { computeHudLayout, type HudLayout, type Rect } from '../systems/hudLayout';
+import type { StructureState } from '../systems/structures';
 import { safeAreaInGame } from '../systems/touch';
 import { Button } from '../ui/Button';
+import { HeroPanel } from '../ui/HeroPanel';
+import { Minimap } from '../ui/Minimap';
 import { readSafeAreaCss } from '../ui/safeArea';
 import { TouchControls } from '../ui/TouchControls';
-import { displayFont, hex, theme } from '../ui/theme';
+import { bodyFont, displayFont, hex, theme } from '../ui/theme';
 import type { MatchScene } from './MatchScene';
 import { responsive, tr } from './shared';
 
@@ -15,15 +20,20 @@ export const ATTACK_RELEASE_EVENT = 'ml-attack-release';
 export const SKILL_EVENT = 'ml-skill';
 
 /**
- * Fixed overlay on top of the match world: quit button, timer and, on touch devices,
- * the joystick and attack/skill buttons (#18). The full HUD (health, gold, level,
- * mini-map) comes in #25.
+ * Fixed overlay on top of the match world (#25). Top bar: Quit, Nexus health for both teams and
+ * the timer. Below it: the hero panel (HP, mana, EXP, level, gold) on the left and the mini-map on
+ * the right. On touch devices: joystick and attack/skill buttons (#18). Positions come from
+ * computeHudLayout, which a test checks for overlaps on every screen size.
  */
 export class MatchHudScene extends Phaser.Scene {
-  private timerText?: Phaser.GameObjects.Text;
-  private statsText?: Phaser.GameObjects.Text;
   /** Present on touch devices; MatchScene reads its movement vector. */
   touch: TouchControls | null = null;
+  layoutInfo?: HudLayout;
+  private timerText?: Phaser.GameObjects.Text;
+  private nexusBars?: Phaser.GameObjects.Graphics;
+  private respawnText?: Phaser.GameObjects.Text;
+  private panel?: HeroPanel;
+  private minimap?: Minimap;
 
   constructor() {
     super('MatchHud');
@@ -40,48 +50,115 @@ export class MatchHudScene extends Phaser.Scene {
   }
 
   update(): void {
-    this.timerText?.setText(formatDuration(this.match.now));
-    const p = this.match.playerProgress;
-    if (p)
-      this.statsText?.setText(
-        `${tr(this, 'hud.level', { n: p.level })}   ${tr(this, 'hud.gold', { n: Math.floor(p.gold) })}`,
+    const m = this.match;
+    if (!m.state || !this.layoutInfo) return;
+    const s = m.state;
+    this.timerText?.setText(formatDuration(s.now));
+    this.panel?.update(s.player, s.playerProgress);
+    this.minimap?.update(s, m.cameras.main.worldView);
+    this.drawNexusBars(s.structures);
+    const p = s.player;
+    const show = !p.alive && p.respawnAt !== null;
+    this.respawnText?.setVisible(show);
+    if (show)
+      this.respawnText?.setText(
+        tr(this, 'hud.respawn', { n: Math.max(1, Math.ceil((p.respawnAt ?? 0) - s.now)) }),
       );
   }
 
+  private drawNexusBars(structures: StructureState[]): void {
+    const l = this.layoutInfo;
+    const g = this.nexusBars;
+    if (!l || !g) return;
+    g.clear();
+    const draw = (r: Rect, team: 'blue' | 'red') => {
+      const n = structures.find((x) => x.kind === 'nexus' && x.team === team);
+      const frac = n ? n.hp / n.maxHp : 0;
+      // The Nexus diamond sits inside the box at the outer end; the bar fills the rest.
+      const D = 24;
+      const bx = team === 'blue' ? r.x + D : r.x;
+      const bw = r.w - D;
+      g.fillStyle(hex(theme.colors.ink), 1).fillRoundedRect(bx, r.y, bw, r.h, r.h / 2);
+      const fw = Math.max(0, Math.min(1, frac)) * (bw - 6);
+      // Blue drains towards the timer from the outer end; red mirrors it.
+      const fx = team === 'blue' ? bx + 3 + (bw - 6 - fw) : bx + 3;
+      if (fw > 0)
+        g.fillStyle(hex(theme.teams[team].main), 1).fillRoundedRect(
+          fx,
+          r.y + 3,
+          fw,
+          r.h - 6,
+          (r.h - 6) / 2,
+        );
+      const dx = team === 'blue' ? r.x + 9 : r.x + r.w - 9;
+      const dy = r.y + r.h / 2;
+      g.fillStyle(hex(theme.teams[team].main), 1).fillTriangle(
+        dx,
+        dy - 12,
+        dx + 9,
+        dy,
+        dx,
+        dy + 12,
+      );
+      g.fillTriangle(dx, dy - 12, dx - 9, dy, dx, dy + 12);
+    };
+    draw(l.nexusBlue, 'blue');
+    draw(l.nexusRed, 'red');
+  }
+
   private layout(): void {
-    const { width: w } = this.scale;
+    const { width: w, height: h } = this.scale;
     const cssW = this.game.canvas.getBoundingClientRect().width || w;
     const safe = safeAreaInGame(readSafeAreaCss(), w / cssW);
-    const barH = 80 + safe.top;
+    const touch = this.sys.game.device.input.touch;
+    const l = computeHudLayout(w, h, safe, touch);
+    this.layoutInfo = l;
+    const c = theme.colors;
 
-    this.add.rectangle(w / 2, barH / 2, w, barH, hex(theme.colors.night), 0.85);
-    const barY = safe.top + 40;
+    this.add.rectangle(w / 2, l.topBar.h / 2, w, l.topBar.h, hex(c.night), 0.85);
     new Button(
       this,
-      safe.left + 90,
-      barY,
+      l.quit.x + l.quit.w / 2,
+      l.quit.y + l.quit.h / 2,
       tr(this, 'match.quit'),
       () => {
         this.scene.stop('Match');
         this.scene.start('Menu');
       },
-      { width: 150, height: 56, style: 'secondary', fontSize: 24 },
+      { width: l.quit.w, height: l.quit.h - 8, style: 'secondary', fontSize: 24 },
     );
-    this.timerText = this.add.text(w / 2, barY, '0:00', displayFont(36)).setOrigin(0.5);
-    // Temporary level/gold readout; the full HUD (bars, mini-map) is #25.
-    this.statsText = this.add
-      .text(w - safe.right - 24, barY, '', displayFont(28, theme.colors.gold))
-      .setOrigin(1, 0.5);
+    this.timerText = this.add
+      .text(l.timer.x + l.timer.w / 2, l.timer.y + l.timer.h / 2, '0:00', displayFont(36))
+      .setOrigin(0.5);
+    this.nexusBars = this.add.graphics();
 
-    this.touch = this.sys.game.device.input.touch
+    const m = this.match;
+    const econ = m.cfg.econ;
+    this.panel = new HeroPanel(this, l.heroPanel, m.cfg.playerHero.sprite, (level) => ({
+      from: totalExpToLevel(econ, level),
+      to:
+        level >= econ.exp.levelCap
+          ? totalExpToLevel(econ, level)
+          : totalExpToLevel(econ, level + 1),
+    }));
+    this.minimap = new Minimap(this, l.minimap, m.cfg.map);
+
+    this.respawnText = this.add
+      .text(l.respawn.x, l.respawn.y, '', bodyFont(40, c.white, '800'))
+      .setOrigin(0.5)
+      .setStroke(c.ink, 8)
+      .setVisible(false);
+
+    this.touch = l.touch
       ? new TouchControls(
           this,
-          safe,
-          barH,
+          l.touch,
+          l.topBar.h,
           () => this.game.events.emit(ATTACK_EVENT),
           () => this.game.events.emit(ATTACK_RELEASE_EVENT),
           (i) => this.game.events.emit(SKILL_EVENT, i),
         )
       : null;
+    this.update();
   }
 }

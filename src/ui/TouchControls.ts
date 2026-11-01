@@ -1,20 +1,17 @@
 import Phaser from 'phaser';
 import type { Point } from '../systems/map';
-import { joystickVector, skillButtonPositions, type Insets } from '../systems/touch';
+import type { TouchLayout } from '../systems/hudLayout';
+import { joystickVector } from '../systems/touch';
 import { displayFont, hex, theme } from './theme';
 
-const JOY_RADIUS = 110;
 const KNOB_RADIUS = 48;
 const DEAD_ZONE = 0.15;
-const ATTACK_RADIUS = 88;
-const SKILL_RADIUS = 52;
-const SKILL_DISTANCE = 180;
-const MARGIN = 40;
 
 /**
  * Virtual joystick (left) and attack + 3 skill buttons (right) for phones (#18).
  * The joystick floats: it appears where the thumb lands anywhere on the left half and
- * snaps back to its home spot when released. All positions keep clear of the safe area.
+ * snaps back to its home spot when released. Positions come from computeHudLayout (#25),
+ * which keeps them clear of the safe area and of every other HUD element.
  */
 export class TouchControls {
   /** Current movement vector, length 0..1. */
@@ -23,22 +20,24 @@ export class TouchControls {
   private joyId: number | null = null;
   private origin: Point;
   private readonly home: Point;
+  private readonly joyRadius: number;
   private readonly base: Phaser.GameObjects.Arc;
   private readonly knob: Phaser.GameObjects.Arc;
 
   constructor(
     private readonly scene: Phaser.Scene,
-    safe: Insets,
+    l: TouchLayout,
     topBarHeight: number,
     onAttack: () => void,
     onAttackRelease: () => void,
     onSkill: (index: number) => void,
   ) {
-    const { width: w, height: h } = scene.scale;
-    this.home = { x: safe.left + MARGIN + JOY_RADIUS, y: h - safe.bottom - MARGIN - JOY_RADIUS };
+    const w = scene.scale.width;
+    this.home = { ...l.joystick };
+    this.joyRadius = l.joystickRadius;
     this.origin = { ...this.home };
     this.base = scene.add
-      .circle(this.home.x, this.home.y, JOY_RADIUS, hex(theme.colors.night), 0.35)
+      .circle(this.home.x, this.home.y, l.joystickRadius, hex(theme.colors.night), 0.35)
       .setStrokeStyle(4, hex(theme.colors.white), 0.5);
     this.knob = scene.add.circle(
       this.home.x,
@@ -48,13 +47,10 @@ export class TouchControls {
       0.75,
     );
 
-    const attackPos = {
-      x: w - safe.right - MARGIN - ATTACK_RADIUS,
-      y: h - safe.bottom - MARGIN - ATTACK_RADIUS,
-    };
+    const attackPos = l.attack;
     this.roundButton(
       attackPos,
-      ATTACK_RADIUS,
+      l.attackRadius,
       theme.colors.gold,
       '✦',
       64,
@@ -62,10 +58,10 @@ export class TouchControls {
       1,
       onAttackRelease,
     );
-    skillButtonPositions(attackPos, SKILL_DISTANCE).forEach((p, i) =>
+    l.skills.forEach((p, i) =>
       this.roundButton(
         p,
-        SKILL_RADIUS,
+        l.skillRadius,
         theme.colors.violet,
         String(i + 1),
         36,
@@ -87,11 +83,11 @@ export class TouchControls {
     );
     scene.input.on('pointermove', (p: Phaser.Input.Pointer) => {
       if (p.id !== this.joyId) return;
-      this.vector = joystickVector(this.origin, p, JOY_RADIUS, DEAD_ZONE);
+      this.vector = joystickVector(this.origin, p, this.joyRadius, DEAD_ZONE);
       const dx = p.x - this.origin.x;
       const dy = p.y - this.origin.y;
       const d = Math.hypot(dx, dy);
-      const k = d > JOY_RADIUS ? JOY_RADIUS / d : 1;
+      const k = d > this.joyRadius ? this.joyRadius / d : 1;
       this.knob.setPosition(this.origin.x + dx * k, this.origin.y + dy * k);
     });
     const release = (p: Phaser.Input.Pointer) => {

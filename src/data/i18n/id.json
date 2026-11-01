@@ -10,7 +10,6 @@
   "result.accuracy": "Jawaban benar: {correct} dari {answered}",
   "result.again": "Main lagi",
   "result.menu": "Menu",
-  "hud.level": "Lv {n}",
-  "hud.gold": "{n} emas",
-  "fx.levelUp": "NAIK LEVEL!"
+  "fx.levelUp": "NAIK LEVEL!",
+  "hud.respawn": "Bangkit lagi dalam {n} detik"
 }

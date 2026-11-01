@@ -43,5 +43,8 @@ Attack hits the nearest living enemy within the hero's attack range, once every 
 ## Match rules and the bot (#24)
 All match rules run in `src/systems/match.ts` (`createMatch`, `stepMatch`): pure TypeScript that takes player input and returns the next state plus events (attacks, spawns, rewards, level-ups, last hits, winner). `MatchScene` only reads input and draws those events, and `tests/match.test.ts` plays full 10-minute matches headless. The bot (`src/systems/bot.ts`, settings in `src/data/bot.json`) holds the lane behind its minions, last-hits, fights the player when close and healthy, avoids standing under the player's towers alone, and walks home to heal in its base below 30% HP.
 
+## HUD (#25)
+Top bar: Quit, Nexus health for both teams (blue left, red right) and the match timer. Below it: the hero panel (portrait with level badge, HP bar with numbers, mana, EXP, gold) and the mini-map (lane, towers and Nexuses, grey when destroyed, minion dots, both heroes, camera view). While your hero is dead a centred message counts down to respawn. Every position comes from `src/systems/hudLayout.ts`; `tests/hud.test.ts` checks desktop, landscape and portrait phones (with and without notches) for elements off screen, under a notch or overlapping each other or the touch controls.
+
 ## Project layout
 `src/{scenes,entities,systems,data,ui,utils}`, `tests/`, `docs/`, `scripts/`. Game rules live in `src/systems/` with no Phaser imports.

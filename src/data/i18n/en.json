@@ -10,7 +10,6 @@
   "result.accuracy": "Correct answers: {correct} of {answered}",
   "result.again": "Play again",
   "result.menu": "Menu",
-  "hud.level": "Lv {n}",
-  "hud.gold": "{n} gold",
-  "fx.levelUp": "LEVEL UP!"
+  "fx.levelUp": "LEVEL UP!",
+  "hud.respawn": "Back in {n} seconds"
 }
