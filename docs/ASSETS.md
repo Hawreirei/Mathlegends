@@ -14,8 +14,7 @@ npm run build:sprites
 
 | File (`src/assets/sprites/`) | What | Size (px) | Source | License |
 |---|---|---|---|---|
-| `hero-nova.svg` | Player hero token (blue, sparkle emblem) | 96 x 96 | Original, `build-sprites.ts` | MIT (project) |
-| `hero-mira.svg` | Bot hero token (red, flower emblem) | 96 x 96 | Original, `build-sprites.ts` | MIT (project) |
+| `hero-<id>.svg` | One hero token per hero in `heroes.json`, drawn from its `look` (team colour, emblem: sparkle, flower, moon or leaf) (#32). Now: `hero-nova.svg` (blue, sparkle), `hero-mira.svg` (red, flower) | 96 x 96 | Original, `build-sprites.ts` | MIT (project) |
 | `minion-infantry-blue.svg`, `minion-infantry-red.svg` | Infantry minion (+ symbol) | 56 x 56 | Original, `build-sprites.ts` | MIT (project) |
 | `minion-lancer-blue.svg`, `minion-lancer-red.svg` | Lancer minion (× symbol) | 56 x 56 | Original, `build-sprites.ts` | MIT (project) |
 | `minion-cannon-blue.svg`, `minion-cannon-red.svg` | Cannon minion (÷ symbol, larger) | 72 x 72 | Original, `build-sprites.ts` | MIT (project) |

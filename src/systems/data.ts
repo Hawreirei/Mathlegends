@@ -53,13 +53,22 @@ function uniqueIds(list: { id: string }[], ctx: z.RefinementCtx, key: string) {
 // ---------- heroes.json
 
 export const HERO_ROLES = ['tank', 'fighter', 'mage', 'marksman', 'support'] as const;
+/** Emblems scripts/build-sprites.ts can draw on a hero token. */
+export const HERO_EMBLEMS = ['sparkle', 'flower', 'moon', 'leaf'] as const;
 
 export const heroSchema = z
   .object({
     id,
     name: localized,
+    /** Short epithet shown with the name, e.g. "Star Strider" (#32). */
+    title: localized,
     role: z.enum(HERO_ROLES),
     lore: localized,
+    /**
+     * How the generated sprite looks (#32): team colour from theme.json teams and an emblem.
+     * `npm run build:sprites` draws `sprite` from this, so a new hero needs JSON only.
+     */
+    look: z.object({ color: z.enum(['blue', 'red']), emblem: z.enum(HERO_EMBLEMS) }).strict(),
     base: z
       .object({
         hp: positive,
@@ -83,7 +92,7 @@ export const heroSchema = z
       .strict(),
     /** Skill ids (defined in #33): 3 skills + 1 ultimate at most. */
     skills: z.array(id).max(4),
-    /** Texture key; the asset is listed in docs/ASSETS.md. */
+    /** Texture key, always `hero-<id>`; generated from `look` by npm run build:sprites. */
     sprite: id,
   })
   .strict();
@@ -100,6 +109,14 @@ export const heroesFileSchema = z
   .strict()
   .superRefine((f, ctx) => {
     uniqueIds(f.heroes, ctx, 'heroes');
+    f.heroes.forEach((h, i) => {
+      if (h.sprite !== `hero-${h.id}`)
+        ctx.addIssue({
+          code: 'custom',
+          path: ['heroes', i, 'sprite'],
+          message: `sprite must be "hero-${h.id}" (generated from look by npm run build:sprites)`,
+        });
+    });
     for (const key of ['playerHero', 'botHero'] as const) {
       const ref = f[key];
       if (ref !== undefined && !f.heroes.some((h) => h.id === ref))

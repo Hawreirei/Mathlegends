@@ -11,9 +11,15 @@ import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import type themeJson from '../src/data/theme.json';
+import type heroesJson from '../src/data/heroes.json';
 
 type Team = 'blue' | 'red';
 type Theme = typeof themeJson;
+type Emblem = 'sparkle' | 'flower' | 'moon' | 'leaf';
+/** The part of heroes.json the sprites need (a test passes extra heroes). */
+export interface HeroLooks {
+  heroes: { sprite: string; look: { color: string; emblem: string } }[];
+}
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 export const SPRITE_DIR = join(root, 'src/assets/sprites');
@@ -34,7 +40,15 @@ const flower = (cx: number, cy: number, r: number, fill: string, centre: string)
     return `<circle cx="${x}" cy="${y}" r="${(r * 0.3).toFixed(1)}" fill="${fill}"/>`;
   }).join('') + `<circle cx="${cx}" cy="${cy}" r="${(r * 0.3).toFixed(1)}" fill="${centre}"/>`;
 
-function heroToken(t: Theme, team: Team, emblem: 'sparkle' | 'flower'): string {
+/** A crescent moon, centred at (cx, cy). */
+const moon = (cx: number, cy: number, r: number, fill: string, bg: string) =>
+  `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}"/><circle cx="${cx + r * 0.45}" cy="${cy - r * 0.25}" r="${r * 0.85}" fill="${bg}"/>`;
+
+/** A leaf with a centre vein, centred at (cx, cy). */
+const leaf = (cx: number, cy: number, r: number, fill: string, vein: string) =>
+  `<path d="M${cx - r} ${cy + r} Q${cx - r} ${cy - r} ${cx + r} ${cy - r} Q${cx + r} ${cy + r} ${cx - r} ${cy + r}Z" fill="${fill}"/><path d="M${cx - r * 0.8} ${cy + r * 0.8} L${cx + r * 0.6} ${cy - r * 0.6}" stroke="${vein}" stroke-width="3" stroke-linecap="round"/>`;
+
+function heroToken(t: Theme, team: Team, emblem: Emblem): string {
   const c = t.teams[team];
   const s = 96;
   const body = [
@@ -43,9 +57,12 @@ function heroToken(t: Theme, team: Team, emblem: 'sparkle' | 'flower'): string {
     `<circle cx="48" cy="46" r="42" fill="${t.colors.white}"/>`,
     `<circle cx="48" cy="46" r="36" fill="url(#g)"/>`,
     `<circle cx="48" cy="46" r="36" fill="none" stroke="${t.colors.gold}" stroke-width="3"/>`,
-    emblem === 'sparkle'
-      ? sparkle(48, 46, 22, t.colors.white)
-      : flower(48, 46, 26, t.colors.white, t.colors.gold),
+    {
+      sparkle: () => sparkle(48, 46, 22, t.colors.white),
+      flower: () => flower(48, 46, 26, t.colors.white, t.colors.gold),
+      moon: () => moon(46, 46, 18, t.colors.white, c.main),
+      leaf: () => leaf(48, 46, 16, t.colors.white, c.dark),
+    }[emblem](),
   ].join('\n');
   return svg(s, s, body);
 }
@@ -151,10 +168,11 @@ function badge(t: Theme, tier: number): string {
 }
 
 /** Every sprite: file name (without .svg) -> SVG text. */
-export function renderSprites(theme: Theme): Map<string, string> {
+export function renderSprites(theme: Theme, heroes: HeroLooks = readHeroes()): Map<string, string> {
   const out = new Map<string, string>();
-  out.set('hero-nova', heroToken(theme, 'blue', 'sparkle'));
-  out.set('hero-mira', heroToken(theme, 'red', 'flower'));
+  // One token per hero in heroes.json (#32): adding a hero needs no code.
+  for (const h of heroes.heroes)
+    out.set(h.sprite, heroToken(theme, h.look.color as Team, h.look.emblem as Emblem));
   for (const team of ['blue', 'red'] as const) {
     for (const kind of ['infantry', 'lancer', 'cannon'] as const)
       out.set(`minion-${kind}-${team}`, minion(theme, team, kind));
@@ -166,6 +184,9 @@ export function renderSprites(theme: Theme): Map<string, string> {
   for (let tier = 1; tier <= 6; tier++) out.set(`badge-year-${tier}`, badge(theme, tier));
   return out;
 }
+
+export const readHeroes = (): typeof heroesJson =>
+  JSON.parse(readFileSync(join(root, 'src/data/heroes.json'), 'utf8')) as typeof heroesJson;
 
 export const readTheme = (): Theme =>
   JSON.parse(readFileSync(join(root, 'src/data/theme.json'), 'utf8')) as Theme;

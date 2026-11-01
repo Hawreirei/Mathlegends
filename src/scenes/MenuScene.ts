@@ -3,6 +3,11 @@ import { Button } from '../ui/Button';
 import { safeAreaInGame } from '../systems/touch';
 import { LangToggle } from '../ui/LangToggle';
 import { RankBadge } from '../ui/RankBadge';
+import heroesJson from '../data/heroes.json';
+
+/** The player hero's sprite (heroes.json playerHero). */
+const playerSprite = () =>
+  (heroesJson.heroes.find((h) => h.id === heroesJson.playerHero) ?? heroesJson.heroes[0]!).sprite;
 import { readSafeAreaCss } from '../ui/safeArea';
 import { bodyFont, displayFont, hex, theme } from '../ui/theme';
 import { changeLang, getState, responsive, tr } from './shared';
@@ -39,7 +44,7 @@ export class MenuScene extends Phaser.Scene {
     const cx = portrait ? w / 2 : w * 0.64;
     const colW = portrait ? w * 0.9 : w * 0.6;
     this.add.circle(heroX, heroY, portrait ? 130 : 170, hex(c.violet), 0.25);
-    this.add.image(heroX, heroY, 'hero-nova').setScale(portrait ? 2 : 2.6);
+    this.add.image(heroX, heroY, playerSprite()).setScale(portrait ? 2 : 2.6);
 
     const titleY = portrait ? h * 0.45 : h * 0.3;
     this.title(cx, titleY, colW, 110);
