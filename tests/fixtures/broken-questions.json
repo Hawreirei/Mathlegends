@@ -1,0 +1,51 @@
+[
+  {
+    "id": "broken.answer-index",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": { "id": "Berapa 3 + 4?", "en": "What is 3 + 4?" },
+    "choices": [7, 6, 8, 1],
+    "answerIndex": 4,
+    "explanation": { "id": "3 + 4 = 7.", "en": "3 + 4 = 7." }
+  },
+  {
+    "id": "broken.no-english",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": { "id": "Berapa 5 + 5?" },
+    "choices": [10, 9, 11, 55],
+    "answerIndex": 0,
+    "explanation": { "id": "5 + 5 = 10.", "en": "5 + 5 = 10." }
+  },
+  {
+    "id": "broken.no-explanation",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": { "id": "Berapa 9 - 2?", "en": "What is 9 - 2?" },
+    "choices": [7, 6, 11, 5],
+    "answerIndex": 0
+  },
+  {
+    "id": "broken.answer-index",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": { "id": "Berapa 8 + 1?", "en": "What is 8 + 1?" },
+    "choices": [9, 8, 10, 81],
+    "answerIndex": 0,
+    "explanation": { "id": "8 + 1 = 9.", "en": "8 + 1 = 9." }
+  },
+  {
+    "id": "broken.wrong-tier",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": { "id": "Berapa 2 + 2?", "en": "What is 2 + 2?" },
+    "choices": [4, 3, 5, 22],
+    "answerIndex": 0,
+    "explanation": { "id": "2 + 2 = 4.", "en": "2 + 2 = 4." }
+  }
+]

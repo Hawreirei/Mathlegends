@@ -1,0 +1,51 @@
+[
+  {
+    "id": "t1.addsub20.h001",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": { "id": "Berapa 8 + 5?", "en": "What is 8 + 5?" },
+    "choices": [13, 12, 14, 3],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "8 + 5 = 13. Mulai dari 8, hitung maju 5 kali: 9, 10, 11, 12, 13.",
+      "en": "8 + 5 = 13. Start at 8 and count on 5: 9, 10, 11, 12, 13."
+    },
+    "tags": ["make-ten"],
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.addsub20.h002",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Dina punya 12 kelereng. Ia memberi 4 kelereng kepada Budi. Berapa kelereng Dina sekarang?",
+      "en": "Dina has 12 marbles. She gives 4 marbles to Budi. How many marbles does Dina have now?"
+    },
+    "choices": [16, 8, 7, 9],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Memberi berarti berkurang: 12 - 4 = 8.",
+      "en": "Giving away means taking away: 12 - 4 = 8."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.addsub20.h003",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Di dalam bus ada 9 penumpang. Di halte pertama 5 orang naik. Di halte kedua 3 orang turun. Berapa penumpang di bus sekarang?",
+      "en": "A bus has 9 passengers. At the first stop 5 people get on. At the second stop 3 people get off. How many passengers are on the bus now?"
+    },
+    "choices": [14, 17, 11, 7],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Naik berarti tambah: 9 + 5 = 14. Turun berarti kurang: 14 - 3 = 11.",
+      "en": "Getting on means add: 9 + 5 = 14. Getting off means subtract: 14 - 3 = 11."
+    },
+    "source": "handwritten"
+  }
+]
