@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="112" viewBox="0 0 96 112">
+<path d="M48 4 L88 18 V56 Q88 92 48 108 Q8 92 8 56 V18 Z" fill="#ffc84a"/>
+<path d="M48 12 L80 23 V56 Q80 85 48 99 Q16 85 16 56 V23 Z" fill="#4873ff"/>
+<text x="48" y="70" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="44" fill="#ffffff">3</text>
+<path d="M48 23 Q49.26 28.74 55 30 Q49.26 31.26 48 37 Q46.74 31.26 41 30 Q46.74 28.74 48 23Z" fill="#ffc84a"/>
+</svg>

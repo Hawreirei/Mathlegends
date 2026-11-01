@@ -6,7 +6,7 @@ A clickable HTML/CSS prototype lives in [`docs/design-prototype/`](design-protot
 
 | Element | Prototype | Use in production |
 |---|---|---|
-| Palette | ink `#19204c`, paper `#f7f4e9`, gold `#ffc84a`, pink `#f95b93`, blue `#4873ff`, violet `#7160d5`, mint `#55d1bb` | Put in `src/data/theme.json`; do not hard-code in scenes |
+| Palette | ink `#19204c`, paper `#f7f4e9`, gold `#ffc84a`, pink `#f95b93`, blue `#4873ff`, violet `#7160d5`, mint `#55d1bb` | Now in `src/data/theme.json` (#14); do not hard-code in scenes |
 | Menu | Crest, big title, one gold "PLAY" button, rank chip in footer | #15 Menu scene, #42 rank badge |
 | Match HUD | Top bar (pause, score, timer), quest hint, bottom bar (avatar, level/EXP, gold, shop, skill buttons) | #25 HUD, #35 shop, #18 touch controls |
 | Question card | Centered card, 2x2 answer grid, big countdown, streak bonus line | #27 overlay (see changes below) |
@@ -22,7 +22,7 @@ These need a decision or a change before building from it.
 4. **Score shows "1 : 0" as team scores.** The win condition is destroying the enemy Nexus (#21). Decide what the top bar shows (for example Nexus health or a kill count) before building #25.
 5. **A question can be triggered by tapping the hero or the skill button.** In the game it must appear only on the player's own last hit, and the game must not pause (#27).
 6. **Landscape phone (844x390) is broken.** The arena is cropped and the next screen shows below it. #15 and #25 require both portrait and landscape, so the real layout must be designed for both. Portrait (390x844) and desktop (1280x720) look good.
-7. **Fonts load from Google Fonts (Fredoka, Nunito).** That is an external request, which breaks offline PWA play (#51) and sends requests from children's devices to a third party. Self-host the font files and record the OFL license in `docs/ASSETS.md`.
+7. **Fonts load from Google Fonts (Fredoka, Nunito).** That is an external request, which breaks offline PWA play (#51) and sends requests from children's devices to a third party. Self-host the font files and record the OFL license in `docs/ASSETS.md`. **Resolved in #14:** the game bundles both fonts from `@fontsource` packages.
 8. **The 8 x 7 question has an unmarked correct answer in the mock**, and "3 correct in a row! +15% bonus" does not match the rule of +5% per answer capped at +25% (#28). Treat the numbers in the prototype as placeholders; economy.json is the source of truth.
 
 ## Suggested backlog updates (not applied)

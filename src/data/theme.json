@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "_note": "Palette from the design prototype (docs/DESIGN.md). Scenes read colours from here, never inline.",
+  "colors": {
+    "ink": "#19204c",
+    "night": "#14183e",
+    "paper": "#f7f4e9",
+    "white": "#ffffff",
+    "gold": "#ffc84a",
+    "goldDark": "#e0a21c",
+    "violet": "#7160d5",
+    "mint": "#55d1bb",
+    "correct": "#2fb37f",
+    "wrong": "#e5484d"
+  },
+  "teams": {
+    "blue": { "main": "#4873ff", "light": "#8fb0ff", "dark": "#2b4bc9" },
+    "red": { "main": "#f95b93", "light": "#ffa3c4", "dark": "#c7336b" }
+  },
+  "map": {
+    "grass": "#a9d18e",
+    "grassDark": "#8cbf72",
+    "lane": "#e9cf98",
+    "laneDark": "#d4b277",
+    "water": "#7cc3d6",
+    "waterDark": "#5aa9c0"
+  },
+  "fonts": {
+    "display": "Fredoka",
+    "body": "Nunito"
+  }
+}
