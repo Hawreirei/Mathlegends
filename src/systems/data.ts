@@ -254,3 +254,28 @@ export const minionsFileSchema = z
 export type MinionsFile = z.infer<typeof minionsFileSchema>;
 export const loadMinions = (raw: unknown): MinionsFile =>
   parse(minionsFileSchema, raw, 'minions.json');
+
+// ---------- structures.json (#21)
+
+export const structuresFileSchema = z
+  .object({
+    version: z.literal(1),
+    _note: z.string().optional(),
+    tower: z
+      .object({
+        hp: positive,
+        atk: positive,
+        armor: nonNegative,
+        attackRange: positive,
+        attackSpeed: positive,
+      })
+      .strict(),
+    nexus: z.object({ hp: positive, armor: nonNegative }).strict(),
+    /** Show an enemy tower's range ring when the player is within this distance of its edge. */
+    dangerRingDistance: nonNegative,
+  })
+  .strict();
+
+export type StructuresFile = z.infer<typeof structuresFileSchema>;
+export const loadStructures = (raw: unknown): StructuresFile =>
+  parse(structuresFileSchema, raw, 'structures.json');

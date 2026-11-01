@@ -3,8 +3,10 @@ import economyJson from '../data/economy.json';
 import heroesJson from '../data/heroes.json';
 import mapJson from '../data/map.json';
 import minionsJson from '../data/minions.json';
+import structuresJson from '../data/structures.json';
 import { damageNumber, HeroView, slash } from '../entities/Hero';
 import { MinionView, shot } from '../entities/Minion';
+import { StructureView, towerShot } from '../entities/Structure';
 import {
   ATTACK_BUFFER_SEC,
   canAttack,
@@ -13,7 +15,13 @@ import {
   resolveAttack,
   tickRespawn,
 } from '../systems/combat';
-import { loadHeroes, loadMinions, type MinionsFile } from '../systems/data';
+import {
+  loadHeroes,
+  loadMinions,
+  loadStructures,
+  type MinionsFile,
+  type StructuresFile,
+} from '../systems/data';
 import { validateEconomy, type EconomyConfig } from '../systems/economy';
 import { recordMatch, type MatchResult } from '../systems/gameState';
 import {
@@ -24,8 +32,21 @@ import {
   type HeroState,
   type Rect,
 } from '../systems/hero';
-import { buildMap, cameraZoom, type LaneMap, type MapConfig } from '../systems/map';
-import { spawnWave, stepMinions, wavesDue, type MinionState } from '../systems/minions';
+import { buildMap, cameraZoom, type LaneMap, type MapConfig, type Point } from '../systems/map';
+import {
+  spawnWave,
+  stepMinions,
+  wavesDue,
+  type AttackEvent,
+  type MinionState,
+} from '../systems/minions';
+import {
+  createStructures,
+  isTargetable,
+  stepTowers,
+  winner,
+  type StructureState,
+} from '../systems/structures';
 import { hex, theme } from '../ui/theme';
 import { ATTACK_EVENT, ATTACK_RELEASE_EVENT, type MatchHudScene } from './MatchHudScene';
 import { getState, setState } from './shared';
@@ -33,15 +54,21 @@ import { getState, setState } from './shared';
 /** Fired on game.events when the player's hit kills a minion: (kind, minionId). The question overlay (#27) listens. */
 export const LAST_HIT_EVENT = 'ml-last-hit';
 
+/** Delay between a Nexus falling and the Result screen, so the collapse can be seen. */
+const END_DELAY_MS = 1500;
+
 type Keys = Record<
   'W' | 'A' | 'S' | 'D' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT',
   Phaser.Input.Keyboard.Key
 >;
+type Unit = HeroState | MinionState | StructureState;
 
 /**
- * The match world: lane, bases, Nexus and towers (#16), heroes and movement (#17), and
- * minion waves (#20) and basic combat (#19): attack auto-targets the nearest enemy in range, damage follows
- * economy.json, dead heroes respawn at their base after a level-based timer.
+ * The match world. Lane, bases and camera (#16); heroes and movement (#17); combat (#19):
+ * attack auto-targets the nearest enemy in range and dead heroes respawn at their base;
+ * minion waves (#20); towers and Nexus (#21): towers shoot minions first, structures are
+ * protected until the ones in front fall, and destroying the enemy Nexus wins.
+ * All rules are in src/systems/; this scene wires them together and draws the result.
  * The HUD is a separate scene (MatchHudScene) that stays fixed while the world scrolls.
  */
 export class MatchScene extends Phaser.Scene {
@@ -53,14 +80,20 @@ export class MatchScene extends Phaser.Scene {
   botState!: HeroState;
   bot!: HeroView;
   minions: MinionState[] = [];
+  structures: StructureState[] = [];
   /** Player last hits on minions, by type (for #22 gold and #27 questions). */
   lastHits = { infantry: 0, lancer: 0, cannon: 0 };
-  private minionViews = new Map<string, MinionView>();
-  private minionCfg!: MinionsFile;
-  private prevNow = 0;
+  /** Set once a Nexus falls; the match ends shortly after. */
+  ending = false;
   startedAt = 0;
   /** Attack presses so far (touch button or Space). */
   attackPresses = 0;
+  private minionViews = new Map<string, MinionView>();
+  private structureViews = new Map<string, StructureView>();
+  private minionCfg!: MinionsFile;
+  private structureCfg!: StructuresFile;
+  private dangerRing!: Phaser.GameObjects.Graphics;
+  private prevNow = 0;
   private attackHeld = false;
   private lastAttackPress = -Infinity;
   private area!: Rect;
@@ -81,15 +114,21 @@ export class MatchScene extends Phaser.Scene {
     if (problems.length) throw new Error(`Invalid economy.json:\n${problems.join('\n')}`);
     this.map = buildMap(mapJson as MapConfig);
     this.minionCfg = loadMinions(minionsJson);
+    this.structureCfg = loadStructures(structuresJson);
+    this.area = walkableArea(this.map);
+
     this.minions = [];
     this.minionViews = new Map();
+    this.structures = createStructures(this.map, this.structureCfg);
+    this.structureViews = new Map();
     this.lastHits = { infantry: 0, lancer: 0, cannon: 0 };
+    this.ending = false;
     this.prevNow = 0;
-    this.area = walkableArea(this.map);
     this.startedAt = this.time.now;
     this.attackHeld = false;
     this.lastAttackPress = -Infinity;
     this.attackPresses = 0;
+
     this.drawWorld();
     this.spawnHeroes();
     this.keys = this.input.keyboard!.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT') as Keys;
@@ -123,7 +162,7 @@ export class MatchScene extends Phaser.Scene {
     const dt = Math.min(deltaMs, 100) / 1000;
     const now = this.now;
 
-    if (this.playerState.alive) {
+    if (this.playerState.alive && !this.ending) {
       const k = this.keys;
       let dir = directionFromKeys({
         up: k.W.isDown || k.UP.isDown,
@@ -138,18 +177,23 @@ export class MatchScene extends Phaser.Scene {
       this.playerAttack(now);
     }
 
-    this.stepMinionWaves(dt, now);
+    this.spawnDueWaves(now);
+    this.stepUnits(dt, now);
 
     this.playerState = tickRespawn(regenerate(this.playerState, dt), now, this.map.heroSpawn.blue);
     this.botState = tickRespawn(regenerate(this.botState, dt), now, this.map.heroSpawn.red);
+
     this.player.sync(this.playerState, now);
     this.bot.sync(this.botState, now);
     for (const m of this.minions) this.minionViews.get(m.id)?.sync(m);
+    for (const s of this.structures)
+      this.structureViews.get(s.id)?.sync(s, isTargetable(s, this.structures));
+    this.drawDangerRing();
+    this.checkWin();
     this.prevNow = now;
   }
 
-  /** Spawns due waves on both sides, steps every minion, and shows their hits. */
-  private stepMinionWaves(dt: number, now: number): void {
+  private spawnDueWaves(now: number): void {
     for (const n of wavesDue(this.prevNow, now, this.economy)) {
       for (const team of ['blue', 'red'] as const) {
         for (const m of spawnWave(n, team, this.map, this.economy, this.minionCfg, `w${n}`)) {
@@ -158,43 +202,78 @@ export class MatchScene extends Phaser.Scene {
         }
       }
     }
-    const before = new Map(this.minions.map((m) => [m.id, m]));
-    const r = stepMinions(
+  }
+
+  /** Minions move and fight (including structures), then towers shoot. */
+  private stepUnits(dt: number, now: number): void {
+    const before = new Map<string, Unit>([
+      ...this.minions.map((m) => [m.id, m] as const),
+      ...this.structures.map((s) => [s.id, s] as const),
+      [this.playerState.id, this.playerState],
+      [this.botState.id, this.botState],
+    ]);
+
+    const m = stepMinions(
       this.minions,
       [this.playerState, this.botState],
       dt,
       now,
       this.economy,
       this.map,
+      this.structures,
     );
-    this.minions = r.minions;
-    [this.playerState, this.botState] = r.heroes as [HeroState, HeroState];
-    for (const e of r.events) {
-      const attacker = before.get(e.attackerId);
-      const target =
-        before.get(e.targetId) ??
-        (e.targetId === this.playerState.id ? this.playerState : this.botState);
-      if (attacker && attacker.kind !== 'infantry')
+    this.minions = m.minions;
+    this.structures = m.structures;
+    [this.playerState, this.botState] = m.heroes as [HeroState, HeroState];
+    for (const e of m.events) {
+      const attacker = before.get(e.attackerId) as MinionState | undefined;
+      const target = before.get(e.targetId);
+      if (attacker && target && attacker.kind !== 'infantry')
         shot(this, attacker, target, theme.teams[attacker.team].main, attacker.kind === 'cannon');
-      const view = this.minionViews.get(e.targetId);
-      if (view) {
-        view.flash();
-        if (e.killed) {
-          view.die();
-          this.minionViews.delete(e.targetId);
-        }
-      } else if (e.targetId === this.playerState.id) this.player.flash();
-      else if (e.targetId === this.botState.id) this.bot.flash();
+      this.showHit(e);
     }
+
+    const t = stepTowers(
+      this.structures,
+      this.minions,
+      [this.playerState, this.botState],
+      now,
+      this.economy,
+    );
+    this.structures = t.structures;
+    this.minions = t.minions;
+    [this.playerState, this.botState] = t.heroes as [HeroState, HeroState];
+    for (const e of t.events) {
+      const tower = this.structures.find((s) => s.id === e.attackerId)!;
+      const target = before.get(e.targetId);
+      if (target) towerShot(this, tower, target, theme.teams[tower.team].main);
+      this.showHit(e);
+    }
+  }
+
+  /** Hit feedback on whatever was hit: minion, hero or structure. */
+  private showHit(e: AttackEvent): void {
+    const view = this.minionViews.get(e.targetId);
+    if (view) {
+      view.flash();
+      if (e.killed) {
+        view.die();
+        this.minionViews.delete(e.targetId);
+      }
+    } else if (e.targetId === this.playerState.id) this.player.flash();
+    else if (e.targetId === this.botState.id) this.bot.flash();
+    else this.structureViews.get(e.targetId)?.flash();
   }
 
   /** Attack the nearest enemy in range while attack is held, or shortly after a press. */
   private playerAttack(now: number): void {
     const wants = this.attackHeld || now - this.lastAttackPress <= ATTACK_BUFFER_SEC;
     if (!wants || !canAttack(this.playerState, now)) return;
-    const target = nearestEnemyInRange<HeroState | MinionState>(this.playerState, [
+    const structures = this.structures.filter((s) => isTargetable(s, this.structures));
+    const target = nearestEnemyInRange<Unit>(this.playerState, [
       this.botState,
       ...this.minions,
+      ...structures,
     ]);
     if (!target) return;
     const r = resolveAttack(this.playerState, target, now, this.economy);
@@ -202,22 +281,50 @@ export class MatchScene extends Phaser.Scene {
     this.lastAttackPress = -Infinity;
     slash(this, this.playerState, target, theme.colors.gold);
     damageNumber(this, target, r.damage);
+
     if (target.id === this.botState.id) {
       this.botState = r.target as HeroState;
       this.bot.flash();
-      return;
-    }
-    const m = r.target as MinionState;
-    const view = this.minionViews.get(m.id);
-    if (r.killed) {
-      this.minions = this.minions.filter((x) => x.id !== m.id);
-      view?.die();
-      this.minionViews.delete(m.id);
-      this.lastHits[m.kind]++;
-      this.game.events.emit(LAST_HIT_EVENT, m.kind, m.id);
+    } else if (this.structures.some((s) => s.id === target.id)) {
+      const s = { ...(r.target as StructureState), respawnAt: null };
+      this.structures = this.structures.map((x) => (x.id === s.id ? s : x));
+      this.structureViews.get(s.id)?.flash();
     } else {
-      this.minions = this.minions.map((x) => (x.id === m.id ? m : x));
-      view?.flash();
+      const mn = r.target as MinionState;
+      const view = this.minionViews.get(mn.id);
+      if (r.killed) {
+        this.minions = this.minions.filter((x) => x.id !== mn.id);
+        view?.die();
+        this.minionViews.delete(mn.id);
+        this.lastHits[mn.kind]++;
+        this.game.events.emit(LAST_HIT_EVENT, mn.kind, mn.id);
+      } else {
+        this.minions = this.minions.map((x) => (x.id === mn.id ? mn : x));
+        view?.flash();
+      }
+    }
+  }
+
+  /** When a Nexus falls: stop the player, let the collapse play, then show the result. */
+  private checkWin(): void {
+    const w = winner(this.structures);
+    if (!w || this.ending) return;
+    this.ending = true;
+    this.attackHeld = false;
+    this.time.delayedCall(END_DELAY_MS, () => this.finish(w === 'blue' ? 'victory' : 'defeat'));
+  }
+
+  /** Faint red ring showing an enemy tower's range when the player gets close to it. */
+  private drawDangerRing(): void {
+    const g = this.dangerRing;
+    g.clear();
+    if (!this.playerState.alive) return;
+    for (const t of this.structures) {
+      if (t.kind !== 'tower' || !t.alive || t.team === this.playerState.team) continue;
+      const d = Math.hypot(t.x - this.playerState.x, t.y - this.playerState.y);
+      if (d > t.attackRange + this.structureCfg.dangerRingDistance) continue;
+      g.fillStyle(hex(theme.colors.wrong), 0.08).fillCircle(t.x, t.y, t.attackRange);
+      g.lineStyle(5, hex(theme.colors.wrong), 0.55).strokeCircle(t.x, t.y, t.attackRange);
     }
   }
 
@@ -263,17 +370,13 @@ export class MatchScene extends Phaser.Scene {
     this.add.rectangle(0, lane.y + lane.thickness / 2, world.width, 8, edge).setOrigin(0, 0.5);
 
     for (const team of ['blue', 'red'] as const) {
-      const nexus = this.map.slots.find((s) => s.kind === 'nexus' && s.team === team)!;
+      const nexus: Point = this.map.slots.find((s) => s.kind === 'nexus' && s.team === team)!;
       this.add
         .circle(nexus.x, nexus.y, 250, hex(theme.teams[team].main), 0.16)
         .setStrokeStyle(6, hex(theme.teams[team].main), 0.5);
     }
-    for (const s of this.map.slots) {
-      this.add
-        .image(s.x, s.y, `${s.kind}-${s.team}`)
-        .setOrigin(0.5, s.kind === 'nexus' ? 0.8 : 0.85)
-        .setDepth(s.y);
-    }
+    this.dangerRing = this.add.graphics().setDepth(1);
+    for (const s of this.structures) this.structureViews.set(s.id, new StructureView(this, s));
   }
 
   finish(outcome: MatchResult['outcome']): void {

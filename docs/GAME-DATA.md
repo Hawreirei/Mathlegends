@@ -93,3 +93,21 @@ Stats per minion type, loaded and checked by `loadMinions` in `src/systems/data.
 `spacing` (70) is the gap between minions in a fresh wave. `aggroRange` must be at least `attackRange` (checked).
 
 Behaviour (`src/systems/minions.ts`): march towards the enemy base; target the nearest enemy **minion** in aggro range, or the nearest enemy **hero** only if no enemy minion is near; walk into range and attack; friendly minions push apart so a wave keeps its shape; dead minions do not respawn. All minions decide from the same snapshot each step and attacks land simultaneously, so list order gives neither team an edge: a test runs 10 minutes of mirrored waves and requires equal kills (99 vs 99) with the fight holding the middle. The player's killing blow on a minion counts as a **last hit** and fires `ml-last-hit` (used by the question overlay in #27).
+
+## structures.json (issue #21)
+
+| Field | Value | Meaning |
+|---|---|---|
+| `tower.hp` / `armor` | 2400 / 40 | |
+| `tower.atk` / `attackSpeed` | 140 / 0.8 | One shot every 1.25 s; about 118 damage to a starter hero (armor 18) |
+| `tower.attackRange` | 420 | Pixels |
+| `nexus.hp` / `armor` | 4000 / 40 | The Nexus never attacks |
+| `dangerRingDistance` | 220 | Show an enemy tower's red range ring when the player is this close to its edge |
+
+Rules (`src/systems/structures.ts`):
+- **Protection order:** the outer tower can be attacked first; the inner tower only after the outer falls; the Nexus only after both towers fall. Protected structures show a soft white bubble.
+- **Tower targeting:** nearest enemy minion in range, otherwise nearest enemy hero in range.
+- **Minion targeting:** enemy minions, then attackable enemy structures, then enemy heroes, so waves push towers.
+- **Win:** destroying the enemy Nexus ends the match (Victory); losing your own ends it (Defeat). The Result screen follows 1.5 s later so the collapse can be seen.
+
+A simulation with blue waves only (no defenders) takes the red outer tower at 103 s, the inner at 191 s and the Nexus at 238 s. With defending minions and a hero, matches should land near the 8 to 10 minute target; the simulator (#37) will measure it.

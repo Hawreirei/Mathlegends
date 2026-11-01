@@ -4,8 +4,6 @@
   "menu.play": "MAIN",
   "menu.rank": "{year} · {stars} bintang",
   "match.quit": "Keluar",
-  "match.debugWin": "Tes: Menang",
-  "match.debugLose": "Tes: Kalah",
   "result.victory": "MENANG!",
   "result.defeat": "KALAH",
   "result.time": "Waktu: {time}",

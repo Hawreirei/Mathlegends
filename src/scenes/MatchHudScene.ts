@@ -17,8 +17,7 @@ export const SKILL_EVENT = 'ml-skill';
 /**
  * Fixed overlay on top of the match world: quit button, timer and, on touch devices,
  * the joystick and attack/skill buttons (#18). The full HUD (health, gold, level,
- * mini-map) comes in #25. The two test buttons end the match until towers and the
- * Nexus can be destroyed (#21).
+ * mini-map) comes in #25.
  */
 export class MatchHudScene extends Phaser.Scene {
   private timerText?: Phaser.GameObjects.Text;
@@ -63,25 +62,6 @@ export class MatchHudScene extends Phaser.Scene {
       { width: 150, height: 56, style: 'secondary', fontSize: 24 },
     );
     this.timerText = this.add.text(w / 2, barY, '0:00', displayFont(36)).setOrigin(0.5);
-
-    // Temporary test buttons, tucked under the top bar on the right so they never cover the touch controls.
-    const tx = w - safe.right - 120;
-    new Button(
-      this,
-      tx,
-      barH + 50,
-      tr(this, 'match.debugWin'),
-      () => this.match.finish('victory'),
-      { width: 210, height: 56, fontSize: 22 },
-    );
-    new Button(
-      this,
-      tx,
-      barH + 120,
-      tr(this, 'match.debugLose'),
-      () => this.match.finish('defeat'),
-      { width: 210, height: 56, style: 'secondary', fontSize: 22 },
-    );
 
     this.touch = this.sys.game.device.input.touch
       ? new TouchControls(

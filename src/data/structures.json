@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "_note": "Starting values for the simulator (#37) and playtest (#50) to tune.",
+  "tower": {
+    "hp": 2400,
+    "atk": 140,
+    "armor": 40,
+    "attackRange": 420,
+    "attackSpeed": 0.8
+  },
+  "nexus": {
+    "hp": 4000,
+    "armor": 40
+  },
+  "dangerRingDistance": 220
+}

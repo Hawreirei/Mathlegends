@@ -4,8 +4,6 @@
   "menu.play": "PLAY",
   "menu.rank": "{year} · {stars} stars",
   "match.quit": "Quit",
-  "match.debugWin": "Test: Win",
-  "match.debugLose": "Test: Lose",
   "result.victory": "VICTORY!",
   "result.defeat": "DEFEAT",
   "result.time": "Time: {time}",

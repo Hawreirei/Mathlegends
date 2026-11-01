@@ -8,6 +8,7 @@ import type { MinionsFile } from './data';
 import type { EconomyConfig, MinionType } from './economy';
 import { walkableArea, type HeroState } from './hero';
 import type { LaneMap, Point, Team } from './map';
+import { isTargetable, type StructureState } from './structures';
 
 export interface MinionState extends Combatant {
   kind: MinionType;
@@ -128,6 +129,7 @@ function moveToward(p: Point, to: Point, step: number): Point {
 export interface StepResult {
   minions: MinionState[];
   heroes: HeroState[];
+  structures: StructureState[];
   events: AttackEvent[];
 }
 
@@ -143,16 +145,23 @@ export function stepMinions(
   now: number,
   c: EconomyConfig,
   map: LaneMap,
+  structuresIn: readonly StructureState[] = [],
 ): StepResult {
   const area = walkableArea(map);
   const minions = minionsIn.map((x) => ({ ...x }));
   const heroes = heroesIn.map((x) => ({ ...x }));
+  const structures = structuresIn.map((x) => ({ ...x }));
+  const targetableStructures = structuresIn.filter((x) => isTargetable(x, structuresIn));
   const plans: { i: number; targetId: string }[] = [];
 
   // 1. Decide (from the snapshot) and move.
   minionsIn.forEach((m, i) => {
     if (!m.alive) return;
-    const target = nearest(m, minionsIn, m.aggroRange) ?? nearest(m, heroesIn, m.aggroRange);
+    // Priority: enemy minions, then enemy structures that can be attacked, then enemy heroes.
+    const target =
+      nearest(m, minionsIn, m.aggroRange) ??
+      nearest(m, targetableStructures, m.aggroRange) ??
+      nearest(m, heroesIn, m.aggroRange);
     const me = minions[i]!;
     if (target && dist(m, target) <= m.attackRange) {
       if (canAttack(m, now)) plans.push({ i, targetId: target.id });
@@ -172,12 +181,15 @@ export function stepMinions(
     const attacker = minions[i]!;
     const ti = minions.findIndex((x) => x.id === targetId);
     const hi = ti < 0 ? heroes.findIndex((x) => x.id === targetId) : -1;
-    const target = ti >= 0 ? minions[ti]! : hi >= 0 ? heroes[hi]! : null;
+    const si = ti < 0 && hi < 0 ? structures.findIndex((x) => x.id === targetId) : -1;
+    const target =
+      ti >= 0 ? minions[ti]! : hi >= 0 ? heroes[hi]! : si >= 0 ? structures[si]! : null;
     if (!target || !target.alive) continue;
     const r = resolveAttack(attacker, target, now, c);
     minions[i] = r.attacker;
     if (ti >= 0) minions[ti] = r.target as MinionState;
-    else heroes[hi] = r.target as HeroState;
+    else if (hi >= 0) heroes[hi] = r.target as HeroState;
+    else structures[si] = { ...(r.target as StructureState), respawnAt: null };
     events.push({
       attackerId: attacker.id,
       targetId,
@@ -217,5 +229,5 @@ export function stepMinions(
     m.x = Math.min(area.right, Math.max(area.left, m.x));
     m.y = Math.min(area.bottom, Math.max(area.top, m.y));
   }
-  return { minions: alive, heroes, events };
+  return { minions: alive, heroes, structures, events };
 }
