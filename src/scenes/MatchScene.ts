@@ -2,7 +2,9 @@ import Phaser from 'phaser';
 import economyJson from '../data/economy.json';
 import heroesJson from '../data/heroes.json';
 import mapJson from '../data/map.json';
+import minionsJson from '../data/minions.json';
 import { damageNumber, HeroView, slash } from '../entities/Hero';
+import { MinionView, shot } from '../entities/Minion';
 import {
   ATTACK_BUFFER_SEC,
   canAttack,
@@ -11,7 +13,7 @@ import {
   resolveAttack,
   tickRespawn,
 } from '../systems/combat';
-import { loadHeroes } from '../systems/data';
+import { loadHeroes, loadMinions, type MinionsFile } from '../systems/data';
 import { validateEconomy, type EconomyConfig } from '../systems/economy';
 import { recordMatch, type MatchResult } from '../systems/gameState';
 import {
@@ -23,9 +25,13 @@ import {
   type Rect,
 } from '../systems/hero';
 import { buildMap, cameraZoom, type LaneMap, type MapConfig } from '../systems/map';
+import { spawnWave, stepMinions, wavesDue, type MinionState } from '../systems/minions';
 import { hex, theme } from '../ui/theme';
 import { ATTACK_EVENT, ATTACK_RELEASE_EVENT, type MatchHudScene } from './MatchHudScene';
 import { getState, setState } from './shared';
+
+/** Fired on game.events when the player's hit kills a minion: (kind, minionId). The question overlay (#27) listens. */
+export const LAST_HIT_EVENT = 'ml-last-hit';
 
 type Keys = Record<
   'W' | 'A' | 'S' | 'D' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT',
@@ -34,7 +40,7 @@ type Keys = Record<
 
 /**
  * The match world: lane, bases, Nexus and towers (#16), heroes and movement (#17), and
- * basic combat (#19): attack auto-targets the nearest enemy in range, damage follows
+ * minion waves (#20) and basic combat (#19): attack auto-targets the nearest enemy in range, damage follows
  * economy.json, dead heroes respawn at their base after a level-based timer.
  * The HUD is a separate scene (MatchHudScene) that stays fixed while the world scrolls.
  */
@@ -46,6 +52,12 @@ export class MatchScene extends Phaser.Scene {
   player!: HeroView;
   botState!: HeroState;
   bot!: HeroView;
+  minions: MinionState[] = [];
+  /** Player last hits on minions, by type (for #22 gold and #27 questions). */
+  lastHits = { infantry: 0, lancer: 0, cannon: 0 };
+  private minionViews = new Map<string, MinionView>();
+  private minionCfg!: MinionsFile;
+  private prevNow = 0;
   startedAt = 0;
   /** Attack presses so far (touch button or Space). */
   attackPresses = 0;
@@ -68,6 +80,11 @@ export class MatchScene extends Phaser.Scene {
     const problems = validateEconomy(this.economy);
     if (problems.length) throw new Error(`Invalid economy.json:\n${problems.join('\n')}`);
     this.map = buildMap(mapJson as MapConfig);
+    this.minionCfg = loadMinions(minionsJson);
+    this.minions = [];
+    this.minionViews = new Map();
+    this.lastHits = { infantry: 0, lancer: 0, cannon: 0 };
+    this.prevNow = 0;
     this.area = walkableArea(this.map);
     this.startedAt = this.time.now;
     this.attackHeld = false;
@@ -121,25 +138,87 @@ export class MatchScene extends Phaser.Scene {
       this.playerAttack(now);
     }
 
+    this.stepMinionWaves(dt, now);
+
     this.playerState = tickRespawn(regenerate(this.playerState, dt), now, this.map.heroSpawn.blue);
     this.botState = tickRespawn(regenerate(this.botState, dt), now, this.map.heroSpawn.red);
     this.player.sync(this.playerState, now);
     this.bot.sync(this.botState, now);
+    for (const m of this.minions) this.minionViews.get(m.id)?.sync(m);
+    this.prevNow = now;
+  }
+
+  /** Spawns due waves on both sides, steps every minion, and shows their hits. */
+  private stepMinionWaves(dt: number, now: number): void {
+    for (const n of wavesDue(this.prevNow, now, this.economy)) {
+      for (const team of ['blue', 'red'] as const) {
+        for (const m of spawnWave(n, team, this.map, this.economy, this.minionCfg, `w${n}`)) {
+          this.minions.push(m);
+          this.minionViews.set(m.id, new MinionView(this, m));
+        }
+      }
+    }
+    const before = new Map(this.minions.map((m) => [m.id, m]));
+    const r = stepMinions(
+      this.minions,
+      [this.playerState, this.botState],
+      dt,
+      now,
+      this.economy,
+      this.map,
+    );
+    this.minions = r.minions;
+    [this.playerState, this.botState] = r.heroes as [HeroState, HeroState];
+    for (const e of r.events) {
+      const attacker = before.get(e.attackerId);
+      const target =
+        before.get(e.targetId) ??
+        (e.targetId === this.playerState.id ? this.playerState : this.botState);
+      if (attacker && attacker.kind !== 'infantry')
+        shot(this, attacker, target, theme.teams[attacker.team].main, attacker.kind === 'cannon');
+      const view = this.minionViews.get(e.targetId);
+      if (view) {
+        view.flash();
+        if (e.killed) {
+          view.die();
+          this.minionViews.delete(e.targetId);
+        }
+      } else if (e.targetId === this.playerState.id) this.player.flash();
+      else if (e.targetId === this.botState.id) this.bot.flash();
+    }
   }
 
   /** Attack the nearest enemy in range while attack is held, or shortly after a press. */
   private playerAttack(now: number): void {
     const wants = this.attackHeld || now - this.lastAttackPress <= ATTACK_BUFFER_SEC;
     if (!wants || !canAttack(this.playerState, now)) return;
-    const target = nearestEnemyInRange(this.playerState, [this.botState]);
+    const target = nearestEnemyInRange<HeroState | MinionState>(this.playerState, [
+      this.botState,
+      ...this.minions,
+    ]);
     if (!target) return;
     const r = resolveAttack(this.playerState, target, now, this.economy);
     this.playerState = r.attacker;
-    this.botState = r.target;
     this.lastAttackPress = -Infinity;
     slash(this, this.playerState, target, theme.colors.gold);
-    this.bot.flash();
     damageNumber(this, target, r.damage);
+    if (target.id === this.botState.id) {
+      this.botState = r.target as HeroState;
+      this.bot.flash();
+      return;
+    }
+    const m = r.target as MinionState;
+    const view = this.minionViews.get(m.id);
+    if (r.killed) {
+      this.minions = this.minions.filter((x) => x.id !== m.id);
+      view?.die();
+      this.minionViews.delete(m.id);
+      this.lastHits[m.kind]++;
+      this.game.events.emit(LAST_HIT_EVENT, m.kind, m.id);
+    } else {
+      this.minions = this.minions.map((x) => (x.id === m.id ? m : x));
+      view?.flash();
+    }
   }
 
   private spawnHeroes(): void {

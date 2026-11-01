@@ -219,3 +219,38 @@ export const ranksFileSchema = z
 
 export type RanksFile = z.infer<typeof ranksFileSchema>;
 export const loadRanks = (raw: unknown): RanksFile => parse(ranksFileSchema, raw, 'ranks.json');
+
+// ---------- minions.json (#20)
+
+const minionStats = z
+  .object({
+    hp: positive,
+    atk: positive,
+    armor: nonNegative,
+    attackRange: positive,
+    attackSpeed: positive,
+    moveSpeed: positive,
+    /** Pixels: how far a minion notices enemies. Must be at least its attack range. */
+    aggroRange: positive,
+    radius: positive,
+    hpRegen: nonNegative,
+  })
+  .strict()
+  .refine((m) => m.aggroRange >= m.attackRange, {
+    message: 'aggroRange must be at least attackRange',
+    path: ['aggroRange'],
+  });
+
+export const minionsFileSchema = z
+  .object({
+    version: z.literal(1),
+    _note: z.string().optional(),
+    types: z.object({ infantry: minionStats, lancer: minionStats, cannon: minionStats }).strict(),
+    /** Pixels between minions in a spawned wave. */
+    spacing: positive,
+  })
+  .strict();
+
+export type MinionsFile = z.infer<typeof minionsFileSchema>;
+export const loadMinions = (raw: unknown): MinionsFile =>
+  parse(minionsFileSchema, raw, 'minions.json');

@@ -79,3 +79,17 @@ The single lane, loaded by [`src/systems/map.ts`](../src/systems/map.ts). Only t
 | `camera.lerp` | 0.12 | How softly the camera follows the player (0 to 1; higher is tighter) |
 
 The loader rejects a lane that does not fit in the world, towers that are not in order from the Nexus towards the middle, or spawns on the wrong half. On tall portrait screens the camera centres the world vertically.
+
+## minions.json (issue #20)
+
+Stats per minion type, loaded and checked by `loadMinions` in `src/systems/data.ts`. When and how many spawn is in `economy.json` (`match`): first wave at 15 s, then every 30 s; 3 Infantry + 2 Lancers per wave; a Cannon every 3rd wave.
+
+| Type | HP | ATK | Armor | Range | Attacks/s | Speed | Aggro | Role |
+|---|---|---|---|---|---|---|---|---|
+| Infantry (+) | 420 | 22 | 10 | 90 | 0.8 | 140 | 380 | Front line, melee |
+| Lancer (×) | 300 | 28 | 4 | 300 | 0.7 | 140 | 400 | Ranged |
+| Cannon (÷) | 820 | 45 | 25 | 340 | 0.5 | 120 | 420 | Tough, slow, ranged |
+
+`spacing` (70) is the gap between minions in a fresh wave. `aggroRange` must be at least `attackRange` (checked).
+
+Behaviour (`src/systems/minions.ts`): march towards the enemy base; target the nearest enemy **minion** in aggro range, or the nearest enemy **hero** only if no enemy minion is near; walk into range and attack; friendly minions push apart so a wave keeps its shape; dead minions do not respawn. All minions decide from the same snapshot each step and attacks land simultaneously, so list order gives neither team an edge: a test runs 10 minutes of mirrored waves and requires equal kills (99 vs 99) with the fight holding the middle. The player's killing blow on a minion counts as a **last hit** and fires `ml-last-hit` (used by the question overlay in #27).

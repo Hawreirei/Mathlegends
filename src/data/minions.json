@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "_note": "Starting values; the balance simulator (#37) and playtest (#50) tune them. Ranges and speeds in pixels.",
+  "types": {
+    "infantry": {
+      "hp": 420,
+      "atk": 22,
+      "armor": 10,
+      "attackRange": 90,
+      "attackSpeed": 0.8,
+      "moveSpeed": 140,
+      "aggroRange": 380,
+      "radius": 26,
+      "hpRegen": 0
+    },
+    "lancer": {
+      "hp": 300,
+      "atk": 28,
+      "armor": 4,
+      "attackRange": 300,
+      "attackSpeed": 0.7,
+      "moveSpeed": 140,
+      "aggroRange": 400,
+      "radius": 26,
+      "hpRegen": 0
+    },
+    "cannon": {
+      "hp": 820,
+      "atk": 45,
+      "armor": 25,
+      "attackRange": 340,
+      "attackSpeed": 0.5,
+      "moveSpeed": 120,
+      "aggroRange": 420,
+      "radius": 34,
+      "hpRegen": 0
+    }
+  },
+  "spacing": 70
+}
