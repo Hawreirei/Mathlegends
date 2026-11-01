@@ -57,3 +57,17 @@ Over any 10 second window, a hero's skill damage (excluding basic attacks) must 
 ## Spreadsheet
 
 The issue asked for a spreadsheet mirror. The tested model in `src/systems/economy.ts` replaces it, because it reads the real config and cannot drift. To see the table above for new values, change `economy.json` and run `npm test`.
+
+## In the game (issue #22)
+
+Implemented in [`src/systems/progression.ts`](../src/systems/progression.ts) (pure, tested) and wired up in the match:
+
+| Event | Who gets what |
+|---|---|
+| Every second | Both heroes get `passiveGoldPerSecond` (3) gold, alive or dead |
+| A hero lands the killing blow on an enemy minion (last hit) | That hero: `lastHitGold[type]` gold and `exp.minion[type]` EXP, both x the answer multiplier (1.0 until the question resolver, #28) |
+| An enemy minion dies to anything else | Every enemy hero within `exp.shareRangePx` (600 px): `exp.minion[type]` EXP, no gold |
+| A hero lands the killing blow on the enemy hero | That hero: `otherGold.heroKill` (150) gold and `exp.heroKill` (150) EXP |
+| A tower falls | Every hero on the other team: `otherGold.tower` (120) gold |
+
+Level-ups use the EXP curve above. A level-up recomputes the hero's stats as base + growth x (level - 1) from `heroes.json` and adds the extra max HP and mana to current HP and mana. Gold is tracked by source (`start`, `passive`, `lastHit`, `heroKill`, `tower`) so the math share of income can be measured in real matches and by the simulator (#37).

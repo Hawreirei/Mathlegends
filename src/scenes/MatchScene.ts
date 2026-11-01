@@ -4,7 +4,7 @@ import heroesJson from '../data/heroes.json';
 import mapJson from '../data/map.json';
 import minionsJson from '../data/minions.json';
 import structuresJson from '../data/structures.json';
-import { damageNumber, HeroView, slash } from '../entities/Hero';
+import { damageNumber, goldPopup, HeroView, levelUpBurst, slash } from '../entities/Hero';
 import { MinionView, shot } from '../entities/Minion';
 import { StructureView, towerShot } from '../entities/Structure';
 import {
@@ -18,6 +18,7 @@ import {
 import {
   loadHeroes,
   loadMinions,
+  type Hero,
   loadStructures,
   type MinionsFile,
   type StructuresFile,
@@ -49,7 +50,17 @@ import {
 } from '../systems/structures';
 import { hex, theme } from '../ui/theme';
 import { ATTACK_EVENT, ATTACK_RELEASE_EVENT, type MatchHudScene } from './MatchHudScene';
-import { getState, setState } from './shared';
+import {
+  addExp,
+  addGold,
+  applyLevel,
+  createProgress,
+  killRewards,
+  tickPassiveGold,
+  type Progress,
+  type Victim,
+} from '../systems/progression';
+import { getState, setState, tr } from './shared';
 
 /** Fired on game.events when the player's hit kills a minion: (kind, minionId). The question overlay (#27) listens. */
 export const LAST_HIT_EVENT = 'ml-last-hit';
@@ -83,6 +94,11 @@ export class MatchScene extends Phaser.Scene {
   structures: StructureState[] = [];
   /** Player last hits on minions, by type (for #22 gold and #27 questions). */
   lastHits = { infantry: 0, lancer: 0, cannon: 0 };
+  /** Gold, EXP and level for each hero (#22). */
+  playerProgress!: Progress;
+  botProgress!: Progress;
+  private playerDef!: Hero;
+  private botDef!: Hero;
   /** Set once a Nexus falls; the match ends shortly after. */
   ending = false;
   startedAt = 0;
@@ -105,7 +121,7 @@ export class MatchScene extends Phaser.Scene {
 
   /** Match time in seconds. */
   get now(): number {
-    return (this.time.now - this.startedAt) / 1000;
+    return (this.game.loop.time - this.startedAt) / 1000;
   }
 
   create(): void {
@@ -122,9 +138,13 @@ export class MatchScene extends Phaser.Scene {
     this.structures = createStructures(this.map, this.structureCfg);
     this.structureViews = new Map();
     this.lastHits = { infantry: 0, lancer: 0, cannon: 0 };
+    this.playerProgress = createProgress(this.economy);
+    this.botProgress = createProgress(this.economy);
     this.ending = false;
     this.prevNow = 0;
-    this.startedAt = this.time.now;
+    // game.loop.time, not this.time.now: a newly started scene's clock is stale in create(),
+    // which made the match clock include the time spent on the menu (#22).
+    this.startedAt = this.game.loop.time;
     this.attackHeld = false;
     this.lastAttackPress = -Infinity;
     this.attackPresses = 0;
@@ -180,6 +200,8 @@ export class MatchScene extends Phaser.Scene {
     this.spawnDueWaves(now);
     this.stepUnits(dt, now);
 
+    this.playerProgress = tickPassiveGold(this.playerProgress, dt, this.economy);
+    this.botProgress = tickPassiveGold(this.botProgress, dt, this.economy);
     this.playerState = tickRespawn(regenerate(this.playerState, dt), now, this.map.heroSpawn.blue);
     this.botState = tickRespawn(regenerate(this.botState, dt), now, this.map.heroSpawn.red);
 
@@ -231,6 +253,7 @@ export class MatchScene extends Phaser.Scene {
       if (attacker && target && attacker.kind !== 'infantry')
         shot(this, attacker, target, theme.teams[attacker.team].main, attacker.kind === 'cannon');
       this.showHit(e);
+      if (e.killed && target) this.onKill(target, e.attackerId);
     }
 
     const t = stepTowers(
@@ -248,6 +271,44 @@ export class MatchScene extends Phaser.Scene {
       const target = before.get(e.targetId);
       if (target) towerShot(this, tower, target, theme.teams[tower.team].main);
       this.showHit(e);
+      if (e.killed && target) this.onKill(target, e.attackerId);
+    }
+  }
+
+  /** What kind of thing died, for killRewards. */
+  private victimOf(u: Unit): Victim {
+    if ('heroId' in u) return { kind: 'hero', team: u.team, x: u.x, y: u.y };
+    if (u.kind === 'tower' || u.kind === 'nexus')
+      return { kind: u.kind, team: u.team, x: u.x, y: u.y };
+    return { kind: 'minion', minionKind: u.kind, team: u.team, x: u.x, y: u.y };
+  }
+
+  /**
+   * Hands out gold and EXP for a death (rules in src/systems/progression.ts) and levels heroes up.
+   * Last hits use multiplier 1 for now; the question result replaces it in #28.
+   */
+  private onKill(victim: Unit, killerId: string): void {
+    const v = this.victimOf(victim);
+    const rewards = killRewards(v, killerId, [this.playerState, this.botState], this.economy);
+    for (const r of rewards) {
+      const isPlayer = r.heroId === this.playerState.id;
+      let progress = isPlayer ? this.playerProgress : this.botProgress;
+      if (r.gold > 0)
+        progress = addGold(progress, r.gold, r.source === 'shareExp' ? 'lastHit' : r.source);
+      const x = addExp(progress, r.exp, this.economy);
+      progress = x.progress;
+      if (isPlayer) {
+        this.playerProgress = progress;
+        if (r.gold > 0) goldPopup(this, v, r.gold);
+        if (x.levelsGained > 0) {
+          this.playerState = applyLevel(this.playerState, this.playerDef, progress.level);
+          levelUpBurst(this, this.playerState, tr(this, 'fx.levelUp'));
+        }
+      } else {
+        this.botProgress = progress;
+        if (x.levelsGained > 0)
+          this.botState = applyLevel(this.botState, this.botDef, progress.level);
+      }
     }
   }
 
@@ -281,6 +342,8 @@ export class MatchScene extends Phaser.Scene {
     this.lastAttackPress = -Infinity;
     slash(this, this.playerState, target, theme.colors.gold);
     damageNumber(this, target, r.damage);
+
+    if (r.killed) this.onKill(target, this.playerState.id);
 
     if (target.id === this.botState.id) {
       this.botState = r.target as HeroState;
@@ -337,6 +400,8 @@ export class MatchScene extends Phaser.Scene {
     };
     const p = find(data.playerHero, 'playerHero');
     const b = find(data.botHero, 'botHero');
+    this.playerDef = p;
+    this.botDef = b;
     this.playerState = createHeroState(p, this.map.heroSpawn.blue, 'blue');
     this.botState = createHeroState(b, this.map.heroSpawn.red, 'red');
     this.bot = new HeroView(this, this.botState, b.sprite, 'red', this.map.heroSpawn.red);

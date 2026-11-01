@@ -21,6 +21,7 @@ export const SKILL_EVENT = 'ml-skill';
  */
 export class MatchHudScene extends Phaser.Scene {
   private timerText?: Phaser.GameObjects.Text;
+  private statsText?: Phaser.GameObjects.Text;
   /** Present on touch devices; MatchScene reads its movement vector. */
   touch: TouchControls | null = null;
 
@@ -40,6 +41,11 @@ export class MatchHudScene extends Phaser.Scene {
 
   update(): void {
     this.timerText?.setText(formatDuration((this.match.time.now - this.match.startedAt) / 1000));
+    const p = this.match.playerProgress;
+    if (p)
+      this.statsText?.setText(
+        `${tr(this, 'hud.level', { n: p.level })}   ${tr(this, 'hud.gold', { n: Math.floor(p.gold) })}`,
+      );
   }
 
   private layout(): void {
@@ -62,6 +68,10 @@ export class MatchHudScene extends Phaser.Scene {
       { width: 150, height: 56, style: 'secondary', fontSize: 24 },
     );
     this.timerText = this.add.text(w / 2, barY, '0:00', displayFont(36)).setOrigin(0.5);
+    // Temporary level/gold readout; the full HUD (bars, mini-map) is #25.
+    this.statsText = this.add
+      .text(w - safe.right - 24, barY, '', displayFont(28, theme.colors.gold))
+      .setOrigin(1, 0.5);
 
     this.touch = this.sys.game.device.input.touch
       ? new TouchControls(

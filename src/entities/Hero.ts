@@ -98,3 +98,48 @@ export function slash(scene: Phaser.Scene, from: Point, to: Point, color: string
   g.strokePath();
   scene.tweens.add({ targets: g, alpha: 0, duration: 160, onComplete: () => g.destroy() });
 }
+
+/** "+20" in gold rising from where gold was earned (#22). */
+export function goldPopup(scene: Phaser.Scene, at: Point, amount: number): void {
+  const t = scene.add
+    .text(at.x, at.y - 40, `+${Math.round(amount)}`, displayFont(30, theme.colors.gold))
+    .setOrigin(0.5)
+    .setStroke(theme.colors.ink, 6)
+    .setDepth(10_001);
+  scene.tweens.add({
+    targets: t,
+    y: t.y - 60,
+    alpha: 0,
+    duration: 900,
+    ease: 'Cubic.easeOut',
+    onComplete: () => t.destroy(),
+  });
+}
+
+/** Level-up burst over a hero (#22): a gold ring and a short label. */
+export function levelUpBurst(scene: Phaser.Scene, at: Point, label: string): void {
+  const ring = scene.add
+    .circle(at.x, at.y, 50)
+    .setStrokeStyle(8, hex(theme.colors.gold), 1)
+    .setDepth(10_001);
+  scene.tweens.add({
+    targets: ring,
+    scale: 2.2,
+    alpha: 0,
+    duration: 600,
+    onComplete: () => ring.destroy(),
+  });
+  const t = scene.add
+    .text(at.x, at.y - 100, label, displayFont(40, theme.colors.gold))
+    .setOrigin(0.5)
+    .setStroke(theme.colors.ink, 8)
+    .setDepth(10_002);
+  scene.tweens.add({
+    targets: t,
+    y: t.y - 50,
+    alpha: 0,
+    delay: 500,
+    duration: 700,
+    onComplete: () => t.destroy(),
+  });
+}
