@@ -54,7 +54,16 @@ A perfect student ends with about 25% more gold than a 30% student. That is a re
 
 ## DPS budget (for skills, #34)
 
-Over any 10 second window, a hero's skill damage (excluding basic attacks) must not exceed **1.5x** the damage of their basic attacks over the same window, at the same level and with no items. The ultimate counts toward this budget. The simulator (#37) checks it once skills exist.
+Over any 10 second window, a hero's skill damage (excluding basic attacks) must not exceed **1.5x** the damage of their basic attacks over the same window, at the same level and with no items. The ultimate counts toward this budget. Numbers: `economy.json` `skillBudget` (`windowSec` 10, `maxRatio` 1.5).
+
+**Enforced (#34)** by [`src/systems/skillBudget.ts`](../src/systems/skillBudget.ts), at load (the match refuses to start with an over-budget kit) and in CI. It takes the worst case: every unlocked skill ready at the start and recast the moment its cooldown ends, mana ignored, every damage effect hitting the target, and attack-speed or ATK buffs counted as skill damage in whole extra attacks. `tests/skillBudget.test.ts` also plays real 10-second fights against a dummy (basic attacks only, then attacks plus every ready skill) at levels 1, 4, 10 and 15 and checks the real extra damage stays within the budget and within the worst-case figure.
+
+| Level | 1 | 2 | 3 | 4 | 6 | 8 | 10 | 12 | 15 |
+|---|---|---|---|---|---|---|---|---|---|
+| Nova: skill damage / basic damage | 0.44 | 0.66 | 0.65 | 1.18 | 1.16 | 1.14 | 1.13 | 1.12 | 1.11 |
+| Mira | 0.47 | 0.70 | 0.69 | 1.24 | 1.22 | 1.20 | 1.19 | 1.18 | 1.17 |
+
+Skills unlock at levels 1, 2, 3 and 4 (ultimate), so the share steps up early and then stays flat at about 1.1 to 1.25x: damage scales mostly with ATK, only a little with level. Mira's ratio is a bit higher because her ATK is lower while the skill base numbers are the same; her total strength stays within 1% of Nova's (#32).
 
 ## Spreadsheet
 

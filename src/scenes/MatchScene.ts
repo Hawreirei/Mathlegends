@@ -43,6 +43,7 @@ import {
 import { updateReviewQueue } from '../systems/reviewQueue';
 import { applyMatch } from '../systems/rank';
 import { timeScale } from '../systems/settings';
+import { checkSkillBudget } from '../systems/skillBudget';
 import { browserStorage, loadAnswerLogRaw, saveAnswerLogRaw } from '../utils/storage';
 import { directionFromKeys, type HeroState } from '../systems/hero';
 import { buildMap, cameraZoom, type MapConfig } from '../systems/map';
@@ -175,7 +176,11 @@ export class MatchScene extends Phaser.Scene {
     const structures = loadStructures(structuresJson);
     // Skills (#33), checked against the heroes at load (AGENTS.md rule 4).
     const skills = loadSkills(skillsJson);
-    const skillProblems = checkHeroSkills(heroes, skills);
+    const skillProblems = [
+      ...checkHeroSkills(heroes, skills),
+      // The skill damage budget (#34, docs/ECONOMY.md).
+      ...checkSkillBudget(heroes.heroes, skills, econ, econ.exp.levelCap),
+    ];
     if (skillProblems.length) throw new Error(`Invalid skills:\n${skillProblems.join('\n')}`);
     this.cfg = {
       econ,

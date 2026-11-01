@@ -32,6 +32,8 @@ export interface EconomyConfig {
   questionRevealSeconds: number;
   /** Question timers x this when the Extra time setting is on (#31). */
   extraTimeMultiplier: number;
+  /** Skill damage over windowSec may be at most maxRatio x basic-attack damage (#34). */
+  skillBudget: { windowSec: number; maxRatio: number };
   exp: {
     minion: Record<MinionType, number>;
     heroKill: number;
@@ -75,6 +77,8 @@ export function validateEconomy(c: EconomyConfig): string[] {
   }
   pos('passiveGoldPerSecond', c.passiveGoldPerSecond);
   pos('questionRevealSeconds', c.questionRevealSeconds);
+  pos('skillBudget.windowSec', c.skillBudget?.windowSec);
+  pos('skillBudget.maxRatio', c.skillBudget?.maxRatio);
   if (!(c.extraTimeMultiplier >= 1)) e.push('extraTimeMultiplier must be at least 1');
   pos('match.waveIntervalSeconds', c.match?.waveIntervalSeconds);
   pos('combat.armorConstant', c.combat?.armorConstant);

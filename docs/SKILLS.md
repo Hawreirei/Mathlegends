@@ -62,11 +62,13 @@ Each button shows its state ([`src/ui/SkillButton.ts`](../src/ui/SkillButton.ts)
 
 ## Current skills
 
-Nova (player) and Mira (bot) have mirrored kits, so the lane stays even. Numbers are first drafts; #34 balances them (skill damage budget in docs/ECONOMY.md) and the bot starts casting in #43.
+Nova (player) and Mira (bot) have mirrored kits, so the lane stays even. Balanced in #34 against the skill damage budget (docs/ECONOMY.md, "DPS budget"): at most 1.24x basic-attack damage at any level, under the 1.5x limit. The bot starts casting in #43.
 
 | Slot | Nova | Mira | Unlock | Cooldown | Mana | Effects |
 |---|---|---|---|---|---|---|
-| 1 | Star Toss / Lempar Bintang | Petal Dart / Panah Kelopak | Lv 1 | 5 s | 35 | Projectile 70 (+10/level, +0.6 ATK) |
-| 2 | Flash Step / Langkah Kilat | Vine Leap / Lompatan Sulur | Lv 2 | 9 s | 40 | Dash 240 px, then AoE 110 px: 45 (+8/level, +0.4 ATK) |
+| 1 | Star Toss / Lempar Bintang | Petal Dart / Panah Kelopak | Lv 1 | 5 s | 35 | Projectile 85 (+4/level, +0.7 ATK) |
+| 2 | Flash Step / Langkah Kilat | Vine Leap / Lompatan Sulur | Lv 2 | 9 s | 40 | Dash 240 px, then AoE 110 px: 40 (+3/level, +0.45 ATK) |
 | 3 | Light Shield / Perisai Cahaya | Bark Guard / Kulit Kayu | Lv 3 | 13 s | 50 | Shield 90 (+18/level, +5% max HP) for 4 s; +20% move speed for 3 s |
-| Ult | Starfall / Hujan Bintang | Bloom Burst / Ledakan Bunga | Lv 4 | 40 s | 100 | AoE 200 px at the target: 160 (+24/level, +1.0 ATK); +30% attack speed for 5 s |
+| Ult | Starfall / Hujan Bintang | Bloom Burst / Ledakan Bunga | Lv 4 | 40 s | 100 | AoE 200 px at the target: 140 (+10/level, +1.0 ATK); +30% attack speed for 5 s |
+
+**Touch:** every skill is cast by its button on phones; checked in the browser by tapping all four buttons in portrait and landscape (each one casts and starts its cooldown).
