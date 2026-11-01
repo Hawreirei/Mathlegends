@@ -6,6 +6,9 @@ import type { StructureState } from '../systems/structures';
 import { safeAreaInGame } from '../systems/touch';
 import { skillButtonState, skillInSlot } from '../systems/skills';
 import { SkillButton } from '../ui/SkillButton';
+import { ConfirmDialog } from '../ui/ConfirmDialog';
+import type { BackAware } from './nav';
+import type { BackAction, Screen } from '../systems/navigation';
 import { ShopPanel } from '../ui/ShopPanel';
 import { Button } from '../ui/Button';
 import { HeroPanel } from '../ui/HeroPanel';
@@ -35,7 +38,47 @@ export const SKILL_FAILED_EVENT = 'ml-skill-failed';
  * the right. On touch devices: joystick and attack/skill buttons (#18). Positions come from
  * computeHudLayout, which a test checks for overlaps on every screen size.
  */
-export class MatchHudScene extends Phaser.Scene {
+export class MatchHudScene extends Phaser.Scene implements BackAware {
+  private confirm: ConfirmDialog | null = null;
+
+  /** Back closes the quit question or the shop first, then asks before quitting (#44). */
+  backScreen(): Screen {
+    if (this.confirm) return 'matchQuitConfirm';
+    if (this.shop?.visible) return 'matchShop';
+    return 'match';
+  }
+
+  applyBack(a: BackAction): void {
+    if (a.kind === 'askQuit') this.askQuit();
+    else if (a.kind === 'close') {
+      if (this.confirm) this.closeConfirm();
+      else this.shop?.close();
+    }
+  }
+
+  /** "Leave the match? It counts as a loss." The match keeps running behind it. */
+  private askQuit(): void {
+    if (this.confirm || this.match.ending) return;
+    this.shop?.close();
+    this.confirm = new ConfirmDialog(
+      this,
+      tr(this, 'quit.title'),
+      tr(this, 'quit.body'),
+      tr(this, 'quit.stay'),
+      tr(this, 'quit.leave'),
+      () => this.closeConfirm(),
+      () => {
+        this.closeConfirm();
+        this.match.forfeit();
+      },
+    );
+  }
+
+  private closeConfirm(): void {
+    this.confirm?.destroy();
+    this.confirm = null;
+  }
+
   /** Present on touch devices; MatchScene reads its movement vector. */
   touch: TouchControls | null = null;
   private skillButtons: SkillButton[] = [];
@@ -67,7 +110,6 @@ export class MatchHudScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-SPACE', () => this.game.events.emit(ATTACK_EVENT));
     this.input.keyboard?.on('keyup-SPACE', () => this.game.events.emit(ATTACK_RELEASE_EVENT));
     this.input.keyboard?.on('keydown-B', () => this.toggleShop());
-    this.input.keyboard?.on('keydown-ESC', () => this.shop?.close());
     responsive(this, () => this.layout());
     const onFailed = (slot: number) => this.skillButtons[slot]?.nudge();
     this.game.events.on(SKILL_FAILED_EVENT, onFailed);
@@ -192,6 +234,8 @@ export class MatchHudScene extends Phaser.Scene {
     const cssW = this.game.canvas.getBoundingClientRect().width || w;
     const safe = safeAreaInGame(readSafeAreaCss(), w / cssW);
     const touch = this.sys.game.device.input.touch;
+    // A rebuild (resize, language) clears the screen, the quit question included.
+    this.confirm = null;
     const l = computeHudLayout(w, h, safe, touch, textScale());
     this.layoutInfo = l;
     const c = theme.colors;
@@ -202,10 +246,7 @@ export class MatchHudScene extends Phaser.Scene {
       l.quit.x + l.quit.w / 2,
       l.quit.y + l.quit.h / 2,
       tr(this, 'match.quit'),
-      () => {
-        this.scene.stop('Match');
-        this.scene.start('Menu');
-      },
+      () => this.askQuit(),
       { width: l.quit.w, height: l.quit.h - 8, style: 'secondary', fontSize: 24 },
     );
     this.timerText = this.add

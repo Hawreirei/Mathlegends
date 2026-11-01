@@ -85,6 +85,7 @@ import {
   type MatchHudScene,
 } from './MatchHudScene';
 import { getState, setStateAndSave, tr } from './shared';
+import { enter, goTo } from './nav';
 
 /** Fired on game.events when a question ends: (resolution). The HUD shows the feedback. */
 export const QUESTION_RESOLVED_EVENT = 'ml-question-resolved';
@@ -169,6 +170,7 @@ export class MatchScene extends Phaser.Scene {
   }
 
   create(): void {
+    enter(this);
     const econ = economyJson as EconomyConfig;
     const problems = validateEconomy(econ);
     if (problems.length) throw new Error(`Invalid economy.json:\n${problems.join('\n')}`);
@@ -558,7 +560,19 @@ export class MatchScene extends Phaser.Scene {
     this.logRows = [];
   }
 
-  finish(outcome: MatchResult['outcome']): void {
+  /**
+   * The player left the match (#44). With ranks.json stars.quitCountsAsLoss it counts as a
+   * loss and goes to the Result screen (stars, missed questions); otherwise back to the Menu.
+   */
+  forfeit(): void {
+    if (this.ending) return;
+    this.ending = true;
+    this.attackHeld = false;
+    if (loadRanks(ranksJson).stars.quitCountsAsLoss) this.finish('defeat', true);
+    else goTo(this, 'Menu', ['MatchHud']);
+  }
+
+  finish(outcome: MatchResult['outcome'], forfeit = false): void {
     const missed = this.session.missed;
     // Missed questions come back in the next matches (#29); the queue is saved on the device.
     const ranks = loadRanks(ranksJson);
@@ -580,11 +594,11 @@ export class MatchScene extends Phaser.Scene {
           correct: this.session.correct,
           missed,
           rank,
+          forfeit,
         },
         review,
       ),
     );
-    this.scene.stop('MatchHud');
-    this.scene.start('Result');
+    goTo(this, 'Result', ['MatchHud']);
   }
 }

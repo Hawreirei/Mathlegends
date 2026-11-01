@@ -14,6 +14,8 @@ import { browserStorage, loadAnswerLogRaw, saveAnswerLogRaw } from '../utils/sto
 import ranks from '../data/ranks.json';
 import { loadRanks } from '../systems/data';
 import { resetPlacement } from '../systems/gameState';
+import { enter, goTo, type BackAware } from './nav';
+import type { BackAction, Screen } from '../systems/navigation';
 import { changeSettings, getState, responsive, setStateAndSave, tr } from './shared';
 
 type TransferNote = 'exported' | 'loaded' | 'confirmHint' | 'notASave' | 'tooNew' | 'invalid';
@@ -25,7 +27,16 @@ const TEXT_KEYS: StringKey[] = ['settings.text1', 'settings.text2', 'settings.te
  * and the anonymous answer log with "Download CSV" and "Delete data" (tap twice) (#30).
  * Landscape shows the two sections side by side, portrait one above the other.
  */
-export class SettingsScene extends Phaser.Scene {
+export class SettingsScene extends Phaser.Scene implements BackAware {
+  backScreen(): Screen {
+    return this.page === 'transfer' ? 'settingsTransfer' : 'settings';
+  }
+
+  applyBack(a: BackAction): void {
+    if (a.kind === 'close') this.showPage('main');
+    else if (a.kind === 'scene') goTo(this, a.to);
+  }
+
   private note: 'exported' | 'cleared' | 'confirm' | 'retake' | null = null;
   private page: 'main' | 'transfer' = 'main';
   private transferNote: TransferNote | null = null;
@@ -37,6 +48,7 @@ export class SettingsScene extends Phaser.Scene {
   }
 
   create(): void {
+    enter(this);
     this.note = null;
     this.page = 'main';
     this.transferNote = null;
@@ -97,7 +109,7 @@ export class SettingsScene extends Phaser.Scene {
       w / 2,
       top + panelH - 64,
       tr(this, 'settings.back'),
-      () => this.scene.start('Menu'),
+      () => goTo(this, 'Menu'),
       { width: 320, height: 76, style: 'secondary' },
     );
   }
@@ -194,7 +206,7 @@ export class SettingsScene extends Phaser.Scene {
       () => {
         if (!confirm) return this.setNote('retake');
         setStateAndSave(this, resetPlacement(getState(this)));
-        this.scene.start('Placement');
+        goTo(this, 'Placement');
       },
       { width: half, height: 64, fontSize: 20, style: confirm ? 'primary' : 'secondary' },
     );

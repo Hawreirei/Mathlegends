@@ -115,5 +115,11 @@
   "stat.attackSpeed": "Attack speed",
   "stat.hpRegen": "HP regen",
   "stat.manaRegen": "Mana regen",
-  "stat.lifesteal": "Lifesteal"
+  "stat.lifesteal": "Lifesteal",
+  "quit.title": "Leave the match?",
+  "quit.body": "This match will count as a loss.",
+  "quit.stay": "Keep playing",
+  "quit.leave": "Leave",
+  "result.forfeit": "You left.",
+  "placement.quit": "Quit"
 }

@@ -67,7 +67,8 @@
     "demoteAfterLossesAtZero": 2,
     "starsAfterDemotion": 3,
     "bonusMinAnswered": 5,
-    "topTierUncapped": true
+    "topTierUncapped": true,
+    "quitCountsAsLoss": true
   },
   "questionMix": {
     "onLevel": 0.7,

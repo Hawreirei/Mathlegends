@@ -11,15 +11,26 @@ import { MissedReview } from '../ui/MissedReview';
 import { Button } from '../ui/Button';
 import { bodyFont, displayFont, hex, theme } from '../ui/theme';
 import { getState, responsive, tr } from './shared';
+import { enter, goTo, type BackAware } from './nav';
+import type { Screen } from '../systems/navigation';
 
 const ranks = loadRanks(ranksJson);
 
-export class ResultScene extends Phaser.Scene {
+export class ResultScene extends Phaser.Scene implements BackAware {
+  backScreen(): Screen {
+    return 'result';
+  }
+
+  applyBack(): void {
+    goTo(this, 'Menu');
+  }
+
   constructor() {
     super('Result');
   }
 
   create(): void {
+    enter(this);
     responsive(this, () => this.layout());
   }
 
@@ -58,7 +69,9 @@ export class ResultScene extends Phaser.Scene {
       .text(
         cx,
         y0 + 105,
-        tr(this, 'result.time', { time: formatDuration(m.durationSec) }),
+        m.forfeit
+          ? `${tr(this, 'result.forfeit')}  ${tr(this, 'result.time', { time: formatDuration(m.durationSec) })}`
+          : tr(this, 'result.time', { time: formatDuration(m.durationSec) }),
         bodyFont(28, c.paper),
       )
       .setOrigin(0.5);
@@ -110,8 +123,8 @@ export class ResultScene extends Phaser.Scene {
         ranks.questionEngine.reviewMatches,
       );
 
-    const again = () => this.scene.start('Match');
-    const menu = () => this.scene.start('Menu');
+    const again = () => goTo(this, 'Match');
+    const menu = () => goTo(this, 'Menu');
     if (portrait) {
       const y = top + panelH - 200;
       new Button(this, w / 2, y, tr(this, 'result.again'), again, { width: 360 });

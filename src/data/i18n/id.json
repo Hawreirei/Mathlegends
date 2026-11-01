@@ -115,5 +115,11 @@
   "stat.attackSpeed": "Kecepatan serang",
   "stat.hpRegen": "Pemulihan darah",
   "stat.manaRegen": "Pemulihan mana",
-  "stat.lifesteal": "Curi darah"
+  "stat.lifesteal": "Curi darah",
+  "quit.title": "Keluar dari pertandingan?",
+  "quit.body": "Pertandingan ini dihitung kalah.",
+  "quit.stay": "Lanjut main",
+  "quit.leave": "Keluar",
+  "result.forfeit": "Kamu keluar.",
+  "placement.quit": "Keluar"
 }

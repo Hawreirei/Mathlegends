@@ -82,3 +82,5 @@ Missed questions from earlier matches (#29) come on top. `tests/rankMix.test.ts`
 - **Menu:** a compact badge (badge, Year, stars, ×N) at the bottom.
 - **Result summary:** Victory/Defeat, time, accuracy with percentage ("Correct answers: 8 of 10 (80%)"), the star change and any Year change, then the large badge. New stars pop in one by one, a lost star fades out, ×N pulses when Year 6 stars grow, and the badge pulses on a promotion or demotion.
 - **Plurals:** "1 star" / "2 stars" in English; Indonesian has one form ("1 bintang", "2 bintang").
+
+**Leaving a match** (#44) counts as a loss when `stars.quitCountsAsLoss` is true (the default): stars -1, and it counts towards the 2 losses at 0 stars. See [FLOW.md](FLOW.md).

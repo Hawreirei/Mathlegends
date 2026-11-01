@@ -6,6 +6,7 @@ import { MatchScene } from './scenes/MatchScene';
 import { MenuScene } from './scenes/MenuScene';
 import { PlacementScene } from './scenes/PlacementScene';
 import { ResultScene } from './scenes/ResultScene';
+import { installBackHandling } from './scenes/nav';
 import { SettingsScene } from './scenes/SettingsScene';
 import { createGameState } from './systems/gameState';
 import { logicalSize } from './systems/layout';
@@ -74,6 +75,9 @@ void loadFonts().then(() => {
       },
     },
   });
+
+  // Phone/browser Back button and Esc stay inside the game (#44).
+  installBackHandling(game);
 
   // Rotation or window resize: switch between the portrait and landscape canvas.
   let pending = 0;

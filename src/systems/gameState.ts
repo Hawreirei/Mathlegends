@@ -17,6 +17,8 @@ export interface MatchResult {
   missed: MissedQuestion[];
   /** Stars won or lost and any Year change (#39); absent in older results. */
   rank?: RankChange;
+  /** The player left the match early (#44). */
+  forfeit?: boolean;
 }
 
 export interface Profile {

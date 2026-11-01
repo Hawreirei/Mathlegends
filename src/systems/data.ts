@@ -345,6 +345,8 @@ export const ranksFileSchema = z
         bonusMinAnswered: z.number().int().min(0),
         /** The top Year keeps counting stars past starsPerTier (decided 2026-11-01). */
         topTierUncapped: z.boolean(),
+        /** Leaving a match early counts as a loss (#44), so quitting cannot dodge losing a star. */
+        quitCountsAsLoss: z.boolean(),
       })
       .strict(),
     questionMix: z.object({ onLevel: fraction, review: fraction, stretch: fraction }).strict(),

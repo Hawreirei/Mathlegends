@@ -11,13 +11,23 @@ const playerSprite = () =>
 import { readSafeAreaCss } from '../ui/safeArea';
 import { bodyFont, displayFont, hex, theme } from '../ui/theme';
 import { changeLang, getState, responsive, tr } from './shared';
+import { enter, goTo, type BackAware } from './nav';
+import type { Screen } from '../systems/navigation';
 
-export class MenuScene extends Phaser.Scene {
+export class MenuScene extends Phaser.Scene implements BackAware {
   constructor() {
     super('Menu');
   }
 
+  /** Back on the Menu leaves the game (#44). */
+  backScreen(): Screen {
+    return 'menu';
+  }
+
+  applyBack(): void {}
+
   create(): void {
+    enter(this, true);
     responsive(this, () => this.layout());
   }
 
@@ -60,7 +70,7 @@ export class MenuScene extends Phaser.Scene {
       cx,
       playY,
       `${tr(this, 'menu.play')}  ➜`,
-      () => this.scene.start(s.profile.placed ? 'Match' : 'Placement'),
+      () => goTo(this, s.profile.placed ? 'Match' : 'Placement'),
       {
         width: 360,
         height: 96,
@@ -74,7 +84,7 @@ export class MenuScene extends Phaser.Scene {
       cx,
       playY + (portrait ? 120 : 110),
       tr(this, 'menu.settings'),
-      () => this.scene.start('Settings'),
+      () => goTo(this, 'Settings'),
       { width: 300, height: 72, fontSize: 28, style: 'secondary' },
     );
 

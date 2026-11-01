@@ -31,6 +31,8 @@ import { QuestionOverlay } from '../ui/QuestionOverlay';
 import { bodyFont, displayFont, hex, textScale, theme } from '../ui/theme';
 import { browserStorage, loadAnswerLogRaw, saveAnswerLogRaw } from '../utils/storage';
 import { getState, responsive, setStateAndSave, tr } from './shared';
+import { enter, goTo, type BackAware } from './nav';
+import type { Screen } from '../systems/navigation';
 
 type Phase = 'intro' | 'quiz' | 'done';
 
@@ -39,7 +41,21 @@ type Phase = 'intro' | 'quiz' | 'done';
  * (timer, shuffled answers, the right answer shown after each), then the starting Year.
  * The rules are in src/systems/placement.ts. Answers go to the answer log (#30) as `placement`.
  */
-export class PlacementScene extends Phaser.Scene {
+export class PlacementScene extends Phaser.Scene implements BackAware {
+  backScreen(): Screen {
+    return this.phase === 'intro'
+      ? 'placementIntro'
+      : this.phase === 'quiz'
+        ? 'placementQuiz'
+        : 'placementDone';
+  }
+
+  /** Back leaves to the Menu; an unfinished quiz is not saved (Play starts it again). */
+  applyBack(): void {
+    this.overlay?.destroy();
+    goTo(this, 'Menu');
+  }
+
   private ranks!: RanksFile;
   private econ!: EconomyConfig;
   private bank!: Question[];
@@ -60,6 +76,7 @@ export class PlacementScene extends Phaser.Scene {
   }
 
   create(): void {
+    enter(this);
     this.ranks = loadRanks(ranksJson);
     this.econ = economyJson as EconomyConfig;
     this.bank = loadQuestionBank();
@@ -103,14 +120,12 @@ export class PlacementScene extends Phaser.Scene {
       height: 96,
       fontSize: 40,
     });
-    new Button(
-      this,
-      w / 2,
-      h * 0.62 + 120,
-      tr(this, 'placement.back'),
-      () => this.scene.start('Menu'),
-      { width: 300, height: 72, fontSize: 28, style: 'secondary' },
-    );
+    new Button(this, w / 2, h * 0.62 + 120, tr(this, 'placement.back'), () => goTo(this, 'Menu'), {
+      width: 300,
+      height: 72,
+      fontSize: 28,
+      style: 'secondary',
+    });
   }
 
   private start(): void {
@@ -268,7 +283,7 @@ export class PlacementScene extends Phaser.Scene {
       w / 2,
       Math.min(h - 80, h * 0.48 + 220),
       tr(this, 'placement.play'),
-      () => this.scene.start('Match'),
+      () => goTo(this, 'Match'),
       { width: 360, height: 96, fontSize: 40 },
     );
   }
