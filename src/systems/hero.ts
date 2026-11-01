@@ -3,7 +3,8 @@
  * movement is plain maths so it can be tested and simulated headless (#37).
  */
 import type { Hero } from './data';
-import type { LaneMap, Point } from './map';
+import type { Combatant } from './combat';
+import type { LaneMap, Point, Team } from './map';
 
 export interface HeroStats {
   maxHp: number;
@@ -17,13 +18,10 @@ export interface HeroStats {
   manaRegen: number;
 }
 
-export interface HeroState extends HeroStats {
+/** A hero is a Combatant (src/systems/combat.ts) with mana, speed and a hero id. */
+export interface HeroState extends HeroStats, Combatant {
   heroId: string;
-  level: number;
-  hp: number;
   mana: number;
-  x: number;
-  y: number;
 }
 
 export interface Rect {
@@ -49,9 +47,14 @@ export function statsAtLevel(h: Hero, level: number): HeroStats {
   };
 }
 
-export function createHeroState(h: Hero, spawn: Point, level = 1): HeroState {
+export function createHeroState(h: Hero, spawn: Point, team: Team, level = 1): HeroState {
   const stats = statsAtLevel(h, level);
   return {
+    id: `${team}-hero`,
+    team,
+    alive: true,
+    nextAttackAt: 0,
+    respawnAt: null,
     heroId: h.id,
     level,
     ...stats,

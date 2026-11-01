@@ -31,8 +31,11 @@ Boot (loads art) > Menu > Match > Result, sharing a typed `GameState` (`src/syst
 `window.mathlegends.game` exposes the Phaser game for automated browser tests.
 
 ## Controls (#17, #18)
-- **Keyboard:** WASD or arrow keys to move, Space to attack.
+- **Keyboard:** WASD or arrow keys to move, Space to attack (hold to keep attacking).
 - **Touch** (shown only on touch devices): a floating joystick (touch anywhere on the left half), a gold attack button and three skill buttons on the right. Two thumbs work at once. Controls keep clear of notches and the home bar using the CSS safe-area insets. The page blocks pinch-zoom, double-tap zoom, scrolling and the long-press menu.
+
+## Combat (#19)
+Attack hits the nearest living enemy within the hero's attack range, once every 1/attackSpeed seconds; a press during the cooldown is remembered for 0.4 s. Damage = ATK x 100 / (100 + ARMOR) from `economy.json`. Heroes regenerate HP, die at 0 HP and respawn at their own base with full HP after 5 + 1 x level seconds (a countdown shows at the base). Rules: `src/systems/combat.ts`, shared with minions (#20) and towers (#21).
 
 ## Project layout
 `src/{scenes,entities,systems,data,ui,utils}`, `tests/`, `docs/`, `scripts/`. Game rules live in `src/systems/` with no Phaser imports.

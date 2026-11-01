@@ -10,6 +10,8 @@ import { responsive, tr } from './shared';
 
 /** Fired on game.events when the player presses attack (touch button or Space) or a skill. */
 export const ATTACK_EVENT = 'ml-attack';
+/** Fired when the attack button or Space is released (holding attack keeps attacking, #19). */
+export const ATTACK_RELEASE_EVENT = 'ml-attack-release';
 export const SKILL_EVENT = 'ml-skill';
 
 /**
@@ -33,6 +35,7 @@ export class MatchHudScene extends Phaser.Scene {
 
   create(): void {
     this.input.keyboard?.on('keydown-SPACE', () => this.game.events.emit(ATTACK_EVENT));
+    this.input.keyboard?.on('keyup-SPACE', () => this.game.events.emit(ATTACK_RELEASE_EVENT));
     responsive(this, () => this.layout());
   }
 
@@ -86,6 +89,7 @@ export class MatchHudScene extends Phaser.Scene {
           safe,
           barH,
           () => this.game.events.emit(ATTACK_EVENT),
+          () => this.game.events.emit(ATTACK_RELEASE_EVENT),
           (i) => this.game.events.emit(SKILL_EVENT, i),
         )
       : null;

@@ -31,6 +31,7 @@ export class TouchControls {
     safe: Insets,
     topBarHeight: number,
     onAttack: () => void,
+    onAttackRelease: () => void,
     onSkill: (index: number) => void,
   ) {
     const { width: w, height: h } = scene.scale;
@@ -51,7 +52,16 @@ export class TouchControls {
       x: w - safe.right - MARGIN - ATTACK_RADIUS,
       y: h - safe.bottom - MARGIN - ATTACK_RADIUS,
     };
-    this.roundButton(attackPos, ATTACK_RADIUS, theme.colors.gold, '✦', 64, onAttack);
+    this.roundButton(
+      attackPos,
+      ATTACK_RADIUS,
+      theme.colors.gold,
+      '✦',
+      64,
+      onAttack,
+      1,
+      onAttackRelease,
+    );
     skillButtonPositions(attackPos, SKILL_DISTANCE).forEach((p, i) =>
       this.roundButton(
         p,
@@ -103,6 +113,7 @@ export class TouchControls {
     size: number,
     onPress: () => void,
     alpha = 1,
+    onRelease?: () => void,
   ): void {
     const s = this.scene;
     const c = s.add.container(p.x, p.y);
@@ -120,7 +131,10 @@ export class TouchControls {
       c.setScale(0.92);
       onPress();
     });
-    const up = () => c.setScale(1);
+    const up = () => {
+      if (c.scale !== 1) onRelease?.();
+      c.setScale(1);
+    };
     c.on('pointerup', up);
     c.on('pointerout', up);
   }
