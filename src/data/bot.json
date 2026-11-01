@@ -1,0 +1,97 @@
+{
+  "version": 2,
+  "_note": "Bot (#24, #43). `base` applies at every Year; each `tiers` entry overrides it for that Year (1 easiest, 6 hardest). `newPlayer` is only used by the simulator as a stand-in for a child playing their first matches.",
+  "base": {
+    "decisionIntervalSec": 0.3,
+    "retreatHpFraction": 0.3,
+    "returnHpFraction": 0.85,
+    "engageRange": 380,
+    "engageMinHpFraction": 0.5,
+    "acquireRangeBonus": 120,
+    "holdBackPx": 120,
+    "towerSafetyMarginPx": 60,
+    "lastHitAccuracy": 0.9,
+    "skillUseChance": 0.6,
+    "defensiveSkillHpFraction": 0.6,
+    "itemDelaySec": 20
+  },
+  "tiers": [
+    {
+      "tier": 1,
+      "decisionIntervalSec": 0.85,
+      "lastHitAccuracy": 0.3,
+      "skillUseChance": 0.05,
+      "itemDelaySec": 240,
+      "engageRange": 220,
+      "engageMinHpFraction": 0.85,
+      "retreatHpFraction": 0.5
+    },
+    {
+      "tier": 2,
+      "decisionIntervalSec": 0.65,
+      "lastHitAccuracy": 0.5,
+      "skillUseChance": 0.2,
+      "itemDelaySec": 140,
+      "engageRange": 270,
+      "engageMinHpFraction": 0.72,
+      "retreatHpFraction": 0.42
+    },
+    {
+      "tier": 3,
+      "decisionIntervalSec": 0.48,
+      "lastHitAccuracy": 0.68,
+      "skillUseChance": 0.4,
+      "itemDelaySec": 80,
+      "engageRange": 320,
+      "engageMinHpFraction": 0.62,
+      "retreatHpFraction": 0.36
+    },
+    {
+      "tier": 4,
+      "decisionIntervalSec": 0.36,
+      "lastHitAccuracy": 0.8,
+      "skillUseChance": 0.55,
+      "itemDelaySec": 45,
+      "engageRange": 370,
+      "engageMinHpFraction": 0.55,
+      "retreatHpFraction": 0.3
+    },
+    {
+      "tier": 5,
+      "decisionIntervalSec": 0.27,
+      "lastHitAccuracy": 0.9,
+      "skillUseChance": 0.72,
+      "itemDelaySec": 20,
+      "engageRange": 420,
+      "engageMinHpFraction": 0.48,
+      "retreatHpFraction": 0.27
+    },
+    {
+      "tier": 6,
+      "decisionIntervalSec": 0.18,
+      "lastHitAccuracy": 1.0,
+      "skillUseChance": 0.95,
+      "itemDelaySec": 3,
+      "engageRange": 480,
+      "engageMinHpFraction": 0.38,
+      "retreatHpFraction": 0.22
+    }
+  ],
+  "newPlayer": {
+    "decisionIntervalSec": 0.5,
+    "lastHitAccuracy": 0.6,
+    "skillUseChance": 0.35,
+    "itemDelaySec": 90,
+    "engageRange": 300,
+    "engageMinHpFraction": 0.65,
+    "retreatHpFraction": 0.4
+  },
+  "buildOrder": [
+    "bamboo-vest",
+    "training-sword",
+    "wind-sandals",
+    "comet-spear",
+    "guardian-cloak",
+    "leaf-charm"
+  ]
+}

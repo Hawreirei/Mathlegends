@@ -1,15 +1,33 @@
 import Phaser from 'phaser';
-import ranks from '../data/ranks.json';
 import { Button } from '../ui/Button';
-import { bodyFont, displayFont, hex, theme } from '../ui/theme';
-import { getState, responsive, tr } from './shared';
+import { safeAreaInGame } from '../systems/touch';
+import { LangToggle } from '../ui/LangToggle';
+import { RankBadge } from '../ui/RankBadge';
+import heroesJson from '../data/heroes.json';
 
-export class MenuScene extends Phaser.Scene {
+/** The player hero's sprite (heroes.json playerHero). */
+const playerSprite = () =>
+  (heroesJson.heroes.find((h) => h.id === heroesJson.playerHero) ?? heroesJson.heroes[0]!).sprite;
+import { readSafeAreaCss } from '../ui/safeArea';
+import { bodyFont, displayFont, hex, theme } from '../ui/theme';
+import { changeLang, getState, responsive, tr } from './shared';
+import { enter, goTo, type BackAware } from './nav';
+import type { Screen } from '../systems/navigation';
+
+export class MenuScene extends Phaser.Scene implements BackAware {
   constructor() {
     super('Menu');
   }
 
+  /** Back on the Menu leaves the game (#44). */
+  backScreen(): Screen {
+    return 'menu';
+  }
+
+  applyBack(): void {}
+
   create(): void {
+    enter(this, true);
     responsive(this, () => this.layout());
   }
 
@@ -24,13 +42,19 @@ export class MenuScene extends Phaser.Scene {
     this.add.circle(w * 0.85, h * 0.2, Math.min(w, h) * 0.35, hex(c.violet), 0.18);
     this.add.circle(w * 0.1, h * 0.95, Math.min(w, h) * 0.3, hex(theme.teams.blue.main), 0.12);
 
+    // Language switch, top-right (#23).
+    const cssW = this.game.canvas.getBoundingClientRect().width || w;
+    const safe = safeAreaInGame(readSafeAreaCss(), w / cssW);
+    new LangToggle(this, w - safe.right - 120, safe.top + 64, s.lang, (lang) =>
+      changeLang(this, lang),
+    );
     // Portrait: one centred column. Landscape: hero on the left, title and buttons on the right.
     const heroX = portrait ? w / 2 : w * 0.3;
     const heroY = portrait ? h * 0.25 : h * 0.5;
     const cx = portrait ? w / 2 : w * 0.64;
     const colW = portrait ? w * 0.9 : w * 0.6;
     this.add.circle(heroX, heroY, portrait ? 130 : 170, hex(c.violet), 0.25);
-    this.add.image(heroX, heroY, 'hero-nova').setScale(portrait ? 2 : 2.6);
+    this.add.image(heroX, heroY, playerSprite()).setScale(portrait ? 2 : 2.6);
 
     const titleY = portrait ? h * 0.45 : h * 0.3;
     this.title(cx, titleY, colW, 110);
@@ -41,26 +65,37 @@ export class MenuScene extends Phaser.Scene {
       .setAlign('center');
 
     const playY = portrait ? h * 0.64 : h * 0.6;
-    new Button(this, cx, playY, `${tr(this, 'menu.play')}  ➜`, () => this.scene.start('Match'), {
-      width: 360,
-      height: 96,
-      fontSize: 40,
-    });
+    new Button(
+      this,
+      cx,
+      playY,
+      `${tr(this, 'menu.play')}  ➜`,
+      () => goTo(this, s.profile.placed ? 'Match' : 'Placement'),
+      {
+        width: 360,
+        height: 96,
+        fontSize: 40,
+      },
+    );
 
-    const tier = ranks.tiers.find((t) => t.tier === s.profile.tier) ?? ranks.tiers[0]!;
-    const rankY = portrait ? h - 120 : h * 0.84;
-    const label = this.add
-      .text(
-        0,
-        rankY,
-        tr(this, 'menu.rank', { year: tier.label[s.lang], stars: s.profile.stars }),
-        bodyFont(28, c.paper),
-      )
-      .setOrigin(0, 0.5);
-    const badgeW = 56;
-    const total = badgeW + 12 + label.width;
-    this.add.image(cx - total / 2 + badgeW / 2, rankY, tier.badge).setScale(0.5);
-    label.setX(cx - total / 2 + badgeW + 12);
+    // Settings (#30): the answer data export; accessibility options come in #31.
+    new Button(
+      this,
+      cx,
+      playY + (portrait ? 120 : 110),
+      tr(this, 'menu.settings'),
+      () => goTo(this, 'Settings'),
+      { width: 300, height: 72, fontSize: 28, style: 'secondary' },
+    );
+
+    // Rank badge with star icons (#42).
+    const rankY = portrait ? h - 120 : h * 0.9;
+    new RankBadge(this, cx, rankY, {
+      tier: s.profile.tier,
+      stars: s.profile.stars,
+      lang: s.lang,
+      size: 'small',
+    });
   }
 
   /** "MATH" white + "LEGENDS" gold, centred on x and shrunk to fit maxWidth. */

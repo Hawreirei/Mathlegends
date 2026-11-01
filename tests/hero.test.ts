@@ -26,7 +26,7 @@ describe('heroes.json', () => {
 
 describe('hero stats', () => {
   it('come from heroes.json at level 1', () => {
-    const s = createHeroState(nova, map.heroSpawn.blue);
+    const s = createHeroState(nova, map.heroSpawn.blue, 'blue');
     expect(s.maxHp).toBe(nova.base.hp);
     expect(s.hp).toBe(nova.base.hp);
     expect(s.maxMana).toBe(nova.base.mana);
@@ -71,21 +71,21 @@ describe('keyboard direction', () => {
 
 describe('movement', () => {
   it('moves moveSpeed pixels per second', () => {
-    const s = createHeroState(nova, map.heroSpawn.blue);
+    const s = createHeroState(nova, map.heroSpawn.blue, 'blue');
     const next = moveHero(s, { x: 1, y: 0 }, 0.5, area);
     expect(next.x - s.x).toBeCloseTo(nova.base.moveSpeed * 0.5);
     expect(next.y).toBe(s.y);
   });
 
   it('is not faster diagonally', () => {
-    const s = createHeroState(nova, map.heroSpawn.blue);
+    const s = createHeroState(nova, map.heroSpawn.blue, 'blue');
     const d = directionFromKeys({ up: false, down: true, left: false, right: true });
     const next = moveHero(s, d, 0.1, area);
     expect(Math.hypot(next.x - s.x, next.y - s.y)).toBeCloseTo(nova.base.moveSpeed * 0.1);
   });
 
   it('stays inside the walkable lane area', () => {
-    const s = createHeroState(nova, map.heroSpawn.blue);
+    const s = createHeroState(nova, map.heroSpawn.blue, 'blue');
     const farUp = moveHero(s, { x: 0, y: -1 }, 10, area);
     expect(farUp.y).toBe(area.top);
     const farLeft = moveHero(s, { x: -1, y: 0 }, 60, area);
@@ -95,7 +95,7 @@ describe('movement', () => {
   });
 
   it('does not move with no input, and never mutates the old state', () => {
-    const s = createHeroState(nova, map.heroSpawn.blue);
+    const s = createHeroState(nova, map.heroSpawn.blue, 'blue');
     expect(moveHero(s, { x: 0, y: 0 }, 1, area)).toEqual(s);
     moveHero(s, { x: 1, y: 0 }, 1, area);
     expect(s.x).toBe(map.heroSpawn.blue.x);

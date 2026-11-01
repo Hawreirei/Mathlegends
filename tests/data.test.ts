@@ -7,8 +7,10 @@ import { DataError, loadHeroes, loadItems, loadRanks } from '../src/systems/data
 const hero = {
   id: 'test-hero',
   name: { id: 'Pahlawan Uji', en: 'Test Hero' },
+  title: { id: 'Penguji', en: 'The Tester' },
   role: 'fighter',
   lore: { id: 'Hanya untuk tes.', en: 'Only for tests.' },
+  look: { color: 'blue', emblem: 'moon' },
   base: {
     hp: 600,
     mana: 200,
@@ -22,7 +24,7 @@ const hero = {
   },
   growth: { hp: 60, mana: 15, atk: 4, armor: 2 },
   skills: [],
-  sprite: 'hero-test',
+  sprite: 'hero-test-hero',
 };
 
 const item = {

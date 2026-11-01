@@ -1,33 +1,52 @@
 import Phaser from 'phaser';
-import type { Team } from '../systems/map';
+import type { Point, Team } from '../systems/map';
 import type { HeroState } from '../systems/hero';
-import { hex, theme } from '../ui/theme';
+import { displayFont, hex, theme } from '../ui/theme';
 
 const BAR_W = 76;
 const BAR_H = 10;
 
 /**
- * Draws a hero from its HeroState (#17): token sprite plus a health bar above it.
- * The rules live in src/systems/hero.ts; this class only renders.
+ * Draws a hero from its HeroState (#17, #19): token sprite, health bar, hit flash and,
+ * while dead, a respawn countdown at its base. The rules live in src/systems/; this only renders.
  */
 export class HeroView extends Phaser.GameObjects.Container {
+  private readonly img: Phaser.GameObjects.Image;
   private readonly bar: Phaser.GameObjects.Graphics;
+  private readonly countdown: Phaser.GameObjects.Text;
+  /** Shield ring and buff glow (#33). */
+  private readonly aura: Phaser.GameObjects.Graphics;
 
   constructor(
     scene: Phaser.Scene,
     state: HeroState,
     sprite: string,
     private readonly team: Team,
+    base: Point,
   ) {
     super(scene, state.x, state.y);
-    const img = scene.add.image(0, 0, sprite);
+    this.img = scene.add.image(0, 0, sprite);
     this.bar = scene.add.graphics();
-    this.add([img, this.bar]);
+    this.aura = scene.add.graphics();
+    this.add([this.aura, this.img, this.bar]);
     scene.add.existing(this);
-    this.sync(state);
+    this.countdown = scene.add
+      .text(base.x, base.y, '', displayFont(56, theme.colors.white))
+      .setOrigin(0.5)
+      .setStroke(theme.colors.ink, 8)
+      .setDepth(10_000)
+      .setVisible(false);
+    this.sync(state, 0);
   }
 
-  sync(s: HeroState): void {
+  /** `now` is match seconds, used for the respawn countdown. */
+  sync(s: HeroState, now: number): void {
+    this.setVisible(s.alive);
+    this.countdown.setVisible(!s.alive);
+    if (!s.alive) {
+      this.countdown.setText(String(Math.max(1, Math.ceil((s.respawnAt ?? now) - now))));
+      return;
+    }
     this.setPosition(s.x, s.y);
     this.setDepth(s.y);
     const frac = Math.max(0, Math.min(1, s.hp / s.maxHp));
@@ -36,8 +55,134 @@ export class HeroView extends Phaser.GameObjects.Container {
     this.bar
       .fillStyle(hex(theme.colors.night), 0.9)
       .fillRoundedRect(-BAR_W / 2 - 2, y - 2, BAR_W + 4, BAR_H + 4, 4);
-    this.bar
-      .fillStyle(hex(theme.teams[this.team].main), 1)
-      .fillRoundedRect(-BAR_W / 2, y, BAR_W * frac, BAR_H, 3);
+    if (frac > 0)
+      this.bar
+        .fillStyle(hex(theme.teams[this.team].main), 1)
+        .fillRoundedRect(-BAR_W / 2, y, BAR_W * frac, BAR_H, 3);
+    // Shield: white ring plus a white strip after the HP fill (#33). Buff: soft gold glow.
+    const shield = (s.shield ?? 0) > 0 ? (s.shield ?? 0) : 0;
+    this.aura.clear();
+    if (s.buffs.length) this.aura.fillStyle(hex(theme.colors.gold), 0.22).fillCircle(0, 0, 56);
+    if (shield > 0) {
+      this.aura.lineStyle(5, hex(theme.colors.white), 0.85).strokeCircle(0, 0, 52);
+      const sw = Math.min(BAR_W * (1 - frac), BAR_W * (shield / s.maxHp));
+      if (sw > 0)
+        this.bar
+          .fillStyle(hex(theme.colors.white), 0.95)
+          .fillRect(-BAR_W / 2 + BAR_W * frac, y, sw, BAR_H);
+    }
   }
+
+  /** Short white flash when hit. */
+  flash(): void {
+    this.img.setTint(0xffffff).setTintMode(Phaser.TintModes.FILL);
+    this.scene.time.delayedCall(80, () =>
+      this.img.clearTint().setTintMode(Phaser.TintModes.MULTIPLY),
+    );
+  }
+}
+
+/** Floating damage number that rises and fades (#19; more juice in #44). */
+export function damageNumber(scene: Phaser.Scene, at: Point, amount: number): void {
+  const t = scene.add
+    .text(
+      at.x + Phaser.Math.Between(-12, 12),
+      at.y - 70,
+      String(Math.round(amount)),
+      displayFont(34, theme.colors.white),
+    )
+    .setOrigin(0.5)
+    .setStroke(theme.colors.ink, 6)
+    .setDepth(10_000);
+  scene.tweens.add({
+    targets: t,
+    y: t.y - 50,
+    alpha: 0,
+    duration: 650,
+    ease: 'Cubic.easeOut',
+    onComplete: () => t.destroy(),
+  });
+}
+
+/** Quick slash arc from attacker towards target. */
+export function slash(scene: Phaser.Scene, from: Point, to: Point, color: string): void {
+  const g = scene.add.graphics().setDepth(9_999);
+  const a = Math.atan2(to.y - from.y, to.x - from.x);
+  g.lineStyle(10, hex(color), 0.9).beginPath();
+  g.arc(from.x, from.y, 70, a - 0.7, a + 0.7);
+  g.strokePath();
+  scene.tweens.add({ targets: g, alpha: 0, duration: 160, onComplete: () => g.destroy() });
+}
+
+/** "+20" in gold rising from where gold was earned (#22). */
+export function goldPopup(scene: Phaser.Scene, at: Point, amount: number): void {
+  const t = scene.add
+    .text(at.x, at.y - 40, `+${Math.round(amount)}`, displayFont(30, theme.colors.gold))
+    .setOrigin(0.5)
+    .setStroke(theme.colors.ink, 6)
+    .setDepth(10_001);
+  scene.tweens.add({
+    targets: t,
+    y: t.y - 60,
+    alpha: 0,
+    duration: 900,
+    ease: 'Cubic.easeOut',
+    onComplete: () => t.destroy(),
+  });
+}
+
+/** Level-up burst over a hero (#22): a gold ring and a short label. */
+export function levelUpBurst(scene: Phaser.Scene, at: Point, label: string): void {
+  const ring = scene.add
+    .circle(at.x, at.y, 50)
+    .setStrokeStyle(8, hex(theme.colors.gold), 1)
+    .setDepth(10_001);
+  scene.tweens.add({
+    targets: ring,
+    scale: 2.2,
+    alpha: 0,
+    duration: 600,
+    onComplete: () => ring.destroy(),
+  });
+  const t = scene.add
+    .text(at.x, at.y - 100, label, displayFont(40, theme.colors.gold))
+    .setOrigin(0.5)
+    .setStroke(theme.colors.ink, 8)
+    .setDepth(10_002);
+  scene.tweens.add({
+    targets: t,
+    y: t.y - 50,
+    alpha: 0,
+    delay: 500,
+    duration: 700,
+    onComplete: () => t.destroy(),
+  });
+}
+
+/** A skill projectile in flight (#33): a glowing star dot. */
+export function projectileDot(scene: Phaser.Scene, color: string): Phaser.GameObjects.Arc {
+  return scene.add
+    .circle(0, 0, 16, hex(color), 1)
+    .setStrokeStyle(4, hex(theme.colors.white), 0.9)
+    .setDepth(9_000);
+}
+
+/** An AoE blast (#33): an expanding ring that fades. */
+export function blastRing(scene: Phaser.Scene, at: Point, radius: number, color: string): void {
+  const g = scene.add.circle(at.x, at.y, radius, hex(color), 0.25).setDepth(8_000);
+  g.setStrokeStyle(6, hex(color), 0.9).setScale(0.3);
+  scene.tweens.add({
+    targets: g,
+    scale: 1,
+    alpha: 0,
+    duration: 420,
+    onComplete: () => g.destroy(),
+  });
+}
+
+/** A dash (#33): a fading streak from start to end. */
+export function dashTrail(scene: Phaser.Scene, from: Point, to: Point, color: string): void {
+  const g = scene.add.graphics().setDepth(8_000);
+  g.lineStyle(18, hex(color), 0.45).lineBetween(from.x, from.y, to.x, to.y);
+  scene.tweens.add({ targets: g, alpha: 0, duration: 300, onComplete: () => g.destroy() });
 }

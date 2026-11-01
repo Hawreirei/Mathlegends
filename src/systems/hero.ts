@@ -3,7 +3,9 @@
  * movement is plain maths so it can be tested and simulated headless (#37).
  */
 import type { Hero } from './data';
-import type { LaneMap, Point } from './map';
+import type { Combatant } from './combat';
+import type { LaneMap, Point, Team } from './map';
+import { NO_ITEMS, type ItemEffects } from './items';
 
 export interface HeroStats {
   maxHp: number;
@@ -17,13 +19,26 @@ export interface HeroStats {
   manaRegen: number;
 }
 
-export interface HeroState extends HeroStats {
+/** A stat raised by a skill for a while (#33). `delta` was added to the stat and is removed at `until`. */
+export interface ActiveBuff {
+  stat: 'atk' | 'armor' | 'moveSpeed' | 'attackSpeed';
+  delta: number;
+  until: number;
+}
+
+/** A hero is a Combatant (src/systems/combat.ts) with mana, speed, skills and a hero id. */
+export interface HeroState extends HeroStats, Combatant {
   heroId: string;
-  level: number;
-  hp: number;
   mana: number;
-  x: number;
-  y: number;
+  /** Last direction moved (unit vector); skills aim this way when no enemy is near (#33). */
+  facing: Point;
+  /** Match time each skill slot is ready again (#33). */
+  skillReadyAt: number[];
+  buffs: ActiveBuff[];
+  /** What the hero's items add (#36); recomputed when items change. */
+  items: ItemEffects;
+  /** Match time the low-HP shield passive can trigger again (#36). */
+  passiveReadyAt: number;
 }
 
 export interface Rect {
@@ -49,11 +64,23 @@ export function statsAtLevel(h: Hero, level: number): HeroStats {
   };
 }
 
-export function createHeroState(h: Hero, spawn: Point, level = 1): HeroState {
+export function createHeroState(h: Hero, spawn: Point, team: Team, level = 1): HeroState {
   const stats = statsAtLevel(h, level);
   return {
+    id: `${team}-hero`,
+    team,
+    alive: true,
+    nextAttackAt: 0,
+    respawnAt: null,
     heroId: h.id,
     level,
+    facing: { x: team === 'blue' ? 1 : -1, y: 0 },
+    skillReadyAt: h.skills.map(() => 0),
+    buffs: [],
+    items: NO_ITEMS,
+    passiveReadyAt: 0,
+    shield: 0,
+    shieldUntil: 0,
     ...stats,
     hp: stats.maxHp,
     mana: stats.maxMana,
@@ -102,6 +129,7 @@ export function moveHero(s: HeroState, dir: Point, dtSec: number, area: Rect): H
   const step = s.moveSpeed * dtSec * k;
   return {
     ...s,
+    facing: { x: dir.x / len, y: dir.y / len },
     x: clamp(s.x + dir.x * step, area.left, area.right),
     y: clamp(s.y + dir.y * step, area.top, area.bottom),
   };

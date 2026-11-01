@@ -21,7 +21,7 @@ Exact numbers live in `src/data/economy.json` (issue #8). They are tunable guess
 ## 3. Win condition and match length
 - Win by destroying the enemy Nexus; lose if yours is destroyed.
 - Target match length: **8 to 10 minutes**.
-- The match ends at once on Nexus destruction. There is no time limit in the MVP. **[DECIDE]** If matches run past 12 minutes in testing, add sudden death (Nexus takes extra damage over time).
+- The match ends at once on Nexus destruction. **Sudden death (added in #37, as decided below):** the balance simulator showed matches never ended on their own, so from 7:00 towers and Nexus take growing extra damage and both Nexus slowly crumble, faster for a side that has lost towers. Matches now end in about 9 to 11 minutes; the side ahead wins. Details: `docs/BALANCE.md`.
 
 ## 4. The map
 One horizontal lane, your base on the left, the enemy base on the right. Each side has one Nexus and **2 towers**. Minion waves spawn on a timer from both bases. Every Nth wave includes a Cannon minion.
@@ -36,7 +36,7 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 
 ## 5. Controls
 - **Phone:** virtual joystick on the left; attack button and 3 skill buttons on the right; one-handed play is a requirement. Answers are large tap targets.
-- **Desktop:** WASD or arrows to move, mouse or keys to attack and cast skills, 1 to 4 (or click) to answer.
+- **Desktop:** WASD or arrows to move, Space (or click) to attack, Q / E / R / F (or click) for the 3 skills and the ultimate, 1 to 4 (or click) to answer. Phones get 4 skill buttons (the ultimate on an outer ring). See `docs/SKILLS.md`.
 - The hero **auto-targets the nearest enemy in range** when attacking.
 - Both portrait and landscape must work (the prototype fails landscape; see `docs/DESIGN.md`).
 
@@ -48,10 +48,14 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 - **Fairness:** math-derived income stays at about 30 to 40% of total gold, so combat skill still matters.
 
 ## 7. Rank and the bot
-- 6 tiers (Year 1 to Year 6), 5 stars each. Floor at Year 1; the placement quiz never starts anyone above Year 5.
-- Demotion across a tier only after 2 straight losses at 0 stars.
+- 6 tiers (Year 1 to Year 6), 5 stars each. Floor at Year 1.
+- **Placement quiz (kept, decided 2026-11-01):** the first time a child plays, 10 adaptive questions set the starting Year (estimated level minus 1, never above Year 5). Starting everyone at Year 1 was rejected: Year 5 and 6 students would need about 25 stars (2 to 4 hours) of Year 1 sums before reaching their level. Details: `docs/RANK.md`.
+- **Stars:** win +1; win with 80% or more correct answers +1 bonus (2 in total); loss -1.
+- **Climbing (decided 2026-11-01):** reaching the 5th star moves you up at once to the next Year with 0 stars. A 2-star win that crosses the line carries the extra star over (4 stars + 2 = next Year with 1 star).
+- **Year 6 has no star cap (decided 2026-11-01):** stars keep counting. The badge always shows 5 filled star icons, plus a gold "×N" label with the real total from the 6th star on (for example 5 stars plus "×9" for 9 stars), and the text reads "Kelas 6 · 9 bintang" / "Year 6 · 9 stars". The real total is saved, so it can be shown on a leaderboard or teacher view later. A loss at Year 6 takes one star off the total.
+- **Dropping a Year:** only after 2 straight losses at 0 stars, landing on 3 stars; never below Year 1. The accuracy bonus needs at least 5 answered questions. (Both chosen in #39, see `docs/RANK.md`.)
 - **Tier names [DECIDE]:** none in the MVP. Rank is shown as "Year 4, 2 stars" with a badge. Named tiers (the prototype's "Scholar") can be added later in `ranks.json`.
-- There is no human opponent, so the **bot is the matchmaking**: six difficulty steps, one per Year tier (last-hit accuracy, reaction time, item timing, aggression). Year 1 must be easy to beat; Year 6 a real challenge.
+- There is no human opponent, so the **bot is the matchmaking**: six difficulty steps, one per Year tier (last-hit accuracy, reaction time, skill use, item timing, aggression). Year 1 must be easy to beat; Year 6 a real challenge. Implemented in #43, numbers and simulator results in `docs/GAME-DATA.md`.
 
 ## 8. Hero, skills, items
 - **One playable hero** (an original balanced Fighter), with 3 skills and an ultimate. The bot uses a second hero entry with the same schema.
@@ -65,11 +69,11 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 
 ## 10. Languages and accessibility
 - Indonesian and English, switchable from the menu. Default from the browser language, falling back to Indonesian. All strings from `src/data/i18n/`.
-- Font size option, colour-blind-safe palette, optional extended answer timer (x1.5).
+- Font size option, colour-blind-safe palette, optional extended answer timer (x1.5). See `docs/ACCESSIBILITY.md`.
 
 ## 11. Data and privacy
-- Everything runs in the browser. Progress is saved in `localStorage` with an export/import file for changing devices.
-- Anonymous answer logs stay on the device and can be exported as CSV for research. No names, no accounts, no network calls.
+- Everything runs in the browser. Progress is saved in `localStorage` with an export/import file for changing devices (`docs/SAVE.md`).
+- Anonymous answer logs stay on the device and can be exported as CSV for research (schema: `docs/DATA.md`). No names, no accounts, no network calls.
 - Fonts are self-hosted; the game makes no third-party requests.
 
 ## 12. MVP scope
@@ -90,4 +94,4 @@ After the core slice (M2 + M3), test with students from Year 1 to 6. **Go/no-go:
 1. Shop opens at any time through a HUD button.
 2. Top bar shows Nexus health, not a team score.
 3. No named rank tiers in the MVP.
-4. No sudden death unless testing shows matches run past about 12 minutes.
+4. No sudden death unless testing shows matches run past about 12 minutes. (Simulation showed they did, so it was added in #37.)

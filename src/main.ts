@@ -4,11 +4,19 @@ import { BootScene } from './scenes/BootScene';
 import { MatchHudScene } from './scenes/MatchHudScene';
 import { MatchScene } from './scenes/MatchScene';
 import { MenuScene } from './scenes/MenuScene';
+import { PlacementScene } from './scenes/PlacementScene';
 import { ResultScene } from './scenes/ResultScene';
+import { installBackHandling } from './scenes/nav';
+import { SettingsScene } from './scenes/SettingsScene';
 import { createGameState } from './systems/gameState';
 import { logicalSize } from './systems/layout';
 import { loadFonts } from './ui/fonts';
-import { detectLang } from './utils/i18n';
+import ranksJson from './data/ranks.json';
+import { loadRanks } from './systems/data';
+import { curriculumTopicTiers } from './systems/questionBank';
+import { applyAccessibility } from './ui/theme';
+import { loadGame } from './utils/saveStore';
+import { browserStorage, initialLang } from './utils/storage';
 
 declare global {
   interface Window {
@@ -35,16 +43,41 @@ void loadFonts().then(() => {
       width: size.width,
       height: size.height,
     },
-    scene: [BootScene, MenuScene, MatchScene, MatchHudScene, ResultScene],
+    scene: [
+      BootScene,
+      MenuScene,
+      PlacementScene,
+      MatchScene,
+      MatchHudScene,
+      ResultScene,
+      SettingsScene,
+    ],
     // Use real frame time: Phaser's default smoothing treats slow frames as 60 fps,
     // which made heroes move at a fraction of their speed on slower devices (#17).
     fps: { smoothStep: false },
     // Joystick thumb + a button thumb at the same time (#18).
     input: { activePointers: 3 },
     callbacks: {
-      preBoot: (g) => g.registry.set('state', createGameState(detectLang(navigator.language))),
+      preBoot: (g) => {
+        // Saved choice, else browser language, else Indonesian (#23).
+        const store = browserStorage();
+        const lang = initialLang(store, navigator.language);
+        document.documentElement.lang = lang;
+        // Progress (#41): Year, stars, settings and missed questions from the versioned save,
+        // migrating older saves; checked like the bank.
+        const ranks = loadRanks(ranksJson);
+        const ctx = { ranks, topicTiers: curriculumTopicTiers(), textScales: theme.textScales };
+        const { data } = loadGame(store, ctx, new Date());
+        const { profile, settings, review } = data;
+        // Accessibility settings (#31) apply before any screen is drawn.
+        applyAccessibility(settings);
+        g.registry.set('state', createGameState(lang, review, settings, profile));
+      },
     },
   });
+
+  // Phone/browser Back button and Esc stay inside the game (#44).
+  installBackHandling(game);
 
   // Rotation or window resize: switch between the portrait and landscape canvas.
   let pending = 0;

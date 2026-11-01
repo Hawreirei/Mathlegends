@@ -159,3 +159,46 @@ There are 40 handwritten questions. They cover the topics without a generator (s
 **Teacher check:** `docs/QUESTION-SPOT-CHECK.md` lists all 40 handwritten items and 5 generated items per Year (70 items, 23% of the bank), each with both languages, the marked answer and the explanation. Record the result in its table. Fix problems in the handwritten files or generators, never in the built bank.
 
 GenSoal output can be added later as another source file (with `"source": "gensoal"`) once it is converted to this format.
+
+## Question engine (issue #26)
+
+[`src/systems/questionEngine.ts`](../src/systems/questionEngine.ts) chooses the question for each last hit. The bank is loaded and validated by `loadQuestionBank()` (`src/systems/questionBank.ts`).
+
+```ts
+let engine = createQuestionEngine(loadQuestionBank(), ranks, seed);
+const pick = nextQuestion(engine, playerTier, 'lancer'); // { question, band, source, engine }
+engine = pick.engine;
+```
+
+1. **Type from the minion:** Infantry = fluency, Lancer = application, Cannon = multistep.
+2. **Band from `ranks.json` `questionMix`:** 70% on-level (the player's Year), 20% review, 10% stretch (the Year above). Review comes from the Year just below `reviewPreviousTierShare` (70%) of the time, otherwise from any lower Year. Year 1 has nothing below, so its review share becomes on-level. Year 6 has nothing above, so its stretch questions are *harder Year 6 items*: the next harder question type (an Infantry kill gets a Year 6 word problem with 8 s, a Lancer kill a two-step problem with 12 s; Cannon questions are already the hardest type). Set by `ranks.json` `questionEngine.topTierStretch` (#40).
+3. **No repeats:** nothing asked in the last `repeatWindow` (30) questions is asked again.
+4. **Never runs dry:** if the bank has nothing fresh for a pick, the engine generates a new question for that Year and type with the #11 generators (`source: 'generated'`). In a realistic mix (mostly Infantry, some Lancers, few Cannons) 800 questions at Year 3 needed no generated questions; the worst case (200 Infantry-only questions) needed 12.
+
+Tests (`tests/questionEngine.test.ts`): no repeat within 30 in 2000 mixed draws and in the worst case for every Year and minion type (checked to fail when the window is shrunk); the 70/20/10 mix within 3% over 1000 draws at Years 2 to 5; band tiers correct; the same seed gives the same questions.
+
+## In the match (issue #27)
+
+- **Trigger:** only the player's own last hit on a minion (`lastHit` from `stepMatch`). Skill buttons, tapping the hero and the bot's last hits never ask a question.
+- **Held reward:** the last hit's gold and EXP are held and paid when the question ends, x the multiplier (`applyLastHitReward`): correct `reward.correct` with the streak bonus (gold limited by the math-share cap, never below x1; see `docs/ECONOMY.md`), wrong `reward.wrong`, timeout `reward.timeout`.
+- **One at a time:** at most one question shows and one waits. A further last hit, or a waiting question older than its own timer, is *skipped*: it pays the normal reward (x1), with no question and no penalty, and does not touch the streak (`src/systems/questionSession.ts`, tested).
+- **Timer:** `economy.json` `questionSeconds`: Infantry 5 s, Lancer 8 s, Cannon 12 s.
+- **Never pauses:** the match keeps running. The card is compact and sits low between the touch controls, and the camera eases the hero into the clear band above it while a question is showing.
+- **Card:** question text (shrunk to fit long word problems), countdown bar with seconds, four large answers in a 2 x 2 grid in shuffled order, keys 1 to 4 on desktop. Text follows the chosen language. A short "Benar! ×1,5" / "Correct! ×1.5", "Kurang tepat ×0,5" / "Not quite ×0.5" or "Waktu habis" / "Time's up" note follows each answer.
+- **Result screen:** "Correct answers: X of Y" now counts the real questions.
+
+## Feedback and the review queue (issue #29)
+
+**On the card.** After every answer or timeout the card stays for `economy.json` `questionRevealSeconds` (0.8 s): the right answer turns green with a tick, a wrong pick turns red with a cross, the others fade (shapes as well as colours, for colour-blind players). A question that was waiting appears after that with its full timer, and taps during the reveal do nothing, so a late tap can't answer the next question by accident.
+
+**On the Result screen.** "Ayo pelajari lagi" / "Let's look again" lists every wrong or timed-out question of the match, one at a time with < and > buttons: the question, the player's answer (or "time ran out"), the right answer and the explanation, in the chosen language. With no misses it says "Semua jawaban benar. Hebat!" / "Every answer right. Great work!".
+
+**Coming back.** [`src/systems/reviewQueue.ts`](../src/systems/reviewQueue.ts) keeps the missed questions, each with the matches it has left (`ranks.json` `questionEngine.reviewMatches`, 3). The question engine serves them as band `missed`:
+
+- at most one in every `reviewEvery` (3) questions, on a minion of the same question type;
+- on its last match, an item may come on any last hit, with the timer of its own type (a Cannon question on an Infantry kill still gets 12 s);
+- served items leave the queue; one missed again is queued afresh for another 3 matches; an item not served in 3 matches drops out.
+
+The queue is saved on the device (`localStorage` `mathlegends.review`, only question data, no personal data) and checked with the question validator when the game loads; anything malformed is dropped. At most `reviewQueueMax` (40) items are kept.
+
+Tests (`tests/review.test.ts`): the reveal and its timing; the missed list; queue counting down, dropping, de-duplicating, the size limit and the storage round trip; review spacing and the last-match rule; and, over 5 seeds, a first match where about a third are missed followed by three matches of only 15 last hits each (real matches have 24 or more): every missed question came back. That test fails if matches have only 3 last hits, so the guarantee depends on the player landing some last hits.

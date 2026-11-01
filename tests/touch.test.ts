@@ -46,10 +46,13 @@ describe('safe area', () => {
 });
 
 describe('skill button layout', () => {
-  it('places 3 skill buttons on an arc left of and above the attack button, not overlapping it', () => {
+  it('places 3 skill buttons on an arc left of and above the attack button, and the ultimate further out (#33)', () => {
     const attack = { x: 1000, y: 600 };
-    const ps = skillButtonPositions(attack, 170);
-    expect(ps).toHaveLength(3);
+    const all = skillButtonPositions(attack, 170, 300);
+    expect(all).toHaveLength(4);
+    const ult = all[3]!;
+    expect(Math.hypot(ult.x - attack.x, ult.y - attack.y)).toBeCloseTo(300);
+    const ps = all.slice(0, 3);
     for (const p of ps) {
       expect(Math.hypot(p.x - attack.x, p.y - attack.y)).toBeCloseTo(170);
       expect(p.x).toBeLessThanOrEqual(attack.x + 1e-9);

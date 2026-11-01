@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import assetsDoc from '../docs/ASSETS.md?raw';
+import heroes from '../src/data/heroes.json';
 import ranks from '../src/data/ranks.json';
 import theme from '../src/data/theme.json';
 import { SPRITES, SPRITE_SIZES } from '../src/assets';
@@ -16,7 +17,7 @@ const committed = new Map(
 
 describe('placeholder sprites (#14)', () => {
   it('include the full set: hero, bot hero, 3 minions per team, tower, Nexus, map tiles', () => {
-    const needed = ['hero-nova', 'hero-mira', 'tile-grass', 'tile-lane', 'tile-water'];
+    const needed = [...heroes.heroes.map((h) => h.sprite), 'tile-grass', 'tile-lane', 'tile-water'];
     for (const t of ['blue', 'red'])
       needed.push(
         `minion-infantry-${t}`,
@@ -50,7 +51,12 @@ describe('placeholder sprites (#14)', () => {
     for (const key of committed.keys()) {
       const line = assetsDoc
         .split('\n')
-        .find((l) => l.includes(`${key}.svg`) || l.includes(key.replace(/-\d$/, '-1') + '.svg'));
+        .find(
+          (l) =>
+            l.includes(`${key}.svg`) ||
+            l.includes(key.replace(/-\d$/, '-1') + '.svg') ||
+            (key.startsWith('hero-') && l.includes('hero-<id>.svg')),
+        );
       expect(line, `${key}.svg missing from docs/ASSETS.md`).toBeTruthy();
       expect(line).toMatch(/MIT|CC0|OFL/);
     }

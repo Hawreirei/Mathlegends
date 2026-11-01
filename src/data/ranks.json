@@ -54,18 +54,33 @@
   "placement": {
     "questions": 10,
     "startOffset": -1,
-    "maxStartTier": 5
+    "maxStartTier": 5,
+    "firstTier": 3,
+    "secondsPerQuestion": 15,
+    "questionType": "fluency"
   },
   "stars": {
     "win": 1,
     "loss": -1,
     "bonusAccuracy": 0.8,
     "bonusStars": 1,
-    "demoteAfterLossesAtZero": 2
+    "demoteAfterLossesAtZero": 2,
+    "starsAfterDemotion": 3,
+    "bonusMinAnswered": 5,
+    "topTierUncapped": true,
+    "quitCountsAsLoss": true
   },
   "questionMix": {
     "onLevel": 0.7,
     "review": 0.2,
     "stretch": 0.1
+  },
+  "questionEngine": {
+    "repeatWindow": 30,
+    "reviewPreviousTierShare": 0.7,
+    "reviewMatches": 3,
+    "reviewEvery": 3,
+    "reviewQueueMax": 40,
+    "topTierStretch": "harderType"
   }
 }

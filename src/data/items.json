@@ -1,4 +1,190 @@
 {
   "version": 1,
-  "items": []
+  "items": [
+    {
+      "id": "training-sword",
+      "name": {
+        "id": "Pedang Latihan",
+        "en": "Training Sword"
+      },
+      "description": {
+        "id": "Pedang ringan untuk pemula. Seranganmu lebih kuat.",
+        "en": "A light sword for beginners. Your attacks hit harder."
+      },
+      "category": "attack",
+      "cost": 300,
+      "stats": {
+        "atk": 12
+      }
+    },
+    {
+      "id": "comet-spear",
+      "name": {
+        "id": "Tombak Komet",
+        "en": "Comet Spear"
+      },
+      "description": {
+        "id": "Tombak secepat komet. Serangan lebih kuat dan lebih cepat.",
+        "en": "A spear as fast as a comet. Stronger and faster attacks."
+      },
+      "category": "attack",
+      "cost": 950,
+      "stats": {
+        "atk": 26,
+        "attackSpeed": 0.15
+      },
+      "passive": {
+        "id": "comet-strike",
+        "unique": true,
+        "description": {
+          "id": "Unik: setiap serangan biasa memberi 18 kerusakan tambahan.",
+          "en": "Unique: every basic attack deals 18 extra damage."
+        },
+        "effect": {
+          "kind": "onHitDamage",
+          "amount": 18
+        }
+      }
+    },
+    {
+      "id": "formula-book",
+      "name": {
+        "id": "Buku Rumus",
+        "en": "Formula Book"
+      },
+      "description": {
+        "id": "Catatan rumus yang menambah mana dan memulihkannya lebih cepat.",
+        "en": "Notes full of formulas. More mana, and it refills faster."
+      },
+      "category": "magic",
+      "cost": 400,
+      "stats": {
+        "mana": 150,
+        "manaRegen": 2
+      },
+      "passive": {
+        "id": "quick-thinking",
+        "unique": true,
+        "description": {
+          "id": "Unik: jeda skill 12% lebih singkat.",
+          "en": "Unique: skill cooldowns are 12% shorter."
+        },
+        "effect": {
+          "kind": "cooldownReduction",
+          "amount": 0.12
+        }
+      }
+    },
+    {
+      "id": "rainbow-wand",
+      "name": {
+        "id": "Tongkat Pelangi",
+        "en": "Rainbow Wand"
+      },
+      "description": {
+        "id": "Tongkat warna-warni yang memperkuat serangan dan menambah mana.",
+        "en": "A colourful wand that strengthens attacks and adds mana."
+      },
+      "category": "magic",
+      "cost": 850,
+      "stats": {
+        "atk": 14,
+        "mana": 200
+      },
+      "passive": {
+        "id": "rainbow-power",
+        "unique": true,
+        "description": {
+          "id": "Unik: skill memberi 15% kerusakan lebih besar.",
+          "en": "Unique: skills deal 15% more damage."
+        },
+        "effect": {
+          "kind": "skillPower",
+          "amount": 0.15
+        }
+      }
+    },
+    {
+      "id": "bamboo-vest",
+      "name": {
+        "id": "Rompi Bambu",
+        "en": "Bamboo Vest"
+      },
+      "description": {
+        "id": "Rompi bambu yang ringan tapi kuat. Menambah pertahanan.",
+        "en": "Light but strong bamboo armour. More armour."
+      },
+      "category": "defense",
+      "cost": 300,
+      "stats": {
+        "armor": 15
+      }
+    },
+    {
+      "id": "guardian-cloak",
+      "name": {
+        "id": "Jubah Penjaga",
+        "en": "Guardian Cloak"
+      },
+      "description": {
+        "id": "Jubah tebal para penjaga gerbang. Menambah darah dan pertahanan.",
+        "en": "The thick cloak of the gate guardians. More HP and armour."
+      },
+      "category": "defense",
+      "cost": 950,
+      "stats": {
+        "hp": 250,
+        "armor": 10
+      },
+      "passive": {
+        "id": "last-stand",
+        "unique": true,
+        "description": {
+          "id": "Unik: saat darah di bawah 30%, dapat perisai 15% darah maksimum selama 3 detik (sekali tiap 30 detik).",
+          "en": "Unique: below 30% HP, gain a shield of 15% max HP for 3 seconds (once every 30 seconds)."
+        },
+        "effect": {
+          "kind": "lowHpShield",
+          "hpBelow": 0.3,
+          "maxHpRatio": 0.15,
+          "duration": 3,
+          "cooldown": 30
+        }
+      }
+    },
+    {
+      "id": "wind-sandals",
+      "name": {
+        "id": "Sandal Angin",
+        "en": "Wind Sandals"
+      },
+      "description": {
+        "id": "Sandal seringan angin. Kamu berjalan lebih cepat.",
+        "en": "Sandals as light as the wind. You walk faster."
+      },
+      "category": "movement",
+      "cost": 400,
+      "stats": {
+        "moveSpeed": 30
+      }
+    },
+    {
+      "id": "leaf-charm",
+      "name": {
+        "id": "Jimat Daun",
+        "en": "Leaf Charm"
+      },
+      "description": {
+        "id": "Jimat daun segar. Menambah darah, memulihkannya lebih cepat, dan setiap serangan mengembalikan sedikit darah.",
+        "en": "A fresh leaf charm. More HP, faster healing, and every attack gives back a little HP."
+      },
+      "category": "support",
+      "cost": 450,
+      "stats": {
+        "hp": 100,
+        "hpRegen": 3,
+        "lifesteal": 0.06
+      }
+    }
+  ]
 }

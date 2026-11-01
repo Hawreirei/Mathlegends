@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "_note": "Skills (#33, balanced in #34). Each skill has one or more effects: projectile, aoe, dash, buff, shield. Damage = base + perLevel x (level - 1) + atkRatio x ATK, then armour (docs/ECONOMY.md). Every hero stays within the skill damage budget (economy.json skillBudget), checked by tests/skillBudget.test.ts.",
+  "skills": [
+    {
+      "id": "nova-star-toss",
+      "name": {
+        "id": "Lempar Bintang",
+        "en": "Star Toss"
+      },
+      "description": {
+        "id": "Melempar bintang ke musuh terdekat. Mengenai musuh pertama di jalurnya.",
+        "en": "Throws a star at the nearest enemy. Hits the first enemy in its path."
+      },
+      "ultimate": false,
+      "unlockLevel": 1,
+      "cooldown": 5,
+      "mana": 35,
+      "range": 520,
+      "effects": [
+        {
+          "kind": "projectile",
+          "damage": {
+            "base": 85,
+            "perLevel": 4,
+            "atkRatio": 0.7
+          },
+          "speed": 950,
+          "radius": 28,
+          "pierce": false
+        }
+      ]
+    },
+    {
+      "id": "nova-flash-step",
+      "name": {
+        "id": "Langkah Kilat",
+        "en": "Flash Step"
+      },
+      "description": {
+        "id": "Melesat ke arah musuh dan memberi kerusakan kecil di sekitar tempat mendarat.",
+        "en": "Dashes towards an enemy and deals light damage around the landing spot."
+      },
+      "ultimate": false,
+      "unlockLevel": 2,
+      "cooldown": 9,
+      "mana": 40,
+      "range": 320,
+      "effects": [
+        {
+          "kind": "dash",
+          "distance": 240
+        },
+        {
+          "kind": "aoe",
+          "centre": "self",
+          "radius": 110,
+          "damage": {
+            "base": 40,
+            "perLevel": 3,
+            "atkRatio": 0.45
+          }
+        }
+      ]
+    },
+    {
+      "id": "nova-light-shield",
+      "name": {
+        "id": "Perisai Cahaya",
+        "en": "Light Shield"
+      },
+      "description": {
+        "id": "Perisai yang menahan kerusakan selama beberapa detik dan membuat langkah lebih cepat.",
+        "en": "A shield that absorbs damage for a few seconds and speeds up your steps."
+      },
+      "ultimate": false,
+      "unlockLevel": 3,
+      "cooldown": 13,
+      "mana": 50,
+      "range": 0,
+      "effects": [
+        {
+          "kind": "shield",
+          "amount": {
+            "base": 90,
+            "perLevel": 18,
+            "maxHpRatio": 0.05
+          },
+          "duration": 4
+        },
+        {
+          "kind": "buff",
+          "stat": "moveSpeed",
+          "mult": 1.2,
+          "duration": 3
+        }
+      ]
+    },
+    {
+      "id": "nova-starfall",
+      "name": {
+        "id": "Hujan Bintang",
+        "en": "Starfall"
+      },
+      "description": {
+        "id": "Ultimate: bintang jatuh di sekitar musuh terdekat, lalu seranganmu makin cepat sebentar.",
+        "en": "Ultimate: stars fall around the nearest enemy, then your attacks speed up for a while."
+      },
+      "ultimate": true,
+      "unlockLevel": 4,
+      "cooldown": 40,
+      "mana": 100,
+      "range": 460,
+      "effects": [
+        {
+          "kind": "aoe",
+          "centre": "target",
+          "radius": 200,
+          "damage": {
+            "base": 140,
+            "perLevel": 10,
+            "atkRatio": 1.0
+          }
+        },
+        {
+          "kind": "buff",
+          "stat": "attackSpeed",
+          "mult": 1.3,
+          "duration": 5
+        }
+      ]
+    },
+    {
+      "id": "mira-petal-dart",
+      "name": {
+        "id": "Panah Kelopak",
+        "en": "Petal Dart"
+      },
+      "description": {
+        "id": "Melempar kelopak tajam ke musuh terdekat. Mengenai musuh pertama di jalurnya.",
+        "en": "Throws a sharp petal at the nearest enemy. Hits the first enemy in its path."
+      },
+      "ultimate": false,
+      "unlockLevel": 1,
+      "cooldown": 5,
+      "mana": 35,
+      "range": 520,
+      "effects": [
+        {
+          "kind": "projectile",
+          "damage": {
+            "base": 85,
+            "perLevel": 4,
+            "atkRatio": 0.7
+          },
+          "speed": 950,
+          "radius": 28,
+          "pierce": false
+        }
+      ]
+    },
+    {
+      "id": "mira-vine-leap",
+      "name": {
+        "id": "Lompatan Sulur",
+        "en": "Vine Leap"
+      },
+      "description": {
+        "id": "Melompat ke arah musuh dan memberi kerusakan kecil di sekitar tempat mendarat.",
+        "en": "Leaps towards an enemy and deals light damage around the landing spot."
+      },
+      "ultimate": false,
+      "unlockLevel": 2,
+      "cooldown": 9,
+      "mana": 40,
+      "range": 320,
+      "effects": [
+        {
+          "kind": "dash",
+          "distance": 240
+        },
+        {
+          "kind": "aoe",
+          "centre": "self",
+          "radius": 110,
+          "damage": {
+            "base": 40,
+            "perLevel": 3,
+            "atkRatio": 0.45
+          }
+        }
+      ]
+    },
+    {
+      "id": "mira-bark-guard",
+      "name": {
+        "id": "Kulit Kayu",
+        "en": "Bark Guard"
+      },
+      "description": {
+        "id": "Lapisan kulit kayu yang menahan kerusakan selama beberapa detik dan membuat langkah lebih cepat.",
+        "en": "A layer of bark that absorbs damage for a few seconds and speeds up your steps."
+      },
+      "ultimate": false,
+      "unlockLevel": 3,
+      "cooldown": 13,
+      "mana": 50,
+      "range": 0,
+      "effects": [
+        {
+          "kind": "shield",
+          "amount": {
+            "base": 90,
+            "perLevel": 18,
+            "maxHpRatio": 0.05
+          },
+          "duration": 4
+        },
+        {
+          "kind": "buff",
+          "stat": "moveSpeed",
+          "mult": 1.2,
+          "duration": 3
+        }
+      ]
+    },
+    {
+      "id": "mira-bloom-burst",
+      "name": {
+        "id": "Ledakan Bunga",
+        "en": "Bloom Burst"
+      },
+      "description": {
+        "id": "Ultimate: bunga mekar di sekitar musuh terdekat, lalu seranganmu makin cepat sebentar.",
+        "en": "Ultimate: flowers burst around the nearest enemy, then your attacks speed up for a while."
+      },
+      "ultimate": true,
+      "unlockLevel": 4,
+      "cooldown": 40,
+      "mana": 100,
+      "range": 460,
+      "effects": [
+        {
+          "kind": "aoe",
+          "centre": "target",
+          "radius": 200,
+          "damage": {
+            "base": 140,
+            "perLevel": 10,
+            "atkRatio": 1.0
+          }
+        },
+        {
+          "kind": "buff",
+          "stat": "attackSpeed",
+          "mult": 1.3,
+          "duration": 5
+        }
+      ]
+    }
+  ]
+}

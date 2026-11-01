@@ -13,9 +13,26 @@
     "correct": "#2fb37f",
     "wrong": "#e5484d"
   },
+  "colorBlind": {
+    "_note": "Okabe-Ito colour-blind-safe pair used instead of colors.correct/wrong when the Settings option is on (#31).",
+    "correct": "#0072b2",
+    "wrong": "#d55e00"
+  },
   "teams": {
-    "blue": { "main": "#4873ff", "light": "#8fb0ff", "dark": "#2b4bc9" },
-    "red": { "main": "#f95b93", "light": "#ffa3c4", "dark": "#c7336b" }
+    "blue": {
+      "main": "#4873ff",
+      "light": "#8fb0ff",
+      "dark": "#2b4bc9"
+    },
+    "red": {
+      "main": "#f95b93",
+      "light": "#ffa3c4",
+      "dark": "#c7336b"
+    }
+  },
+  "badges": {
+    "_note": "Rank badge fill per Year (#42), lightest to darkest so the Years differ in lightness, not only in hue. Each badge also shows its Year number and that many sparkles.",
+    "fills": ["#7fdcc6", "#45b9c9", "#4b8df0", "#4a63d8", "#6a4fc4", "#3e2a8c"]
   },
   "map": {
     "grass": "#a9d18e",
@@ -28,5 +45,6 @@
   "fonts": {
     "display": "Fredoka",
     "body": "Nunito"
-  }
+  },
+  "textScales": [1, 1.2, 1.4]
 }

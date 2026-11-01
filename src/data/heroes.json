@@ -9,15 +9,23 @@
         "id": "Nova",
         "en": "Nova"
       },
+      "title": {
+        "id": "Penjelajah Bintang",
+        "en": "Star Strider"
+      },
       "role": "fighter",
       "lore": {
-        "id": "Pelajar akademi yang mengubah jawaban cepat menjadi serangan bintang.",
-        "en": "An academy student who turns quick answers into starlight strikes."
+        "id": "Murid akademi yang belajar bahwa setiap jawaban yang tepat menyalakan sebuah bintang. Nova bertarung di garis depan dan terus maju selama perhitungannya benar.",
+        "en": "An academy student who learned that every right answer lights a star. Nova fights on the front line and keeps moving forward as long as the sums add up."
+      },
+      "look": {
+        "color": "blue",
+        "emblem": "sparkle"
       },
       "base": {
         "hp": 620,
         "mana": 200,
-        "atk": 55,
+        "atk": 56,
         "armor": 18,
         "moveSpeed": 240,
         "attackRange": 140,
@@ -31,7 +39,7 @@
         "atk": 5,
         "armor": 2.5
       },
-      "skills": [],
+      "skills": ["nova-star-toss", "nova-flash-step", "nova-light-shield", "nova-starfall"],
       "sprite": "hero-nova"
     },
     {
@@ -40,16 +48,24 @@
         "id": "Mira",
         "en": "Mira"
       },
+      "title": {
+        "id": "Penjaga Gerbang Merah",
+        "en": "Keeper of the Red Gate"
+      },
       "role": "fighter",
       "lore": {
-        "id": "Penjaga gerbang merah yang menantang setiap murid baru.",
-        "en": "Keeper of the red gate, who challenges every new student."
+        "id": "Penjaga kebun bunga di depan gerbang merah. Mira menantang setiap murid baru, tetapi selalu menghargai lawan yang berpikir dengan tenang.",
+        "en": "Guardian of the flower garden before the red gate. Mira challenges every new student, but always respects an opponent who thinks calmly."
+      },
+      "look": {
+        "color": "red",
+        "emblem": "flower"
       },
       "base": {
-        "hp": 620,
+        "hp": 660,
         "mana": 200,
-        "atk": 55,
-        "armor": 18,
+        "atk": 52,
+        "armor": 20,
         "moveSpeed": 240,
         "attackRange": 140,
         "attackSpeed": 1.0,
@@ -57,12 +73,12 @@
         "manaRegen": 2
       },
       "growth": {
-        "hp": 70,
+        "hp": 76,
         "mana": 15,
-        "atk": 5,
-        "armor": 2.5
+        "atk": 4.4,
+        "armor": 2.7
       },
-      "skills": [],
+      "skills": ["mira-petal-dart", "mira-vine-leap", "mira-bark-guard", "mira-bloom-burst"],
       "sprite": "hero-mira"
     }
   ]
