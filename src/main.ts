@@ -76,7 +76,7 @@ void loadFonts().then(() => {
         const settings = parseSettings(loadSettingsRaw(store), theme.textScales);
         applyAccessibility(settings);
         // Year and stars (#38; versioned save with export/import in #41).
-        const profile = parseProfile(loadProfileRaw(store), ranks.tiers.length);
+        const profile = parseProfile(loadProfileRaw(store), ranks.tiers.length, ranks.starsPerTier);
         g.registry.set('state', createGameState(lang, review, settings, profile));
       },
     },

@@ -61,6 +61,9 @@ Filled in now with the rules approved in `docs/GDD.md`:
 | `stars.win` / `stars.loss` | +1 / -1 | |
 | `stars.bonusAccuracy` / `bonusStars` | 0.8 / +1 | Win with 80%+ accuracy earns an extra star |
 | `stars.demoteAfterLossesAtZero` | 2 | Drop a tier only after 2 straight losses at 0 stars |
+| `stars.starsAfterDemotion` | 3 | Stars after dropping a Year (#39) |
+| `stars.bonusMinAnswered` | 5 | The accuracy bonus needs at least 5 answered questions (#39) |
+| `stars.topTierUncapped` | true | Year 6 keeps counting stars past 5 (decided 2026-11-01) |
 | `questionMix` | 0.7 / 0.2 / 0.1 | On-level / review / stretch; must add up to 1 |
 | `questionEngine.repeatWindow` | 30 | No question repeats within this many questions (#26) |
 | `questionEngine.reviewPreviousTierShare` | 0.7 | Share of review questions from the Year just below; the rest from any lower Year |

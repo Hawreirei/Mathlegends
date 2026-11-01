@@ -61,5 +61,12 @@
   "settings.yearInfo": "Sekarang: {rank}",
   "settings.retake": "Ulangi kuis penempatan",
   "settings.retakeConfirm": "Ketuk lagi untuk mulai",
-  "settings.retakeHint": "Kelasmu ditentukan ulang dan bintang kembali ke 0."
+  "settings.retakeHint": "Kelasmu ditentukan ulang dan bintang kembali ke 0.",
+  "result.starsUp": "Bintang +{n}",
+  "result.starsDown": "Bintang −{n}",
+  "result.starsSame": "Bintang tidak berubah",
+  "result.bonus": "(bonus akurasi)",
+  "result.promoted": "Naik ke {year}!",
+  "result.demoted": "Turun ke {year}.",
+  "result.rankNow": "Sekarang: {rank}"
 }

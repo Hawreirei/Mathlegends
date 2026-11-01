@@ -1,12 +1,15 @@
 import Phaser from 'phaser';
 import ranksJson from '../data/ranks.json';
 import { loadRanks } from '../systems/data';
+import type { RankChange } from '../systems/rank';
 import { formatDuration } from '../systems/gameState';
 import type { Rect } from '../systems/hudLayout';
 import { MissedReview } from '../ui/MissedReview';
 import { Button } from '../ui/Button';
 import { bodyFont, displayFont, hex, theme } from '../ui/theme';
 import { getState, responsive, tr } from './shared';
+
+const ranks = loadRanks(ranksJson);
 
 export class ResultScene extends Phaser.Scene {
   constructor() {
@@ -28,7 +31,6 @@ export class ResultScene extends Phaser.Scene {
       return;
     }
     const win = m.outcome === 'victory';
-    const ranks = loadRanks(ranksJson);
     const panelW = Math.min(w - 32, portrait ? 680 : 1240);
     const panelH = h - 32;
     const left = w / 2 - panelW / 2;
@@ -40,12 +42,12 @@ export class ResultScene extends Phaser.Scene {
     // Summary: in a left column in landscape, across the top in portrait.
     const colW = portrait ? panelW : 440;
     const cx = left + colW / 2;
-    const y0 = top + (portrait ? 20 : 40);
-    this.add.image(cx, y0 + 70, win ? 'nexus-blue' : 'nexus-red').setScale(portrait ? 0.45 : 0.6);
+    const y0 = top + (portrait ? 20 : 24);
+    this.add.image(cx, y0 + 60, win ? 'nexus-blue' : 'nexus-red').setScale(0.45);
     this.add
       .text(
         cx,
-        y0 + (portrait ? 170 : 210),
+        y0 + 160,
         tr(this, win ? 'result.victory' : 'result.defeat'),
         displayFont(portrait ? 60 : 64, win ? c.gold : c.paper),
       )
@@ -53,7 +55,7 @@ export class ResultScene extends Phaser.Scene {
     this.add
       .text(
         cx,
-        y0 + (portrait ? 230 : 280),
+        y0 + 220,
         tr(this, 'result.time', { time: formatDuration(m.durationSec) }),
         bodyFont(28, c.paper),
       )
@@ -61,15 +63,19 @@ export class ResultScene extends Phaser.Scene {
     this.add
       .text(
         cx,
-        y0 + (portrait ? 270 : 325),
+        y0 + 260,
         tr(this, 'result.accuracy', { correct: m.correct, answered: m.answered }),
         bodyFont(26, c.paper),
       )
       .setOrigin(0.5);
 
+    // Stars won or lost and any Year change (#39; badges and progress bar in #42).
+    const rankEnd = m.rank ? this.rankLines(cx, y0 + 305, colW - 32, m.rank) : y0 + 290;
+
     // Missed questions with explanations (#29).
+    const reviewTop = rankEnd + 16;
     const review: Rect = portrait
-      ? { x: left + 24, y: y0 + 310, w: panelW - 48, h: top + panelH - 270 - (y0 + 310) }
+      ? { x: left + 24, y: reviewTop, w: panelW - 48, h: top + panelH - 270 - reviewTop }
       : { x: left + colW, y: top + 24, w: panelW - colW - 24, h: panelH - 48 };
     if (m.answered > 0)
       new MissedReview(
@@ -90,12 +96,50 @@ export class ResultScene extends Phaser.Scene {
         style: 'secondary',
       });
     } else {
-      const y = top + panelH - 210;
+      const y = top + panelH - 190;
       new Button(this, cx, y, tr(this, 'result.again'), again, { width: 320 });
       new Button(this, cx, y + 112, tr(this, 'result.menu'), menu, {
         width: 320,
         style: 'secondary',
       });
     }
+  }
+
+  /** "Stars +2 (accuracy bonus)", "Up to Year 3!", "Now: Year 3 · 1 stars"; returns the y below. */
+  private rankLines(x: number, y: number, maxW: number, r: RankChange): number {
+    const c = theme.colors;
+    const lang = getState(this).lang;
+    const year = (t: number) =>
+      (ranks.tiers.find((k) => k.tier === t) ?? ranks.tiers[0]!).label[lang];
+    const parts = [
+      r.delta > 0
+        ? tr(this, 'result.starsUp', { n: r.delta })
+        : r.delta < 0
+          ? tr(this, 'result.starsDown', { n: -r.delta })
+          : tr(this, 'result.starsSame'),
+    ];
+    if (r.bonus) parts[0] += ` ${tr(this, 'result.bonus')}`;
+    if (r.promoted) parts.push(tr(this, 'result.promoted', { year: year(r.after.tier) }));
+    if (r.demoted) parts.push(tr(this, 'result.demoted', { year: year(r.after.tier) }));
+    let cy = y;
+    parts.forEach((p, i) => {
+      const t = this.add
+        .text(
+          x,
+          cy,
+          p,
+          bodyFont(26, r.delta > 0 || r.promoted ? c.gold : c.paper, i ? '800' : '700'),
+        )
+        .setOrigin(0.5, 0)
+        .setWordWrapWidth(maxW, true)
+        .setAlign('center');
+      cy += t.height + 4;
+    });
+    const now = tr(this, 'menu.rank', { year: year(r.after.tier), stars: r.after.stars });
+    const t = this.add
+      .text(x, cy + 2, tr(this, 'result.rankNow', { rank: now }), bodyFont(22, c.paper, '600'))
+      .setOrigin(0.5, 0)
+      .setAlpha(0.85);
+    return t.y + t.height;
   }
 }

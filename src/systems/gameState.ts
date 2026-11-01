@@ -3,6 +3,7 @@
  * Persistence (localStorage) comes in #41; rank changes in #39.
  */
 import type { MissedQuestion, ReviewItem } from './reviewQueue';
+import type { RankChange } from './rank';
 import { DEFAULT_SETTINGS, type Settings } from './settings';
 
 export type Lang = 'id' | 'en';
@@ -14,11 +15,15 @@ export interface MatchResult {
   correct: number;
   /** Wrong or timed-out questions, for the Result screen (#29). */
   missed: MissedQuestion[];
+  /** Stars won or lost and any Year change (#39); absent in older results. */
+  rank?: RankChange;
 }
 
 export interface Profile {
   /** True once the placement quiz (#38) has set the starting Year. */
   placed: boolean;
+  /** Losses in a row while at 0 stars (#39: 2 drop a Year). */
+  lossesAtZero: number;
   tier: number;
   stars: number;
   matchesPlayed: number;
@@ -34,7 +39,13 @@ export interface GameState {
   settings: Settings;
 }
 
-export const NEW_PROFILE: Profile = { placed: false, tier: 1, stars: 0, matchesPlayed: 0 };
+export const NEW_PROFILE: Profile = {
+  placed: false,
+  tier: 1,
+  stars: 0,
+  lossesAtZero: 0,
+  matchesPlayed: 0,
+};
 
 export function createGameState(
   lang: Lang,
@@ -59,7 +70,10 @@ export function setLang(s: GameState, lang: Lang): GameState {
   return { ...s, lang };
 }
 
-/** Records a finished match; `review` is the review queue after it (updateReviewQueue). */
+/**
+ * Records a finished match; `review` is the review queue after it (updateReviewQueue). The
+ * profile's Year and stars become `result.rank.after` (#39) when given.
+ */
 export function recordMatch(
   s: GameState,
   result: MatchResult,
@@ -68,7 +82,11 @@ export function recordMatch(
   return {
     ...s,
     review,
-    profile: { ...s.profile, matchesPlayed: s.profile.matchesPlayed + 1 },
+    profile: {
+      ...s.profile,
+      ...(result.rank ? result.rank.after : {}),
+      matchesPlayed: s.profile.matchesPlayed + 1,
+    },
     lastMatch: { ...result, missed: [...result.missed] },
   };
 }
@@ -80,7 +98,7 @@ export function formatDuration(sec: number): string {
 
 /** After the placement quiz (#38): start at `tier` with 0 stars. */
 export function applyPlacement(s: GameState, tier: number): GameState {
-  return { ...s, profile: { ...s.profile, placed: true, tier, stars: 0 } };
+  return { ...s, profile: { ...s.profile, placed: true, tier, stars: 0, lossesAtZero: 0 } };
 }
 
 /** "Retake the placement quiz": the next Play starts with the quiz again. */
@@ -92,17 +110,20 @@ export function resetPlacement(s: GameState): GameState {
  * Saved profile from storage, or a new one. Anything malformed falls back to the new profile.
  * (A versioned save with export/import comes in #41.)
  */
-export function parseProfile(raw: unknown, topTier: number): Profile {
+export function parseProfile(raw: unknown, topTier: number, starsPerTier = 5): Profile {
   if (!raw || typeof raw !== 'object') return { ...NEW_PROFILE };
   const r = raw as Partial<Profile>;
   const int = (v: unknown, min: number, max: number) =>
     Number.isInteger(v) && (v as number) >= min && (v as number) <= max;
   if (!int(r.tier, 1, topTier) || !int(r.stars, 0, 1e6) || !int(r.matchesPlayed, 0, 1e9))
     return { ...NEW_PROFILE };
+  // Below the top Year stars stay under starsPerTier; the top Year has no cap (#39).
+  if (r.tier! < topTier && r.stars! >= starsPerTier) return { ...NEW_PROFILE };
   return {
     placed: r.placed === true,
     tier: r.tier!,
     stars: r.stars!,
+    lossesAtZero: int(r.lossesAtZero, 0, 100) ? r.lossesAtZero! : 0,
     matchesPlayed: r.matchesPlayed!,
   };
 }

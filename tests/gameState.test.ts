@@ -5,7 +5,13 @@ describe('game state', () => {
   it('starts at Year 1 with 0 stars and no match yet', () => {
     const s = createGameState('id');
     expect(s.lang).toBe('id');
-    expect(s.profile).toEqual({ placed: false, tier: 1, stars: 0, matchesPlayed: 0 });
+    expect(s.profile).toEqual({
+      placed: false,
+      tier: 1,
+      stars: 0,
+      lossesAtZero: 0,
+      matchesPlayed: 0,
+    });
     expect(s.lastMatch).toBeNull();
   });
 

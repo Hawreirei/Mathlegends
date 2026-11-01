@@ -195,6 +195,12 @@ export const ranksFileSchema = z
         bonusStars: z.number().int().min(0),
         /** Straight losses at 0 stars before dropping a tier. */
         demoteAfterLossesAtZero: z.number().int().positive(),
+        /** Stars after dropping a Year (#39). */
+        starsAfterDemotion: z.number().int().min(0),
+        /** The accuracy bonus needs at least this many answered questions (#39). */
+        bonusMinAnswered: z.number().int().min(0),
+        /** The top Year keeps counting stars past starsPerTier (decided 2026-11-01). */
+        topTierUncapped: z.boolean(),
       })
       .strict(),
     questionMix: z.object({ onLevel: fraction, review: fraction, stretch: fraction }).strict(),
@@ -220,6 +226,12 @@ export const ranksFileSchema = z
         code: 'custom',
         path: ['tiers'],
         message: 'tiers must be numbered 1, 2, 3, ... in order',
+      });
+    if (r.stars.starsAfterDemotion >= r.starsPerTier)
+      ctx.addIssue({
+        code: 'custom',
+        path: ['stars', 'starsAfterDemotion'],
+        message: `starsAfterDemotion must be below starsPerTier (${r.starsPerTier})`,
       });
     if (r.placement.maxStartTier > r.tiers.length)
       ctx.addIssue({

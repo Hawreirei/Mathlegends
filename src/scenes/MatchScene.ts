@@ -23,6 +23,7 @@ import {
   type MatchLogInfo,
 } from '../systems/answerLog';
 import { serializeReviewQueue, updateReviewQueue } from '../systems/reviewQueue';
+import { applyMatch } from '../systems/rank';
 import { timeScale } from '../systems/settings';
 import {
   browserStorage,
@@ -450,7 +451,14 @@ export class MatchScene extends Phaser.Scene {
   finish(outcome: MatchResult['outcome']): void {
     const missed = this.session.missed;
     // Missed questions come back in the next matches (#29); the queue is saved on the device.
-    const review = updateReviewQueue(this.session.engine.review, missed, loadRanks(ranksJson));
+    const ranks = loadRanks(ranksJson);
+    const review = updateReviewQueue(this.session.engine.review, missed, ranks);
+    // Stars and Year (#39).
+    const rank = applyMatch(
+      getState(this).profile,
+      { won: outcome === 'victory', answered: this.session.asked, correct: this.session.correct },
+      ranks,
+    );
     saveReviewRaw(browserStorage(), serializeReviewQueue(review));
     setStateAndSaveProfile(
       this,
@@ -462,6 +470,7 @@ export class MatchScene extends Phaser.Scene {
           answered: this.session.asked,
           correct: this.session.correct,
           missed,
+          rank,
         },
         review,
       ),

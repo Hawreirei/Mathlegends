@@ -64,7 +64,10 @@
     "loss": -1,
     "bonusAccuracy": 0.8,
     "bonusStars": 1,
-    "demoteAfterLossesAtZero": 2
+    "demoteAfterLossesAtZero": 2,
+    "starsAfterDemotion": 3,
+    "bonusMinAnswered": 5,
+    "topTierUncapped": true
   },
   "questionMix": {
     "onLevel": 0.7,

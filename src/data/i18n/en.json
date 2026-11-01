@@ -61,5 +61,12 @@
   "settings.yearInfo": "Now: {rank}",
   "settings.retake": "Retake placement quiz",
   "settings.retakeConfirm": "Tap again to start",
-  "settings.retakeHint": "Your Year is set again and stars go back to 0."
+  "settings.retakeHint": "Your Year is set again and stars go back to 0.",
+  "result.starsUp": "Stars +{n}",
+  "result.starsDown": "Stars −{n}",
+  "result.starsSame": "Stars unchanged",
+  "result.bonus": "(accuracy bonus)",
+  "result.promoted": "Up to {year}!",
+  "result.demoted": "Down to {year}.",
+  "result.rankNow": "Now: {rank}"
 }

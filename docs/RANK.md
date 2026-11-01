@@ -37,3 +37,24 @@ Starting one Year below mastery gives an easy first win; stars then move the chi
 **Logged:** placement answers go to the anonymous answer log (#30) with band `placement` and a `p-` match id.
 
 Code: [`src/systems/placement.ts`](../src/systems/placement.ts) (pure), [`src/scenes/PlacementScene.ts`](../src/scenes/PlacementScene.ts).
+
+## Stars, moving up and down (issue #39)
+
+[`src/systems/rank.ts`](../src/systems/rank.ts) (pure, tested in `tests/rank.test.ts`) updates the Year and stars after every match. The Result screen shows the change ("Stars +2 (accuracy bonus)", "Up to Year 3!", "Now: Year 3 · 1 stars"); badges and a progress bar come in #42.
+
+| Match result | Stars |
+|---|---|
+| Win | +1 |
+| Win with at least 80% correct answers (and at least 5 questions answered) | +2 (1 + accuracy bonus) |
+| Loss | -1 (never below 0) |
+
+- **Moving up:** the 5th star moves you to the next Year at once with 0 stars. Extra stars carry over: 4 stars + a 2-star win = next Year with 1 star. Climbing Year 1 to Year 6 one star at a time takes 25 wins.
+- **Year 6 has no star cap:** stars keep counting (6, 7, ... 23 ...) and the real total is saved. A loss takes one star off. (Showing 5 star icons plus "×N" is #42.)
+- **Moving down:** a loss at 0 stars takes nothing but is counted. After **2 losses in a row at 0 stars** you drop one Year and land on **3 stars**, so two wins (or one 2-star win) bring you back. A win resets the count. The loss that takes you down to 0 stars does not count.
+- **Floor:** Year 1. Losses at Year 1 with 0 stars change nothing.
+
+Two numbers were not set by the GDD and were chosen here (both in `ranks.json`, easy to change):
+- `starsAfterDemotion` = **3**: where you land after dropping a Year.
+- `bonusMinAnswered` = **5**: the accuracy bonus needs at least 5 answered questions, so a match with 1 right answer out of 1 does not earn it.
+
+Also saved per player: `lossesAtZero` (losses in a row at 0 stars). A saved profile with 5 or more stars below Year 6 is treated as broken and replaced by a new profile.

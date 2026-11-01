@@ -125,13 +125,13 @@ describe('profile and placement (#38)', () => {
   it('placement sets the Year with 0 stars; retaking clears the flag only', () => {
     const s = createGameState('id', [], undefined, { ...NEW_PROFILE, stars: 3, matchesPlayed: 4 });
     const placed = applyPlacement(s, 4);
-    expect(placed.profile).toEqual({ placed: true, tier: 4, stars: 0, matchesPlayed: 4 });
+    expect(placed.profile).toEqual({ ...NEW_PROFILE, placed: true, tier: 4, matchesPlayed: 4 });
     expect(resetPlacement(placed).profile).toEqual({ ...placed.profile, placed: false });
     expect(s.profile.placed).toBe(false);
   });
 
   it('round-trips through storage and rejects broken saves', () => {
-    const p = { placed: true, tier: 4, stars: 2, matchesPlayed: 7 };
+    const p = { placed: true, tier: 4, stars: 2, lossesAtZero: 1, matchesPlayed: 7 };
     expect(parseProfile(JSON.parse(JSON.stringify(serializeProfile(p))), 6)).toEqual(p);
     expect(parseProfile({ ...p, tier: 9 }, 6)).toEqual(NEW_PROFILE);
     expect(parseProfile({ ...p, stars: -1 }, 6)).toEqual(NEW_PROFILE);
