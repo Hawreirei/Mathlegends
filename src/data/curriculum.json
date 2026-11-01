@@ -1,0 +1,367 @@
+{
+  "version": 1,
+  "curriculum": "Kurikulum Merdeka (Indonesia), Matematika SD, Fase A-C",
+  "status": "draft-needs-teacher-check",
+  "signoff": { "teacher": null, "date": null, "notes": null },
+  "tiers": [
+    {
+      "tier": 1,
+      "kelas": 1,
+      "fase": "A",
+      "topics": [
+        {
+          "id": "t1.count20",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Membilang dan membandingkan bilangan sampai 20",
+            "en": "Counting and comparing numbers to 20"
+          }
+        },
+        {
+          "id": "t1.addsub20",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Penjumlahan dan pengurangan sampai 20",
+            "en": "Addition and subtraction within 20"
+          }
+        },
+        {
+          "id": "t1.pattern",
+          "element": "aljabar",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Pola bilangan dan benda sederhana",
+            "en": "Simple number and object patterns"
+          }
+        },
+        {
+          "id": "t1.shapes",
+          "element": "geometri",
+          "generator": false,
+          "check": false,
+          "name": {
+            "id": "Mengenal bangun datar dan bangun ruang",
+            "en": "Recognising 2D and 3D shapes"
+          }
+        },
+        {
+          "id": "t1.compare_measure",
+          "element": "pengukuran",
+          "generator": false,
+          "check": false,
+          "name": {
+            "id": "Membandingkan panjang dan berat (satuan tidak baku)",
+            "en": "Comparing length and weight (non-standard units)"
+          }
+        }
+      ]
+    },
+    {
+      "tier": 2,
+      "kelas": 2,
+      "fase": "A",
+      "topics": [
+        {
+          "id": "t2.place100",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Bilangan sampai 100 dan nilai tempat",
+            "en": "Numbers to 100 and place value"
+          }
+        },
+        {
+          "id": "t2.addsub100",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Penjumlahan dan pengurangan sampai 100",
+            "en": "Addition and subtraction within 100"
+          }
+        },
+        {
+          "id": "t2.half_quarter",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": { "id": "Mengenal pecahan setengah dan seperempat", "en": "Halves and quarters" }
+        },
+        {
+          "id": "t2.equal_groups",
+          "element": "bilangan",
+          "generator": true,
+          "check": true,
+          "name": {
+            "id": "Perkalian sebagai penjumlahan berulang",
+            "en": "Multiplication as repeated addition"
+          }
+        },
+        {
+          "id": "t2.money_time",
+          "element": "pengukuran",
+          "generator": true,
+          "check": true,
+          "name": {
+            "id": "Uang (Rupiah) dan membaca jam",
+            "en": "Money (Rupiah) and telling the time"
+          }
+        },
+        {
+          "id": "t2.pictogram",
+          "element": "data",
+          "generator": false,
+          "check": false,
+          "name": { "id": "Turus dan piktogram", "en": "Tally charts and pictograms" }
+        }
+      ]
+    },
+    {
+      "tier": 3,
+      "kelas": 3,
+      "fase": "B",
+      "topics": [
+        {
+          "id": "t3.place1000",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Bilangan sampai 1.000 dan nilai tempat",
+            "en": "Numbers to 1,000 and place value"
+          }
+        },
+        {
+          "id": "t3.addsub1000",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Penjumlahan dan pengurangan sampai 1.000",
+            "en": "Addition and subtraction within 1,000"
+          }
+        },
+        {
+          "id": "t3.muldiv100",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Perkalian dan pembagian sampai 100",
+            "en": "Multiplication and division within 100"
+          }
+        },
+        {
+          "id": "t3.fraction_compare",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": { "id": "Membandingkan pecahan sederhana", "en": "Comparing simple fractions" }
+        },
+        {
+          "id": "t3.std_units",
+          "element": "pengukuran",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Satuan baku panjang dan berat (cm, m, g, kg)",
+            "en": "Standard units of length and weight (cm, m, g, kg)"
+          }
+        },
+        {
+          "id": "t3.bar_chart",
+          "element": "data",
+          "generator": false,
+          "check": false,
+          "name": {
+            "id": "Diagram gambar dan diagram batang",
+            "en": "Picture graphs and bar charts"
+          }
+        }
+      ]
+    },
+    {
+      "tier": 4,
+      "kelas": 4,
+      "fase": "B",
+      "topics": [
+        {
+          "id": "t4.place10000",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": { "id": "Bilangan sampai 10.000", "en": "Numbers to 10,000" }
+        },
+        {
+          "id": "t4.multidigit",
+          "element": "bilangan",
+          "generator": true,
+          "check": true,
+          "name": {
+            "id": "Perkalian dan pembagian bilangan bersusun",
+            "en": "Multi-digit multiplication and division"
+          }
+        },
+        {
+          "id": "t4.equiv_fractions",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": { "id": "Pecahan senilai", "en": "Equivalent fractions" }
+        },
+        {
+          "id": "t4.decimals_intro",
+          "element": "bilangan",
+          "generator": true,
+          "check": true,
+          "name": {
+            "id": "Desimal persepuluhan dan perseratusan",
+            "en": "Tenths and hundredths as decimals"
+          }
+        },
+        {
+          "id": "t4.perim_area",
+          "element": "pengukuran",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Keliling dan luas persegi dan persegi panjang",
+            "en": "Perimeter and area of squares and rectangles"
+          }
+        },
+        {
+          "id": "t4.polygons",
+          "element": "geometri",
+          "generator": false,
+          "check": false,
+          "name": {
+            "id": "Ciri-ciri segitiga, segiempat dan segibanyak",
+            "en": "Properties of triangles, quadrilaterals and polygons"
+          }
+        }
+      ]
+    },
+    {
+      "tier": 5,
+      "kelas": 5,
+      "fase": "C",
+      "topics": [
+        {
+          "id": "t5.big_numbers",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": { "id": "Bilangan sampai 1.000.000", "en": "Numbers to 1,000,000" }
+        },
+        {
+          "id": "t5.kpk_fpb",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": { "id": "KPK dan FPB", "en": "Lowest common multiple and highest common factor" }
+        },
+        {
+          "id": "t5.frac_addsub",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Penjumlahan dan pengurangan pecahan",
+            "en": "Adding and subtracting fractions"
+          }
+        },
+        {
+          "id": "t5.decimal_percent",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": { "id": "Desimal dan persen", "en": "Decimals and percentages" }
+        },
+        {
+          "id": "t5.angles",
+          "element": "geometri",
+          "generator": false,
+          "check": true,
+          "name": {
+            "id": "Mengukur dan membandingkan sudut",
+            "en": "Measuring and comparing angles"
+          }
+        },
+        {
+          "id": "t5.data_mean",
+          "element": "data",
+          "generator": true,
+          "check": true,
+          "name": {
+            "id": "Membaca diagram, rata-rata dan modus",
+            "en": "Reading charts, mean and mode"
+          }
+        }
+      ]
+    },
+    {
+      "tier": 6,
+      "kelas": 6,
+      "fase": "C",
+      "topics": [
+        {
+          "id": "t6.frac_muldiv",
+          "element": "bilangan",
+          "generator": true,
+          "check": true,
+          "name": {
+            "id": "Perkalian dan pembagian pecahan",
+            "en": "Multiplying and dividing fractions"
+          }
+        },
+        {
+          "id": "t6.ratio",
+          "element": "aljabar",
+          "generator": true,
+          "check": true,
+          "name": { "id": "Rasio dan perbandingan", "en": "Ratio and proportion" }
+        },
+        {
+          "id": "t6.speed_scale",
+          "element": "pengukuran",
+          "generator": true,
+          "check": true,
+          "name": { "id": "Kecepatan dan skala", "en": "Speed and scale" }
+        },
+        {
+          "id": "t6.mixed_ops",
+          "element": "bilangan",
+          "generator": true,
+          "check": false,
+          "name": {
+            "id": "Operasi hitung campuran",
+            "en": "Mixed operations (order of operations)"
+          }
+        },
+        {
+          "id": "t6.volume",
+          "element": "pengukuran",
+          "generator": true,
+          "check": true,
+          "name": { "id": "Volume kubus dan balok", "en": "Volume of cubes and cuboids" }
+        },
+        {
+          "id": "t6.chance",
+          "element": "data",
+          "generator": false,
+          "check": true,
+          "name": {
+            "id": "Peluang: pasti, mungkin, tidak mungkin",
+            "en": "Chance: certain, possible, impossible"
+          }
+        }
+      ]
+    }
+  ]
+}

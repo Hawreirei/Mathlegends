@@ -35,7 +35,7 @@ A 1-lane MOBA where every last-hit on a minion triggers a math question. The ans
 - Question mix per rank: 70% on-level, 20% review from below, 10% stretch from above (Year 6 stretch uses the hardest Year 6 items).
 - **Bot difficulty follows rank.** There is no human opponent, so the bot is the matchmaking: Year 1 bot is gentle, Year 6 bot is strong. Values live in `src/data/bot.json`.
 - Minion type controls question type: Infantry = fluency (5s), Lancer = application (8s), Cannon = multi-step (12s, bigger reward).
-- Tier topic map (edit to your curriculum; Edexcel Primary and the Indonesian curriculum differ in order):
+- Tier topic map (summary; full map with topic ids in docs/CURRICULUM.md):
 
 Tier = Kelas (grade) in the Indonesian curriculum (Kurikulum Merdeka). Fase A = Kelas 1-2, Fase B = Kelas 3-4, Fase C = Kelas 5-6.
 
