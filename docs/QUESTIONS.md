@@ -176,3 +176,13 @@ engine = pick.engine;
 4. **Never runs dry:** if the bank has nothing fresh for a pick, the engine generates a new question for that Year and type with the #11 generators (`source: 'generated'`). In a realistic mix (mostly Infantry, some Lancers, few Cannons) 800 questions at Year 3 needed no generated questions; the worst case (200 Infantry-only questions) needed 12.
 
 Tests (`tests/questionEngine.test.ts`): no repeat within 30 in 2000 mixed draws and in the worst case for every Year and minion type (checked to fail when the window is shrunk); the 70/20/10 mix within 3% over 1000 draws at Years 2 to 5; band tiers correct; the same seed gives the same questions.
+
+## In the match (issue #27)
+
+- **Trigger:** only the player's own last hit on a minion (`lastHit` from `stepMatch`). Skill buttons, tapping the hero and the bot's last hits never ask a question.
+- **Held reward:** the last hit's gold and EXP are held and paid when the question ends, x the multiplier (`applyLastHitReward`): correct `reward.correct` with the streak bonus, wrong `reward.wrong`, timeout `reward.timeout`.
+- **One at a time:** at most one question shows and one waits. A further last hit, or a waiting question older than its own timer, is *skipped*: it pays the normal reward (x1), with no question and no penalty, and does not touch the streak (`src/systems/questionSession.ts`, tested).
+- **Timer:** `economy.json` `questionSeconds`: Infantry 5 s, Lancer 8 s, Cannon 12 s.
+- **Never pauses:** the match keeps running. The card is compact and sits low between the touch controls, and the camera eases the hero into the clear band above it while a question is showing.
+- **Card:** question text (shrunk to fit long word problems), countdown bar with seconds, four large answers in a 2 x 2 grid in shuffled order, keys 1 to 4 on desktop. Text follows the chosen language. A short "Benar! ×1,5" / "Correct! ×1.5", "Kurang tepat ×0,5" / "Not quite ×0.5" or "Waktu habis" / "Time's up" note follows each answer (full feedback and explanations: #29).
+- **Result screen:** "Correct answers: X of Y" now counts the real questions.

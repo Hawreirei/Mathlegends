@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import botJson from '../data/bot.json';
+import ranksJson from '../data/ranks.json';
 import economyJson from '../data/economy.json';
 import heroesJson from '../data/heroes.json';
 import mapJson from '../data/map.json';
@@ -9,12 +10,13 @@ import { damageNumber, goldPopup, HeroView, levelUpBurst, slash } from '../entit
 import { MinionView, shot } from '../entities/Minion';
 import { StructureView, towerShot } from '../entities/Structure';
 import { ATTACK_BUFFER_SEC } from '../systems/combat';
-import { loadBot, loadHeroes, loadMinions, loadStructures } from '../systems/data';
+import { loadBot, loadHeroes, loadMinions, loadRanks, loadStructures } from '../systems/data';
 import { validateEconomy, type EconomyConfig } from '../systems/economy';
 import { recordMatch, type MatchResult } from '../systems/gameState';
 import { directionFromKeys, type HeroState } from '../systems/hero';
 import { buildMap, cameraZoom, type MapConfig, type Point } from '../systems/map';
 import {
+  applyLastHitReward,
   createMatch,
   stepMatch,
   type MatchConfig,
@@ -22,11 +24,24 @@ import {
   type MatchState,
 } from '../systems/match';
 import type { MinionState } from '../systems/minions';
+import { loadQuestionBank } from '../systems/questionBank';
+import { createQuestionEngine } from '../systems/questionEngine';
+import {
+  answer,
+  createSession,
+  onLastHit,
+  tick,
+  type Resolution,
+  type Session,
+} from '../systems/questionSession';
 import type { Progress } from '../systems/progression';
 import { isTargetable, type StructureState } from '../systems/structures';
 import { hex, theme } from '../ui/theme';
 import { ATTACK_EVENT, ATTACK_RELEASE_EVENT, type MatchHudScene } from './MatchHudScene';
 import { getState, setState, tr } from './shared';
+
+/** Fired on game.events when a question ends: (resolution). The HUD shows the feedback. */
+export const QUESTION_RESOLVED_EVENT = 'ml-question-resolved';
 
 /** Fired on game.events when the player's hit kills a minion: (kind, minionId). The question overlay (#27) listens. */
 export const LAST_HIT_EVENT = 'ml-last-hit';
@@ -46,6 +61,8 @@ type Keys = Record<
  */
 export class MatchScene extends Phaser.Scene {
   cfg!: MatchConfig;
+  /** Questions of this match (#27); the HUD's QuestionOverlay draws session.active. */
+  session!: Session;
   /** The whole match state; exposed for browser tests. */
   state!: MatchState;
   player!: HeroView;
@@ -123,6 +140,13 @@ export class MatchScene extends Phaser.Scene {
     };
     this.dangerRingDistance = structures.dangerRingDistance;
     this.state = createMatch(this.cfg);
+    // The question bank is validated at load; the seed changes every match.
+    const engine = createQuestionEngine(
+      loadQuestionBank(),
+      loadRanks(ranksJson),
+      Date.now() % 2 ** 31,
+    );
+    this.session = createSession(engine, econ);
     this.minionViews = new Map();
     this.structureViews = new Map();
     this.ending = false;
@@ -182,6 +206,9 @@ export class MatchScene extends Phaser.Scene {
     const r = stepMatch(this.state, this.readInput(), dt, this.cfg);
     this.state = r.state;
     for (const e of r.events) this.show(e);
+    const t = tick(this.session, this.state.now);
+    this.session = t.session;
+    this.resolve(t.resolutions);
 
     const now = this.state.now;
     this.player.sync(this.state.player, now);
@@ -190,6 +217,31 @@ export class MatchScene extends Phaser.Scene {
     for (const s of this.state.structures)
       this.structureViews.get(s.id)?.sync(s, isTargetable(s, this.state.structures));
     this.drawDangerRing();
+    this.keepHeroInView();
+  }
+
+  private camOffsetY = 0;
+
+  /**
+   * While a question is showing, ease the camera so the hero sits in the clear band between the
+   * top panels and the question card; ease back afterwards (#27).
+   */
+  private keepHeroInView(): void {
+    const hud = this.scene.get('MatchHud') as MatchHudScene;
+    const l = hud.layoutInfo;
+    const cam = this.cameras.main;
+    let target = 0;
+    if (l && this.session?.active) {
+      // The hero is centred horizontally. On wide screens the panels sit at the sides, so only the
+      // top bar is above it; on narrow screens the panels span the middle too.
+      const cx = this.scale.width / 2;
+      const panelsClear = l.heroPanel.x + l.heroPanel.w < cx - 60 && l.minimap.x > cx + 60;
+      const bandTop = panelsClear ? l.topBar.h : l.heroPanel.y + l.heroPanel.h;
+      const bandMid = (bandTop + l.questionCard.y) / 2;
+      target = -(this.scale.height / 2 - bandMid) / cam.zoom;
+    }
+    this.camOffsetY += (target - this.camOffsetY) * 0.15;
+    cam.setFollowOffset(0, this.camOffsetY);
   }
 
   private readInput(): { move: Point; attack: boolean } {
@@ -245,9 +297,20 @@ export class MatchScene extends Phaser.Scene {
       case 'levelUp':
         if (e.heroId === playerId) levelUpBurst(this, this.state.player, tr(this, 'fx.levelUp'));
         return;
-      case 'lastHit':
+      case 'lastHit': {
         this.game.events.emit(LAST_HIT_EVENT, e.kind, e.minionId);
+        const tier = getState(this).profile.tier;
+        const r = onLastHit(
+          this.session,
+          e.kind,
+          { gold: e.gold, exp: e.exp, at: e.at },
+          this.state.now,
+          tier,
+        );
+        this.session = r.session;
+        this.resolve(r.resolutions);
         return;
+      }
       case 'winner':
         this.ending = true;
         this.attackHeld = false;
@@ -280,8 +343,11 @@ export class MatchScene extends Phaser.Scene {
     const zoom = cameraZoom(this.scale.width, map);
     cam.setZoom(zoom);
     const viewH = this.scale.height / zoom;
+    // Tall portrait views: centre the world, with room above and below so the camera can still
+    // shift to keep the hero visible over the question card (the grass extends that far).
+    const extra = 600;
     if (viewH > map.world.height)
-      cam.setBounds(0, (map.world.height - viewH) / 2, map.world.width, viewH);
+      cam.setBounds(0, (map.world.height - viewH) / 2 - extra, map.world.width, viewH + 2 * extra);
     else cam.setBounds(0, 0, map.world.width, map.world.height);
   }
 
@@ -313,10 +379,32 @@ export class MatchScene extends Phaser.Scene {
       this.structureViews.set(s.id, new StructureView(this, s));
   }
 
+  /** The player tapped answer slot `slot` on the question card. */
+  answerSlot(slot: number): void {
+    const r = answer(this.session, slot, this.state.now);
+    this.session = r.session;
+    this.resolve(r.resolutions);
+  }
+
+  /** Pays held last-hit rewards x the answer multiplier and tells the HUD. */
+  private resolve(list: Resolution[]): void {
+    for (const res of list) {
+      const paid = applyLastHitReward(this.state, res.reward, res.multiplier, this.cfg);
+      this.state = paid.state;
+      for (const e of paid.events) this.show(e);
+      this.game.events.emit(QUESTION_RESOLVED_EVENT, res);
+    }
+  }
+
   finish(outcome: MatchResult['outcome']): void {
     setState(
       this,
-      recordMatch(getState(this), { outcome, durationSec: this.now, answered: 0, correct: 0 }),
+      recordMatch(getState(this), {
+        outcome,
+        durationSec: this.now,
+        answered: this.session.asked,
+        correct: this.session.correct,
+      }),
     );
     this.scene.stop('MatchHud');
     this.scene.start('Result');

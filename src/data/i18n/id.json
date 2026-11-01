@@ -11,5 +11,8 @@
   "result.again": "Main lagi",
   "result.menu": "Menu",
   "fx.levelUp": "NAIK LEVEL!",
-  "hud.respawn": "Bangkit lagi dalam {n} detik"
+  "hud.respawn": "Bangkit lagi dalam {n} detik",
+  "q.correct": "Benar! ×{x}",
+  "q.wrong": "Kurang tepat ×{x}",
+  "q.timeout": "Waktu habis ×{x}"
 }

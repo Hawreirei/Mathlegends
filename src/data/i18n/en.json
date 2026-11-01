@@ -11,5 +11,8 @@
   "result.again": "Play again",
   "result.menu": "Menu",
   "fx.levelUp": "LEVEL UP!",
-  "hud.respawn": "Back in {n} seconds"
+  "hud.respawn": "Back in {n} seconds",
+  "q.correct": "Correct! ×{x}",
+  "q.wrong": "Not quite ×{x}",
+  "q.timeout": "Time's up ×{x}"
 }

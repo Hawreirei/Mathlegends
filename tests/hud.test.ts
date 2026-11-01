@@ -54,6 +54,7 @@ function shapes(l: HudLayout): [string, Shape][] {
     ['nexusRed', rect(l.nexusRed)],
     ['heroPanel', rect(l.heroPanel)],
     ['minimap', rect(l.minimap)],
+    ['questionCard', rect(l.questionCard)],
   ];
   if (l.touch) {
     out.push(['joystick', { kind: 'circle', c: l.touch.joystick, rad: l.touch.joystickRadius }]);
@@ -119,5 +120,20 @@ describe('mini-map', () => {
     const mid = worldToMinimap({ x: world.width / 2, y: world.height / 2 }, world, r);
     expect(mid.x).toBeCloseTo(250);
     expect(mid.y).toBeCloseTo(98);
+  });
+});
+
+describe('question card (#27)', () => {
+  it('is big enough for a 2 x 2 grid of thumb-sized answers on every screen', () => {
+    for (const [, sw, sh] of SCREENS) {
+      const { width: w, height: h } = logicalSize(sw, sh);
+      for (const touch of [true, false]) {
+        const c = computeHudLayout(w, h, noSafe, touch).questionCard;
+        // At least ~ 44 CSS px per answer button (Apple/Google touch-target guidance).
+        const cssPerGame = sw / w;
+        expect(((c.w - 3 * 16) / 2) * cssPerGame, `${sw}x${sh} width`).toBeGreaterThanOrEqual(120);
+        expect(c.h * cssPerGame, `${sw}x${sh} height`).toBeGreaterThanOrEqual(200);
+      }
+    }
   });
 });

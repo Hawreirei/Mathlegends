@@ -7,11 +7,14 @@ import { safeAreaInGame } from '../systems/touch';
 import { Button } from '../ui/Button';
 import { HeroPanel } from '../ui/HeroPanel';
 import { Minimap } from '../ui/Minimap';
+import { QuestionOverlay } from '../ui/QuestionOverlay';
 import { readSafeAreaCss } from '../ui/safeArea';
 import { TouchControls } from '../ui/TouchControls';
 import { bodyFont, displayFont, hex, theme } from '../ui/theme';
-import type { MatchScene } from './MatchScene';
-import { responsive, tr } from './shared';
+import { QUESTION_RESOLVED_EVENT, type MatchScene } from './MatchScene';
+import type { Resolution } from '../systems/questionSession';
+import { fmt } from '../systems/generators/core';
+import { getState, responsive, tr } from './shared';
 
 /** Fired on game.events when the player presses attack (touch button or Space) or a skill. */
 export const ATTACK_EVENT = 'ml-attack';
@@ -34,6 +37,8 @@ export class MatchHudScene extends Phaser.Scene {
   private respawnText?: Phaser.GameObjects.Text;
   private panel?: HeroPanel;
   private minimap?: Minimap;
+  private question?: QuestionOverlay;
+  private feedback?: Phaser.GameObjects.Text;
 
   constructor() {
     super('MatchHud');
@@ -47,6 +52,39 @@ export class MatchHudScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-SPACE', () => this.game.events.emit(ATTACK_EVENT));
     this.input.keyboard?.on('keyup-SPACE', () => this.game.events.emit(ATTACK_RELEASE_EVENT));
     responsive(this, () => this.layout());
+    const onResolved = (r: Resolution) => this.showFeedback(r);
+    this.game.events.on(QUESTION_RESOLVED_EVENT, onResolved);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () =>
+      this.game.events.off(QUESTION_RESOLVED_EVENT, onResolved),
+    );
+  }
+
+  /** Short "Correct! x1.5" / "Not quite x0.5" / "Time's up x0.5" note above the card (#27; more in #29). */
+  private showFeedback(r: Resolution): void {
+    const f = this.feedback;
+    const l = this.layoutInfo;
+    if (!f || !l || r.outcome === 'skipped') return;
+    const lang = getState(this).lang;
+    const key =
+      r.outcome === 'correct' ? 'q.correct' : r.outcome === 'wrong' ? 'q.wrong' : 'q.timeout';
+    const x = fmt(Math.round(r.multiplier * 100) / 100, lang);
+    const color = r.outcome === 'correct' ? theme.colors.correct : theme.colors.wrong;
+    this.tweens.killTweensOf(f);
+    f.setText(tr(this, key, { x }))
+      .setColor(theme.colors.white)
+      .setBackgroundColor(color)
+      .setPosition(l.questionCard.x + l.questionCard.w / 2, l.questionCard.y + l.questionCard.h / 2)
+      .setAlpha(1)
+      .setScale(1)
+      .setVisible(true);
+    this.tweens.add({
+      targets: f,
+      alpha: 0,
+      scale: 1.15,
+      delay: 700,
+      duration: 350,
+      onComplete: () => f.setVisible(false),
+    });
   }
 
   update(): void {
@@ -57,6 +95,7 @@ export class MatchHudScene extends Phaser.Scene {
     this.panel?.update(s.player, s.playerProgress);
     this.minimap?.update(s, m.cameras.main.worldView);
     this.drawNexusBars(s.structures);
+    this.question?.sync(m.session?.active ?? null, s.now, getState(this).lang);
     const p = s.player;
     const show = !p.alive && p.respawnAt !== null;
     this.respawnText?.setVisible(show);
@@ -142,6 +181,16 @@ export class MatchHudScene extends Phaser.Scene {
           : totalExpToLevel(econ, level + 1),
     }));
     this.minimap = new Minimap(this, l.minimap, m.cfg.map);
+
+    this.question = new QuestionOverlay(this, l.questionCard, (slot) =>
+      this.match.answerSlot(slot),
+    );
+    this.feedback = this.add
+      .text(0, 0, '', bodyFont(40, c.white, '800'))
+      .setOrigin(0.5)
+      .setPadding(24, 12, 24, 12)
+      .setDepth(200)
+      .setVisible(false);
 
     this.respawnText = this.add
       .text(l.respawn.x, l.respawn.y, '', bodyFont(40, c.white, '800'))

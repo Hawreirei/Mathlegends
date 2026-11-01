@@ -82,7 +82,18 @@ export type MatchEvent =
     }
   | { type: 'reward'; heroId: string; gold: number; exp: number; at: Point }
   | { type: 'levelUp'; heroId: string; level: number }
-  | { type: 'lastHit'; kind: MinionType; minionId: string }
+  | {
+      /**
+       * The player landed a last hit. Its gold and EXP are NOT paid yet: the question overlay
+       * (#27) asks a question and pays them through applyLastHitReward x the answer multiplier.
+       */
+      type: 'lastHit';
+      kind: MinionType;
+      minionId: string;
+      gold: number;
+      exp: number;
+      at: Point;
+    }
   | { type: 'winner'; team: Team };
 
 export function createMatch(cfg: MatchConfig): MatchState {
@@ -125,8 +136,14 @@ interface Work extends MatchState {
 /** Gold, EXP and level-ups for a death (rules in progression.ts). */
 function grantKill(w: Work, victim: Unit, killerId: string, cfg: MatchConfig): void {
   const v = victimOf(victim);
+  let held: { gold: number; exp: number } | null = null;
   for (const r of killRewards(v, killerId, [w.player, w.bot], cfg.econ)) {
     const isPlayer = r.heroId === w.player.id;
+    // The player's own last-hit reward waits for the question (#27).
+    if (isPlayer && r.source === 'lastHit') {
+      held = { gold: r.gold, exp: r.exp };
+      continue;
+    }
     let p = isPlayer ? w.playerProgress : w.botProgress;
     if (r.gold > 0) p = addGold(p, r.gold, r.source === 'shareExp' ? 'lastHit' : r.source);
     const x = addExp(p, r.exp, cfg.econ);
@@ -148,7 +165,14 @@ function grantKill(w: Work, victim: Unit, killerId: string, cfg: MatchConfig): v
   }
   if (killerId === w.player.id && v.kind === 'minion' && v.minionKind) {
     w.lastHits = { ...w.lastHits, [v.minionKind]: w.lastHits[v.minionKind] + 1 };
-    w.events.push({ type: 'lastHit', kind: v.minionKind, minionId: victim.id });
+    w.events.push({
+      type: 'lastHit',
+      kind: v.minionKind,
+      minionId: victim.id,
+      gold: held?.gold ?? 0,
+      exp: held?.exp ?? 0,
+      at: { x: v.x, y: v.y },
+    });
   }
 }
 
@@ -330,4 +354,29 @@ export function stepMatch(
 
   const { events, ...rest } = w;
   return { state: rest, events };
+}
+
+/**
+ * Pays a held last-hit reward x the answer multiplier (#27, #28): gold counted as 'lastHit'
+ * (math income), EXP with level-ups. Returns the new state and the reward/level-up events.
+ */
+export function applyLastHitReward(
+  state: MatchState,
+  base: { gold: number; exp: number; at: Point },
+  multiplier: number,
+  cfg: MatchConfig,
+): { state: MatchState; events: MatchEvent[] } {
+  const gold = base.gold * multiplier;
+  const exp = base.exp * multiplier;
+  const events: MatchEvent[] = [];
+  let p = addGold(state.playerProgress, gold, 'lastHit');
+  const x = addExp(p, exp, cfg.econ);
+  p = x.progress;
+  let player = state.player;
+  events.push({ type: 'reward', heroId: player.id, gold, exp, at: base.at });
+  if (x.levelsGained > 0) {
+    player = applyLevel(player, cfg.playerHero, p.level);
+    events.push({ type: 'levelUp', heroId: player.id, level: p.level });
+  }
+  return { state: { ...state, player, playerProgress: p }, events };
 }

@@ -33,6 +33,8 @@ export interface HudLayout {
   nexusRed: Rect;
   heroPanel: Rect;
   minimap: Rect;
+  /** The question card (#27): between the touch controls, below the panels, bottom-anchored. */
+  questionCard: Rect;
   /** Centre of the "respawning in N" message. */
   respawn: Point;
   /** Base font size for HUD text, in game pixels. */
@@ -89,6 +91,34 @@ export function computeHudLayout(w: number, h: number, safe: Insets, touch: bool
     };
   }
 
+  // Question card: below the panels, clear of the touch controls, at most 900 x 560.
+  const cardTop = panelY + heroPanel.h + 16;
+  let cardLeft = left;
+  let cardRight = right;
+  let cardBottom = h - safe.bottom - PAD;
+  if (touchLayout) {
+    const t = touchLayout;
+    const lowestTop = Math.min(
+      t.joystick.y - t.joystickRadius,
+      ...t.skills.map((p) => p.y - t.skillRadius),
+    );
+    if (portrait) cardBottom = lowestTop - PAD;
+    else {
+      cardLeft = t.joystick.x + t.joystickRadius + 2 * PAD;
+      cardRight = Math.min(...t.skills.map((p) => p.x - t.skillRadius)) - 2 * PAD;
+    }
+  }
+  // Compact and anchored to the bottom, so the lane above it stays visible: the camera moves
+  // the hero into that gap while a question is showing (MatchScene).
+  const cardW = Math.min(900, cardRight - cardLeft);
+  const cardH = Math.min(portrait ? 560 : 380, cardBottom - cardTop);
+  const questionCard = {
+    x: cardLeft + (cardRight - cardLeft - cardW) / 2,
+    y: cardBottom - cardH,
+    w: cardW,
+    h: cardH,
+  };
+
   return {
     topBar: { x: 0, y: 0, w, h: top + BAR_H },
     quit,
@@ -97,6 +127,7 @@ export function computeHudLayout(w: number, h: number, safe: Insets, touch: bool
     nexusRed,
     heroPanel,
     minimap,
+    questionCard,
     respawn: { x: w / 2, y: portrait ? h * 0.42 : h * 0.5 },
     fontSize: 26,
     touch: touchLayout,

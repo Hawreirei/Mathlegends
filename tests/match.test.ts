@@ -11,6 +11,7 @@ import { validateEconomy, type EconomyConfig } from '../src/systems/economy';
 import { buildMap, type MapConfig } from '../src/systems/map';
 import { spawnWave } from '../src/systems/minions';
 import {
+  applyLastHitReward,
   createMatch,
   stepMatch,
   type MatchConfig,
@@ -165,7 +166,7 @@ describe('a full headless match', () => {
     expect(backInLane).toBe(true);
   });
 
-  it('the player can still attack and last-hit through stepMatch', () => {
+  it('a player last hit is held until the question is answered, then paid x the multiplier', () => {
     let s = createMatch(cfg);
     const [m] = spawnWave(0, 'red', cfg.map, econ, cfg.minions, 't');
     s = {
@@ -174,9 +175,28 @@ describe('a full headless match', () => {
       minions: [{ ...m!, x: 2230, y: 700, hp: 10 }],
     };
     const r = stepMatch(s, { move: { x: 0, y: 0 }, attack: true }, DT, cfg);
-    expect(r.events.some((e) => e.type === 'lastHit')).toBe(true);
+    const hit = r.events.find((e) => e.type === 'lastHit');
+    expect(hit).toBeTruthy();
     expect(r.state.lastHits.infantry).toBe(1);
-    expect(r.state.playerProgress.goldBySource.lastHit).toBe(econ.lastHitGold.infantry);
+    // Not paid yet.
+    expect(r.state.playerProgress.goldBySource.lastHit).toBe(0);
+    expect(r.state.playerProgress.exp).toBe(0);
+    if (hit?.type !== 'lastHit') throw new Error('no last hit');
+    expect(hit.gold).toBe(econ.lastHitGold.infantry);
+    expect(hit.exp).toBe(econ.exp.minion.infantry);
+    // Paid on answer.
+    const paid = applyLastHitReward(r.state, hit, 1.5, cfg);
+    expect(paid.state.playerProgress.goldBySource.lastHit).toBe(econ.lastHitGold.infantry * 1.5);
+    expect(paid.state.playerProgress.exp).toBe(econ.exp.minion.infantry * 1.5);
+    expect(paid.events.some((e) => e.type === 'reward')).toBe(true);
+  });
+
+  it('a big last-hit reward can level the player up', () => {
+    const s = createMatch(cfg);
+    const paid = applyLastHitReward(s, { gold: 10, exp: 1000, at: { x: 0, y: 0 } }, 1, cfg);
+    expect(paid.state.playerProgress.level).toBeGreaterThan(1);
+    expect(paid.state.player.maxHp).toBeGreaterThan(s.player.maxHp);
+    expect(paid.events.some((e) => e.type === 'levelUp')).toBe(true);
   });
 
   it('declares the winner when a Nexus falls and then stops producing events', () => {
