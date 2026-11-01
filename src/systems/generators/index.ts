@@ -2,17 +2,17 @@
  * Bilingual procedural question generators (#11). Pure TypeScript, no Phaser.
  * Usage: generateQuestions(topic, type, count, seed) gives the same questions for the same seed.
  */
-import { createRng } from '../../utils/rng';
-import type { Question, QuestionType } from '../questions';
-import { build, type Family } from './core';
-import { TIER1 } from './tier1';
-import { TIER2 } from './tier2';
-import { TIER3 } from './tier3';
-import { TIER4 } from './tier4';
-import { TIER5 } from './tier5';
-import { TIER6 } from './tier6';
+import { createRng } from '../../utils/rng.ts';
+import type { Question, QuestionType } from '../questions.ts';
+import { build, type Family } from './core.ts';
+import { TIER1 } from './tier1.ts';
+import { TIER2 } from './tier2.ts';
+import { TIER3 } from './tier3.ts';
+import { TIER4 } from './tier4.ts';
+import { TIER5 } from './tier5.ts';
+import { TIER6 } from './tier6.ts';
 
-export type { Family } from './core';
+export type { Family } from './core.ts';
 
 export const FAMILIES: readonly Family[] = [
   ...TIER1,

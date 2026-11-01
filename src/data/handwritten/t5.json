@@ -1,0 +1,138 @@
+[
+  {
+    "id": "t5.angles.h001",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.angles",
+    "stem": {
+      "id": "Sudut yang besarnya tepat 90° disebut sudut apa?",
+      "en": "What is an angle of exactly 90° called?"
+    },
+    "choices": [
+      {
+        "id": "sudut lancip",
+        "en": "an acute angle"
+      },
+      {
+        "id": "sudut siku-siku",
+        "en": "a right angle"
+      },
+      {
+        "id": "sudut tumpul",
+        "en": "an obtuse angle"
+      },
+      {
+        "id": "sudut lurus",
+        "en": "a straight angle"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Sudut 90° disebut sudut siku-siku, seperti sudut pojok buku.",
+      "en": "A 90° angle is a right angle, like the corner of a book."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.angles.h002",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.angles",
+    "stem": {
+      "id": "Sudut 120° termasuk jenis sudut apa?",
+      "en": "What kind of angle is 120°?"
+    },
+    "choices": [
+      {
+        "id": "lancip",
+        "en": "acute"
+      },
+      {
+        "id": "siku-siku",
+        "en": "right"
+      },
+      {
+        "id": "tumpul",
+        "en": "obtuse"
+      },
+      {
+        "id": "lurus",
+        "en": "straight"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Sudut tumpul lebih besar dari 90° tetapi kurang dari 180°. 120° termasuk sudut tumpul.",
+      "en": "An obtuse angle is more than 90° but less than 180°. 120° is obtuse."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.angles.h003",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.angles",
+    "stem": {
+      "id": "Jam menunjukkan pukul 3 tepat. Berapa derajat sudut terkecil antara jarum pendek dan jarum panjang?",
+      "en": "A clock shows exactly 3 o'clock. What is the smaller angle between the hour hand and the minute hand, in degrees?"
+    },
+    "choices": [90, 3, 180, 45],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Satu putaran 360° dibagi 12 angka, jadi setiap angka 30°. Dari 12 ke 3 ada 3 × 30° = 90°.",
+      "en": "A full turn of 360° is split into 12 numbers, so each number is 30°. From 12 to 3 is 3 × 30° = 90°."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.angles.h004",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.angles",
+    "stem": {
+      "id": "Dua sudut dalam sebuah segitiga besarnya 50° dan 60°. Berapa derajat sudut ketiga?",
+      "en": "Two angles in a triangle are 50° and 60°. What is the third angle in degrees?"
+    },
+    "choices": [110, 70, 250, 90],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlah sudut segitiga 180°. 50° + 60° = 110°, jadi sudut ketiga 180° - 110° = 70°.",
+      "en": "The angles in a triangle add up to 180°. 50° + 60° = 110°, so the third angle is 180° - 110° = 70°."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.data_mean.h001",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Rata-rata nilai 4 ulangan Sari adalah 80. Nilai 3 ulangan pertama 75, 80, dan 85. Berapa nilai ulangan keempat?",
+      "en": "Sari's mean score on 4 tests is 80. The first 3 scores are 75, 80 and 85. What is the 4th score?"
+    },
+    "choices": [85, 240, 80, 75],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Jumlah 4 nilai = 4 × 80 = 320. Jumlah 3 nilai = 75 + 80 + 85 = 240. Nilai keempat = 320 - 240 = 80.",
+      "en": "Total of 4 scores = 4 × 80 = 320. Total of 3 scores = 75 + 80 + 85 = 240. The 4th score = 320 - 240 = 80."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.frac_addsub.h001",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.frac_addsub",
+    "stem": {
+      "id": "Ibu membeli 3/4 kg gula. Ibu memakai 1/2 kg untuk membuat kue. Berapa kg gula yang tersisa?",
+      "en": "Mum buys 3/4 kg of sugar and uses 1/2 kg to make a cake. How many kg of sugar are left?"
+    },
+    "choices": ["1/2", "5/4", "1/4", "2/2"],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Samakan penyebut: 1/2 = 2/4. Lalu 3/4 - 2/4 = 1/4 kg.",
+      "en": "Make the denominators the same: 1/2 = 2/4. Then 3/4 - 2/4 = 1/4 kg."
+    },
+    "source": "handwritten"
+  }
+]

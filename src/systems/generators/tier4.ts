@@ -1,4 +1,4 @@
-import { fmt, gcd, int, L, pick, T, type Family, type Lang, type Rng, type Spec } from './core';
+import { fmt, gcd, int, L, pick, T, type Family, type Lang, type Rng, type Spec } from './core.ts';
 
 const PLACES: Record<number, { id: string; en: string }> = {
   10: L('puluhan', 'ten'),
@@ -262,6 +262,29 @@ export const perimArea: Family = {
       };
     },
   },
+};
+
+// Multiply then share (#12).
+multidigit.makers.multistep = (rng: Rng): Spec<number> => {
+  const c = int(rng, 2, 6);
+  const a = c * int(rng, 3, 8);
+  const b = int(rng, 3, 9);
+  const ans = (a * b) / c;
+  return {
+    stem: T((l) =>
+      l === 'id'
+        ? `Bu Guru membeli ${b} bungkus permen. Setiap bungkus berisi ${a} permen. Semua permen dibagi sama rata kepada ${c} kelompok. Berapa permen yang didapat setiap kelompok?`
+        : `The teacher buys ${b} packs of sweets with ${a} sweets in each pack. All the sweets are shared equally between ${c} groups. How many sweets does each group get?`,
+    ),
+    answer: ans,
+    distractors: [a * b, a / c, a * b - c],
+    valid: (v) => Number.isInteger(v) && (v as number) > 0,
+    explanation: T((l) =>
+      l === 'id'
+        ? `Semua permen: ${b} × ${a} = ${a * b}. Dibagi ${c} kelompok: ${a * b} ÷ ${c} = ${ans}.`
+        : `All the sweets: ${b} × ${a} = ${a * b}. Shared between ${c} groups: ${a * b} ÷ ${c} = ${ans}.`,
+    ),
+  };
 };
 
 export const TIER4 = [place10000, multidigit, equivFractions, decimalsIntro, perimArea];

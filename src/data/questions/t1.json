@@ -4,15 +4,479 @@
     "tier": 1,
     "type": "fluency",
     "topic": "t1.addsub20",
-    "stem": { "id": "Berapa 8 + 5?", "en": "What is 8 + 5?" },
-    "choices": [13, 12, 14, 3],
+    "stem": {
+      "id": "Berapa 8 + 5?",
+      "en": "What is 8 + 5?"
+    },
+    "choices": [
+      13,
+      12,
+      14,
+      3
+    ],
     "answerIndex": 0,
     "explanation": {
       "id": "8 + 5 = 13. Mulai dari 8, hitung maju 5 kali: 9, 10, 11, 12, 13.",
       "en": "8 + 5 = 13. Start at 8 and count on 5: 9, 10, 11, 12, 13."
     },
-    "tags": ["make-ten"],
+    "tags": [
+      "make-ten"
+    ],
     "source": "handwritten"
+  },
+  {
+    "id": "t1.shapes.h001",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.shapes",
+    "stem": {
+      "id": "Bangun datar yang memiliki 3 sisi disebut apa?",
+      "en": "What is a flat shape with 3 sides called?"
+    },
+    "choices": [
+      {
+        "id": "persegi",
+        "en": "square"
+      },
+      {
+        "id": "segitiga",
+        "en": "triangle"
+      },
+      {
+        "id": "lingkaran",
+        "en": "circle"
+      },
+      {
+        "id": "persegi panjang",
+        "en": "rectangle"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Segitiga memiliki 3 sisi dan 3 sudut.",
+      "en": "A triangle has 3 sides and 3 corners."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.shapes.h002",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.shapes",
+    "stem": {
+      "id": "Benda mana yang bentuknya seperti bola?",
+      "en": "Which object is shaped like a ball?"
+    },
+    "choices": [
+      {
+        "id": "kotak susu",
+        "en": "a milk carton"
+      },
+      {
+        "id": "buku",
+        "en": "a book"
+      },
+      {
+        "id": "jeruk",
+        "en": "an orange"
+      },
+      {
+        "id": "kaleng",
+        "en": "a tin can"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Jeruk bulat seperti bola. Buku dan kotak susu berbentuk balok, kaleng berbentuk tabung.",
+      "en": "An orange is round like a ball. A book and a milk carton are box shapes, and a tin can is a cylinder."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.compare_measure.h001",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.compare_measure",
+    "stem": {
+      "id": "Hewan mana yang paling berat?",
+      "en": "Which animal is the heaviest?"
+    },
+    "choices": [
+      {
+        "id": "kucing",
+        "en": "a cat"
+      },
+      {
+        "id": "gajah",
+        "en": "an elephant"
+      },
+      {
+        "id": "ayam",
+        "en": "a chicken"
+      },
+      {
+        "id": "semut",
+        "en": "an ant"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Gajah jauh lebih besar dan lebih berat daripada kucing, ayam, dan semut.",
+      "en": "An elephant is much bigger and heavier than a cat, a chicken or an ant."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.count20.g1tjyu7t",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.count20",
+    "stem": {
+      "id": "Bilangan berapa yang tepat sesudah 6?",
+      "en": "Which number comes just after 6?"
+    },
+    "choices": [
+      5,
+      7,
+      8,
+      6
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Sesudah 6 adalah 7, karena 6 + 1 = 7.",
+      "en": "After 6 comes 7, because 6 + 1 = 7."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g3q0nop",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Berapa 5 + 5?",
+      "en": "What is 5 + 5?"
+    },
+    "choices": [
+      9,
+      10,
+      11,
+      0
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Mulai dari 5, hitung maju 5: 5 + 5 = 10.",
+      "en": "Start at 5 and count on 5: 5 + 5 = 10."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.pattern.g14ggex6",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.pattern",
+    "stem": {
+      "id": "27, 24, 21, 18, ... Bilangan berikutnya adalah?",
+      "en": "27, 24, 21, 18, ... What number comes next?"
+    },
+    "choices": [
+      12,
+      16,
+      15,
+      14
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Setiap langkah berkurang 3. Jadi 18 - 3 = 15.",
+      "en": "Each step takes away 3. So 18 - 3 = 15."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.count20.g1jcqdst",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.count20",
+    "stem": {
+      "id": "Bilangan berapa yang tepat sesudah 19?",
+      "en": "Which number comes just after 19?"
+    },
+    "choices": [
+      18,
+      21,
+      19,
+      20
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Sesudah 19 adalah 20, karena 19 + 1 = 20.",
+      "en": "After 19 comes 20, because 19 + 1 = 20."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g11gllgw",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Berapa 2 + 3?",
+      "en": "What is 2 + 3?"
+    },
+    "choices": [
+      6,
+      1,
+      4,
+      5
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Mulai dari 2, hitung maju 3: 2 + 3 = 5.",
+      "en": "Start at 2 and count on 3: 2 + 3 = 5."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.pattern.gyof1h1",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.pattern",
+    "stem": {
+      "id": "6, 11, 16, 21, ... Bilangan berikutnya adalah?",
+      "en": "6, 11, 16, 21, ... What number comes next?"
+    },
+    "choices": [
+      26,
+      25,
+      27,
+      31
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Setiap langkah bertambah 5. Jadi 21 + 5 = 26.",
+      "en": "Each step adds 5. So 21 + 5 = 26."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.count20.g1ra5vp8",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.count20",
+    "stem": {
+      "id": "Bilangan berapa yang tepat sebelum 15?",
+      "en": "Which number comes just before 15?"
+    },
+    "choices": [
+      14,
+      16,
+      15,
+      13
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Sebelum 15 adalah 14, karena 15 - 1 = 14.",
+      "en": "Before 15 comes 14, because 15 - 1 = 14."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.gi6fdy5",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Berapa 5 + 10?",
+      "en": "What is 5 + 10?"
+    },
+    "choices": [
+      16,
+      15,
+      5,
+      14
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Mulai dari 5, hitung maju 10: 5 + 10 = 15.",
+      "en": "Start at 5 and count on 10: 5 + 10 = 15."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.pattern.gzgj7od",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.pattern",
+    "stem": {
+      "id": "18, 17, 16, 15, ... Bilangan berikutnya adalah?",
+      "en": "18, 17, 16, 15, ... What number comes next?"
+    },
+    "choices": [
+      16,
+      15,
+      13,
+      14
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Setiap langkah berkurang 1. Jadi 15 - 1 = 14.",
+      "en": "Each step takes away 1. So 15 - 1 = 14."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.count20.grrzkig",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.count20",
+    "stem": {
+      "id": "Bilangan berapa yang tepat sebelum 11?",
+      "en": "Which number comes just before 11?"
+    },
+    "choices": [
+      12,
+      10,
+      9,
+      11
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Sebelum 11 adalah 10, karena 11 - 1 = 10.",
+      "en": "Before 11 comes 10, because 11 - 1 = 10."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.gnl6m2o",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Berapa 8 + 9?",
+      "en": "What is 8 + 9?"
+    },
+    "choices": [
+      16,
+      1,
+      17,
+      18
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Mulai dari 8, hitung maju 9: 8 + 9 = 17.",
+      "en": "Start at 8 and count on 9: 8 + 9 = 17."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.pattern.g16137ce",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.pattern",
+    "stem": {
+      "id": "9, 11, 13, 15, ... Bilangan berikutnya adalah?",
+      "en": "9, 11, 13, 15, ... What number comes next?"
+    },
+    "choices": [
+      19,
+      18,
+      16,
+      17
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Setiap langkah bertambah 2. Jadi 15 + 2 = 17.",
+      "en": "Each step adds 2. So 15 + 2 = 17."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.count20.g18l0yxc",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.count20",
+    "stem": {
+      "id": "Bilangan mana yang paling besar: 4, 5, 13 atau 1?",
+      "en": "Which number is the largest: 4, 5, 13 or 1?"
+    },
+    "choices": [
+      13,
+      4,
+      5,
+      1
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "13 paling besar karena letaknya paling jauh pada garis bilangan.",
+      "en": "13 is the largest because it is furthest along the number line."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.gq6kypa",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Berapa 10 + 6?",
+      "en": "What is 10 + 6?"
+    },
+    "choices": [
+      16,
+      4,
+      15,
+      17
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Mulai dari 10, hitung maju 6: 10 + 6 = 16.",
+      "en": "Start at 10 and count on 6: 10 + 6 = 16."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.pattern.g1j4xtyn",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.pattern",
+    "stem": {
+      "id": "22, 17, 12, 7, ... Bilangan berikutnya adalah?",
+      "en": "22, 17, 12, 7, ... What number comes next?"
+    },
+    "choices": [
+      1,
+      3,
+      4,
+      2
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Setiap langkah berkurang 5. Jadi 7 - 5 = 2.",
+      "en": "Each step takes away 5. So 7 - 5 = 2."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.count20.g1v3gwgs",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.count20",
+    "stem": {
+      "id": "Bilangan mana yang paling besar: 10, 15, 12 atau 6?",
+      "en": "Which number is the largest: 10, 15, 12 or 6?"
+    },
+    "choices": [
+      15,
+      12,
+      10,
+      6
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "15 paling besar karena letaknya paling jauh pada garis bilangan.",
+      "en": "15 is the largest because it is furthest along the number line."
+    },
+    "source": "generated"
   },
   {
     "id": "t1.addsub20.h002",
@@ -23,13 +487,326 @@
       "id": "Dina punya 12 kelereng. Ia memberi 4 kelereng kepada Budi. Berapa kelereng Dina sekarang?",
       "en": "Dina has 12 marbles. She gives 4 marbles to Budi. How many marbles does Dina have now?"
     },
-    "choices": [16, 8, 7, 9],
+    "choices": [
+      16,
+      8,
+      7,
+      9
+    ],
     "answerIndex": 1,
     "explanation": {
       "id": "Memberi berarti berkurang: 12 - 4 = 8.",
       "en": "Giving away means taking away: 12 - 4 = 8."
     },
     "source": "handwritten"
+  },
+  {
+    "id": "t1.shapes.h003",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.shapes",
+    "stem": {
+      "id": "Ani menggambar 2 segitiga dan 1 persegi. Berapa jumlah semua sisinya?",
+      "en": "Ani draws 2 triangles and 1 square. How many sides are there altogether?"
+    },
+    "choices": [
+      10,
+      9,
+      7,
+      12
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Segitiga punya 3 sisi, persegi punya 4 sisi: 3 + 3 + 4 = 10.",
+      "en": "A triangle has 3 sides and a square has 4: 3 + 3 + 4 = 10."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.compare_measure.h002",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.compare_measure",
+    "stem": {
+      "id": "Panjang meja 8 jengkal. Panjang papan tulis 15 jengkal. Berapa jengkal papan tulis lebih panjang daripada meja?",
+      "en": "A table is 8 hand spans long. A whiteboard is 15 hand spans long. How many hand spans longer is the whiteboard?"
+    },
+    "choices": [
+      23,
+      8,
+      7,
+      6
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Selisihnya dicari dengan mengurangi: 15 - 8 = 7 jengkal.",
+      "en": "Find the difference by subtracting: 15 - 8 = 7 hand spans."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.addsub20.g4in5ge",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Intan punya 7 pensil. Gita memberi Intan 10 pensil lagi. Berapa pensil Intan sekarang?",
+      "en": "Intan has 7 pencils. Gita gives Intan 10 more pencils. How many pencils does Intan have now?"
+    },
+    "choices": [
+      3,
+      18,
+      16,
+      17
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Mendapat lagi berarti tambah: 7 + 10 = 17.",
+      "en": "Getting more means add: 7 + 10 = 17."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.gp5nbhm",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Putri punya 19 apel. Putri memberi 14 apel kepada Joko. Berapa apel Putri sekarang?",
+      "en": "Putri has 19 apples. Putri gives 14 apples to Joko. How many apples does Putri have now?"
+    },
+    "choices": [
+      6,
+      33,
+      5,
+      4
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Memberi berarti berkurang: 19 - 14 = 5.",
+      "en": "Giving away means take away: 19 - 14 = 5."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g16jqbbv",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Putri punya 4 permen. Yusuf memberi Putri 16 permen lagi. Berapa permen Putri sekarang?",
+      "en": "Putri has 4 sweets. Yusuf gives Putri 16 more sweets. How many sweets does Putri have now?"
+    },
+    "choices": [
+      12,
+      19,
+      21,
+      20
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Mendapat lagi berarti tambah: 4 + 16 = 20.",
+      "en": "Getting more means add: 4 + 16 = 20."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g1kk36ov",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Putri punya 8 apel. Wati memberi Putri 8 apel lagi. Berapa apel Putri sekarang?",
+      "en": "Putri has 8 apples. Wati gives Putri 8 more apples. How many apples does Putri have now?"
+    },
+    "choices": [
+      16,
+      17,
+      0,
+      15
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Mendapat lagi berarti tambah: 8 + 8 = 16.",
+      "en": "Getting more means add: 8 + 8 = 16."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.gwl64ds",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Sari punya 13 apel. Sari memberi 3 apel kepada Tono. Berapa apel Sari sekarang?",
+      "en": "Sari has 13 apples. Sari gives 3 apples to Tono. How many apples does Sari have now?"
+    },
+    "choices": [
+      9,
+      16,
+      10,
+      11
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Memberi berarti berkurang: 13 - 3 = 10.",
+      "en": "Giving away means take away: 13 - 3 = 10."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.gjju5vd",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Kartika punya 11 permen. Kartika memberi 8 permen kepada Ani. Berapa permen Kartika sekarang?",
+      "en": "Kartika has 11 sweets. Kartika gives 8 sweets to Ani. How many sweets does Kartika have now?"
+    },
+    "choices": [
+      3,
+      2,
+      4,
+      19
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Memberi berarti berkurang: 11 - 8 = 3.",
+      "en": "Giving away means take away: 11 - 8 = 3."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g1b3d3mc",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Hadi punya 9 permen. Fajar memberi Hadi 9 permen lagi. Berapa permen Hadi sekarang?",
+      "en": "Hadi has 9 sweets. Fajar gives Hadi 9 more sweets. How many sweets does Hadi have now?"
+    },
+    "choices": [
+      18,
+      0,
+      17,
+      19
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Mendapat lagi berarti tambah: 9 + 9 = 18.",
+      "en": "Getting more means add: 9 + 9 = 18."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g4jctd2",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Joko punya 7 kelereng. Gita memberi Joko 6 kelereng lagi. Berapa kelereng Joko sekarang?",
+      "en": "Joko has 7 marbles. Gita gives Joko 6 more marbles. How many marbles does Joko have now?"
+    },
+    "choices": [
+      13,
+      1,
+      12,
+      14
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Mendapat lagi berarti tambah: 7 + 6 = 13.",
+      "en": "Getting more means add: 7 + 6 = 13."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g1uaq3r9",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Dedi punya 14 stiker. Dedi memberi 12 stiker kepada Yusuf. Berapa stiker Dedi sekarang?",
+      "en": "Dedi has 14 stickers. Dedi gives 12 stickers to Yusuf. How many stickers does Dedi have now?"
+    },
+    "choices": [
+      26,
+      3,
+      1,
+      2
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Memberi berarti berkurang: 14 - 12 = 2.",
+      "en": "Giving away means take away: 14 - 12 = 2."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g1s7i0kd",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Yusuf punya 15 permen. Yusuf memberi 6 permen kepada Gita. Berapa permen Yusuf sekarang?",
+      "en": "Yusuf has 15 sweets. Yusuf gives 6 sweets to Gita. How many sweets does Yusuf have now?"
+    },
+    "choices": [
+      21,
+      9,
+      8,
+      10
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Memberi berarti berkurang: 15 - 6 = 9.",
+      "en": "Giving away means take away: 15 - 6 = 9."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.gngm08n",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Fajar punya 13 kue. Fajar memberi 11 kue kepada Eka. Berapa kue Fajar sekarang?",
+      "en": "Fajar has 13 cakes. Fajar gives 11 cakes to Eka. How many cakes does Fajar have now?"
+    },
+    "choices": [
+      2,
+      3,
+      1,
+      24
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Memberi berarti berkurang: 13 - 11 = 2.",
+      "en": "Giving away means take away: 13 - 11 = 2."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g89211l",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Gita punya 10 jeruk. Hadi memberi Gita 9 jeruk lagi. Berapa jeruk Gita sekarang?",
+      "en": "Gita has 10 oranges. Hadi gives Gita 9 more oranges. How many oranges does Gita have now?"
+    },
+    "choices": [
+      19,
+      18,
+      1,
+      20
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Mendapat lagi berarti tambah: 10 + 9 = 19.",
+      "en": "Getting more means add: 10 + 9 = 19."
+    },
+    "source": "generated"
   },
   {
     "id": "t1.addsub20.h003",
@@ -40,12 +817,337 @@
       "id": "Di dalam bus ada 9 penumpang. Di halte pertama 5 orang naik. Di halte kedua 3 orang turun. Berapa penumpang di bus sekarang?",
       "en": "A bus has 9 passengers. At the first stop 5 people get on. At the second stop 3 people get off. How many passengers are on the bus now?"
     },
-    "choices": [14, 17, 11, 7],
+    "choices": [
+      14,
+      17,
+      11,
+      7
+    ],
     "answerIndex": 2,
     "explanation": {
       "id": "Naik berarti tambah: 9 + 5 = 14. Turun berarti kurang: 14 - 3 = 11.",
       "en": "Getting on means add: 9 + 5 = 14. Getting off means subtract: 14 - 3 = 11."
     },
     "source": "handwritten"
+  },
+  {
+    "id": "t1.pattern.h001",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.pattern",
+    "stem": {
+      "id": "Pola warna: merah, biru, merah, biru, ... Warna apa yang ke-7?",
+      "en": "Colour pattern: red, blue, red, blue, ... What colour is the 7th one?"
+    },
+    "choices": [
+      {
+        "id": "biru",
+        "en": "blue"
+      },
+      {
+        "id": "merah",
+        "en": "red"
+      },
+      {
+        "id": "hijau",
+        "en": "green"
+      },
+      {
+        "id": "kuning",
+        "en": "yellow"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Polanya berulang setiap 2 warna. Urutan ke-1, 3, 5, 7 berwarna merah.",
+      "en": "The pattern repeats every 2 colours. Positions 1, 3, 5 and 7 are red."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.addsub20.gnj1f8q",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Nanda punya 6 stiker. Budi memberi Nanda 6 stiker lagi. Lalu Nanda memberikan 10 stiker kepada adiknya. Berapa stiker Nanda sekarang?",
+      "en": "Nanda has 6 stickers. Budi gives Nanda 6 more stickers. Then Nanda gives 10 stickers to a younger sibling. How many stickers does Nanda have now?"
+    },
+    "choices": [
+      2,
+      22,
+      3,
+      12
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Mendapat berarti tambah: 6 + 6 = 12. Memberikan berarti kurang: 12 - 10 = 2.",
+      "en": "Getting more means add: 6 + 6 = 12. Giving away means subtract: 12 - 10 = 2."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g1cionb5",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Di dalam bus ada 9 penumpang. Di halte pertama 10 orang naik. Di halte kedua 12 orang turun. Berapa penumpang di bus sekarang?",
+      "en": "A bus has 9 passengers. At the first stop 10 people get on. At the second stop 12 people get off. How many passengers are on the bus now?"
+    },
+    "choices": [
+      19,
+      7,
+      8,
+      31
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Naik berarti tambah: 9 + 10 = 19. Turun berarti kurang: 19 - 12 = 7.",
+      "en": "Getting on means add: 9 + 10 = 19. Getting off means subtract: 19 - 12 = 7."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g12l5c4z",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Di dalam bus ada 5 penumpang. Di halte pertama 9 orang naik. Di halte kedua 12 orang turun. Berapa penumpang di bus sekarang?",
+      "en": "A bus has 5 passengers. At the first stop 9 people get on. At the second stop 12 people get off. How many passengers are on the bus now?"
+    },
+    "choices": [
+      14,
+      26,
+      2,
+      3
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Naik berarti tambah: 5 + 9 = 14. Turun berarti kurang: 14 - 12 = 2.",
+      "en": "Getting on means add: 5 + 9 = 14. Getting off means subtract: 14 - 12 = 2."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.go62s5q",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Di dalam bus ada 6 penumpang. Di halte pertama 12 orang naik. Di halte kedua 1 orang turun. Berapa penumpang di bus sekarang?",
+      "en": "A bus has 6 passengers. At the first stop 12 people get on. At the second stop 1 people get off. How many passengers are on the bus now?"
+    },
+    "choices": [
+      17,
+      16,
+      19,
+      18
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Naik berarti tambah: 6 + 12 = 18. Turun berarti kurang: 18 - 1 = 17.",
+      "en": "Getting on means add: 6 + 12 = 18. Getting off means subtract: 18 - 1 = 17."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g2ufzad",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Di dalam bus ada 6 penumpang. Di halte pertama 5 orang naik. Di halte kedua 2 orang turun. Berapa penumpang di bus sekarang?",
+      "en": "A bus has 6 passengers. At the first stop 5 people get on. At the second stop 2 people get off. How many passengers are on the bus now?"
+    },
+    "choices": [
+      9,
+      10,
+      11,
+      13
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Naik berarti tambah: 6 + 5 = 11. Turun berarti kurang: 11 - 2 = 9.",
+      "en": "Getting on means add: 6 + 5 = 11. Getting off means subtract: 11 - 2 = 9."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g68oqfs",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Di dalam bus ada 7 penumpang. Di halte pertama 12 orang naik. Di halte kedua 15 orang turun. Berapa penumpang di bus sekarang?",
+      "en": "A bus has 7 passengers. At the first stop 12 people get on. At the second stop 15 people get off. How many passengers are on the bus now?"
+    },
+    "choices": [
+      19,
+      5,
+      34,
+      4
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Naik berarti tambah: 7 + 12 = 19. Turun berarti kurang: 19 - 15 = 4.",
+      "en": "Getting on means add: 7 + 12 = 19. Getting off means subtract: 19 - 15 = 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g14lzlkq",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Citra punya 10 permen. Kartika memberi Citra 4 permen lagi. Lalu Citra memberikan 10 permen kepada adiknya. Berapa permen Citra sekarang?",
+      "en": "Citra has 10 sweets. Kartika gives Citra 4 more sweets. Then Citra gives 10 sweets to a younger sibling. How many sweets does Citra have now?"
+    },
+    "choices": [
+      5,
+      4,
+      24,
+      14
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Mendapat berarti tambah: 10 + 4 = 14. Memberikan berarti kurang: 14 - 10 = 4.",
+      "en": "Getting more means add: 10 + 4 = 14. Giving away means subtract: 14 - 10 = 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g1a1tfg",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Di dalam bus ada 6 penumpang. Di halte pertama 8 orang naik. Di halte kedua 4 orang turun. Berapa penumpang di bus sekarang?",
+      "en": "A bus has 6 passengers. At the first stop 8 people get on. At the second stop 4 people get off. How many passengers are on the bus now?"
+    },
+    "choices": [
+      11,
+      14,
+      10,
+      18
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Naik berarti tambah: 6 + 8 = 14. Turun berarti kurang: 14 - 4 = 10.",
+      "en": "Getting on means add: 6 + 8 = 14. Getting off means subtract: 14 - 4 = 10."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g1p612tu",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Eka punya 4 stiker. Intan memberi Eka 13 stiker lagi. Lalu Eka memberikan 12 stiker kepada adiknya. Berapa stiker Eka sekarang?",
+      "en": "Eka has 4 stickers. Intan gives Eka 13 more stickers. Then Eka gives 12 stickers to a younger sibling. How many stickers does Eka have now?"
+    },
+    "choices": [
+      6,
+      17,
+      29,
+      5
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Mendapat berarti tambah: 4 + 13 = 17. Memberikan berarti kurang: 17 - 12 = 5.",
+      "en": "Getting more means add: 4 + 13 = 17. Giving away means subtract: 17 - 12 = 5."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g1t8dmu3",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Intan punya 10 jeruk. Lukman memberi Intan 9 jeruk lagi. Lalu Intan memberikan 2 jeruk kepada adiknya. Berapa jeruk Intan sekarang?",
+      "en": "Intan has 10 oranges. Lukman gives Intan 9 more oranges. Then Intan gives 2 oranges to a younger sibling. How many oranges does Intan have now?"
+    },
+    "choices": [
+      21,
+      17,
+      18,
+      19
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Mendapat berarti tambah: 10 + 9 = 19. Memberikan berarti kurang: 19 - 2 = 17.",
+      "en": "Getting more means add: 10 + 9 = 19. Giving away means subtract: 19 - 2 = 17."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.gxpgi0f",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Putri punya 3 jeruk. Dedi memberi Putri 3 jeruk lagi. Lalu Putri memberikan 2 jeruk kepada adiknya. Berapa jeruk Putri sekarang?",
+      "en": "Putri has 3 oranges. Dedi gives Putri 3 more oranges. Then Putri gives 2 oranges to a younger sibling. How many oranges does Putri have now?"
+    },
+    "choices": [
+      4,
+      8,
+      6,
+      5
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Mendapat berarti tambah: 3 + 3 = 6. Memberikan berarti kurang: 6 - 2 = 4.",
+      "en": "Getting more means add: 3 + 3 = 6. Giving away means subtract: 6 - 2 = 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.g13oxif5",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Rina punya 4 pensil. Lukman memberi Rina 12 pensil lagi. Lalu Rina memberikan 12 pensil kepada adiknya. Berapa pensil Rina sekarang?",
+      "en": "Rina has 4 pencils. Lukman gives Rina 12 more pencils. Then Rina gives 12 pencils to a younger sibling. How many pencils does Rina have now?"
+    },
+    "choices": [
+      28,
+      4,
+      5,
+      16
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Mendapat berarti tambah: 4 + 12 = 16. Memberikan berarti kurang: 16 - 12 = 4.",
+      "en": "Getting more means add: 4 + 12 = 16. Giving away means subtract: 16 - 12 = 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t1.addsub20.gksll5f",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Di dalam bus ada 10 penumpang. Di halte pertama 4 orang naik. Di halte kedua 4 orang turun. Berapa penumpang di bus sekarang?",
+      "en": "A bus has 10 passengers. At the first stop 4 people get on. At the second stop 4 people get off. How many passengers are on the bus now?"
+    },
+    "choices": [
+      10,
+      11,
+      14,
+      18
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Naik berarti tambah: 10 + 4 = 14. Turun berarti kurang: 14 - 4 = 10.",
+      "en": "Getting on means add: 10 + 4 = 14. Getting off means subtract: 14 - 4 = 10."
+    },
+    "source": "generated"
   }
 ]

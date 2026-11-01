@@ -5,3 +5,5 @@ package-lock.json
 issues.json
 *.md
 docs/design-prototype
+src/data/questions
+docs/QUESTION-SPOT-CHECK.md

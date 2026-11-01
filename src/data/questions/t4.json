@@ -1,0 +1,1216 @@
+[
+  {
+    "id": "t4.polygons.h001",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.polygons",
+    "stem": {
+      "id": "Bangun datar dengan 6 sisi disebut apa?",
+      "en": "What is a flat shape with 6 sides called?"
+    },
+    "choices": [
+      {
+        "id": "segi lima",
+        "en": "pentagon"
+      },
+      {
+        "id": "segi enam",
+        "en": "hexagon"
+      },
+      {
+        "id": "segi delapan",
+        "en": "octagon"
+      },
+      {
+        "id": "segi empat",
+        "en": "quadrilateral"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Segi enam memiliki 6 sisi dan 6 sudut.",
+      "en": "A hexagon has 6 sides and 6 corners."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.polygons.h002",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.polygons",
+    "stem": {
+      "id": "Segi empat mana yang keempat sisinya sama panjang dan keempat sudutnya siku-siku?",
+      "en": "Which quadrilateral has 4 equal sides and 4 right angles?"
+    },
+    "choices": [
+      {
+        "id": "persegi panjang",
+        "en": "rectangle"
+      },
+      {
+        "id": "jajar genjang",
+        "en": "parallelogram"
+      },
+      {
+        "id": "trapesium",
+        "en": "trapezium"
+      },
+      {
+        "id": "persegi",
+        "en": "square"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Persegi memiliki 4 sisi sama panjang dan 4 sudut siku-siku. Persegi panjang juga bersudut siku-siku, tetapi sisinya tidak semua sama panjang.",
+      "en": "A square has 4 equal sides and 4 right angles. A rectangle also has right angles, but its sides are not all equal."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.place10000.g3gnbu2",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.place10000",
+    "stem": {
+      "id": "Bulatkan 7.073 ke ratusan terdekat.",
+      "en": "Round 7,073 to the nearest hundred."
+    },
+    "choices": [
+      {
+        "id": "7.070",
+        "en": "7,070"
+      },
+      {
+        "id": "7.100",
+        "en": "7,100"
+      },
+      {
+        "id": "7.000",
+        "en": "7,000"
+      },
+      {
+        "id": "7.300",
+        "en": "7,300"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Lihat angka di sebelah kanan tempat ratusan: 7. Karena 5 atau lebih, bulatkan ke atas, jadi 7.100.",
+      "en": "Look at the digit to the right of the hundreds place: 7. It is 5 or more, so round up, which gives 7,100."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g11dcppi",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Berapa 15 × 7?",
+      "en": "What is 15 × 7?"
+    },
+    "choices": [
+      75,
+      105,
+      90,
+      120
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pecah 15 menjadi 10 + 5: 10 × 7 = 70 dan 5 × 7 = 35. Jumlahnya 105.",
+      "en": "Split 15 into 10 + 5: 10 × 7 = 70 and 5 × 7 = 35. Together that is 105."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.equiv_fractions.gm2wdm9",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.equiv_fractions",
+    "stem": {
+      "id": "Lengkapi: 2/3 = .../9",
+      "en": "Complete: 2/3 = .../9"
+    },
+    "choices": [
+      7,
+      8,
+      6,
+      5
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Penyebut 3 dikali 3 menjadi 9, jadi pembilang juga dikali 3: 2 × 3 = 6.",
+      "en": "The denominator 3 was multiplied by 3 to make 9, so multiply the numerator by 3 too: 2 × 3 = 6."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.decimals_intro.grcmlvs",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.decimals_intro",
+    "stem": {
+      "id": "Tulis 11/100 dalam bentuk desimal.",
+      "en": "Write 11/100 as a decimal."
+    },
+    "choices": [
+      11,
+      {
+        "id": "1,1",
+        "en": "1.1"
+      },
+      {
+        "id": "0,11",
+        "en": "0.11"
+      },
+      {
+        "id": "0,011",
+        "en": "0.011"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "11/100 berarti 11 perseratusan, ditulis 0,11.",
+      "en": "11/100 means 11 hundredths, written 0.11."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.gi8yyl0",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Sebuah persegi panjang memiliki panjang 4 cm dan lebar 6 cm. Berapa luasnya (cm²)?",
+      "en": "A rectangle is 4 cm long and 6 cm wide. What is its area in cm²?"
+    },
+    "choices": [
+      14,
+      10,
+      20,
+      24
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Luas = panjang × lebar = 4 × 6 = 24 cm².",
+      "en": "Area = length × width = 4 × 6 = 24 cm²."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.place10000.g1eh13xd",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.place10000",
+    "stem": {
+      "id": "Bulatkan 6.154 ke ribuan terdekat.",
+      "en": "Round 6,154 to the nearest thousand."
+    },
+    "choices": [
+      {
+        "id": "6.000",
+        "en": "6,000"
+      },
+      {
+        "id": "6.150",
+        "en": "6,150"
+      },
+      {
+        "id": "6.200",
+        "en": "6,200"
+      },
+      {
+        "id": "7.000",
+        "en": "7,000"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Lihat angka di sebelah kanan tempat ribuan: 1. Karena kurang dari 5, bulatkan ke bawah, jadi 6.000.",
+      "en": "Look at the digit to the right of the thousands place: 1. It is less than 5, so round down, which gives 6,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g1rytnzv",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Berapa 92 × 5?",
+      "en": "What is 92 × 5?"
+    },
+    "choices": [
+      552,
+      470,
+      368,
+      460
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Pecah 92 menjadi 90 + 2: 90 × 5 = 450 dan 2 × 5 = 10. Jumlahnya 460.",
+      "en": "Split 92 into 90 + 2: 90 × 5 = 450 and 2 × 5 = 10. Together that is 460."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.equiv_fractions.gubu2bf",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.equiv_fractions",
+    "stem": {
+      "id": "Lengkapi: 1/3 = 4/...",
+      "en": "Complete: 1/3 = 4/..."
+    },
+    "choices": [
+      13,
+      12,
+      11,
+      6
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pembilang 1 dikali 4 menjadi 4, jadi penyebut juga dikali 4: 3 × 4 = 12.",
+      "en": "The numerator 1 was multiplied by 4 to make 4, so multiply the denominator by 4 too: 3 × 4 = 12."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.decimals_intro.gfovzo1",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.decimals_intro",
+    "stem": {
+      "id": "Tulis 3/10 dalam bentuk desimal.",
+      "en": "Write 3/10 as a decimal."
+    },
+    "choices": [
+      3,
+      {
+        "id": "0,03",
+        "en": "0.03"
+      },
+      {
+        "id": "0,4",
+        "en": "0.4"
+      },
+      {
+        "id": "0,3",
+        "en": "0.3"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "3/10 berarti 3 persepuluhan, ditulis 0,3.",
+      "en": "3/10 means 3 tenths, written 0.3."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.gznener",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Sebuah persegi panjang memiliki panjang 4 cm dan lebar 3 cm. Berapa luasnya (cm²)?",
+      "en": "A rectangle is 4 cm long and 3 cm wide. What is its area in cm²?"
+    },
+    "choices": [
+      12,
+      14,
+      7,
+      11
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Luas = panjang × lebar = 4 × 3 = 12 cm².",
+      "en": "Area = length × width = 4 × 3 = 12 cm²."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.place10000.g1d86stz",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.place10000",
+    "stem": {
+      "id": "Bulatkan 4.572 ke ribuan terdekat.",
+      "en": "Round 4,572 to the nearest thousand."
+    },
+    "choices": [
+      {
+        "id": "4.600",
+        "en": "4,600"
+      },
+      {
+        "id": "4.000",
+        "en": "4,000"
+      },
+      {
+        "id": "4.570",
+        "en": "4,570"
+      },
+      {
+        "id": "5.000",
+        "en": "5,000"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Lihat angka di sebelah kanan tempat ribuan: 5. Karena 5 atau lebih, bulatkan ke atas, jadi 5.000.",
+      "en": "Look at the digit to the right of the thousands place: 5. It is 5 or more, so round up, which gives 5,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.ggeumw6",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Berapa 89 × 4?",
+      "en": "What is 89 × 4?"
+    },
+    "choices": [
+      366,
+      356,
+      267,
+      445
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pecah 89 menjadi 80 + 9: 80 × 4 = 320 dan 9 × 4 = 36. Jumlahnya 356.",
+      "en": "Split 89 into 80 + 9: 80 × 4 = 320 and 9 × 4 = 36. Together that is 356."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.equiv_fractions.g1w6z3wo",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.equiv_fractions",
+    "stem": {
+      "id": "Lengkapi: 1/4 = .../20",
+      "en": "Complete: 1/4 = .../20"
+    },
+    "choices": [
+      6,
+      5,
+      17,
+      4
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Penyebut 4 dikali 5 menjadi 20, jadi pembilang juga dikali 5: 1 × 5 = 5.",
+      "en": "The denominator 4 was multiplied by 5 to make 20, so multiply the numerator by 5 too: 1 × 5 = 5."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.decimals_intro.g18x6wi1",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.decimals_intro",
+    "stem": {
+      "id": "Tulis 49/100 dalam bentuk desimal.",
+      "en": "Write 49/100 as a decimal."
+    },
+    "choices": [
+      {
+        "id": "0,049",
+        "en": "0.049"
+      },
+      {
+        "id": "4,9",
+        "en": "4.9"
+      },
+      {
+        "id": "0,49",
+        "en": "0.49"
+      },
+      49
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "49/100 berarti 49 perseratusan, ditulis 0,49.",
+      "en": "49/100 means 49 hundredths, written 0.49."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.g12mdtg0",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Sebuah persegi panjang memiliki panjang 11 cm dan lebar 6 cm. Berapa kelilingnya (cm)?",
+      "en": "A rectangle is 11 cm long and 6 cm wide. What is its perimeter in cm?"
+    },
+    "choices": [
+      28,
+      66,
+      17,
+      34
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Keliling = 2 × (panjang + lebar) = 2 × (11 + 6) = 34 cm.",
+      "en": "Perimeter = 2 × (length + width) = 2 × (11 + 6) = 34 cm."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.place10000.g9cfv6z",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.place10000",
+    "stem": {
+      "id": "Bulatkan 5.307 ke puluhan terdekat.",
+      "en": "Round 5,307 to the nearest ten."
+    },
+    "choices": [
+      {
+        "id": "5.310",
+        "en": "5,310"
+      },
+      {
+        "id": "5.000",
+        "en": "5,000"
+      },
+      {
+        "id": "5.300",
+        "en": "5,300"
+      },
+      {
+        "id": "5.330",
+        "en": "5,330"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Lihat angka di sebelah kanan tempat puluhan: 7. Karena 5 atau lebih, bulatkan ke atas, jadi 5.310.",
+      "en": "Look at the digit to the right of the tens place: 7. It is 5 or more, so round up, which gives 5,310."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g18k3llo",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Berapa 88 × 3?",
+      "en": "What is 88 × 3?"
+    },
+    "choices": [
+      264,
+      274,
+      176,
+      352
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Pecah 88 menjadi 80 + 8: 80 × 3 = 240 dan 8 × 3 = 24. Jumlahnya 264.",
+      "en": "Split 88 into 80 + 8: 80 × 3 = 240 and 8 × 3 = 24. Together that is 264."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.equiv_fractions.g18wi6qq",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.equiv_fractions",
+    "stem": {
+      "id": "Lengkapi: 1/3 = 3/...",
+      "en": "Complete: 1/3 = 3/..."
+    },
+    "choices": [
+      5,
+      8,
+      10,
+      9
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Pembilang 1 dikali 3 menjadi 3, jadi penyebut juga dikali 3: 3 × 3 = 9.",
+      "en": "The numerator 1 was multiplied by 3 to make 3, so multiply the denominator by 3 too: 3 × 3 = 9."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.polygons.h003",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.polygons",
+    "stem": {
+      "id": "Sebuah segi lima beraturan memiliki panjang sisi 7 cm. Berapa kelilingnya (cm)?",
+      "en": "A regular pentagon has sides 7 cm long. What is its perimeter in cm?"
+    },
+    "choices": [
+      35,
+      28,
+      42,
+      12
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Segi lima beraturan punya 5 sisi sama panjang: 5 × 7 = 35 cm.",
+      "en": "A regular pentagon has 5 equal sides: 5 × 7 = 35 cm."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.decimals_intro.h001",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.decimals_intro",
+    "stem": {
+      "id": "Pensil Gita panjangnya 12,5 cm dan pensil Hadi 12,8 cm. Berapa cm selisih panjangnya?",
+      "en": "Gita's pencil is 12.5 cm long and Hadi's pencil is 12.8 cm long. What is the difference in cm?"
+    },
+    "choices": [
+      3,
+      {
+        "id": "25,3",
+        "en": "25.3"
+      },
+      {
+        "id": "0,3",
+        "en": "0.3"
+      },
+      {
+        "id": "0,03",
+        "en": "0.03"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "12,8 - 12,5 = 0,3 cm. Kurangkan persepuluhannya: 8 - 5 = 3 persepuluhan.",
+      "en": "12.8 - 12.5 = 0.3 cm. Subtract the tenths: 8 - 5 = 3 tenths."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.equiv_fractions.h001",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.equiv_fractions",
+    "stem": {
+      "id": "Ani makan 2/8 roti. Budi makan 1/4 roti yang sama besar. Siapa yang makan lebih banyak?",
+      "en": "Ani eats 2/8 of a loaf. Budi eats 1/4 of a loaf the same size. Who eats more?"
+    },
+    "choices": [
+      {
+        "id": "sama banyak",
+        "en": "they eat the same amount"
+      },
+      "Ani",
+      "Budi",
+      {
+        "id": "tidak bisa ditentukan",
+        "en": "you cannot tell"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "2/8 = 1/4 karena 2 ÷ 2 = 1 dan 8 ÷ 2 = 4. Jadi mereka makan sama banyak.",
+      "en": "2/8 = 1/4 because 2 ÷ 2 = 1 and 8 ÷ 2 = 4. So they eat the same amount."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.multidigit.g2a83th",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Satu kardus berisi 34 buku. Berapa buku dalam 7 kardus?",
+      "en": "One carton holds 34 books. How many books are in 7 cartons?"
+    },
+    "choices": [
+      272,
+      239,
+      238,
+      204
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "7 kardus masing-masing 34 buku: 34 × 7 = 238.",
+      "en": "7 cartons of 34 books each: 34 × 7 = 238."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.gi8kln9",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Sebuah kebun berbentuk persegi panjang berukuran 6 m × 5 m. Kebun itu akan dipagari di sekelilingnya. Berapa meter pagar yang diperlukan?",
+      "en": "A rectangular garden is 6 m by 5 m. A fence will go all the way around it. How many metres of fence are needed?"
+    },
+    "choices": [
+      17,
+      30,
+      11,
+      22
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Pagar mengelilingi kebun, jadi hitung keliling: 2 × (6 + 5) = 22 m.",
+      "en": "The fence goes around the garden, so find the perimeter: 2 × (6 + 5) = 22 m."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g1dr6cit",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Satu kardus berisi 25 buku. Berapa buku dalam 9 kardus?",
+      "en": "One carton holds 25 books. How many books are in 9 cartons?"
+    },
+    "choices": [
+      200,
+      250,
+      225,
+      85
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "9 kardus masing-masing 25 buku: 25 × 9 = 225.",
+      "en": "9 cartons of 25 books each: 25 × 9 = 225."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.gdoqw9m",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Sebuah kebun berbentuk persegi panjang berukuran 11 m × 8 m. Kebun itu akan dipagari di sekelilingnya. Berapa meter pagar yang diperlukan?",
+      "en": "A rectangular garden is 11 m by 8 m. A fence will go all the way around it. How many metres of fence are needed?"
+    },
+    "choices": [
+      88,
+      38,
+      19,
+      30
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pagar mengelilingi kebun, jadi hitung keliling: 2 × (11 + 8) = 38 m.",
+      "en": "The fence goes around the garden, so find the perimeter: 2 × (11 + 8) = 38 m."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.gv23wub",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Satu kardus berisi 28 buku. Berapa buku dalam 8 kardus?",
+      "en": "One carton holds 28 books. How many books are in 8 cartons?"
+    },
+    "choices": [
+      64,
+      252,
+      224,
+      196
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "8 kardus masing-masing 28 buku: 28 × 8 = 224.",
+      "en": "8 cartons of 28 books each: 28 × 8 = 224."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.g1mkswlr",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Sebuah kebun berbentuk persegi panjang berukuran 17 m × 3 m. Kebun itu akan dipagari di sekelilingnya. Berapa meter pagar yang diperlukan?",
+      "en": "A rectangular garden is 17 m by 3 m. A fence will go all the way around it. How many metres of fence are needed?"
+    },
+    "choices": [
+      20,
+      40,
+      51,
+      37
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pagar mengelilingi kebun, jadi hitung keliling: 2 × (17 + 3) = 40 m.",
+      "en": "The fence goes around the garden, so find the perimeter: 2 × (17 + 3) = 40 m."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g1dzgfmo",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Satu kardus berisi 59 buku. Berapa buku dalam 3 kardus?",
+      "en": "One carton holds 59 books. How many books are in 3 cartons?"
+    },
+    "choices": [
+      236,
+      178,
+      177,
+      118
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "3 kardus masing-masing 59 buku: 59 × 3 = 177.",
+      "en": "3 cartons of 59 books each: 59 × 3 = 177."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.graa641",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Sebuah kebun berbentuk persegi panjang berukuran 7 m × 11 m. Kebun itu akan dipagari di sekelilingnya. Berapa meter pagar yang diperlukan?",
+      "en": "A rectangular garden is 7 m by 11 m. A fence will go all the way around it. How many metres of fence are needed?"
+    },
+    "choices": [
+      77,
+      18,
+      36,
+      25
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Pagar mengelilingi kebun, jadi hitung keliling: 2 × (7 + 11) = 36 m.",
+      "en": "The fence goes around the garden, so find the perimeter: 2 × (7 + 11) = 36 m."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.ggym655",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Satu kardus berisi 72 buku. Berapa buku dalam 9 kardus?",
+      "en": "One carton holds 72 books. How many books are in 9 cartons?"
+    },
+    "choices": [
+      649,
+      648,
+      720,
+      576
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "9 kardus masing-masing 72 buku: 72 × 9 = 648.",
+      "en": "9 cartons of 72 books each: 72 × 9 = 648."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.gjmb5a2",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Sebuah kebun berbentuk persegi panjang berukuran 14 m × 3 m. Kebun itu akan dipagari di sekelilingnya. Berapa meter pagar yang diperlukan?",
+      "en": "A rectangular garden is 14 m by 3 m. A fence will go all the way around it. How many metres of fence are needed?"
+    },
+    "choices": [
+      34,
+      17,
+      42,
+      31
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Pagar mengelilingi kebun, jadi hitung keliling: 2 × (14 + 3) = 34 m.",
+      "en": "The fence goes around the garden, so find the perimeter: 2 × (14 + 3) = 34 m."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.go61kaa",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Satu kardus berisi 98 buku. Berapa buku dalam 6 kardus?",
+      "en": "One carton holds 98 books. How many books are in 6 cartons?"
+    },
+    "choices": [
+      490,
+      589,
+      588,
+      686
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "6 kardus masing-masing 98 buku: 98 × 6 = 588.",
+      "en": "6 cartons of 98 books each: 98 × 6 = 588."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.g4k54v0",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Sebuah kebun berbentuk persegi panjang berukuran 14 m × 9 m. Kebun itu akan dipagari di sekelilingnya. Berapa meter pagar yang diperlukan?",
+      "en": "A rectangular garden is 14 m by 9 m. A fence will go all the way around it. How many metres of fence are needed?"
+    },
+    "choices": [
+      23,
+      46,
+      37,
+      126
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pagar mengelilingi kebun, jadi hitung keliling: 2 × (14 + 9) = 46 m.",
+      "en": "The fence goes around the garden, so find the perimeter: 2 × (14 + 9) = 46 m."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.h001",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Sekolah memesan 8 kotak buku. Setiap kotak berisi 24 buku. Semua buku dibagi sama rata ke 6 kelas. Berapa buku yang didapat setiap kelas?",
+      "en": "A school orders 8 boxes of books with 24 books in each box. The books are shared equally between 6 classes. How many books does each class get?"
+    },
+    "choices": [
+      192,
+      32,
+      4,
+      26
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Semua buku: 8 × 24 = 192. Dibagi 6 kelas: 192 ÷ 6 = 32.",
+      "en": "All the books: 8 × 24 = 192. Shared between 6 classes: 192 ÷ 6 = 32."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.multidigit.g14j09os",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Bu Guru membeli 6 bungkus permen. Setiap bungkus berisi 6 permen. Semua permen dibagi sama rata kepada 2 kelompok. Berapa permen yang didapat setiap kelompok?",
+      "en": "The teacher buys 6 packs of sweets with 6 sweets in each pack. All the sweets are shared equally between 2 groups. How many sweets does each group get?"
+    },
+    "choices": [
+      18,
+      34,
+      3,
+      36
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Semua permen: 6 × 6 = 36. Dibagi 2 kelompok: 36 ÷ 2 = 18.",
+      "en": "All the sweets: 6 × 6 = 36. Shared between 2 groups: 36 ÷ 2 = 18."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.gri2aqs",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Lantai sebuah kamar berukuran 2 m × 4 m. Setiap meter persegi memerlukan 4 ubin. Berapa ubin yang diperlukan untuk seluruh lantai?",
+      "en": "A room floor is 2 m by 4 m. Each square metre needs 4 tiles. How many tiles are needed for the whole floor?"
+    },
+    "choices": [
+      32,
+      8,
+      12,
+      48
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Luas lantai: 2 × 4 = 8 m². Ubin: 8 × 4 = 32.",
+      "en": "Floor area: 2 × 4 = 8 m². Tiles: 8 × 4 = 32."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g16lxm76",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Bu Guru membeli 4 bungkus permen. Setiap bungkus berisi 21 permen. Semua permen dibagi sama rata kepada 3 kelompok. Berapa permen yang didapat setiap kelompok?",
+      "en": "The teacher buys 4 packs of sweets with 21 sweets in each pack. All the sweets are shared equally between 3 groups. How many sweets does each group get?"
+    },
+    "choices": [
+      84,
+      28,
+      7,
+      81
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Semua permen: 4 × 21 = 84. Dibagi 3 kelompok: 84 ÷ 3 = 28.",
+      "en": "All the sweets: 4 × 21 = 84. Shared between 3 groups: 84 ÷ 3 = 28."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.g1c02i04",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Lantai sebuah kamar berukuran 3 m × 6 m. Setiap meter persegi memerlukan 3 ubin. Berapa ubin yang diperlukan untuk seluruh lantai?",
+      "en": "A room floor is 3 m by 6 m. Each square metre needs 3 tiles. How many tiles are needed for the whole floor?"
+    },
+    "choices": [
+      54,
+      18,
+      21,
+      55
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Luas lantai: 3 × 6 = 18 m². Ubin: 18 × 3 = 54.",
+      "en": "Floor area: 3 × 6 = 18 m². Tiles: 18 × 3 = 54."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g12tjhal",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Bu Guru membeli 4 bungkus permen. Setiap bungkus berisi 24 permen. Semua permen dibagi sama rata kepada 3 kelompok. Berapa permen yang didapat setiap kelompok?",
+      "en": "The teacher buys 4 packs of sweets with 24 sweets in each pack. All the sweets are shared equally between 3 groups. How many sweets does each group get?"
+    },
+    "choices": [
+      96,
+      93,
+      32,
+      8
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Semua permen: 4 × 24 = 96. Dibagi 3 kelompok: 96 ÷ 3 = 32.",
+      "en": "All the sweets: 4 × 24 = 96. Shared between 3 groups: 96 ÷ 3 = 32."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.gv0ij3t",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Lantai sebuah kamar berukuran 5 m × 6 m. Setiap meter persegi memerlukan 2 ubin. Berapa ubin yang diperlukan untuk seluruh lantai?",
+      "en": "A room floor is 5 m by 6 m. Each square metre needs 2 tiles. How many tiles are needed for the whole floor?"
+    },
+    "choices": [
+      60,
+      30,
+      32,
+      44
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Luas lantai: 5 × 6 = 30 m². Ubin: 30 × 2 = 60.",
+      "en": "Floor area: 5 × 6 = 30 m². Tiles: 30 × 2 = 60."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g1icle6u",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Bu Guru membeli 4 bungkus permen. Setiap bungkus berisi 30 permen. Semua permen dibagi sama rata kepada 5 kelompok. Berapa permen yang didapat setiap kelompok?",
+      "en": "The teacher buys 4 packs of sweets with 30 sweets in each pack. All the sweets are shared equally between 5 groups. How many sweets does each group get?"
+    },
+    "choices": [
+      6,
+      120,
+      115,
+      24
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Semua permen: 4 × 30 = 120. Dibagi 5 kelompok: 120 ÷ 5 = 24.",
+      "en": "All the sweets: 4 × 30 = 120. Shared between 5 groups: 120 ÷ 5 = 24."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.g10wyj0s",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Lantai sebuah kamar berukuran 4 m × 6 m. Setiap meter persegi memerlukan 4 ubin. Berapa ubin yang diperlukan untuk seluruh lantai?",
+      "en": "A room floor is 4 m by 6 m. Each square metre needs 4 tiles. How many tiles are needed for the whole floor?"
+    },
+    "choices": [
+      24,
+      80,
+      96,
+      28
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Luas lantai: 4 × 6 = 24 m². Ubin: 24 × 4 = 96.",
+      "en": "Floor area: 4 × 6 = 24 m². Tiles: 24 × 4 = 96."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g125zpc8",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Bu Guru membeli 7 bungkus permen. Setiap bungkus berisi 35 permen. Semua permen dibagi sama rata kepada 5 kelompok. Berapa permen yang didapat setiap kelompok?",
+      "en": "The teacher buys 7 packs of sweets with 35 sweets in each pack. All the sweets are shared equally between 5 groups. How many sweets does each group get?"
+    },
+    "choices": [
+      245,
+      49,
+      7,
+      240
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Semua permen: 7 × 35 = 245. Dibagi 5 kelompok: 245 ÷ 5 = 49.",
+      "en": "All the sweets: 7 × 35 = 245. Shared between 5 groups: 245 ÷ 5 = 49."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.g1bnymlk",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Lantai sebuah kamar berukuran 5 m × 6 m. Setiap meter persegi memerlukan 5 ubin. Berapa ubin yang diperlukan untuk seluruh lantai?",
+      "en": "A room floor is 5 m by 6 m. Each square metre needs 5 tiles. How many tiles are needed for the whole floor?"
+    },
+    "choices": [
+      35,
+      150,
+      110,
+      30
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Luas lantai: 5 × 6 = 30 m². Ubin: 30 × 5 = 150.",
+      "en": "Floor area: 5 × 6 = 30 m². Tiles: 30 × 5 = 150."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.g15k8xn5",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Bu Guru membeli 9 bungkus permen. Setiap bungkus berisi 48 permen. Semua permen dibagi sama rata kepada 6 kelompok. Berapa permen yang didapat setiap kelompok?",
+      "en": "The teacher buys 9 packs of sweets with 48 sweets in each pack. All the sweets are shared equally between 6 groups. How many sweets does each group get?"
+    },
+    "choices": [
+      432,
+      8,
+      72,
+      426
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Semua permen: 9 × 48 = 432. Dibagi 6 kelompok: 432 ÷ 6 = 72.",
+      "en": "All the sweets: 9 × 48 = 432. Shared between 6 groups: 432 ÷ 6 = 72."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.gvgek5g",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Lantai sebuah kamar berukuran 4 m × 2 m. Setiap meter persegi memerlukan 8 ubin. Berapa ubin yang diperlukan untuk seluruh lantai?",
+      "en": "A room floor is 4 m by 2 m. Each square metre needs 8 tiles. How many tiles are needed for the whole floor?"
+    },
+    "choices": [
+      96,
+      16,
+      64,
+      8
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Luas lantai: 4 × 2 = 8 m². Ubin: 8 × 8 = 64.",
+      "en": "Floor area: 4 × 2 = 8 m². Tiles: 8 × 8 = 64."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.multidigit.gn3e34t",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Bu Guru membeli 8 bungkus permen. Setiap bungkus berisi 30 permen. Semua permen dibagi sama rata kepada 6 kelompok. Berapa permen yang didapat setiap kelompok?",
+      "en": "The teacher buys 8 packs of sweets with 30 sweets in each pack. All the sweets are shared equally between 6 groups. How many sweets does each group get?"
+    },
+    "choices": [
+      40,
+      5,
+      240,
+      234
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Semua permen: 8 × 30 = 240. Dibagi 6 kelompok: 240 ÷ 6 = 40.",
+      "en": "All the sweets: 8 × 30 = 240. Shared between 6 groups: 240 ÷ 6 = 40."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t4.perim_area.g1yq93yh",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.perim_area",
+    "stem": {
+      "id": "Lantai sebuah kamar berukuran 3 m × 3 m. Setiap meter persegi memerlukan 3 ubin. Berapa ubin yang diperlukan untuk seluruh lantai?",
+      "en": "A room floor is 3 m by 3 m. Each square metre needs 3 tiles. How many tiles are needed for the whole floor?"
+    },
+    "choices": [
+      9,
+      12,
+      36,
+      27
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Luas lantai: 3 × 3 = 9 m². Ubin: 9 × 3 = 27.",
+      "en": "Floor area: 3 × 3 = 9 m². Tiles: 9 × 3 = 27."
+    },
+    "source": "generated"
+  }
+]

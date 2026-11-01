@@ -1,0 +1,1156 @@
+[
+  {
+    "id": "t3.bar_chart.h001",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.bar_chart",
+    "stem": {
+      "id": "Diagram batang menunjukkan hasil panen jagung: Senin 30 kg, Selasa 45 kg, Rabu 25 kg. Hari apa panennya paling banyak?",
+      "en": "A bar chart shows the corn harvest: Monday 30 kg, Tuesday 45 kg, Wednesday 25 kg. On which day was the harvest biggest?"
+    },
+    "choices": [
+      {
+        "id": "Senin",
+        "en": "Monday"
+      },
+      {
+        "id": "Rabu",
+        "en": "Wednesday"
+      },
+      {
+        "id": "Kamis",
+        "en": "Thursday"
+      },
+      {
+        "id": "Selasa",
+        "en": "Tuesday"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Batang tertinggi adalah Selasa, 45 kg.",
+      "en": "The tallest bar is Tuesday, with 45 kg."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.place1000.g22u2eo",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.place1000",
+    "stem": {
+      "id": "Pada bilangan 465, angka 5 bernilai berapa?",
+      "en": "In the number 465, what is the value of the digit 5?"
+    },
+    "choices": [
+      5,
+      50,
+      500,
+      4
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Angka 5 ada di tempat satuan, jadi nilainya 5 × 1 = 5.",
+      "en": "The digit 5 is in the ones place, so its value is 5 × 1 = 5."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g2e4bkn",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Berapa 483 + 140?",
+      "en": "What is 483 + 140?"
+    },
+    "choices": [
+      523,
+      623,
+      633,
+      624
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlahkan mulai dari satuan, lalu puluhan, lalu ratusan, dan jangan lupa menyimpan: 483 + 140 = 623.",
+      "en": "Add the ones, then the tens, then the hundreds, and remember to carry: 483 + 140 = 623."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.g9w65js",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Berapa 6 × 3?",
+      "en": "What is 6 × 3?"
+    },
+    "choices": [
+      12,
+      18,
+      9,
+      24
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "6 × 3 artinya 6 kelompok berisi 3, jadi 18.",
+      "en": "6 × 3 means 6 groups of 3, which is 18."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.fraction_compare.g9p318y",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.fraction_compare",
+    "stem": {
+      "id": "Pecahan mana yang paling kecil: 1/3, 1/4, 1/8 atau 1/10?",
+      "en": "Which fraction is the smallest: 1/3, 1/4, 1/8 or 1/10?"
+    },
+    "choices": [
+      "1/4",
+      "1/8",
+      "1/10",
+      "1/3"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Pembilangnya sama (1). Penyebut yang lebih besar berarti potongannya lebih kecil. Jadi 1/10 paling kecil.",
+      "en": "The numerators are the same (1). A bigger denominator means smaller pieces. So 1/10 is the smallest."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.std_units.gkurdlm",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.std_units",
+    "stem": {
+      "id": "4 km sama dengan berapa m?",
+      "en": "How many metres (m) are in 4 km?"
+    },
+    "choices": [
+      400,
+      {
+        "id": "4.000",
+        "en": "4,000"
+      },
+      {
+        "id": "1.004",
+        "en": "1,004"
+      },
+      40
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "1 km = 1.000 m. Jadi 4 km = 4.000 m.",
+      "en": "1 km = 1,000 m. So 4 km = 4,000 m."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.place1000.gm4l1km",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.place1000",
+    "stem": {
+      "id": "Pada bilangan 973, angka 7 bernilai berapa?",
+      "en": "In the number 973, what is the value of the digit 7?"
+    },
+    "choices": [
+      70,
+      30,
+      700,
+      7
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Angka 7 ada di tempat puluhan, jadi nilainya 7 × 10 = 70.",
+      "en": "The digit 7 is in the tens place, so its value is 7 × 10 = 70."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g1jero2b",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Berapa 572 + 134?",
+      "en": "What is 572 + 134?"
+    },
+    "choices": [
+      606,
+      706,
+      707,
+      716
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlahkan mulai dari satuan, lalu puluhan, lalu ratusan, dan jangan lupa menyimpan: 572 + 134 = 706.",
+      "en": "Add the ones, then the tens, then the hundreds, and remember to carry: 572 + 134 = 706."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.g1xxm2xj",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Berapa 48 ÷ 8?",
+      "en": "What is 48 ÷ 8?"
+    },
+    "choices": [
+      7,
+      5,
+      40,
+      6
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "48 ÷ 8 = 6, karena 8 × 6 = 48.",
+      "en": "48 ÷ 8 = 6, because 8 × 6 = 48."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.fraction_compare.g124tftb",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.fraction_compare",
+    "stem": {
+      "id": "Pecahan mana yang paling besar: 1/3, 1/7, 1/2 atau 1/6?",
+      "en": "Which fraction is the largest: 1/3, 1/7, 1/2 or 1/6?"
+    },
+    "choices": [
+      "1/6",
+      "1/3",
+      "1/7",
+      "1/2"
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Pembilangnya sama (1). Penyebut yang lebih kecil berarti potongannya lebih besar. Jadi 1/2 paling besar.",
+      "en": "The numerators are the same (1). A smaller denominator means bigger pieces. So 1/2 is the largest."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.std_units.g108enjv",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.std_units",
+    "stem": {
+      "id": "7 cm sama dengan berapa mm?",
+      "en": "How many millimetres (mm) are in 7 cm?"
+    },
+    "choices": [
+      700,
+      17,
+      70,
+      {
+        "id": "7.000",
+        "en": "7,000"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "1 cm = 10 mm. Jadi 7 cm = 70 mm.",
+      "en": "1 cm = 10 mm. So 7 cm = 70 mm."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.place1000.gzwtnv3",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.place1000",
+    "stem": {
+      "id": "Pada bilangan 142, angka 2 bernilai berapa?",
+      "en": "In the number 142, what is the value of the digit 2?"
+    },
+    "choices": [
+      2,
+      20,
+      1,
+      200
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Angka 2 ada di tempat satuan, jadi nilainya 2 × 1 = 2.",
+      "en": "The digit 2 is in the ones place, so its value is 2 × 1 = 2."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g1bwbeer",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Berapa 838 - 184?",
+      "en": "What is 838 - 184?"
+    },
+    "choices": [
+      654,
+      754,
+      664,
+      655
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Kurangkan mulai dari satuan. Jika angka atas lebih kecil, pinjam dari tempat di kirinya: 838 - 184 = 654.",
+      "en": "Subtract starting with the ones. If the top digit is smaller, exchange from the place to its left: 838 - 184 = 654."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.g7tbn5p",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Berapa 24 ÷ 4?",
+      "en": "What is 24 ÷ 4?"
+    },
+    "choices": [
+      7,
+      20,
+      6,
+      5
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "24 ÷ 4 = 6, karena 4 × 6 = 24.",
+      "en": "24 ÷ 4 = 6, because 4 × 6 = 24."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.fraction_compare.g1s56fi1",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.fraction_compare",
+    "stem": {
+      "id": "Pecahan mana yang paling besar: 5/6, 2/6, 4/6 atau 1/6?",
+      "en": "Which fraction is the largest: 5/6, 2/6, 4/6 or 1/6?"
+    },
+    "choices": [
+      "2/6",
+      "5/6",
+      "4/6",
+      "1/6"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Penyebutnya sama (6), jadi bandingkan pembilangnya. 5/6 paling besar.",
+      "en": "The denominators are the same (6), so compare the numerators. 5/6 is the largest."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.std_units.gojistu",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.std_units",
+    "stem": {
+      "id": "8 kg sama dengan berapa g?",
+      "en": "How many grams (g) are in 8 kg?"
+    },
+    "choices": [
+      {
+        "id": "8.000",
+        "en": "8,000"
+      },
+      80,
+      800,
+      {
+        "id": "1.008",
+        "en": "1,008"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "1 kg = 1.000 g. Jadi 8 kg = 8.000 g.",
+      "en": "1 kg = 1,000 g. So 8 kg = 8,000 g."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.place1000.g8s72j1",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.place1000",
+    "stem": {
+      "id": "Pada bilangan 234, angka 4 bernilai berapa?",
+      "en": "In the number 234, what is the value of the digit 4?"
+    },
+    "choices": [
+      400,
+      4,
+      2,
+      40
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Angka 4 ada di tempat satuan, jadi nilainya 4 × 1 = 4.",
+      "en": "The digit 4 is in the ones place, so its value is 4 × 1 = 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g1nped97",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Berapa 702 - 614?",
+      "en": "What is 702 - 614?"
+    },
+    "choices": [
+      88,
+      188,
+      112,
+      98
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Kurangkan mulai dari satuan. Jika angka atas lebih kecil, pinjam dari tempat di kirinya: 702 - 614 = 88.",
+      "en": "Subtract starting with the ones. If the top digit is smaller, exchange from the place to its left: 702 - 614 = 88."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.ghufgwt",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Berapa 25 ÷ 5?",
+      "en": "What is 25 ÷ 5?"
+    },
+    "choices": [
+      20,
+      6,
+      5,
+      4
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "25 ÷ 5 = 5, karena 5 × 5 = 25.",
+      "en": "25 ÷ 5 = 5, because 5 × 5 = 25."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.fraction_compare.gtg6l2v",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.fraction_compare",
+    "stem": {
+      "id": "Pecahan mana yang paling besar: 1/7, 1/2, 1/3 atau 1/8?",
+      "en": "Which fraction is the largest: 1/7, 1/2, 1/3 or 1/8?"
+    },
+    "choices": [
+      "1/2",
+      "1/3",
+      "1/7",
+      "1/8"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Pembilangnya sama (1). Penyebut yang lebih kecil berarti potongannya lebih besar. Jadi 1/2 paling besar.",
+      "en": "The numerators are the same (1). A smaller denominator means bigger pieces. So 1/2 is the largest."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.fraction_compare.h001",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.fraction_compare",
+    "stem": {
+      "id": "Sebuah pizza dipotong menjadi 8 bagian sama besar. Rina makan 3 potong. Berapa bagian pizza yang dimakan Rina?",
+      "en": "A pizza is cut into 8 equal slices. Rina eats 3 slices. What fraction of the pizza does Rina eat?"
+    },
+    "choices": [
+      "5/8",
+      "3/8",
+      "8/3",
+      "3/5"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Rina makan 3 dari 8 bagian yang sama besar, jadi 3/8.",
+      "en": "Rina eats 3 of the 8 equal slices, so 3/8."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.bar_chart.h002",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.bar_chart",
+    "stem": {
+      "id": "Diagram batang menunjukkan botol bekas yang dikumpulkan: kelas 3A 24 botol, 3B 18 botol, 3C 30 botol. Berapa botol yang dikumpulkan ketiga kelas?",
+      "en": "A bar chart shows bottles collected for recycling: Class 3A 24, Class 3B 18, Class 3C 30. How many bottles did the three classes collect?"
+    },
+    "choices": [
+      62,
+      72,
+      54,
+      82
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlahkan semua batang: 24 + 18 + 30 = 72 botol.",
+      "en": "Add all the bars: 24 + 18 + 30 = 72 bottles."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.std_units.h001",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.std_units",
+    "stem": {
+      "id": "Tali Budi panjangnya 2 m. Ia memotong 50 cm. Berapa cm sisa talinya?",
+      "en": "Budi's rope is 2 m long. Budi cuts off 50 cm. How many cm of rope are left?"
+    },
+    "choices": [
+      48,
+      150,
+      250,
+      200
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "2 m = 200 cm. Sisa: 200 - 50 = 150 cm.",
+      "en": "2 m = 200 cm. Left: 200 - 50 = 150 cm."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.addsub1000.ge31iqx",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Sebuah toko punya 660 stiker. Hari ini terjual 568 stiker. Berapa stiker yang tersisa?",
+      "en": "A shop has 660 stickers. Today it sells 568 stickers. How many stickers are left?"
+    },
+    "choices": [
+      92,
+      82,
+      192,
+      108
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Terjual berarti berkurang: 660 - 568 = 92.",
+      "en": "Sold means taken away: 660 - 568 = 92."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.g1jst17y",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "80 jeruk dibagi sama rata kepada 8 anak. Berapa jeruk yang didapat setiap anak?",
+      "en": "80 oranges are shared equally between 8 children. How many oranges does each child get?"
+    },
+    "choices": [
+      11,
+      10,
+      9,
+      72
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Dibagi sama rata berarti bagi: 80 ÷ 8 = 10.",
+      "en": "Sharing equally means divide: 80 ÷ 8 = 10."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g40sk8n",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Sebuah toko punya 599 stiker. Hari ini terjual 372 stiker. Berapa stiker yang tersisa?",
+      "en": "A shop has 599 stickers. Today it sells 372 stickers. How many stickers are left?"
+    },
+    "choices": [
+      327,
+      227,
+      228,
+      217
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Terjual berarti berkurang: 599 - 372 = 227.",
+      "en": "Sold means taken away: 599 - 372 = 227."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.gepq99z",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "20 kelereng dibagi sama rata kepada 5 anak. Berapa kelereng yang didapat setiap anak?",
+      "en": "20 marbles are shared equally between 5 children. How many marbles does each child get?"
+    },
+    "choices": [
+      15,
+      4,
+      3,
+      5
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Dibagi sama rata berarti bagi: 20 ÷ 5 = 4.",
+      "en": "Sharing equally means divide: 20 ÷ 5 = 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.gz6ul8g",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Sebuah toko punya 619 permen. Hari ini terjual 333 permen. Berapa permen yang tersisa?",
+      "en": "A shop has 619 sweets. Today it sells 333 sweets. How many sweets are left?"
+    },
+    "choices": [
+      286,
+      276,
+      326,
+      386
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Terjual berarti berkurang: 619 - 333 = 286.",
+      "en": "Sold means taken away: 619 - 333 = 286."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.gmimyja",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "12 kelereng dibagi sama rata kepada 3 anak. Berapa kelereng yang didapat setiap anak?",
+      "en": "12 marbles are shared equally between 3 children. How many marbles does each child get?"
+    },
+    "choices": [
+      3,
+      5,
+      4,
+      9
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Dibagi sama rata berarti bagi: 12 ÷ 3 = 4.",
+      "en": "Sharing equally means divide: 12 ÷ 3 = 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.gvndyqp",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Sebuah toko punya 827 kue. Hari ini terjual 151 kue. Berapa kue yang tersisa?",
+      "en": "A shop has 827 cakes. Today it sells 151 cakes. How many cakes are left?"
+    },
+    "choices": [
+      676,
+      776,
+      736,
+      666
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Terjual berarti berkurang: 827 - 151 = 676.",
+      "en": "Sold means taken away: 827 - 151 = 676."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.g1x8a60q",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "8 stiker dibagi sama rata kepada 2 anak. Berapa stiker yang didapat setiap anak?",
+      "en": "8 stickers are shared equally between 2 children. How many stickers does each child get?"
+    },
+    "choices": [
+      4,
+      5,
+      6,
+      3
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Dibagi sama rata berarti bagi: 8 ÷ 2 = 4.",
+      "en": "Sharing equally means divide: 8 ÷ 2 = 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g13lqcmy",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Sebuah sekolah punya 158 siswa laki-laki dan 480 siswa perempuan. Berapa jumlah semua siswa?",
+      "en": "A school has 158 boys and 480 girls. How many students are there in total?"
+    },
+    "choices": [
+      738,
+      638,
+      538,
+      322
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlah semua berarti tambah: 158 + 480 = 638.",
+      "en": "In total means add: 158 + 480 = 638."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.gkwa831",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "24 kelereng dibagi sama rata kepada 3 anak. Berapa kelereng yang didapat setiap anak?",
+      "en": "24 marbles are shared equally between 3 children. How many marbles does each child get?"
+    },
+    "choices": [
+      7,
+      9,
+      21,
+      8
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Dibagi sama rata berarti bagi: 24 ÷ 3 = 8.",
+      "en": "Sharing equally means divide: 24 ÷ 3 = 8."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.gil06ia",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Sebuah toko punya 694 kue. Hari ini terjual 529 kue. Berapa kue yang tersisa?",
+      "en": "A shop has 694 cakes. Today it sells 529 cakes. How many cakes are left?"
+    },
+    "choices": [
+      165,
+      175,
+      155,
+      265
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Terjual berarti berkurang: 694 - 529 = 165.",
+      "en": "Sold means taken away: 694 - 529 = 165."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.gblvw26",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "50 permen dibagi sama rata kepada 5 anak. Berapa permen yang didapat setiap anak?",
+      "en": "50 sweets are shared equally between 5 children. How many sweets does each child get?"
+    },
+    "choices": [
+      10,
+      45,
+      11,
+      9
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Dibagi sama rata berarti bagi: 50 ÷ 5 = 10.",
+      "en": "Sharing equally means divide: 50 ÷ 5 = 10."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.fraction_compare.h002",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.fraction_compare",
+    "stem": {
+      "id": "Ani makan 1/4 kue dan Budi makan 2/4 kue yang sama. Siapa yang makan lebih banyak, dan berapa bagian kue yang tersisa?",
+      "en": "Ani eats 1/4 of a cake and Budi eats 2/4 of the same cake. Who eats more, and how much of the cake is left?"
+    },
+    "choices": [
+      {
+        "id": "Budi, sisa 1/4",
+        "en": "Budi, 1/4 left"
+      },
+      {
+        "id": "Ani, sisa 1/4",
+        "en": "Ani, 1/4 left"
+      },
+      {
+        "id": "Budi, sisa 3/4",
+        "en": "Budi, 3/4 left"
+      },
+      {
+        "id": "Ani, sisa 3/4",
+        "en": "Ani, 3/4 left"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "2/4 lebih besar dari 1/4, jadi Budi makan lebih banyak. Dimakan 1/4 + 2/4 = 3/4, sisa 4/4 - 3/4 = 1/4.",
+      "en": "2/4 is more than 1/4, so Budi eats more. Eaten: 1/4 + 2/4 = 3/4, so 4/4 - 3/4 = 1/4 is left."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.std_units.h002",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.std_units",
+    "stem": {
+      "id": "Sekantong beras beratnya 5 kg. Ibu memakai 750 g setiap hari untuk memasak. Setelah 2 hari, berapa gram beras yang tersisa?",
+      "en": "A bag of rice weighs 5 kg. Mum uses 750 g a day for cooking. After 2 days, how many grams of rice are left?"
+    },
+    "choices": [
+      {
+        "id": "4.250",
+        "en": "4,250"
+      },
+      {
+        "id": "1.500",
+        "en": "1,500"
+      },
+      {
+        "id": "3.500",
+        "en": "3,500"
+      },
+      {
+        "id": "6.500",
+        "en": "6,500"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "5 kg = 5.000 g. Dipakai 2 × 750 = 1.500 g. Sisa: 5.000 - 1.500 = 3.500 g.",
+      "en": "5 kg = 5,000 g. Used: 2 × 750 = 1,500 g. Left: 5,000 - 1,500 = 3,500 g."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.addsub1000.g1j7rckd",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Perpustakaan sekolah punya 302 buku. Datang 241 buku baru, lalu 99 buku yang rusak disingkirkan. Berapa buku di perpustakaan sekarang?",
+      "en": "The school library has 302 books. 241 new books arrive, then 99 damaged books are removed. How many books does the library have now?"
+    },
+    "choices": [
+      543,
+      642,
+      160,
+      444
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Buku baru berarti tambah: 302 + 241 = 543. Disingkirkan berarti kurang: 543 - 99 = 444.",
+      "en": "New books means add: 302 + 241 = 543. Removed means subtract: 543 - 99 = 444."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.gay6wfy",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Tono membeli 4 lembar stiker. Setiap lembar berisi 10 stiker. Tono memberikan 24 stiker kepada adiknya. Berapa stiker Tono sekarang?",
+      "en": "Tono buys 4 sheets of stickers. Each sheet has 10 stickers. Tono gives 24 stickers to a younger sibling. How many stickers does Tono have now?"
+    },
+    "choices": [
+      40,
+      16,
+      17,
+      64
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pertama kalikan: 4 × 10 = 40. Lalu kurangi: 40 - 24 = 16.",
+      "en": "First multiply: 4 × 10 = 40. Then subtract: 40 - 24 = 16."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.ghh2u2n",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Perpustakaan sekolah punya 541 buku. Datang 196 buku baru, lalu 48 buku yang rusak disingkirkan. Berapa buku di perpustakaan sekarang?",
+      "en": "The school library has 541 books. 196 new books arrive, then 48 damaged books are removed. How many books does the library have now?"
+    },
+    "choices": [
+      737,
+      785,
+      393,
+      689
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Buku baru berarti tambah: 541 + 196 = 737. Disingkirkan berarti kurang: 737 - 48 = 689.",
+      "en": "New books means add: 541 + 196 = 737. Removed means subtract: 737 - 48 = 689."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.g103gb3a",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Wati membeli 3 lembar stiker. Setiap lembar berisi 4 stiker. Wati memberikan 5 stiker kepada adiknya. Berapa stiker Wati sekarang?",
+      "en": "Wati buys 3 sheets of stickers. Each sheet has 4 stickers. Wati gives 5 stickers to a younger sibling. How many stickers does Wati have now?"
+    },
+    "choices": [
+      17,
+      2,
+      7,
+      12
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Pertama kalikan: 3 × 4 = 12. Lalu kurangi: 12 - 5 = 7.",
+      "en": "First multiply: 3 × 4 = 12. Then subtract: 12 - 5 = 7."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g1v4dtct",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Perpustakaan sekolah punya 491 buku. Datang 485 buku baru, lalu 92 buku yang rusak disingkirkan. Berapa buku di perpustakaan sekarang?",
+      "en": "The school library has 491 books. 485 new books arrive, then 92 damaged books are removed. How many books does the library have now?"
+    },
+    "choices": [
+      884,
+      98,
+      {
+        "id": "1.068",
+        "en": "1,068"
+      },
+      976
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Buku baru berarti tambah: 491 + 485 = 976. Disingkirkan berarti kurang: 976 - 92 = 884.",
+      "en": "New books means add: 491 + 485 = 976. Removed means subtract: 976 - 92 = 884."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.g1bqkj45",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Putri membeli 8 lembar stiker. Setiap lembar berisi 7 stiker. Putri memberikan 3 stiker kepada adiknya. Berapa stiker Putri sekarang?",
+      "en": "Putri buys 8 sheets of stickers. Each sheet has 7 stickers. Putri gives 3 stickers to a younger sibling. How many stickers does Putri have now?"
+    },
+    "choices": [
+      59,
+      56,
+      53,
+      12
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Pertama kalikan: 8 × 7 = 56. Lalu kurangi: 56 - 3 = 53.",
+      "en": "First multiply: 8 × 7 = 56. Then subtract: 56 - 3 = 53."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g1b91vob",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Perpustakaan sekolah punya 561 buku. Datang 281 buku baru, lalu 78 buku yang rusak disingkirkan. Berapa buku di perpustakaan sekarang?",
+      "en": "The school library has 561 books. 281 new books arrive, then 78 damaged books are removed. How many books does the library have now?"
+    },
+    "choices": [
+      842,
+      920,
+      358,
+      764
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Buku baru berarti tambah: 561 + 281 = 842. Disingkirkan berarti kurang: 842 - 78 = 764.",
+      "en": "New books means add: 561 + 281 = 842. Removed means subtract: 842 - 78 = 764."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.g1ouxfej",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Ani membeli 6 kotak pensil. Setiap kotak berisi 3 pensil. Ani memberikan 12 pensil kepada temannya. Berapa pensil Ani sekarang?",
+      "en": "Ani buys 6 boxes of pencils. Each box has 3 pencils. Ani gives 12 pencils to a friend. How many pencils does Ani have now?"
+    },
+    "choices": [
+      30,
+      7,
+      18,
+      6
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Pertama kalikan: 6 × 3 = 18. Lalu kurangi: 18 - 12 = 6.",
+      "en": "First multiply: 6 × 3 = 18. Then subtract: 18 - 12 = 6."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.gx4c5jm",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Perpustakaan sekolah punya 474 buku. Datang 376 buku baru, lalu 86 buku yang rusak disingkirkan. Berapa buku di perpustakaan sekarang?",
+      "en": "The school library has 474 books. 376 new books arrive, then 86 damaged books are removed. How many books does the library have now?"
+    },
+    "choices": [
+      936,
+      850,
+      764,
+      184
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Buku baru berarti tambah: 474 + 376 = 850. Disingkirkan berarti kurang: 850 - 86 = 764.",
+      "en": "New books means add: 474 + 376 = 850. Removed means subtract: 850 - 86 = 764."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.gu22us1",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Rina membeli 8 kotak pensil. Setiap kotak berisi 10 pensil. Rina memberikan 1 pensil kepada temannya. Berapa pensil Rina sekarang?",
+      "en": "Rina buys 8 boxes of pencils. Each box has 10 pencils. Rina gives 1 pencils to a friend. How many pencils does Rina have now?"
+    },
+    "choices": [
+      81,
+      79,
+      17,
+      80
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pertama kalikan: 8 × 10 = 80. Lalu kurangi: 80 - 1 = 79.",
+      "en": "First multiply: 8 × 10 = 80. Then subtract: 80 - 1 = 79."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g1xg2ytc",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Perpustakaan sekolah punya 368 buku. Datang 422 buku baru, lalu 44 buku yang rusak disingkirkan. Berapa buku di perpustakaan sekarang?",
+      "en": "The school library has 368 books. 422 new books arrive, then 44 damaged books are removed. How many books does the library have now?"
+    },
+    "choices": [
+      746,
+      747,
+      834,
+      790
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Buku baru berarti tambah: 368 + 422 = 790. Disingkirkan berarti kurang: 790 - 44 = 746.",
+      "en": "New books means add: 368 + 422 = 790. Removed means subtract: 790 - 44 = 746."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.muldiv100.gb00ep3",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.muldiv100",
+    "stem": {
+      "id": "Eka membeli 2 lembar stiker. Setiap lembar berisi 8 stiker. Eka memberikan 9 stiker kepada adiknya. Berapa stiker Eka sekarang?",
+      "en": "Eka buys 2 sheets of stickers. Each sheet has 8 stickers. Eka gives 9 stickers to a younger sibling. How many stickers does Eka have now?"
+    },
+    "choices": [
+      7,
+      16,
+      1,
+      25
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Pertama kalikan: 2 × 8 = 16. Lalu kurangi: 16 - 9 = 7.",
+      "en": "First multiply: 2 × 8 = 16. Then subtract: 16 - 9 = 7."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t3.addsub1000.g1uf4pie",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.addsub1000",
+    "stem": {
+      "id": "Perpustakaan sekolah punya 641 buku. Datang 242 buku baru, lalu 31 buku yang rusak disingkirkan. Berapa buku di perpustakaan sekarang?",
+      "en": "The school library has 641 books. 242 new books arrive, then 31 damaged books are removed. How many books does the library have now?"
+    },
+    "choices": [
+      430,
+      852,
+      883,
+      914
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Buku baru berarti tambah: 641 + 242 = 883. Disingkirkan berarti kurang: 883 - 31 = 852.",
+      "en": "New books means add: 641 + 242 = 883. Removed means subtract: 883 - 31 = 852."
+    },
+    "source": "generated"
+  }
+]

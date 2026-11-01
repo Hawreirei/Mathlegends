@@ -9,7 +9,7 @@ import {
   type Family,
   type Rng,
   type Spec,
-} from './core';
+} from './core.ts';
 
 export const count20: Family = {
   topic: 't1.count20',
@@ -193,6 +193,32 @@ export const pattern: Family = {
       };
     },
   },
+};
+
+// Second two-step template (#12), so Year 1 Cannon questions are not all about buses.
+const busStep = addsub20.makers.multistep!;
+addsub20.makers.multistep = (rng: Rng): Spec<unknown> => {
+  if (rng() < 0.5) return busStep(rng);
+  const [n, m] = twoNames(rng);
+  const t = pick(rng, THINGS);
+  const a = int(rng, 3, 10);
+  const b = int(rng, 2, 20 - a);
+  const c = int(rng, 1, a + b - 1);
+  const ans = a + b - c;
+  return {
+    stem: T((l) =>
+      l === 'id'
+        ? `${n} punya ${a} ${t.id}. ${m} memberi ${n} ${b} ${t.id} lagi. Lalu ${n} memberikan ${c} ${t.id} kepada adiknya. Berapa ${t.id} ${n} sekarang?`
+        : `${n} has ${a} ${t.en}. ${m} gives ${n} ${b} more ${t.en}. Then ${n} gives ${c} ${t.en} to a younger sibling. How many ${t.en} does ${n} have now?`,
+    ),
+    answer: ans,
+    distractors: [a + b, a + b + c, ans + 1],
+    explanation: T((l) =>
+      l === 'id'
+        ? `Mendapat berarti tambah: ${a} + ${b} = ${a + b}. Memberikan berarti kurang: ${a + b} - ${c} = ${ans}.`
+        : `Getting more means add: ${a} + ${b} = ${a + b}. Giving away means subtract: ${a + b} - ${c} = ${ans}.`,
+    ),
+  };
 };
 
 export const TIER1 = [count20, addsub20, pattern];

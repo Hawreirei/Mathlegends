@@ -1,0 +1,121 @@
+[
+  {
+    "id": "t2.money_time.h001",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Jarum pendek menunjuk angka 3 dan jarum panjang menunjuk angka 12. Pukul berapa sekarang?",
+      "en": "The short hand points to 3 and the long hand points to 12. What time is it?"
+    },
+    "choices": [
+      {
+        "id": "pukul 3",
+        "en": "3 o'clock"
+      },
+      {
+        "id": "pukul 12",
+        "en": "12 o'clock"
+      },
+      {
+        "id": "pukul setengah 4",
+        "en": "half past 3"
+      },
+      {
+        "id": "pukul 12 lewat 15 menit",
+        "en": "quarter past 12"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Jarum pendek menunjukkan jam, jarum panjang di angka 12 berarti tepat. Jadi pukul 3.",
+      "en": "The short hand shows the hour. The long hand on 12 means o'clock. So it is 3 o'clock."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.money_time.h002",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Sekolah mulai pukul 7 pagi dan selesai pukul 12 siang. Berapa jam lamanya sekolah?",
+      "en": "School starts at 7 in the morning and ends at 12 noon. How many hours long is the school day?"
+    },
+    "choices": [4, 19, 5, 6],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Hitung dari pukul 7 ke pukul 12: 12 - 7 = 5 jam.",
+      "en": "Count from 7 to 12: 12 - 7 = 5 hours."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.pictogram.h001",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.pictogram",
+    "stem": {
+      "id": "Dalam tabel turus, satu ikat turus bernilai 5. Ada 2 ikat dan 3 turus lepas. Berapa jumlahnya?",
+      "en": "In a tally chart, one bundle of tally marks is worth 5. There are 2 bundles and 3 single marks. What number is that?"
+    },
+    "choices": [5, 23, 10, 13],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "2 ikat = 5 + 5 = 10, ditambah 3 turus: 10 + 3 = 13.",
+      "en": "2 bundles = 5 + 5 = 10, plus 3 marks: 10 + 3 = 13."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.pictogram.h002",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.pictogram",
+    "stem": {
+      "id": "Pada piktogram, 1 gambar apel mewakili 2 apel. Ada 4 gambar apel. Berapa banyak apel sebenarnya?",
+      "en": "In a pictogram, 1 apple picture stands for 2 apples. There are 4 apple pictures. How many apples is that really?"
+    },
+    "choices": [8, 4, 6, 2],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Setiap gambar bernilai 2: 2 + 2 + 2 + 2 = 4 × 2 = 8.",
+      "en": "Each picture is worth 2: 2 + 2 + 2 + 2 = 4 × 2 = 8."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.pictogram.h003",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.pictogram",
+    "stem": {
+      "id": "Data buah kesukaan: apel 6 anak, jeruk 4 anak, pisang 9 anak. Berapa anak lebih banyak yang suka pisang daripada apel?",
+      "en": "Favourite fruit: apples 6 children, oranges 4 children, bananas 9 children. How many more children like bananas than apples?"
+    },
+    "choices": [15, 3, 5, 19],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pisang 9 anak, apel 6 anak. Selisihnya 9 - 6 = 3 anak.",
+      "en": "Bananas: 9 children, apples: 6 children. The difference is 9 - 6 = 3 children."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.place100.h001",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.place100",
+    "stem": {
+      "id": "Ibu membeli 4 ikat rambutan. Setiap ikat berisi 10 buah, dan ada 3 buah lepas. Berapa rambutan semuanya?",
+      "en": "Mum buys 4 bunches of rambutans with 10 in each bunch, plus 3 loose ones. How many rambutans are there altogether?"
+    },
+    "choices": [17, 34, 43, 40],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "4 ikat isi 10 = 4 puluhan = 40, ditambah 3 satuan = 43.",
+      "en": "4 bunches of 10 = 4 tens = 40, plus 3 ones = 43."
+    },
+    "source": "handwritten"
+  }
+]

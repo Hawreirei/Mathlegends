@@ -16,8 +16,8 @@ import {
   type Frac,
   type Rng,
   type Spec,
-} from './core';
-import { roundingSpec } from './tier4';
+} from './core.ts';
+import { roundingSpec } from './tier4.ts';
 
 export const bigNumbers: Family = {
   topic: 't5.big_numbers',
@@ -308,6 +308,34 @@ export const dataMean: Family = {
       };
     },
   },
+};
+
+// Missing value from a mean (#12).
+dataMean.makers.multistep = (rng: Rng): Spec<number> => {
+  const [n] = twoNames(rng);
+  for (;;) {
+    const k = int(rng, 3, 5);
+    const mean = 5 * int(rng, 12, 18);
+    const known = Array.from({ length: k - 1 }, () => 5 * int(rng, 12, 19));
+    const sumKnown = known.reduce((x, y) => x + y, 0);
+    const last = k * mean - sumKnown;
+    if (last < 50 || last > 100 || last === mean) continue;
+    const s = known.map(String);
+    return {
+      stem: T((l) =>
+        l === 'id'
+          ? `Rata-rata nilai ${k} ulangan ${n} adalah ${mean}. Nilai ${k - 1} ulangan pertama ${list(s, l)}. Berapa nilai ulangan terakhir?`
+          : `${n}'s mean score on ${k} tests is ${mean}. The first ${k - 1} scores are ${list(s, l)}. What is the last score?`,
+      ),
+      answer: last,
+      distractors: [mean, sumKnown, k * mean],
+      explanation: T((l) =>
+        l === 'id'
+          ? `Jumlah semua nilai = ${k} × ${mean} = ${k * mean}. Jumlah nilai yang diketahui = ${sumKnown}. Nilai terakhir = ${k * mean} - ${sumKnown} = ${last}.`
+          : `Total of all scores = ${k} × ${mean} = ${k * mean}. Total of the known scores = ${sumKnown}. Last score = ${k * mean} - ${sumKnown} = ${last}.`,
+      ),
+    };
+  }
 };
 
 export const TIER5 = [bigNumbers, kpkFpb, fracAddSub, decimalPercent, dataMean];

@@ -1,0 +1,214 @@
+[
+  {
+    "id": "t6.chance.h001",
+    "tier": 6,
+    "type": "fluency",
+    "topic": "t6.chance",
+    "stem": {
+      "id": "Sebuah dadu dilempar sekali. Kejadian mana yang pasti terjadi?",
+      "en": "A dice is rolled once. Which event is certain?"
+    },
+    "choices": [
+      {
+        "id": "Muncul angka 6",
+        "en": "Getting a 6"
+      },
+      {
+        "id": "Muncul angka 8",
+        "en": "Getting an 8"
+      },
+      {
+        "id": "Muncul angka genap",
+        "en": "Getting an even number"
+      },
+      {
+        "id": "Muncul angka kurang dari 7",
+        "en": "Getting a number less than 7"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Dadu hanya punya angka 1 sampai 6, jadi angkanya pasti kurang dari 7.",
+      "en": "A dice only has the numbers 1 to 6, so the number is always less than 7."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t6.chance.h002",
+    "tier": 6,
+    "type": "fluency",
+    "topic": "t6.chance",
+    "stem": {
+      "id": "Di dalam kantong ada 5 kelereng merah saja. Diambil 1 kelereng tanpa melihat. Mengambil kelereng biru adalah kejadian yang ...",
+      "en": "A bag holds only 5 red marbles. One marble is taken without looking. Taking a blue marble is ..."
+    },
+    "choices": [
+      {
+        "id": "tidak mungkin",
+        "en": "impossible"
+      },
+      {
+        "id": "pasti",
+        "en": "certain"
+      },
+      {
+        "id": "mungkin",
+        "en": "possible"
+      },
+      {
+        "id": "sangat mungkin",
+        "en": "very likely"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Tidak ada kelereng biru di dalam kantong, jadi tidak mungkin terambil.",
+      "en": "There are no blue marbles in the bag, so it is impossible."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t6.chance.h003",
+    "tier": 6,
+    "type": "application",
+    "topic": "t6.chance",
+    "stem": {
+      "id": "Di dalam kantong ada 3 bola merah dan 1 bola hijau. Diambil 1 bola tanpa melihat. Warna apa yang lebih mungkin terambil?",
+      "en": "A bag has 3 red balls and 1 green ball. One ball is taken without looking. Which colour is more likely?"
+    },
+    "choices": [
+      {
+        "id": "hijau",
+        "en": "green"
+      },
+      {
+        "id": "merah",
+        "en": "red"
+      },
+      {
+        "id": "sama mungkin",
+        "en": "equally likely"
+      },
+      {
+        "id": "biru",
+        "en": "blue"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Bola merah lebih banyak (3) daripada bola hijau (1), jadi merah lebih mungkin terambil.",
+      "en": "There are more red balls (3) than green (1), so red is more likely."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t6.chance.h004",
+    "tier": 6,
+    "type": "multistep",
+    "topic": "t6.chance",
+    "stem": {
+      "id": "Sebuah papan putar dibagi menjadi 8 bagian sama besar: 4 biru, 3 kuning, dan 1 merah. Berapa peluang jarum berhenti di warna biru?",
+      "en": "A spinner has 8 equal parts: 4 blue, 3 yellow and 1 red. What is the probability of landing on blue?"
+    },
+    "choices": ["1/2", "3/8", "1/4", "4/3"],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Ada 4 bagian biru dari 8 bagian. Peluangnya 4/8 = 1/2.",
+      "en": "4 of the 8 parts are blue. The probability is 4/8 = 1/2."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t6.volume.h001",
+    "tier": 6,
+    "type": "multistep",
+    "topic": "t6.volume",
+    "stem": {
+      "id": "Sebuah bak mandi berbentuk kubus dengan rusuk 80 cm. Bak itu berisi air setengahnya. Berapa liter air di dalamnya? (1 liter = 1.000 cm³)",
+      "en": "A cube-shaped water tub has edges of 80 cm. It is half full of water. How many litres of water are in it? (1 litre = 1,000 cm³)"
+    },
+    "choices": [
+      512,
+      256,
+      {
+        "id": "256.000",
+        "en": "256,000"
+      },
+      128
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Volume kubus = 80 × 80 × 80 = 512.000 cm³. Setengahnya = 256.000 cm³ = 256 liter.",
+      "en": "Volume of the cube = 80 × 80 × 80 = 512,000 cm³. Half of it = 256,000 cm³ = 256 litres."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t6.speed_scale.h001",
+    "tier": 6,
+    "type": "multistep",
+    "topic": "t6.speed_scale",
+    "stem": {
+      "id": "Ayah berangkat pukul 07.00 dan mengendarai mobil sejauh 180 km dengan kecepatan 60 km/jam. Pukul berapa Ayah tiba?",
+      "en": "Dad leaves at 07:00 and drives 180 km at 60 km/h. What time does Dad arrive?"
+    },
+    "choices": [
+      {
+        "id": "09.00",
+        "en": "09:00"
+      },
+      {
+        "id": "10.00",
+        "en": "10:00"
+      },
+      {
+        "id": "03.00",
+        "en": "03:00"
+      },
+      {
+        "id": "11.00",
+        "en": "11:00"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Waktu tempuh = 180 ÷ 60 = 3 jam. 07.00 + 3 jam = 10.00.",
+      "en": "Travel time = 180 ÷ 60 = 3 hours. 07:00 + 3 hours = 10:00."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t6.mixed_ops.h001",
+    "tier": 6,
+    "type": "application",
+    "topic": "t6.mixed_ops",
+    "stem": {
+      "id": "Ibu membeli 3 bungkus mi seharga Rp4.000 per bungkus dan 1 botol kecap seharga Rp9.000. Berapa total belanjanya?",
+      "en": "Mum buys 3 packets of noodles at Rp4,000 each and 1 bottle of soy sauce at Rp9,000. What is the total cost?"
+    },
+    "choices": [
+      {
+        "id": "Rp39.000",
+        "en": "Rp39,000"
+      },
+      {
+        "id": "Rp13.000",
+        "en": "Rp13,000"
+      },
+      {
+        "id": "Rp21.000",
+        "en": "Rp21,000"
+      },
+      {
+        "id": "Rp16.000",
+        "en": "Rp16,000"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Mi: 3 × Rp4.000 = Rp12.000. Total: Rp12.000 + Rp9.000 = Rp21.000.",
+      "en": "Noodles: 3 × Rp4,000 = Rp12,000. Total: Rp12,000 + Rp9,000 = Rp21,000."
+    },
+    "source": "handwritten"
+  }
+]

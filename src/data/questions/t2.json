@@ -1,0 +1,1249 @@
+[
+  {
+    "id": "t2.money_time.h001",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Jarum pendek menunjuk angka 3 dan jarum panjang menunjuk angka 12. Pukul berapa sekarang?",
+      "en": "The short hand points to 3 and the long hand points to 12. What time is it?"
+    },
+    "choices": [
+      {
+        "id": "pukul 3",
+        "en": "3 o'clock"
+      },
+      {
+        "id": "pukul 12",
+        "en": "12 o'clock"
+      },
+      {
+        "id": "pukul setengah 4",
+        "en": "half past 3"
+      },
+      {
+        "id": "pukul 12 lewat 15 menit",
+        "en": "quarter past 12"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Jarum pendek menunjukkan jam, jarum panjang di angka 12 berarti tepat. Jadi pukul 3.",
+      "en": "The short hand shows the hour. The long hand on 12 means o'clock. So it is 3 o'clock."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.pictogram.h001",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.pictogram",
+    "stem": {
+      "id": "Dalam tabel turus, satu ikat turus bernilai 5. Ada 2 ikat dan 3 turus lepas. Berapa jumlahnya?",
+      "en": "In a tally chart, one bundle of tally marks is worth 5. There are 2 bundles and 3 single marks. What number is that?"
+    },
+    "choices": [
+      5,
+      23,
+      10,
+      13
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "2 ikat = 5 + 5 = 10, ditambah 3 turus: 10 + 3 = 13.",
+      "en": "2 bundles = 5 + 5 = 10, plus 3 marks: 10 + 3 = 13."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.place100.gow4qro",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.place100",
+    "stem": {
+      "id": "4 puluhan dan 1 satuan adalah bilangan berapa?",
+      "en": "What number is 4 tens and 1 ones?"
+    },
+    "choices": [
+      14,
+      5,
+      41,
+      40
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "4 puluhan = 40, ditambah 1 satuan = 41.",
+      "en": "4 tens = 40, plus 1 ones = 41."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.g1r9qoep",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Berapa 82 - 24?",
+      "en": "What is 82 - 24?"
+    },
+    "choices": [
+      68,
+      58,
+      57,
+      62
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "2 lebih kecil dari 4, jadi pinjam 1 puluhan: 12 - 4 = 8. Hasilnya 82 - 24 = 58.",
+      "en": "2 is smaller than 4, so exchange 1 ten: 12 - 4 = 8. So 82 - 24 = 58."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.half_quarter.g1kze0bp",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.half_quarter",
+    "stem": {
+      "id": "Berapa setengah dari 32?",
+      "en": "What is half of 32?"
+    },
+    "choices": [
+      64,
+      8,
+      16,
+      30
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Setengah berarti dibagi 2 sama besar: 32 ÷ 2 = 16.",
+      "en": "Half means splitting into 2 equal parts: 32 ÷ 2 = 16."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.equal_groups.gf0q9hc",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.equal_groups",
+    "stem": {
+      "id": "8 + 8 + 8 + 8 + 8 = ... × 8. Berapa angka yang hilang?",
+      "en": "8 + 8 + 8 + 8 + 8 = ... × 8. What is the missing number?"
+    },
+    "choices": [
+      8,
+      5,
+      40,
+      6
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Ada 5 kali angka 8 yang dijumlahkan, jadi 8 + 8 + 8 + 8 + 8 = 5 × 8.",
+      "en": "8 is added 5 times, so 8 + 8 + 8 + 8 + 8 = 5 × 8."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.place100.gkqopja",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.place100",
+    "stem": {
+      "id": "7 puluhan dan 2 satuan adalah bilangan berapa?",
+      "en": "What number is 7 tens and 2 ones?"
+    },
+    "choices": [
+      9,
+      70,
+      27,
+      72
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "7 puluhan = 70, ditambah 2 satuan = 72.",
+      "en": "7 tens = 70, plus 2 ones = 72."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.geac7ue",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Berapa 94 - 68?",
+      "en": "What is 94 - 68?"
+    },
+    "choices": [
+      25,
+      36,
+      26,
+      34
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "4 lebih kecil dari 8, jadi pinjam 1 puluhan: 14 - 8 = 6. Hasilnya 94 - 68 = 26.",
+      "en": "4 is smaller than 8, so exchange 1 ten: 14 - 8 = 6. So 94 - 68 = 26."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.half_quarter.g1kzz4xb",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.half_quarter",
+    "stem": {
+      "id": "Berapa setengah dari 34?",
+      "en": "What is half of 34?"
+    },
+    "choices": [
+      68,
+      17,
+      {
+        "id": "8,5",
+        "en": "8.5"
+      },
+      32
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Setengah berarti dibagi 2 sama besar: 34 ÷ 2 = 17.",
+      "en": "Half means splitting into 2 equal parts: 34 ÷ 2 = 17."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.equal_groups.gpwlxj4",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.equal_groups",
+    "stem": {
+      "id": "8 + 8 + 8 = ... × 8. Berapa angka yang hilang?",
+      "en": "8 + 8 + 8 = ... × 8. What is the missing number?"
+    },
+    "choices": [
+      4,
+      3,
+      8,
+      24
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Ada 3 kali angka 8 yang dijumlahkan, jadi 8 + 8 + 8 = 3 × 8.",
+      "en": "8 is added 3 times, so 8 + 8 + 8 = 3 × 8."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.place100.gdofqc1",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.place100",
+    "stem": {
+      "id": "4 puluhan dan 6 satuan adalah bilangan berapa?",
+      "en": "What number is 4 tens and 6 ones?"
+    },
+    "choices": [
+      40,
+      64,
+      10,
+      46
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "4 puluhan = 40, ditambah 6 satuan = 46.",
+      "en": "4 tens = 40, plus 6 ones = 46."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.g1cnijw6",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Berapa 98 - 59?",
+      "en": "What is 98 - 59?"
+    },
+    "choices": [
+      39,
+      38,
+      49,
+      41
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "8 lebih kecil dari 9, jadi pinjam 1 puluhan: 18 - 9 = 9. Hasilnya 98 - 59 = 39.",
+      "en": "8 is smaller than 9, so exchange 1 ten: 18 - 9 = 9. So 98 - 59 = 39."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.half_quarter.g1nrobho",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.half_quarter",
+    "stem": {
+      "id": "Berapa setengah dari 4?",
+      "en": "What is half of 4?"
+    },
+    "choices": [
+      3,
+      2,
+      1,
+      8
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Setengah berarti dibagi 2 sama besar: 4 ÷ 2 = 2.",
+      "en": "Half means splitting into 2 equal parts: 4 ÷ 2 = 2."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.equal_groups.g1lv8oc8",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.equal_groups",
+    "stem": {
+      "id": "10 + 10 = ... × 10. Berapa angka yang hilang?",
+      "en": "10 + 10 = ... × 10. What is the missing number?"
+    },
+    "choices": [
+      20,
+      10,
+      2,
+      3
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Ada 2 kali angka 10 yang dijumlahkan, jadi 10 + 10 = 2 × 10.",
+      "en": "10 is added 2 times, so 10 + 10 = 2 × 10."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.place100.g1cml4nb",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.place100",
+    "stem": {
+      "id": "7 puluhan dan 5 satuan adalah bilangan berapa?",
+      "en": "What number is 7 tens and 5 ones?"
+    },
+    "choices": [
+      57,
+      75,
+      12,
+      70
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "7 puluhan = 70, ditambah 5 satuan = 75.",
+      "en": "7 tens = 70, plus 5 ones = 75."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.gpks5fk",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Berapa 51 - 25?",
+      "en": "What is 51 - 25?"
+    },
+    "choices": [
+      26,
+      36,
+      34,
+      25
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "1 lebih kecil dari 5, jadi pinjam 1 puluhan: 11 - 5 = 6. Hasilnya 51 - 25 = 26.",
+      "en": "1 is smaller than 5, so exchange 1 ten: 11 - 5 = 6. So 51 - 25 = 26."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.half_quarter.gm9u7k8",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.half_quarter",
+    "stem": {
+      "id": "Berapa seperempat dari 4?",
+      "en": "What is a quarter of 4?"
+    },
+    "choices": [
+      2,
+      1,
+      0,
+      16
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Seperempat berarti dibagi 4 sama besar: 4 ÷ 4 = 1.",
+      "en": "A quarter means splitting into 4 equal parts: 4 ÷ 4 = 1."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.equal_groups.g1esbew8",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.equal_groups",
+    "stem": {
+      "id": "4 + 4 + 4 = ... × 4. Berapa angka yang hilang?",
+      "en": "4 + 4 + 4 = ... × 4. What is the missing number?"
+    },
+    "choices": [
+      2,
+      12,
+      3,
+      4
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Ada 3 kali angka 4 yang dijumlahkan, jadi 4 + 4 + 4 = 3 × 4.",
+      "en": "4 is added 3 times, so 4 + 4 + 4 = 3 × 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.place100.goy50om",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.place100",
+    "stem": {
+      "id": "Pada bilangan 87, angka 7 bernilai berapa?",
+      "en": "In the number 87, what is the value of the digit 7?"
+    },
+    "choices": [
+      80,
+      70,
+      8,
+      7
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Angka 7 ada di tempat satuan, jadi nilainya 7.",
+      "en": "The digit 7 is in the ones place, so its value is 7."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.g1f9y484",
+    "tier": 2,
+    "type": "fluency",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Berapa 91 - 69?",
+      "en": "What is 91 - 69?"
+    },
+    "choices": [
+      38,
+      21,
+      32,
+      22
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "1 lebih kecil dari 9, jadi pinjam 1 puluhan: 11 - 9 = 2. Hasilnya 91 - 69 = 22.",
+      "en": "1 is smaller than 9, so exchange 1 ten: 11 - 9 = 2. So 91 - 69 = 22."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.h002",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Sekolah mulai pukul 7 pagi dan selesai pukul 12 siang. Berapa jam lamanya sekolah?",
+      "en": "School starts at 7 in the morning and ends at 12 noon. How many hours long is the school day?"
+    },
+    "choices": [
+      4,
+      19,
+      5,
+      6
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Hitung dari pukul 7 ke pukul 12: 12 - 7 = 5 jam.",
+      "en": "Count from 7 to 12: 12 - 7 = 5 hours."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.pictogram.h002",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.pictogram",
+    "stem": {
+      "id": "Pada piktogram, 1 gambar apel mewakili 2 apel. Ada 4 gambar apel. Berapa banyak apel sebenarnya?",
+      "en": "In a pictogram, 1 apple picture stands for 2 apples. There are 4 apple pictures. How many apples is that really?"
+    },
+    "choices": [
+      8,
+      4,
+      6,
+      2
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Setiap gambar bernilai 2: 2 + 2 + 2 + 2 = 4 × 2 = 8.",
+      "en": "Each picture is worth 2: 2 + 2 + 2 + 2 = 4 × 2 = 8."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.place100.h001",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.place100",
+    "stem": {
+      "id": "Ibu membeli 4 ikat rambutan. Setiap ikat berisi 10 buah, dan ada 3 buah lepas. Berapa rambutan semuanya?",
+      "en": "Mum buys 4 bunches of rambutans with 10 in each bunch, plus 3 loose ones. How many rambutans are there altogether?"
+    },
+    "choices": [
+      17,
+      34,
+      43,
+      40
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "4 ikat isi 10 = 4 puluhan = 40, ditambah 3 satuan = 43.",
+      "en": "4 bunches of 10 = 4 tens = 40, plus 3 ones = 43."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.addsub100.g1v5hkoo",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Kelas 2A punya 38 siswa dan kelas 2B punya 39 siswa. Berapa jumlah siswa kedua kelas?",
+      "en": "Class 2A has 38 students and Class 2B has 39 students. How many students are there in both classes?"
+    },
+    "choices": [
+      67,
+      1,
+      77,
+      78
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Jumlah berarti tambah: 38 + 39 = 77.",
+      "en": "Altogether means add: 38 + 39 = 77."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.equal_groups.g16dc98c",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.equal_groups",
+    "stem": {
+      "id": "Ada 3 kotak. Setiap kotak berisi 5 kartu. Berapa kartu semuanya?",
+      "en": "There are 3 boxes. Each one has 5 cards. How many cards are there altogether?"
+    },
+    "choices": [
+      10,
+      8,
+      20,
+      15
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "3 kelompok berisi 5: 5 + 5 + 5 = 3 × 5 = 15.",
+      "en": "3 groups of 5: 5 + 5 + 5 = 3 × 5 = 15."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.gz26684",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Eka membeli sebungkus roti seharga Rp7.500 dan membayar dengan uang Rp10.000. Berapa uang kembaliannya?",
+      "en": "Eka buys a pack of bread for Rp7,500 and pays with Rp10,000. How much change does Eka get?"
+    },
+    "choices": [
+      {
+        "id": "Rp7.500",
+        "en": "Rp7,500"
+      },
+      {
+        "id": "Rp3.000",
+        "en": "Rp3,000"
+      },
+      {
+        "id": "Rp2.000",
+        "en": "Rp2,000"
+      },
+      {
+        "id": "Rp2.500",
+        "en": "Rp2,500"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Kembalian = uang dibayar - harga: Rp10.000 - Rp7.500 = Rp2.500.",
+      "en": "Change = money paid - price: Rp10,000 - Rp7,500 = Rp2,500."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.g15q8agr",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Di perpustakaan ada 69 buku. Sebanyak 60 buku dipinjam. Berapa buku yang tersisa?",
+      "en": "A library has 69 books. 60 books are borrowed. How many books are left?"
+    },
+    "choices": [
+      8,
+      10,
+      9,
+      19
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Dipinjam berarti berkurang: 69 - 60 = 9.",
+      "en": "Borrowed means taken away: 69 - 60 = 9."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.equal_groups.gjaex6q",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.equal_groups",
+    "stem": {
+      "id": "Ada 2 kotak. Setiap kotak berisi 2 kue. Berapa kue semuanya?",
+      "en": "There are 2 boxes. Each one has 2 cakes. How many cakes are there altogether?"
+    },
+    "choices": [
+      5,
+      6,
+      2,
+      4
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "2 kelompok berisi 2: 2 + 2 = 2 × 2 = 4.",
+      "en": "2 groups of 2: 2 + 2 = 2 × 2 = 4."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.g1pwmd9r",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Kartika membeli sebuah pensil warna seharga Rp3.000 dan membayar dengan uang Rp5.000. Berapa uang kembaliannya?",
+      "en": "Kartika buys a coloured pencil for Rp3,000 and pays with Rp5,000. How much change does Kartika get?"
+    },
+    "choices": [
+      {
+        "id": "Rp2.500",
+        "en": "Rp2,500"
+      },
+      {
+        "id": "Rp2.000",
+        "en": "Rp2,000"
+      },
+      {
+        "id": "Rp3.000",
+        "en": "Rp3,000"
+      },
+      {
+        "id": "Rp1.500",
+        "en": "Rp1,500"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Kembalian = uang dibayar - harga: Rp5.000 - Rp3.000 = Rp2.000.",
+      "en": "Change = money paid - price: Rp5,000 - Rp3,000 = Rp2,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.ggpe8hw",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Di perpustakaan ada 33 buku. Sebanyak 22 buku dipinjam. Berapa buku yang tersisa?",
+      "en": "A library has 33 books. 22 books are borrowed. How many books are left?"
+    },
+    "choices": [
+      55,
+      21,
+      11,
+      10
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Dipinjam berarti berkurang: 33 - 22 = 11.",
+      "en": "Borrowed means taken away: 33 - 22 = 11."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.equal_groups.g1micf43",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.equal_groups",
+    "stem": {
+      "id": "Ada 3 kantong. Setiap kantong berisi 4 balon. Berapa balon semuanya?",
+      "en": "There are 3 bags. Each one has 4 balloons. How many balloons are there altogether?"
+    },
+    "choices": [
+      8,
+      7,
+      12,
+      16
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "3 kelompok berisi 4: 4 + 4 + 4 = 3 × 4 = 12.",
+      "en": "3 groups of 4: 4 + 4 + 4 = 3 × 4 = 12."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.gq24hku",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Kartika membeli sekotak susu seharga Rp8.500 dan membayar dengan uang Rp10.000. Berapa uang kembaliannya?",
+      "en": "Kartika buys a carton of milk for Rp8,500 and pays with Rp10,000. How much change does Kartika get?"
+    },
+    "choices": [
+      {
+        "id": "Rp2.000",
+        "en": "Rp2,000"
+      },
+      {
+        "id": "Rp8.500",
+        "en": "Rp8,500"
+      },
+      {
+        "id": "Rp1.500",
+        "en": "Rp1,500"
+      },
+      {
+        "id": "Rp1.000",
+        "en": "Rp1,000"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Kembalian = uang dibayar - harga: Rp10.000 - Rp8.500 = Rp1.500.",
+      "en": "Change = money paid - price: Rp10,000 - Rp8,500 = Rp1,500."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.g1s7nd",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Di perpustakaan ada 81 buku. Sebanyak 55 buku dipinjam. Berapa buku yang tersisa?",
+      "en": "A library has 81 books. 55 books are borrowed. How many books are left?"
+    },
+    "choices": [
+      34,
+      26,
+      25,
+      36
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Dipinjam berarti berkurang: 81 - 55 = 26.",
+      "en": "Borrowed means taken away: 81 - 55 = 26."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.equal_groups.g94274f",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.equal_groups",
+    "stem": {
+      "id": "Ada 5 kantong. Setiap kantong berisi 2 balon. Berapa balon semuanya?",
+      "en": "There are 5 bags. Each one has 2 balloons. How many balloons are there altogether?"
+    },
+    "choices": [
+      7,
+      12,
+      8,
+      10
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "5 kelompok berisi 2: 2 + 2 + 2 + 2 + 2 = 5 × 2 = 10.",
+      "en": "5 groups of 2: 2 + 2 + 2 + 2 + 2 = 5 × 2 = 10."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.gxztz6s",
+    "tier": 2,
+    "type": "application",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Intan membeli sebotol air minum seharga Rp2.000 dan membayar dengan uang Rp5.000. Berapa uang kembaliannya?",
+      "en": "Intan buys a bottle of water for Rp2,000 and pays with Rp5,000. How much change does Intan get?"
+    },
+    "choices": [
+      {
+        "id": "Rp3.500",
+        "en": "Rp3,500"
+      },
+      {
+        "id": "Rp2.500",
+        "en": "Rp2,500"
+      },
+      {
+        "id": "Rp2.000",
+        "en": "Rp2,000"
+      },
+      {
+        "id": "Rp3.000",
+        "en": "Rp3,000"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Kembalian = uang dibayar - harga: Rp5.000 - Rp2.000 = Rp3.000.",
+      "en": "Change = money paid - price: Rp5,000 - Rp2,000 = Rp3,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.pictogram.h003",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.pictogram",
+    "stem": {
+      "id": "Data buah kesukaan: apel 6 anak, jeruk 4 anak, pisang 9 anak. Berapa anak lebih banyak yang suka pisang daripada apel?",
+      "en": "Favourite fruit: apples 6 children, oranges 4 children, bananas 9 children. How many more children like bananas than apples?"
+    },
+    "choices": [
+      15,
+      3,
+      5,
+      19
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Pisang 9 anak, apel 6 anak. Selisihnya 9 - 6 = 3 anak.",
+      "en": "Bananas: 9 children, apples: 6 children. The difference is 9 - 6 = 3 children."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t2.addsub100.gh3g98x",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Pedagang di pasar punya 94 kg cabai. Pagi hari terjual 26 kg dan sore hari terjual 29 kg. Berapa kg cabai yang tersisa?",
+      "en": "A market seller has 94 kg of chillies. 26 kg are sold in the morning and 29 kg in the afternoon. How many kg of chillies are left?"
+    },
+    "choices": [
+      55,
+      68,
+      39,
+      97
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Terjual semuanya: 26 + 29 = 55 kg. Sisa: 94 - 55 = 39 kg.",
+      "en": "Sold altogether: 26 + 29 = 55 kg. Left: 94 - 55 = 39 kg."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.g1iyc4a7",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Dedi membeli sebungkus roti seharga Rp1.000 dan sebuah buku tulis seharga Rp4.500. Dedi membayar dengan uang Rp10.000. Berapa uang kembaliannya?",
+      "en": "Dedi buys a pack of bread for Rp1,000 and an exercise book for Rp4,500. Dedi pays with Rp10,000. How much change does Dedi get?"
+    },
+    "choices": [
+      {
+        "id": "Rp4.500",
+        "en": "Rp4,500"
+      },
+      {
+        "id": "Rp5.000",
+        "en": "Rp5,000"
+      },
+      {
+        "id": "Rp9.000",
+        "en": "Rp9,000"
+      },
+      {
+        "id": "Rp5.500",
+        "en": "Rp5,500"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Total belanja: Rp1.000 + Rp4.500 = Rp5.500. Kembalian: Rp10.000 - Rp5.500 = Rp4.500.",
+      "en": "Total cost: Rp1,000 + Rp4,500 = Rp5,500. Change: Rp10,000 - Rp5,500 = Rp4,500."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.g155jcxt",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Pedagang di pasar punya 84 kg cabai. Pagi hari terjual 35 kg dan sore hari terjual 19 kg. Berapa kg cabai yang tersisa?",
+      "en": "A market seller has 84 kg of chillies. 35 kg are sold in the morning and 19 kg in the afternoon. How many kg of chillies are left?"
+    },
+    "choices": [
+      54,
+      30,
+      49,
+      68
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Terjual semuanya: 35 + 19 = 54 kg. Sisa: 84 - 54 = 30 kg.",
+      "en": "Sold altogether: 35 + 19 = 54 kg. Left: 84 - 54 = 30 kg."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.gcyru5o",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Maya membeli sekotak susu seharga Rp3.500 dan sebuah penghapus seharga Rp4.500. Maya membayar dengan uang Rp10.000. Berapa uang kembaliannya?",
+      "en": "Maya buys a carton of milk for Rp3,500 and an eraser for Rp4,500. Maya pays with Rp10,000. How much change does Maya get?"
+    },
+    "choices": [
+      {
+        "id": "Rp2.000",
+        "en": "Rp2,000"
+      },
+      {
+        "id": "Rp8.000",
+        "en": "Rp8,000"
+      },
+      {
+        "id": "Rp6.500",
+        "en": "Rp6,500"
+      },
+      {
+        "id": "Rp2.500",
+        "en": "Rp2,500"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Total belanja: Rp3.500 + Rp4.500 = Rp8.000. Kembalian: Rp10.000 - Rp8.000 = Rp2.000.",
+      "en": "Total cost: Rp3,500 + Rp4,500 = Rp8,000. Change: Rp10,000 - Rp8,000 = Rp2,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.g1us1401",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Pedagang di pasar punya 97 kg cabai. Pagi hari terjual 20 kg dan sore hari terjual 13 kg. Berapa kg cabai yang tersisa?",
+      "en": "A market seller has 97 kg of chillies. 20 kg are sold in the morning and 13 kg in the afternoon. How many kg of chillies are left?"
+    },
+    "choices": [
+      77,
+      90,
+      33,
+      64
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Terjual semuanya: 20 + 13 = 33 kg. Sisa: 97 - 33 = 64 kg.",
+      "en": "Sold altogether: 20 + 13 = 33 kg. Left: 97 - 33 = 64 kg."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.gpad6gp",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Rina membeli sebungkus roti seharga Rp2.500 dan sebuah pensil warna seharga Rp2.000. Rina membayar dengan uang Rp10.000. Berapa uang kembaliannya?",
+      "en": "Rina buys a pack of bread for Rp2,500 and a coloured pencil for Rp2,000. Rina pays with Rp10,000. How much change does Rina get?"
+    },
+    "choices": [
+      {
+        "id": "Rp6.000",
+        "en": "Rp6,000"
+      },
+      {
+        "id": "Rp4.500",
+        "en": "Rp4,500"
+      },
+      {
+        "id": "Rp7.500",
+        "en": "Rp7,500"
+      },
+      {
+        "id": "Rp5.500",
+        "en": "Rp5,500"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Total belanja: Rp2.500 + Rp2.000 = Rp4.500. Kembalian: Rp10.000 - Rp4.500 = Rp5.500.",
+      "en": "Total cost: Rp2,500 + Rp2,000 = Rp4,500. Change: Rp10,000 - Rp4,500 = Rp5,500."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.gnww6oh",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Pedagang di pasar punya 83 kg cabai. Pagi hari terjual 28 kg dan sore hari terjual 27 kg. Berapa kg cabai yang tersisa?",
+      "en": "A market seller has 83 kg of chillies. 28 kg are sold in the morning and 27 kg in the afternoon. How many kg of chillies are left?"
+    },
+    "choices": [
+      82,
+      55,
+      28,
+      29
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Terjual semuanya: 28 + 27 = 55 kg. Sisa: 83 - 55 = 28 kg.",
+      "en": "Sold altogether: 28 + 27 = 55 kg. Left: 83 - 55 = 28 kg."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.g1kkflj7",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Rina membeli sebuah penghapus seharga Rp1.000 dan sebungkus roti seharga Rp2.000. Rina membayar dengan uang Rp10.000. Berapa uang kembaliannya?",
+      "en": "Rina buys an eraser for Rp1,000 and a pack of bread for Rp2,000. Rina pays with Rp10,000. How much change does Rina get?"
+    },
+    "choices": [
+      {
+        "id": "Rp3.000",
+        "en": "Rp3,000"
+      },
+      {
+        "id": "Rp7.500",
+        "en": "Rp7,500"
+      },
+      {
+        "id": "Rp7.000",
+        "en": "Rp7,000"
+      },
+      {
+        "id": "Rp9.000",
+        "en": "Rp9,000"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Total belanja: Rp1.000 + Rp2.000 = Rp3.000. Kembalian: Rp10.000 - Rp3.000 = Rp7.000.",
+      "en": "Total cost: Rp1,000 + Rp2,000 = Rp3,000. Change: Rp10,000 - Rp3,000 = Rp7,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.g1okkf2f",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Pedagang di pasar punya 89 kg cabai. Pagi hari terjual 26 kg dan sore hari terjual 25 kg. Berapa kg cabai yang tersisa?",
+      "en": "A market seller has 89 kg of chillies. 26 kg are sold in the morning and 25 kg in the afternoon. How many kg of chillies are left?"
+    },
+    "choices": [
+      38,
+      51,
+      63,
+      88
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Terjual semuanya: 26 + 25 = 51 kg. Sisa: 89 - 51 = 38 kg.",
+      "en": "Sold altogether: 26 + 25 = 51 kg. Left: 89 - 51 = 38 kg."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.g11s6ut0",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Tono membeli sebungkus roti seharga Rp2.000 dan sebotol air minum seharga Rp1.500. Tono membayar dengan uang Rp10.000. Berapa uang kembaliannya?",
+      "en": "Tono buys a pack of bread for Rp2,000 and a bottle of water for Rp1,500. Tono pays with Rp10,000. How much change does Tono get?"
+    },
+    "choices": [
+      {
+        "id": "Rp7.000",
+        "en": "Rp7,000"
+      },
+      {
+        "id": "Rp6.500",
+        "en": "Rp6,500"
+      },
+      {
+        "id": "Rp3.500",
+        "en": "Rp3,500"
+      },
+      {
+        "id": "Rp8.000",
+        "en": "Rp8,000"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Total belanja: Rp2.000 + Rp1.500 = Rp3.500. Kembalian: Rp10.000 - Rp3.500 = Rp6.500.",
+      "en": "Total cost: Rp2,000 + Rp1,500 = Rp3,500. Change: Rp10,000 - Rp3,500 = Rp6,500."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.gp4ynd2",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Pedagang di pasar punya 79 kg cabai. Pagi hari terjual 20 kg dan sore hari terjual 32 kg. Berapa kg cabai yang tersisa?",
+      "en": "A market seller has 79 kg of chillies. 20 kg are sold in the morning and 32 kg in the afternoon. How many kg of chillies are left?"
+    },
+    "choices": [
+      52,
+      91,
+      27,
+      59
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Terjual semuanya: 20 + 32 = 52 kg. Sisa: 79 - 52 = 27 kg.",
+      "en": "Sold altogether: 20 + 32 = 52 kg. Left: 79 - 52 = 27 kg."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.g1t1o1l5",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Citra membeli sebotol air minum seharga Rp4.000 dan sebuah buku tulis seharga Rp4.500. Citra membayar dengan uang Rp10.000. Berapa uang kembaliannya?",
+      "en": "Citra buys a bottle of water for Rp4,000 and an exercise book for Rp4,500. Citra pays with Rp10,000. How much change does Citra get?"
+    },
+    "choices": [
+      {
+        "id": "Rp6.000",
+        "en": "Rp6,000"
+      },
+      {
+        "id": "Rp8.500",
+        "en": "Rp8,500"
+      },
+      {
+        "id": "Rp2.000",
+        "en": "Rp2,000"
+      },
+      {
+        "id": "Rp1.500",
+        "en": "Rp1,500"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Total belanja: Rp4.000 + Rp4.500 = Rp8.500. Kembalian: Rp10.000 - Rp8.500 = Rp1.500.",
+      "en": "Total cost: Rp4,000 + Rp4,500 = Rp8,500. Change: Rp10,000 - Rp8,500 = Rp1,500."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.addsub100.g1o62vkr",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.addsub100",
+    "stem": {
+      "id": "Pedagang di pasar punya 58 kg cabai. Pagi hari terjual 11 kg dan sore hari terjual 32 kg. Berapa kg cabai yang tersisa?",
+      "en": "A market seller has 58 kg of chillies. 11 kg are sold in the morning and 32 kg in the afternoon. How many kg of chillies are left?"
+    },
+    "choices": [
+      43,
+      47,
+      15,
+      79
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Terjual semuanya: 11 + 32 = 43 kg. Sisa: 58 - 43 = 15 kg.",
+      "en": "Sold altogether: 11 + 32 = 43 kg. Left: 58 - 43 = 15 kg."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t2.money_time.gwj7u2p",
+    "tier": 2,
+    "type": "multistep",
+    "topic": "t2.money_time",
+    "stem": {
+      "id": "Sari membeli sebotol air minum seharga Rp1.000 dan sebuah pensil warna seharga Rp3.000. Sari membayar dengan uang Rp10.000. Berapa uang kembaliannya?",
+      "en": "Sari buys a bottle of water for Rp1,000 and a coloured pencil for Rp3,000. Sari pays with Rp10,000. How much change does Sari get?"
+    },
+    "choices": [
+      {
+        "id": "Rp6.500",
+        "en": "Rp6,500"
+      },
+      {
+        "id": "Rp9.000",
+        "en": "Rp9,000"
+      },
+      {
+        "id": "Rp6.000",
+        "en": "Rp6,000"
+      },
+      {
+        "id": "Rp4.000",
+        "en": "Rp4,000"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Total belanja: Rp1.000 + Rp3.000 = Rp4.000. Kembalian: Rp10.000 - Rp4.000 = Rp6.000.",
+      "en": "Total cost: Rp1,000 + Rp3,000 = Rp4,000. Change: Rp10,000 - Rp4,000 = Rp6,000."
+    },
+    "source": "generated"
+  }
+]

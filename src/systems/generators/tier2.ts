@@ -9,7 +9,7 @@ import {
   type Family,
   type Rng,
   type Spec,
-} from './core';
+} from './core.ts';
 
 export const place100: Family = {
   topic: 't2.place100',
@@ -305,6 +305,33 @@ export const moneyTime: Family = {
       };
     },
   },
+};
+
+// Two-step subtraction (#12).
+addsub100.makers.multistep = (rng: Rng): Spec<number> => {
+  let a = 0;
+  let b = 0;
+  let c = 0;
+  do {
+    a = int(rng, 50, 99);
+    b = int(rng, 10, 35);
+    c = int(rng, 10, 35);
+  } while (a - b - c < 5);
+  const ans = a - b - c;
+  return {
+    stem: T((l) =>
+      l === 'id'
+        ? `Pedagang di pasar punya ${a} kg cabai. Pagi hari terjual ${b} kg dan sore hari terjual ${c} kg. Berapa kg cabai yang tersisa?`
+        : `A market seller has ${a} kg of chillies. ${b} kg are sold in the morning and ${c} kg in the afternoon. How many kg of chillies are left?`,
+    ),
+    answer: ans,
+    distractors: [a - b, b + c, a - b + c],
+    explanation: T((l) =>
+      l === 'id'
+        ? `Terjual semuanya: ${b} + ${c} = ${b + c} kg. Sisa: ${a} - ${b + c} = ${ans} kg.`
+        : `Sold altogether: ${b} + ${c} = ${b + c} kg. Left: ${a} - ${b + c} = ${ans} kg.`,
+    ),
+  };
 };
 
 export const TIER2 = [place100, addsub100, halfQuarter, equalGroups, moneyTime];

@@ -13,8 +13,8 @@ import {
   type Frac,
   type Rng,
   type Spec,
-} from './core';
-import { noCarrySum, smallerFromLarger } from './tier2';
+} from './core.ts';
+import { noCarrySum, smallerFromLarger } from './tier2.ts';
 
 const PLACE = [L('ratusan', 'hundreds'), L('puluhan', 'tens'), L('satuan', 'ones')];
 
@@ -296,6 +296,28 @@ export const stdUnits: Family = {
       };
     },
   },
+};
+
+// Two-step add then subtract within 1,000 (#12).
+addsub1000.makers.multistep = (rng: Rng): Spec<number> => {
+  const a = int(rng, 300, 650);
+  const b = int(rng, 100, 999 - a);
+  const c = int(rng, 20, 99);
+  const ans = a + b - c;
+  return {
+    stem: T((l) =>
+      l === 'id'
+        ? `Perpustakaan sekolah punya ${a} buku. Datang ${b} buku baru, lalu ${c} buku yang rusak disingkirkan. Berapa buku di perpustakaan sekarang?`
+        : `The school library has ${a} books. ${b} new books arrive, then ${c} damaged books are removed. How many books does the library have now?`,
+    ),
+    answer: ans,
+    distractors: [a + b, a + b + c, a - b + c],
+    explanation: T((l) =>
+      l === 'id'
+        ? `Buku baru berarti tambah: ${a} + ${b} = ${a + b}. Disingkirkan berarti kurang: ${a + b} - ${c} = ${ans}.`
+        : `New books means add: ${a} + ${b} = ${a + b}. Removed means subtract: ${a + b} - ${c} = ${ans}.`,
+    ),
+  };
 };
 
 export const TIER3 = [place1000, addsub1000, muldiv100, fractionCompare, stdUnits];

@@ -30,6 +30,8 @@ const all: Question[] = batches.flatMap((b) => b.qs);
 function value(c: Choice): number {
   const s = typeof c === 'number' ? String(c) : typeof c === 'string' ? c : c.en;
   const clean = s.replace(/^Rp/, '').replace(/%$/, '').replace(/,/g, '').trim();
+  const time = clean.match(/^(\d+):(\d\d)$/);
+  if (time) return Number(time[1]) + Number(time[2]) / 60;
   const ratio = clean.match(/^(\d+) : (\d+)$/);
   if (ratio) return Number(ratio[1]) / Number(ratio[2]);
   if (/^\d+\/\d+$/.test(clean)) {
@@ -189,6 +191,45 @@ describe('answers are mathematically correct', () => {
       if ((m = en.match(/ratio of .* is (\d+) : (\d+)\. Together they have (\d+) marbles/)))
         expect(answerOf(q)).toBe((+m[3]! / (+m[1]! + +m[2]!)) * +m[2]!);
     }
+  });
+
+  it('for the two-step templates added for the bank (#12)', () => {
+    let checked = 0;
+    for (const q of all.filter((x) => x.type === 'multistep')) {
+      const en = q.stem.en;
+      let m: RegExpMatchArray | null;
+      if ((m = en.match(/has (\d+) \w+\. \w+ gives \w+ (\d+) more \w+\. Then \w+ gives (\d+)/)))
+        expect(answerOf(q)).toBe(+m[1]! + +m[2]! - +m[3]!);
+      else if (
+        (m = en.match(/has (\d+) kg of chillies\. (\d+) kg are sold in the morning and (\d+) kg/))
+      )
+        expect(answerOf(q)).toBe(+m[1]! - +m[2]! - +m[3]!);
+      else if (
+        (m = en.match(/library has (\d+) books\. (\d+) new books arrive, then (\d+) damaged/))
+      )
+        expect(answerOf(q)).toBe(+m[1]! + +m[2]! - +m[3]!);
+      else if (
+        (m = en.match(
+          /buys (\d+) packs of sweets with (\d+) sweets in each pack\. .* between (\d+) groups/,
+        ))
+      )
+        expect(answerOf(q)).toBe((+m[1]! * +m[2]!) / +m[3]!);
+      else if (
+        (m = en.match(
+          /mean score on (\d+) tests is (\d+)\. The first \d+ scores are ([\d, and]+)\./,
+        ))
+      ) {
+        const known = m[3]!.split(/, | and /).map(Number);
+        expect(answerOf(q)).toBe(+m[1]! * +m[2]! - known.reduce((x, y) => x + y, 0));
+      } else if ((m = en.match(/measures (\d+) cm × (\d+) cm × (\d+) cm\. It is filled halfway/)))
+        expect(answerOf(q)).toBe((+m[1]! * +m[2]! * +m[3]!) / 2000);
+      else if ((m = en.match(/leaves at (\d+):00 and travels (\d+) km at (\d+) km\/h/))) {
+        const c = q.choices[q.answerIndex] as { en: string };
+        expect(Number(c.en.split(':')[0])).toBe(+m[1]! + +m[2]! / +m[3]!);
+      } else continue;
+      checked++;
+    }
+    expect(checked).toBeGreaterThan(100);
   });
 
   it('fraction answers are in simplest form', () => {

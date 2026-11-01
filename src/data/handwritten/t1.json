@@ -1,0 +1,224 @@
+[
+  {
+    "id": "t1.addsub20.h001",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Berapa 8 + 5?",
+      "en": "What is 8 + 5?"
+    },
+    "choices": [13, 12, 14, 3],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "8 + 5 = 13. Mulai dari 8, hitung maju 5 kali: 9, 10, 11, 12, 13.",
+      "en": "8 + 5 = 13. Start at 8 and count on 5: 9, 10, 11, 12, 13."
+    },
+    "tags": ["make-ten"],
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.addsub20.h002",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Dina punya 12 kelereng. Ia memberi 4 kelereng kepada Budi. Berapa kelereng Dina sekarang?",
+      "en": "Dina has 12 marbles. She gives 4 marbles to Budi. How many marbles does Dina have now?"
+    },
+    "choices": [16, 8, 7, 9],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Memberi berarti berkurang: 12 - 4 = 8.",
+      "en": "Giving away means taking away: 12 - 4 = 8."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.addsub20.h003",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.addsub20",
+    "stem": {
+      "id": "Di dalam bus ada 9 penumpang. Di halte pertama 5 orang naik. Di halte kedua 3 orang turun. Berapa penumpang di bus sekarang?",
+      "en": "A bus has 9 passengers. At the first stop 5 people get on. At the second stop 3 people get off. How many passengers are on the bus now?"
+    },
+    "choices": [14, 17, 11, 7],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Naik berarti tambah: 9 + 5 = 14. Turun berarti kurang: 14 - 3 = 11.",
+      "en": "Getting on means add: 9 + 5 = 14. Getting off means subtract: 14 - 3 = 11."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.shapes.h001",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.shapes",
+    "stem": {
+      "id": "Bangun datar yang memiliki 3 sisi disebut apa?",
+      "en": "What is a flat shape with 3 sides called?"
+    },
+    "choices": [
+      {
+        "id": "persegi",
+        "en": "square"
+      },
+      {
+        "id": "segitiga",
+        "en": "triangle"
+      },
+      {
+        "id": "lingkaran",
+        "en": "circle"
+      },
+      {
+        "id": "persegi panjang",
+        "en": "rectangle"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Segitiga memiliki 3 sisi dan 3 sudut.",
+      "en": "A triangle has 3 sides and 3 corners."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.shapes.h002",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.shapes",
+    "stem": {
+      "id": "Benda mana yang bentuknya seperti bola?",
+      "en": "Which object is shaped like a ball?"
+    },
+    "choices": [
+      {
+        "id": "kotak susu",
+        "en": "a milk carton"
+      },
+      {
+        "id": "buku",
+        "en": "a book"
+      },
+      {
+        "id": "jeruk",
+        "en": "an orange"
+      },
+      {
+        "id": "kaleng",
+        "en": "a tin can"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Jeruk bulat seperti bola. Buku dan kotak susu berbentuk balok, kaleng berbentuk tabung.",
+      "en": "An orange is round like a ball. A book and a milk carton are box shapes, and a tin can is a cylinder."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.shapes.h003",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.shapes",
+    "stem": {
+      "id": "Ani menggambar 2 segitiga dan 1 persegi. Berapa jumlah semua sisinya?",
+      "en": "Ani draws 2 triangles and 1 square. How many sides are there altogether?"
+    },
+    "choices": [10, 9, 7, 12],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Segitiga punya 3 sisi, persegi punya 4 sisi: 3 + 3 + 4 = 10.",
+      "en": "A triangle has 3 sides and a square has 4: 3 + 3 + 4 = 10."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.compare_measure.h001",
+    "tier": 1,
+    "type": "fluency",
+    "topic": "t1.compare_measure",
+    "stem": {
+      "id": "Hewan mana yang paling berat?",
+      "en": "Which animal is the heaviest?"
+    },
+    "choices": [
+      {
+        "id": "kucing",
+        "en": "a cat"
+      },
+      {
+        "id": "gajah",
+        "en": "an elephant"
+      },
+      {
+        "id": "ayam",
+        "en": "a chicken"
+      },
+      {
+        "id": "semut",
+        "en": "an ant"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Gajah jauh lebih besar dan lebih berat daripada kucing, ayam, dan semut.",
+      "en": "An elephant is much bigger and heavier than a cat, a chicken or an ant."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.compare_measure.h002",
+    "tier": 1,
+    "type": "application",
+    "topic": "t1.compare_measure",
+    "stem": {
+      "id": "Panjang meja 8 jengkal. Panjang papan tulis 15 jengkal. Berapa jengkal papan tulis lebih panjang daripada meja?",
+      "en": "A table is 8 hand spans long. A whiteboard is 15 hand spans long. How many hand spans longer is the whiteboard?"
+    },
+    "choices": [23, 8, 7, 6],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Selisihnya dicari dengan mengurangi: 15 - 8 = 7 jengkal.",
+      "en": "Find the difference by subtracting: 15 - 8 = 7 hand spans."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t1.pattern.h001",
+    "tier": 1,
+    "type": "multistep",
+    "topic": "t1.pattern",
+    "stem": {
+      "id": "Pola warna: merah, biru, merah, biru, ... Warna apa yang ke-7?",
+      "en": "Colour pattern: red, blue, red, blue, ... What colour is the 7th one?"
+    },
+    "choices": [
+      {
+        "id": "biru",
+        "en": "blue"
+      },
+      {
+        "id": "merah",
+        "en": "red"
+      },
+      {
+        "id": "hijau",
+        "en": "green"
+      },
+      {
+        "id": "kuning",
+        "en": "yellow"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Polanya berulang setiap 2 warna. Urutan ke-1, 3, 5, 7 berwarna merah.",
+      "en": "The pattern repeats every 2 colours. Positions 1, 3, 5 and 7 are red."
+    },
+    "source": "handwritten"
+  }
+]

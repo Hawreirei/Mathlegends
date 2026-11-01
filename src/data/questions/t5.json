@@ -1,0 +1,1321 @@
+[
+  {
+    "id": "t5.angles.h001",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.angles",
+    "stem": {
+      "id": "Sudut yang besarnya tepat 90° disebut sudut apa?",
+      "en": "What is an angle of exactly 90° called?"
+    },
+    "choices": [
+      {
+        "id": "sudut lancip",
+        "en": "an acute angle"
+      },
+      {
+        "id": "sudut siku-siku",
+        "en": "a right angle"
+      },
+      {
+        "id": "sudut tumpul",
+        "en": "an obtuse angle"
+      },
+      {
+        "id": "sudut lurus",
+        "en": "a straight angle"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Sudut 90° disebut sudut siku-siku, seperti sudut pojok buku.",
+      "en": "A 90° angle is a right angle, like the corner of a book."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.angles.h002",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.angles",
+    "stem": {
+      "id": "Sudut 120° termasuk jenis sudut apa?",
+      "en": "What kind of angle is 120°?"
+    },
+    "choices": [
+      {
+        "id": "lancip",
+        "en": "acute"
+      },
+      {
+        "id": "siku-siku",
+        "en": "right"
+      },
+      {
+        "id": "tumpul",
+        "en": "obtuse"
+      },
+      {
+        "id": "lurus",
+        "en": "straight"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Sudut tumpul lebih besar dari 90° tetapi kurang dari 180°. 120° termasuk sudut tumpul.",
+      "en": "An obtuse angle is more than 90° but less than 180°. 120° is obtuse."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.big_numbers.g11m7k8b",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.big_numbers",
+    "stem": {
+      "id": "Bulatkan 13.080 ke ribuan terdekat.",
+      "en": "Round 13,080 to the nearest thousand."
+    },
+    "choices": [
+      0,
+      {
+        "id": "13.000",
+        "en": "13,000"
+      },
+      {
+        "id": "10.000",
+        "en": "10,000"
+      },
+      {
+        "id": "14.000",
+        "en": "14,000"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Lihat angka di sebelah kanan tempat ribuan: 0. Karena kurang dari 5, bulatkan ke bawah, jadi 13.000.",
+      "en": "Look at the digit to the right of the thousands place: 0. It is less than 5, so round down, which gives 13,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.kpk_fpb.g1vprkge",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.kpk_fpb",
+    "stem": {
+      "id": "Berapa KPK dari 3 dan 8?",
+      "en": "What is the lowest common multiple (LCM) of 3 and 8?"
+    },
+    "choices": [
+      1,
+      48,
+      11,
+      24
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Kelipatan 3: 3, 6, 9, 12, 15, 18, 21, 24. Kelipatan 8: 8, 16, 24. Kelipatan persekutuan terkecil adalah 24.",
+      "en": "Multiples of 3: 3, 6, 9, 12, 15, 18, 21, 24. Multiples of 8: 8, 16, 24. The lowest common multiple is 24."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.frac_addsub.g23q6ps",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.frac_addsub",
+    "stem": {
+      "id": "Berapa 1/3 + 1/2?",
+      "en": "What is 1/3 + 1/2?"
+    },
+    "choices": [
+      "6/6",
+      "5/6",
+      "2/5",
+      "2/6"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Samakan penyebut menjadi 6: 2/6 + 3/6 = 5/6.",
+      "en": "Make the denominators the same (6): 2/6 + 3/6 = 5/6."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.g1iwqtpe",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Berapa 75% dari 316?",
+      "en": "What is 75% of 316?"
+    },
+    "choices": [
+      79,
+      {
+        "id": "2.370",
+        "en": "2,370"
+      },
+      237,
+      241
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "75% dari 316 = 75/100 × 316 = 237.",
+      "en": "75% of 316 = 75/100 × 316 = 237."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.g1upfm6b",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Berapa modus dari data: 5, 9, 7, 9 dan 3?",
+      "en": "What is the mode of this data: 5, 9, 7, 9 and 3?"
+    },
+    "choices": [
+      5,
+      9,
+      10,
+      3
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Modus adalah nilai yang paling sering muncul. 9 muncul 2 kali.",
+      "en": "The mode is the value that appears most often. 9 appears twice."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.big_numbers.g1oeo0jd",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.big_numbers",
+    "stem": {
+      "id": "Bulatkan 431.968 ke puluh ribuan terdekat.",
+      "en": "Round 431,968 to the nearest ten thousand."
+    },
+    "choices": [
+      {
+        "id": "440.000",
+        "en": "440,000"
+      },
+      {
+        "id": "432.000",
+        "en": "432,000"
+      },
+      {
+        "id": "400.000",
+        "en": "400,000"
+      },
+      {
+        "id": "430.000",
+        "en": "430,000"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Lihat angka di sebelah kanan tempat puluh ribuan: 1. Karena kurang dari 5, bulatkan ke bawah, jadi 430.000.",
+      "en": "Look at the digit to the right of the ten thousands place: 1. It is less than 5, so round down, which gives 430,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.kpk_fpb.gck3vgf",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.kpk_fpb",
+    "stem": {
+      "id": "Berapa FPB dari 42 dan 35?",
+      "en": "What is the highest common factor (HCF) of 42 and 35?"
+    },
+    "choices": [
+      35,
+      7,
+      1,
+      210
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Faktor 42: 1, 2, 3, 6, 7, 14, 21, 42. Faktor 35: 1, 5, 7, 35. Faktor persekutuan terbesar adalah 7.",
+      "en": "Factors of 42: 1, 2, 3, 6, 7, 14, 21, 42. Factors of 35: 1, 5, 7, 35. The highest common factor is 7."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.frac_addsub.g2w4yvy",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.frac_addsub",
+    "stem": {
+      "id": "Berapa 4/8 - 1/8?",
+      "en": "What is 4/8 - 1/8?"
+    },
+    "choices": [
+      "3/16",
+      "3/8",
+      "4/8",
+      "5/8"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Penyebutnya sama, jadi kurangkan pembilangnya saja: 4 - 1 = 3. Hasilnya 3/8.",
+      "en": "The denominators are the same, so just subtract the numerators: 4 - 1 = 3. The answer is 3/8."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.g7o86km",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "0,32 sama dengan berapa persen?",
+      "en": "0.32 is equal to what percentage?"
+    },
+    "choices": [
+      {
+        "id": "0,32%",
+        "en": "0.32%"
+      },
+      {
+        "id": "32%",
+        "en": "32%"
+      },
+      {
+        "id": "320%",
+        "en": "320%"
+      },
+      {
+        "id": "3,2%",
+        "en": "3.2%"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "0,32 = 32/100 = 32%.",
+      "en": "0.32 = 32/100 = 32%."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.g1u6alkg",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Berapa modus dari data: 7, 3, 12 dan 12?",
+      "en": "What is the mode of this data: 7, 3, 12 and 12?"
+    },
+    "choices": [
+      12,
+      4,
+      3,
+      13
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Modus adalah nilai yang paling sering muncul. 12 muncul 2 kali.",
+      "en": "The mode is the value that appears most often. 12 appears twice."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.big_numbers.gj9r2rb",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.big_numbers",
+    "stem": {
+      "id": "Bulatkan 691.063 ke puluh ribuan terdekat.",
+      "en": "Round 691,063 to the nearest ten thousand."
+    },
+    "choices": [
+      {
+        "id": "710.000",
+        "en": "710,000"
+      },
+      {
+        "id": "690.000",
+        "en": "690,000"
+      },
+      {
+        "id": "700.000",
+        "en": "700,000"
+      },
+      {
+        "id": "691.000",
+        "en": "691,000"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Lihat angka di sebelah kanan tempat puluh ribuan: 1. Karena kurang dari 5, bulatkan ke bawah, jadi 690.000.",
+      "en": "Look at the digit to the right of the ten thousands place: 1. It is less than 5, so round down, which gives 690,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.kpk_fpb.ghdmk58",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.kpk_fpb",
+    "stem": {
+      "id": "Berapa FPB dari 4 dan 10?",
+      "en": "What is the highest common factor (HCF) of 4 and 10?"
+    },
+    "choices": [
+      20,
+      2,
+      4,
+      1
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Faktor 4: 1, 2, 4. Faktor 10: 1, 2, 5, 10. Faktor persekutuan terbesar adalah 2.",
+      "en": "Factors of 4: 1, 2, 4. Factors of 10: 1, 2, 5, 10. The highest common factor is 2."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.frac_addsub.g1oka4kc",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.frac_addsub",
+    "stem": {
+      "id": "Berapa 3/6 + 2/6?",
+      "en": "What is 3/6 + 2/6?"
+    },
+    "choices": [
+      "6/6",
+      "7/6",
+      "5/6",
+      "5/12"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Penyebutnya sama, jadi jumlahkan pembilangnya saja: 3 + 2 = 5. Hasilnya 5/6.",
+      "en": "The denominators are the same, so just add the numerators: 3 + 2 = 5. The answer is 5/6."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.gfkajkr",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Berapa 75% dari 160?",
+      "en": "What is 75% of 160?"
+    },
+    "choices": [
+      120,
+      {
+        "id": "1.200",
+        "en": "1,200"
+      },
+      40,
+      85
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "75% dari 160 = 75/100 × 160 = 120.",
+      "en": "75% of 160 = 75/100 × 160 = 120."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.gp79n7q",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Berapa modus dari data: 2, 9, 9 dan 8?",
+      "en": "What is the mode of this data: 2, 9, 9 and 8?"
+    },
+    "choices": [
+      4,
+      2,
+      10,
+      9
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Modus adalah nilai yang paling sering muncul. 9 muncul 2 kali.",
+      "en": "The mode is the value that appears most often. 9 appears twice."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.big_numbers.gtyvy2a",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.big_numbers",
+    "stem": {
+      "id": "Bulatkan 252.488 ke ribuan terdekat.",
+      "en": "Round 252,488 to the nearest thousand."
+    },
+    "choices": [
+      {
+        "id": "300.000",
+        "en": "300,000"
+      },
+      {
+        "id": "252.000",
+        "en": "252,000"
+      },
+      {
+        "id": "253.000",
+        "en": "253,000"
+      },
+      {
+        "id": "250.000",
+        "en": "250,000"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Lihat angka di sebelah kanan tempat ribuan: 4. Karena kurang dari 5, bulatkan ke bawah, jadi 252.000.",
+      "en": "Look at the digit to the right of the thousands place: 4. It is less than 5, so round down, which gives 252,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.kpk_fpb.gljglxw",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.kpk_fpb",
+    "stem": {
+      "id": "Berapa KPK dari 5 dan 8?",
+      "en": "What is the lowest common multiple (LCM) of 5 and 8?"
+    },
+    "choices": [
+      80,
+      13,
+      40,
+      1
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Kelipatan 5: 5, 10, 15, 20, 25, 30, 35, 40. Kelipatan 8: 8, 16, 24, 32, 40. Kelipatan persekutuan terkecil adalah 40.",
+      "en": "Multiples of 5: 5, 10, 15, 20, 25, 30, 35, 40. Multiples of 8: 8, 16, 24, 32, 40. The lowest common multiple is 40."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.frac_addsub.g23n17t",
+    "tier": 5,
+    "type": "fluency",
+    "topic": "t5.frac_addsub",
+    "stem": {
+      "id": "Berapa 1/3 + 1/3?",
+      "en": "What is 1/3 + 1/3?"
+    },
+    "choices": [
+      "2/3",
+      "2/6",
+      "4/3",
+      "3/3"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Penyebutnya sama, jadi jumlahkan pembilangnya saja: 1 + 1 = 2. Hasilnya 2/3.",
+      "en": "The denominators are the same, so just add the numerators: 1 + 1 = 2. The answer is 2/3."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.angles.h003",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.angles",
+    "stem": {
+      "id": "Jam menunjukkan pukul 3 tepat. Berapa derajat sudut terkecil antara jarum pendek dan jarum panjang?",
+      "en": "A clock shows exactly 3 o'clock. What is the smaller angle between the hour hand and the minute hand, in degrees?"
+    },
+    "choices": [
+      90,
+      3,
+      180,
+      45
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Satu putaran 360° dibagi 12 angka, jadi setiap angka 30°. Dari 12 ke 3 ada 3 × 30° = 90°.",
+      "en": "A full turn of 360° is split into 12 numbers, so each number is 30°. From 12 to 3 is 3 × 30° = 90°."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.frac_addsub.h001",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.frac_addsub",
+    "stem": {
+      "id": "Ibu membeli 3/4 kg gula. Ibu memakai 1/2 kg untuk membuat kue. Berapa kg gula yang tersisa?",
+      "en": "Mum buys 3/4 kg of sugar and uses 1/2 kg to make a cake. How many kg of sugar are left?"
+    },
+    "choices": [
+      "1/2",
+      "5/4",
+      "1/4",
+      "2/2"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Samakan penyebut: 1/2 = 2/4. Lalu 3/4 - 2/4 = 1/4 kg.",
+      "en": "Make the denominators the same: 1/2 = 2/4. Then 3/4 - 2/4 = 1/4 kg."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.kpk_fpb.g1ur9shd",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.kpk_fpb",
+    "stem": {
+      "id": "Lampu merah menyala setiap 5 detik dan lampu hijau menyala setiap 6 detik. Keduanya baru saja menyala bersamaan. Setelah berapa detik keduanya akan menyala bersamaan lagi?",
+      "en": "A red light flashes every 5 seconds and a green light flashes every 6 seconds. They have just flashed together. After how many seconds will they flash together again?"
+    },
+    "choices": [
+      30,
+      1,
+      11,
+      31
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Cari KPK dari 5 dan 6. Kelipatan 5: 5, 10, 15, 20, 25, 30. Kelipatan 6: 6, 12, 18, 24, 30. Jadi setelah 30 detik.",
+      "en": "Find the LCM of 5 and 6. Multiples of 5: 5, 10, 15, 20, 25, 30. Multiples of 6: 6, 12, 18, 24, 30. So after 30 seconds."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.g1y95yyq",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sebuah tas Rp90.000. Tas itu mendapat diskon 25%. Berapa besar potongan harganya?",
+      "en": "A bag costs Rp90,000. It has a 25% discount. How much money is taken off the price?"
+    },
+    "choices": [
+      {
+        "id": "Rp25.000",
+        "en": "Rp25,000"
+      },
+      {
+        "id": "Rp22.500",
+        "en": "Rp22,500"
+      },
+      {
+        "id": "Rp45.000",
+        "en": "Rp45,000"
+      },
+      {
+        "id": "Rp67.500",
+        "en": "Rp67,500"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Potongan = 25% × Rp90.000 = 25/100 × 90.000 = Rp22.500.",
+      "en": "Discount = 25% × Rp90,000 = 25/100 × 90,000 = Rp22,500."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.g1uf6nu8",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Banyak buku yang dibaca Ani selama 5 minggu: 12, 4, 7, 5 dan 12. Berapa rata-rata buku yang dibaca setiap minggu?",
+      "en": "The number of books Ani read in 5 weeks: 12, 4, 7, 5 and 12. What is the mean number of books per week?"
+    },
+    "choices": [
+      12,
+      8,
+      40,
+      7
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Rata-rata = jumlah ÷ banyak data = 40 ÷ 5 = 8.",
+      "en": "Mean = total ÷ number of values = 40 ÷ 5 = 8."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.kpk_fpb.g1n74vqz",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.kpk_fpb",
+    "stem": {
+      "id": "Lampu merah menyala setiap 8 detik dan lampu hijau menyala setiap 5 detik. Keduanya baru saja menyala bersamaan. Setelah berapa detik keduanya akan menyala bersamaan lagi?",
+      "en": "A red light flashes every 8 seconds and a green light flashes every 5 seconds. They have just flashed together. After how many seconds will they flash together again?"
+    },
+    "choices": [
+      41,
+      40,
+      1,
+      13
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Cari KPK dari 8 dan 5. Kelipatan 8: 8, 16, 24, 32, 40. Kelipatan 5: 5, 10, 15, 20, 25, 30, 35, 40. Jadi setelah 40 detik.",
+      "en": "Find the LCM of 8 and 5. Multiples of 8: 8, 16, 24, 32, 40. Multiples of 5: 5, 10, 15, 20, 25, 30, 35, 40. So after 40 seconds."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.g1rb2jw5",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sebuah tas Rp40.000. Tas itu mendapat diskon 10%. Berapa besar potongan harganya?",
+      "en": "A bag costs Rp40,000. It has a 10% discount. How much money is taken off the price?"
+    },
+    "choices": [
+      {
+        "id": "Rp4.000",
+        "en": "Rp4,000"
+      },
+      {
+        "id": "Rp10.000",
+        "en": "Rp10,000"
+      },
+      {
+        "id": "Rp8.000",
+        "en": "Rp8,000"
+      },
+      {
+        "id": "Rp36.000",
+        "en": "Rp36,000"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Potongan = 10% × Rp40.000 = 10/100 × 40.000 = Rp4.000.",
+      "en": "Discount = 10% × Rp40,000 = 10/100 × 40,000 = Rp4,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.g47qmly",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Banyak buku yang dibaca Rina selama 4 minggu: 4, 7, 10 dan 3. Berapa rata-rata buku yang dibaca setiap minggu?",
+      "en": "The number of books Rina read in 4 weeks: 4, 7, 10 and 3. What is the mean number of books per week?"
+    },
+    "choices": [
+      6,
+      7,
+      10,
+      24
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Rata-rata = jumlah ÷ banyak data = 24 ÷ 4 = 6.",
+      "en": "Mean = total ÷ number of values = 24 ÷ 4 = 6."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.kpk_fpb.g1dc3cb2",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.kpk_fpb",
+    "stem": {
+      "id": "Lampu merah menyala setiap 5 detik dan lampu hijau menyala setiap 12 detik. Keduanya baru saja menyala bersamaan. Setelah berapa detik keduanya akan menyala bersamaan lagi?",
+      "en": "A red light flashes every 5 seconds and a green light flashes every 12 seconds. They have just flashed together. After how many seconds will they flash together again?"
+    },
+    "choices": [
+      1,
+      61,
+      17,
+      60
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Cari KPK dari 5 dan 12. Kelipatan 5: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60. Kelipatan 12: 12, 24, 36, 48, 60. Jadi setelah 60 detik.",
+      "en": "Find the LCM of 5 and 12. Multiples of 5: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60. Multiples of 12: 12, 24, 36, 48, 60. So after 60 seconds."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.g1tcu6g1",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sebuah tas Rp130.000. Tas itu mendapat diskon 10%. Berapa besar potongan harganya?",
+      "en": "A bag costs Rp130,000. It has a 10% discount. How much money is taken off the price?"
+    },
+    "choices": [
+      {
+        "id": "Rp13.000",
+        "en": "Rp13,000"
+      },
+      {
+        "id": "Rp10.000",
+        "en": "Rp10,000"
+      },
+      {
+        "id": "Rp117.000",
+        "en": "Rp117,000"
+      },
+      {
+        "id": "Rp26.000",
+        "en": "Rp26,000"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Potongan = 10% × Rp130.000 = 10/100 × 130.000 = Rp13.000.",
+      "en": "Discount = 10% × Rp130,000 = 10/100 × 130,000 = Rp13,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.g17xj8ae",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Banyak buku yang dibaca Budi selama 5 minggu: 5, 5, 3, 2 dan 10. Berapa rata-rata buku yang dibaca setiap minggu?",
+      "en": "The number of books Budi read in 5 weeks: 5, 5, 3, 2 and 10. What is the mean number of books per week?"
+    },
+    "choices": [
+      25,
+      5,
+      10,
+      6
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Rata-rata = jumlah ÷ banyak data = 25 ÷ 5 = 5.",
+      "en": "Mean = total ÷ number of values = 25 ÷ 5 = 5."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.kpk_fpb.g8ifgdb",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.kpk_fpb",
+    "stem": {
+      "id": "Lampu merah menyala setiap 4 detik dan lampu hijau menyala setiap 5 detik. Keduanya baru saja menyala bersamaan. Setelah berapa detik keduanya akan menyala bersamaan lagi?",
+      "en": "A red light flashes every 4 seconds and a green light flashes every 5 seconds. They have just flashed together. After how many seconds will they flash together again?"
+    },
+    "choices": [
+      1,
+      21,
+      9,
+      20
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Cari KPK dari 4 dan 5. Kelipatan 4: 4, 8, 12, 16, 20. Kelipatan 5: 5, 10, 15, 20. Jadi setelah 20 detik.",
+      "en": "Find the LCM of 4 and 5. Multiples of 4: 4, 8, 12, 16, 20. Multiples of 5: 5, 10, 15, 20. So after 20 seconds."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.gc6ki0z",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sebuah tas Rp100.000. Tas itu mendapat diskon 20%. Berapa besar potongan harganya?",
+      "en": "A bag costs Rp100,000. It has a 20% discount. How much money is taken off the price?"
+    },
+    "choices": [
+      {
+        "id": "Rp20.000",
+        "en": "Rp20,000"
+      },
+      {
+        "id": "Rp80.000",
+        "en": "Rp80,000"
+      },
+      {
+        "id": "Rp40.000",
+        "en": "Rp40,000"
+      },
+      {
+        "id": "Rp21.000",
+        "en": "Rp21,000"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Potongan = 20% × Rp100.000 = 20/100 × 100.000 = Rp20.000.",
+      "en": "Discount = 20% × Rp100,000 = 20/100 × 100,000 = Rp20,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.gq2l2oq",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Banyak buku yang dibaca Joko selama 3 minggu: 6, 8 dan 10. Berapa rata-rata buku yang dibaca setiap minggu?",
+      "en": "The number of books Joko read in 3 weeks: 6, 8 and 10. What is the mean number of books per week?"
+    },
+    "choices": [
+      9,
+      10,
+      8,
+      24
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Rata-rata = jumlah ÷ banyak data = 24 ÷ 3 = 8.",
+      "en": "Mean = total ÷ number of values = 24 ÷ 3 = 8."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.kpk_fpb.g7ax4q5",
+    "tier": 5,
+    "type": "application",
+    "topic": "t5.kpk_fpb",
+    "stem": {
+      "id": "Lampu merah menyala setiap 6 detik dan lampu hijau menyala setiap 9 detik. Keduanya baru saja menyala bersamaan. Setelah berapa detik keduanya akan menyala bersamaan lagi?",
+      "en": "A red light flashes every 6 seconds and a green light flashes every 9 seconds. They have just flashed together. After how many seconds will they flash together again?"
+    },
+    "choices": [
+      18,
+      54,
+      15,
+      3
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Cari KPK dari 6 dan 9. Kelipatan 6: 6, 12, 18. Kelipatan 9: 9, 18. Jadi setelah 18 detik.",
+      "en": "Find the LCM of 6 and 9. Multiples of 6: 6, 12, 18. Multiples of 9: 9, 18. So after 18 seconds."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.angles.h004",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.angles",
+    "stem": {
+      "id": "Dua sudut dalam sebuah segitiga besarnya 50° dan 60°. Berapa derajat sudut ketiga?",
+      "en": "Two angles in a triangle are 50° and 60°. What is the third angle in degrees?"
+    },
+    "choices": [
+      110,
+      70,
+      250,
+      90
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlah sudut segitiga 180°. 50° + 60° = 110°, jadi sudut ketiga 180° - 110° = 70°.",
+      "en": "The angles in a triangle add up to 180°. 50° + 60° = 110°, so the third angle is 180° - 110° = 70°."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.data_mean.h001",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Rata-rata nilai 4 ulangan Sari adalah 80. Nilai 3 ulangan pertama 75, 80, dan 85. Berapa nilai ulangan keempat?",
+      "en": "Sari's mean score on 4 tests is 80. The first 3 scores are 75, 80 and 85. What is the 4th score?"
+    },
+    "choices": [
+      85,
+      240,
+      80,
+      75
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Jumlah 4 nilai = 4 × 80 = 320. Jumlah 3 nilai = 75 + 80 + 85 = 240. Nilai keempat = 320 - 240 = 80.",
+      "en": "Total of 4 scores = 4 × 80 = 320. Total of 3 scores = 75 + 80 + 85 = 240. The 4th score = 320 - 240 = 80."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t5.decimal_percent.gjuhllz",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sepasang sepatu Rp90.000. Toko memberi diskon 50%. Berapa yang harus dibayar Tono?",
+      "en": "A pair of shoes costs Rp90,000. The shop gives a 50% discount. How much does Tono have to pay?"
+    },
+    "choices": [
+      {
+        "id": "Rp90.000",
+        "en": "Rp90,000"
+      },
+      {
+        "id": "Rp40.000",
+        "en": "Rp40,000"
+      },
+      {
+        "id": "Rp45.000",
+        "en": "Rp45,000"
+      },
+      {
+        "id": "Rp46.000",
+        "en": "Rp46,000"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Potongan: 50% × Rp90.000 = Rp45.000. Dibayar: Rp90.000 - Rp45.000 = Rp45.000.",
+      "en": "Discount: 50% × Rp90,000 = Rp45,000. To pay: Rp90,000 - Rp45,000 = Rp45,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.g1fdi03b",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Rata-rata nilai 3 ulangan Yusuf adalah 75. Nilai 2 ulangan pertama 70 dan 75. Berapa nilai ulangan terakhir?",
+      "en": "Yusuf's mean score on 3 tests is 75. The first 2 scores are 70 and 75. What is the last score?"
+    },
+    "choices": [
+      225,
+      80,
+      75,
+      145
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlah semua nilai = 3 × 75 = 225. Jumlah nilai yang diketahui = 145. Nilai terakhir = 225 - 145 = 80.",
+      "en": "Total of all scores = 3 × 75 = 225. Total of the known scores = 145. Last score = 225 - 145 = 80."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.gz573op",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sepasang sepatu Rp90.000. Toko memberi diskon 10%. Berapa yang harus dibayar Dedi?",
+      "en": "A pair of shoes costs Rp90,000. The shop gives a 10% discount. How much does Dedi have to pay?"
+    },
+    "choices": [
+      {
+        "id": "Rp80.000",
+        "en": "Rp80,000"
+      },
+      {
+        "id": "Rp90.000",
+        "en": "Rp90,000"
+      },
+      {
+        "id": "Rp9.000",
+        "en": "Rp9,000"
+      },
+      {
+        "id": "Rp81.000",
+        "en": "Rp81,000"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Potongan: 10% × Rp90.000 = Rp9.000. Dibayar: Rp90.000 - Rp9.000 = Rp81.000.",
+      "en": "Discount: 10% × Rp90,000 = Rp9,000. To pay: Rp90,000 - Rp9,000 = Rp81,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.g1o2a245",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Rata-rata nilai 4 ulangan Yusuf adalah 70. Nilai 3 ulangan pertama 85, 70 dan 75. Berapa nilai ulangan terakhir?",
+      "en": "Yusuf's mean score on 4 tests is 70. The first 3 scores are 85, 70 and 75. What is the last score?"
+    },
+    "choices": [
+      230,
+      50,
+      70,
+      280
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlah semua nilai = 4 × 70 = 280. Jumlah nilai yang diketahui = 230. Nilai terakhir = 280 - 230 = 50.",
+      "en": "Total of all scores = 4 × 70 = 280. Total of the known scores = 230. Last score = 280 - 230 = 50."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.g7muz0m",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sepasang sepatu Rp200.000. Toko memberi diskon 10%. Berapa yang harus dibayar Nanda?",
+      "en": "A pair of shoes costs Rp200,000. The shop gives a 10% discount. How much does Nanda have to pay?"
+    },
+    "choices": [
+      {
+        "id": "Rp200.000",
+        "en": "Rp200,000"
+      },
+      {
+        "id": "Rp20.000",
+        "en": "Rp20,000"
+      },
+      {
+        "id": "Rp180.000",
+        "en": "Rp180,000"
+      },
+      {
+        "id": "Rp190.000",
+        "en": "Rp190,000"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Potongan: 10% × Rp200.000 = Rp20.000. Dibayar: Rp200.000 - Rp20.000 = Rp180.000.",
+      "en": "Discount: 10% × Rp200,000 = Rp20,000. To pay: Rp200,000 - Rp20,000 = Rp180,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.g19o67g3",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Rata-rata nilai 5 ulangan Lukman adalah 65. Nilai 4 ulangan pertama 60, 60, 70 dan 85. Berapa nilai ulangan terakhir?",
+      "en": "Lukman's mean score on 5 tests is 65. The first 4 scores are 60, 60, 70 and 85. What is the last score?"
+    },
+    "choices": [
+      50,
+      65,
+      275,
+      325
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Jumlah semua nilai = 5 × 65 = 325. Jumlah nilai yang diketahui = 275. Nilai terakhir = 325 - 275 = 50.",
+      "en": "Total of all scores = 5 × 65 = 325. Total of the known scores = 275. Last score = 325 - 275 = 50."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.g1m7i0o9",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sepasang sepatu Rp70.000. Toko memberi diskon 25%. Berapa yang harus dibayar Tono?",
+      "en": "A pair of shoes costs Rp70,000. The shop gives a 25% discount. How much does Tono have to pay?"
+    },
+    "choices": [
+      {
+        "id": "Rp17.500",
+        "en": "Rp17,500"
+      },
+      {
+        "id": "Rp70.000",
+        "en": "Rp70,000"
+      },
+      {
+        "id": "Rp52.500",
+        "en": "Rp52,500"
+      },
+      {
+        "id": "Rp45.000",
+        "en": "Rp45,000"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Potongan: 25% × Rp70.000 = Rp17.500. Dibayar: Rp70.000 - Rp17.500 = Rp52.500.",
+      "en": "Discount: 25% × Rp70,000 = Rp17,500. To pay: Rp70,000 - Rp17,500 = Rp52,500."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.gebdki3",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Rata-rata nilai 5 ulangan Wati adalah 70. Nilai 4 ulangan pertama 95, 60, 70 dan 60. Berapa nilai ulangan terakhir?",
+      "en": "Wati's mean score on 5 tests is 70. The first 4 scores are 95, 60, 70 and 60. What is the last score?"
+    },
+    "choices": [
+      65,
+      285,
+      70,
+      350
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Jumlah semua nilai = 5 × 70 = 350. Jumlah nilai yang diketahui = 285. Nilai terakhir = 350 - 285 = 65.",
+      "en": "Total of all scores = 5 × 70 = 350. Total of the known scores = 285. Last score = 350 - 285 = 65."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.g1y75q5z",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sepasang sepatu Rp140.000. Toko memberi diskon 20%. Berapa yang harus dibayar Kartika?",
+      "en": "A pair of shoes costs Rp140,000. The shop gives a 20% discount. How much does Kartika have to pay?"
+    },
+    "choices": [
+      {
+        "id": "Rp112.000",
+        "en": "Rp112,000"
+      },
+      {
+        "id": "Rp140.000",
+        "en": "Rp140,000"
+      },
+      {
+        "id": "Rp28.000",
+        "en": "Rp28,000"
+      },
+      {
+        "id": "Rp120.000",
+        "en": "Rp120,000"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Potongan: 20% × Rp140.000 = Rp28.000. Dibayar: Rp140.000 - Rp28.000 = Rp112.000.",
+      "en": "Discount: 20% × Rp140,000 = Rp28,000. To pay: Rp140,000 - Rp28,000 = Rp112,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.g152k574",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Rata-rata nilai 5 ulangan Ani adalah 80. Nilai 4 ulangan pertama 70, 95, 95 dan 85. Berapa nilai ulangan terakhir?",
+      "en": "Ani's mean score on 5 tests is 80. The first 4 scores are 70, 95, 95 and 85. What is the last score?"
+    },
+    "choices": [
+      345,
+      55,
+      80,
+      400
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlah semua nilai = 5 × 80 = 400. Jumlah nilai yang diketahui = 345. Nilai terakhir = 400 - 345 = 55.",
+      "en": "Total of all scores = 5 × 80 = 400. Total of the known scores = 345. Last score = 400 - 345 = 55."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.g1qbc72",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sepasang sepatu Rp180.000. Toko memberi diskon 20%. Berapa yang harus dibayar Intan?",
+      "en": "A pair of shoes costs Rp180,000. The shop gives a 20% discount. How much does Intan have to pay?"
+    },
+    "choices": [
+      {
+        "id": "Rp160.000",
+        "en": "Rp160,000"
+      },
+      {
+        "id": "Rp180.000",
+        "en": "Rp180,000"
+      },
+      {
+        "id": "Rp144.000",
+        "en": "Rp144,000"
+      },
+      {
+        "id": "Rp36.000",
+        "en": "Rp36,000"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "Potongan: 20% × Rp180.000 = Rp36.000. Dibayar: Rp180.000 - Rp36.000 = Rp144.000.",
+      "en": "Discount: 20% × Rp180,000 = Rp36,000. To pay: Rp180,000 - Rp36,000 = Rp144,000."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.data_mean.goa7fn3",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.data_mean",
+    "stem": {
+      "id": "Rata-rata nilai 4 ulangan Maya adalah 75. Nilai 3 ulangan pertama 85, 65 dan 90. Berapa nilai ulangan terakhir?",
+      "en": "Maya's mean score on 4 tests is 75. The first 3 scores are 85, 65 and 90. What is the last score?"
+    },
+    "choices": [
+      240,
+      60,
+      75,
+      300
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlah semua nilai = 4 × 75 = 300. Jumlah nilai yang diketahui = 240. Nilai terakhir = 300 - 240 = 60.",
+      "en": "Total of all scores = 4 × 75 = 300. Total of the known scores = 240. Last score = 300 - 240 = 60."
+    },
+    "source": "generated"
+  },
+  {
+    "id": "t5.decimal_percent.gwjxpdg",
+    "tier": 5,
+    "type": "multistep",
+    "topic": "t5.decimal_percent",
+    "stem": {
+      "id": "Harga sepasang sepatu Rp130.000. Toko memberi diskon 25%. Berapa yang harus dibayar Tono?",
+      "en": "A pair of shoes costs Rp130,000. The shop gives a 25% discount. How much does Tono have to pay?"
+    },
+    "choices": [
+      {
+        "id": "Rp97.500",
+        "en": "Rp97,500"
+      },
+      {
+        "id": "Rp32.500",
+        "en": "Rp32,500"
+      },
+      {
+        "id": "Rp105.000",
+        "en": "Rp105,000"
+      },
+      {
+        "id": "Rp130.000",
+        "en": "Rp130,000"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Potongan: 25% × Rp130.000 = Rp32.500. Dibayar: Rp130.000 - Rp32.500 = Rp97.500.",
+      "en": "Discount: 25% × Rp130,000 = Rp32,500. To pay: Rp130,000 - Rp32,500 = Rp97,500."
+    },
+    "source": "generated"
+  }
+]

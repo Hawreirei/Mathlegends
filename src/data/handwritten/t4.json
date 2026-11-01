@@ -1,0 +1,163 @@
+[
+  {
+    "id": "t4.polygons.h001",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.polygons",
+    "stem": {
+      "id": "Bangun datar dengan 6 sisi disebut apa?",
+      "en": "What is a flat shape with 6 sides called?"
+    },
+    "choices": [
+      {
+        "id": "segi lima",
+        "en": "pentagon"
+      },
+      {
+        "id": "segi enam",
+        "en": "hexagon"
+      },
+      {
+        "id": "segi delapan",
+        "en": "octagon"
+      },
+      {
+        "id": "segi empat",
+        "en": "quadrilateral"
+      }
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Segi enam memiliki 6 sisi dan 6 sudut.",
+      "en": "A hexagon has 6 sides and 6 corners."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.polygons.h002",
+    "tier": 4,
+    "type": "fluency",
+    "topic": "t4.polygons",
+    "stem": {
+      "id": "Segi empat mana yang keempat sisinya sama panjang dan keempat sudutnya siku-siku?",
+      "en": "Which quadrilateral has 4 equal sides and 4 right angles?"
+    },
+    "choices": [
+      {
+        "id": "persegi panjang",
+        "en": "rectangle"
+      },
+      {
+        "id": "jajar genjang",
+        "en": "parallelogram"
+      },
+      {
+        "id": "trapesium",
+        "en": "trapezium"
+      },
+      {
+        "id": "persegi",
+        "en": "square"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Persegi memiliki 4 sisi sama panjang dan 4 sudut siku-siku. Persegi panjang juga bersudut siku-siku, tetapi sisinya tidak semua sama panjang.",
+      "en": "A square has 4 equal sides and 4 right angles. A rectangle also has right angles, but its sides are not all equal."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.polygons.h003",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.polygons",
+    "stem": {
+      "id": "Sebuah segi lima beraturan memiliki panjang sisi 7 cm. Berapa kelilingnya (cm)?",
+      "en": "A regular pentagon has sides 7 cm long. What is its perimeter in cm?"
+    },
+    "choices": [35, 28, 42, 12],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "Segi lima beraturan punya 5 sisi sama panjang: 5 × 7 = 35 cm.",
+      "en": "A regular pentagon has 5 equal sides: 5 × 7 = 35 cm."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.decimals_intro.h001",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.decimals_intro",
+    "stem": {
+      "id": "Pensil Gita panjangnya 12,5 cm dan pensil Hadi 12,8 cm. Berapa cm selisih panjangnya?",
+      "en": "Gita's pencil is 12.5 cm long and Hadi's pencil is 12.8 cm long. What is the difference in cm?"
+    },
+    "choices": [
+      3,
+      {
+        "id": "25,3",
+        "en": "25.3"
+      },
+      {
+        "id": "0,3",
+        "en": "0.3"
+      },
+      {
+        "id": "0,03",
+        "en": "0.03"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "12,8 - 12,5 = 0,3 cm. Kurangkan persepuluhannya: 8 - 5 = 3 persepuluhan.",
+      "en": "12.8 - 12.5 = 0.3 cm. Subtract the tenths: 8 - 5 = 3 tenths."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.equiv_fractions.h001",
+    "tier": 4,
+    "type": "application",
+    "topic": "t4.equiv_fractions",
+    "stem": {
+      "id": "Ani makan 2/8 roti. Budi makan 1/4 roti yang sama besar. Siapa yang makan lebih banyak?",
+      "en": "Ani eats 2/8 of a loaf. Budi eats 1/4 of a loaf the same size. Who eats more?"
+    },
+    "choices": [
+      {
+        "id": "sama banyak",
+        "en": "they eat the same amount"
+      },
+      "Ani",
+      "Budi",
+      {
+        "id": "tidak bisa ditentukan",
+        "en": "you cannot tell"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "2/8 = 1/4 karena 2 ÷ 2 = 1 dan 8 ÷ 2 = 4. Jadi mereka makan sama banyak.",
+      "en": "2/8 = 1/4 because 2 ÷ 2 = 1 and 8 ÷ 2 = 4. So they eat the same amount."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t4.multidigit.h001",
+    "tier": 4,
+    "type": "multistep",
+    "topic": "t4.multidigit",
+    "stem": {
+      "id": "Sekolah memesan 8 kotak buku. Setiap kotak berisi 24 buku. Semua buku dibagi sama rata ke 6 kelas. Berapa buku yang didapat setiap kelas?",
+      "en": "A school orders 8 boxes of books with 24 books in each box. The books are shared equally between 6 classes. How many books does each class get?"
+    },
+    "choices": [192, 32, 4, 26],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Semua buku: 8 × 24 = 192. Dibagi 6 kelas: 192 ÷ 6 = 32.",
+      "en": "All the books: 8 × 24 = 192. Shared between 6 classes: 192 ÷ 6 = 32."
+    },
+    "source": "handwritten"
+  }
+]

@@ -3,6 +3,7 @@ import {
   fracStr,
   gcd,
   int,
+  L,
   pick,
   reduce,
   rupiah,
@@ -12,7 +13,7 @@ import {
   type Frac,
   type Rng,
   type Spec,
-} from './core';
+} from './core.ts';
 
 export const fracMulDiv: Family = {
   topic: 't6.frac_muldiv',
@@ -352,6 +353,57 @@ export const volume: Family = {
       };
     },
   },
+};
+
+// Two-step volume and arrival-time problems (#12).
+volume.makers.multistep = (rng: Rng): Spec<number> => {
+  const p = 20 * int(rng, 2, 5);
+  const w = 10 * int(rng, 3, 6);
+  const h = 10 * int(rng, 3, 6);
+  const full = (p * w * h) / 1000;
+  const half = full / 2;
+  return {
+    stem: T((l, f) =>
+      l === 'id'
+        ? `Sebuah bak berbentuk balok berukuran ${p} cm × ${w} cm × ${h} cm. Bak itu diisi air sampai setengahnya. Berapa liter airnya? (1 liter = ${f(1000)} cm³)`
+        : `A tank shaped like a cuboid measures ${p} cm × ${w} cm × ${h} cm. It is filled halfway with water. How many litres of water are in it? (1 litre = ${f(1000)} cm³)`,
+    ),
+    answer: half,
+    distractors: [full, half * 10, (p * w * h) / 2],
+    valid: (v) => Number.isInteger(v) && (v as number) > 0,
+    explanation: T((l, f) =>
+      l === 'id'
+        ? `Volume penuh = ${p} × ${w} × ${h} = ${f(p * w * h)} cm³ = ${f(full)} liter. Setengahnya = ${f(half)} liter.`
+        : `Full volume = ${p} × ${w} × ${h} = ${f(p * w * h)} cm³ = ${f(full)} litres. Half of it = ${f(half)} litres.`,
+    ),
+  };
+};
+
+const clock = (h: number) =>
+  L(`${String(h).padStart(2, '0')}.00`, `${String(h).padStart(2, '0')}:00`);
+
+speedScale.makers.multistep = (rng: Rng): Spec<number> => {
+  const v = pick(rng, [40, 50, 60, 70, 80]);
+  const t = int(rng, 2, 5);
+  const start = int(rng, 6, 11);
+  const d = v * t;
+  const arrive = start + t;
+  return {
+    stem: T((l) =>
+      l === 'id'
+        ? `Sebuah bus berangkat pukul ${clock(start).id} dan menempuh jarak ${d} km dengan kecepatan ${v} km/jam. Pukul berapa bus itu tiba?`
+        : `A bus leaves at ${clock(start).en} and travels ${d} km at ${v} km/h. What time does it arrive?`,
+    ),
+    answer: arrive,
+    distractors: [arrive + 1, arrive - 1, t],
+    render: clock,
+    valid: (x) => (x as number) >= 0 && (x as number) <= 23,
+    explanation: T((l) =>
+      l === 'id'
+        ? `Waktu tempuh = ${d} ÷ ${v} = ${t} jam. ${clock(start).id} + ${t} jam = ${clock(arrive).id}.`
+        : `Travel time = ${d} ÷ ${v} = ${t} hours. ${clock(start).en} + ${t} hours = ${clock(arrive).en}.`,
+    ),
+  };
 };
 
 export const TIER6 = [fracMulDiv, ratio, speedScale, mixedOps, volume];

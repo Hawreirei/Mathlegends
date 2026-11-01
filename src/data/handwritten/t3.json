@@ -1,0 +1,155 @@
+[
+  {
+    "id": "t3.fraction_compare.h001",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.fraction_compare",
+    "stem": {
+      "id": "Sebuah pizza dipotong menjadi 8 bagian sama besar. Rina makan 3 potong. Berapa bagian pizza yang dimakan Rina?",
+      "en": "A pizza is cut into 8 equal slices. Rina eats 3 slices. What fraction of the pizza does Rina eat?"
+    },
+    "choices": ["5/8", "3/8", "8/3", "3/5"],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Rina makan 3 dari 8 bagian yang sama besar, jadi 3/8.",
+      "en": "Rina eats 3 of the 8 equal slices, so 3/8."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.fraction_compare.h002",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.fraction_compare",
+    "stem": {
+      "id": "Ani makan 1/4 kue dan Budi makan 2/4 kue yang sama. Siapa yang makan lebih banyak, dan berapa bagian kue yang tersisa?",
+      "en": "Ani eats 1/4 of a cake and Budi eats 2/4 of the same cake. Who eats more, and how much of the cake is left?"
+    },
+    "choices": [
+      {
+        "id": "Budi, sisa 1/4",
+        "en": "Budi, 1/4 left"
+      },
+      {
+        "id": "Ani, sisa 1/4",
+        "en": "Ani, 1/4 left"
+      },
+      {
+        "id": "Budi, sisa 3/4",
+        "en": "Budi, 3/4 left"
+      },
+      {
+        "id": "Ani, sisa 3/4",
+        "en": "Ani, 3/4 left"
+      }
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "id": "2/4 lebih besar dari 1/4, jadi Budi makan lebih banyak. Dimakan 1/4 + 2/4 = 3/4, sisa 4/4 - 3/4 = 1/4.",
+      "en": "2/4 is more than 1/4, so Budi eats more. Eaten: 1/4 + 2/4 = 3/4, so 4/4 - 3/4 = 1/4 is left."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.bar_chart.h001",
+    "tier": 3,
+    "type": "fluency",
+    "topic": "t3.bar_chart",
+    "stem": {
+      "id": "Diagram batang menunjukkan hasil panen jagung: Senin 30 kg, Selasa 45 kg, Rabu 25 kg. Hari apa panennya paling banyak?",
+      "en": "A bar chart shows the corn harvest: Monday 30 kg, Tuesday 45 kg, Wednesday 25 kg. On which day was the harvest biggest?"
+    },
+    "choices": [
+      {
+        "id": "Senin",
+        "en": "Monday"
+      },
+      {
+        "id": "Rabu",
+        "en": "Wednesday"
+      },
+      {
+        "id": "Kamis",
+        "en": "Thursday"
+      },
+      {
+        "id": "Selasa",
+        "en": "Tuesday"
+      }
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "id": "Batang tertinggi adalah Selasa, 45 kg.",
+      "en": "The tallest bar is Tuesday, with 45 kg."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.bar_chart.h002",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.bar_chart",
+    "stem": {
+      "id": "Diagram batang menunjukkan botol bekas yang dikumpulkan: kelas 3A 24 botol, 3B 18 botol, 3C 30 botol. Berapa botol yang dikumpulkan ketiga kelas?",
+      "en": "A bar chart shows bottles collected for recycling: Class 3A 24, Class 3B 18, Class 3C 30. How many bottles did the three classes collect?"
+    },
+    "choices": [62, 72, 54, 82],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "Jumlahkan semua batang: 24 + 18 + 30 = 72 botol.",
+      "en": "Add all the bars: 24 + 18 + 30 = 72 bottles."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.std_units.h001",
+    "tier": 3,
+    "type": "application",
+    "topic": "t3.std_units",
+    "stem": {
+      "id": "Tali Budi panjangnya 2 m. Ia memotong 50 cm. Berapa cm sisa talinya?",
+      "en": "Budi's rope is 2 m long. Budi cuts off 50 cm. How many cm of rope are left?"
+    },
+    "choices": [48, 150, 250, 200],
+    "answerIndex": 1,
+    "explanation": {
+      "id": "2 m = 200 cm. Sisa: 200 - 50 = 150 cm.",
+      "en": "2 m = 200 cm. Left: 200 - 50 = 150 cm."
+    },
+    "source": "handwritten"
+  },
+  {
+    "id": "t3.std_units.h002",
+    "tier": 3,
+    "type": "multistep",
+    "topic": "t3.std_units",
+    "stem": {
+      "id": "Sekantong beras beratnya 5 kg. Ibu memakai 750 g setiap hari untuk memasak. Setelah 2 hari, berapa gram beras yang tersisa?",
+      "en": "A bag of rice weighs 5 kg. Mum uses 750 g a day for cooking. After 2 days, how many grams of rice are left?"
+    },
+    "choices": [
+      {
+        "id": "4.250",
+        "en": "4,250"
+      },
+      {
+        "id": "1.500",
+        "en": "1,500"
+      },
+      {
+        "id": "3.500",
+        "en": "3,500"
+      },
+      {
+        "id": "6.500",
+        "en": "6,500"
+      }
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "id": "5 kg = 5.000 g. Dipakai 2 × 750 = 1.500 g. Sisa: 5.000 - 1.500 = 3.500 g.",
+      "en": "5 kg = 5,000 g. Used: 2 × 750 = 1,500 g. Left: 5,000 - 1,500 = 3,500 g."
+    },
+    "source": "handwritten"
+  }
+]

@@ -1,6 +1,6 @@
 # Question bank format (issue #10)
 
-Questions live in `src/data/questions/*.json`. Each file is a JSON array of question objects. One file per tier (`t1.json` to `t6.json`) is the convention, but any file name works.
+Questions live in `src/data/questions/t1.json` to `t6.json` (one JSON array per Year). **These files are built, not edited by hand:** see [The bank](#the-bank-issue-12) below.
 
 The rules are in [`src/systems/questions.ts`](../src/systems/questions.ts). They run:
 - in CI, through `npm run validate:questions` (fails the build on any problem);
@@ -109,17 +109,17 @@ All 28 topics marked "Gen" in [CURRICULUM.md](CURRICULUM.md) have a generator. T
 | 1 | `t1.addsub20` | yes | yes | yes |
 | 1 | `t1.pattern` | yes |  |  |
 | 2 | `t2.place100` | yes |  |  |
-| 2 | `t2.addsub100` | yes | yes |  |
+| 2 | `t2.addsub100` | yes | yes | yes |
 | 2 | `t2.half_quarter` | yes |  |  |
 | 2 | `t2.equal_groups` | yes | yes |  |
 | 2 | `t2.money_time` |  | yes | yes |
 | 3 | `t3.place1000` | yes |  |  |
-| 3 | `t3.addsub1000` | yes | yes |  |
+| 3 | `t3.addsub1000` | yes | yes | yes |
 | 3 | `t3.muldiv100` | yes | yes | yes |
 | 3 | `t3.fraction_compare` | yes |  |  |
 | 3 | `t3.std_units` | yes |  |  |
 | 4 | `t4.place10000` | yes |  |  |
-| 4 | `t4.multidigit` | yes | yes |  |
+| 4 | `t4.multidigit` | yes | yes | yes |
 | 4 | `t4.equiv_fractions` | yes |  |  |
 | 4 | `t4.decimals_intro` | yes |  |  |
 | 4 | `t4.perim_area` | yes | yes | yes |
@@ -127,13 +127,35 @@ All 28 topics marked "Gen" in [CURRICULUM.md](CURRICULUM.md) have a generator. T
 | 5 | `t5.kpk_fpb` | yes | yes |  |
 | 5 | `t5.frac_addsub` | yes |  |  |
 | 5 | `t5.decimal_percent` | yes | yes | yes |
-| 5 | `t5.data_mean` | yes | yes |  |
+| 5 | `t5.data_mean` | yes | yes | yes |
 | 6 | `t6.frac_muldiv` | yes |  |  |
 | 6 | `t6.ratio` | yes | yes | yes |
-| 6 | `t6.speed_scale` |  | yes |  |
+| 6 | `t6.speed_scale` |  | yes | yes |
 | 6 | `t6.mixed_ops` | yes |  |  |
-| 6 | `t6.volume` | yes | yes |  |
+| 6 | `t6.volume` | yes | yes | yes |
 
 Limits:
 - `t2.money_time` generates money questions only. Telling the time needs clock pictures and is handwritten.
 - `t6.speed_scale` covers speed, time and map scale. `t6.chance` and the other topics without a generator are handwritten.
+
+## The bank (issue #12)
+
+| Where | What |
+|---|---|
+| `src/data/handwritten/t1.json` ... `t6.json` | Handwritten questions (edit these) |
+| `src/systems/generators/` | Generators (edit these) |
+| `scripts/build-question-bank.ts` | Combines both into the bank |
+| `src/data/questions/t1.json` ... `t6.json` | The bank the game loads (built, do not edit) |
+| `docs/QUESTION-SPOT-CHECK.md` | Checklist for the teacher (built) |
+
+```bash
+npm run build:questions
+```
+
+Each Year gets **20 fluency, 15 application and 15 multistep questions (50 per Year, 300 in total)**. Handwritten items come first; generated items fill the rest of each cell, taking turns across that Year's topics so every generator topic appears. Seeds are fixed, so rebuilding gives identical files. `tests/bank.test.ts` fails if the committed bank is out of date, if any cell has fewer than 15 items, if a curriculum topic is missing, or if one template supplies more than 10 of a Year's two-step questions.
+
+There are 40 handwritten questions. They cover the topics without a generator (shapes, measuring, tally charts and pictograms, bar charts, polygons, angles, chance) and add variety to word problems.
+
+**Teacher check:** `docs/QUESTION-SPOT-CHECK.md` lists all 40 handwritten items and 5 generated items per Year (70 items, 23% of the bank), each with both languages, the marked answer and the explanation. Record the result in its table. Fix problems in the handwritten files or generators, never in the built bank.
+
+GenSoal output can be added later as another source file (with `"source": "gensoal"`) once it is converted to this format.

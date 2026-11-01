@@ -2,7 +2,7 @@
  * Shared helpers for procedural question generators (#11). Pure TypeScript, no Phaser.
  * Every generator is deterministic for a given RNG, so a fixed seed gives the same questions.
  */
-import type { Choice, LocalizedText, Question, QuestionType } from '../questions';
+import type { Choice, LocalizedText, Question, QuestionType } from '../questions.ts';
 
 export type Rng = () => number;
 export type Lang = 'id' | 'en';
