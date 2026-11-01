@@ -216,6 +216,12 @@ export const ranksFileSchema = z
         reviewEvery: z.number().int().positive(),
         /** Most questions kept in the review queue (the oldest go first). */
         reviewQueueMax: z.number().int().positive(),
+        /**
+         * Stretch at the top Year (#40), where there is no Year above: `harderType` asks the next
+         * harder question type of the top Year (fluency -> application -> multistep), with that
+         * type's timer; `sameType` asks a normal top-Year question.
+         */
+        topTierStretch: z.enum(['harderType', 'sameType']),
       })
       .strict(),
   })

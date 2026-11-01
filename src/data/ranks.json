@@ -79,6 +79,7 @@
     "reviewPreviousTierShare": 0.7,
     "reviewMatches": 3,
     "reviewEvery": 3,
-    "reviewQueueMax": 40
+    "reviewQueueMax": 40,
+    "topTierStretch": "harderType"
   }
 }

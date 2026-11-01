@@ -58,3 +58,15 @@ Two numbers were not set by the GDD and were chosen here (both in `ranks.json`, 
 - `bonusMinAnswered` = **5**: the accuracy bonus needs at least 5 answered questions, so a match with 1 right answer out of 1 does not earn it.
 
 Also saved per player: `lossesAtZero` (losses in a row at 0 stars). A saved profile with 5 or more stars below Year 6 is treated as broken and replaced by a new profile.
+
+## Rank sets the questions (issue #40)
+
+Every last-hit question uses the player's current Year from the profile, so the questions change the moment the Year changes (after placement, a promotion or a demotion). The question engine ([QUESTIONS.md](QUESTIONS.md#question-engine-issue-26)) mixes:
+
+| Band | Share | A Year 4 player gets | A Year 6 player gets |
+|---|---|---|---|
+| On-level | 70% | Year 4 | Year 6 |
+| Review | 20% | Year 3 (70% of review), else Year 1 or 2 | Year 5 (70%), else Years 1-4 |
+| Stretch | 10% | Year 5 | Harder Year 6 items: the next harder type (word problem instead of a quick fact, two-step instead of a word problem), with that type's timer |
+
+Missed questions from earlier matches (#29) come on top. `tests/rankMix.test.ts` checks the Year 4 and Year 6 cases over 3000 draws, the 70/20/10 shares, and the timer of a harder Year 6 question.

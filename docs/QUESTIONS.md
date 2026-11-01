@@ -171,7 +171,7 @@ engine = pick.engine;
 ```
 
 1. **Type from the minion:** Infantry = fluency, Lancer = application, Cannon = multistep.
-2. **Band from `ranks.json` `questionMix`:** 70% on-level (the player's Year), 20% review, 10% stretch (the Year above). Review comes from the Year just below `reviewPreviousTierShare` (70%) of the time, otherwise from any lower Year. Year 1 has nothing below, so its review share becomes on-level; at Year 6 stretch stays in Year 6.
+2. **Band from `ranks.json` `questionMix`:** 70% on-level (the player's Year), 20% review, 10% stretch (the Year above). Review comes from the Year just below `reviewPreviousTierShare` (70%) of the time, otherwise from any lower Year. Year 1 has nothing below, so its review share becomes on-level. Year 6 has nothing above, so its stretch questions are *harder Year 6 items*: the next harder question type (an Infantry kill gets a Year 6 word problem with 8 s, a Lancer kill a two-step problem with 12 s; Cannon questions are already the hardest type). Set by `ranks.json` `questionEngine.topTierStretch` (#40).
 3. **No repeats:** nothing asked in the last `repeatWindow` (30) questions is asked again.
 4. **Never runs dry:** if the bank has nothing fresh for a pick, the engine generates a new question for that Year and type with the #11 generators (`source: 'generated'`). In a realistic mix (mostly Infantry, some Lancers, few Cannons) 800 questions at Year 3 needed no generated questions; the worst case (200 Infantry-only questions) needed 12.
 

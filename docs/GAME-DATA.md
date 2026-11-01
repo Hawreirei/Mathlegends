@@ -70,6 +70,7 @@ Filled in now with the rules approved in `docs/GDD.md`:
 | `questionEngine.reviewMatches` | 3 | A missed question comes back within this many matches (#29) |
 | `questionEngine.reviewEvery` | 3 | At most one missed question in every this many questions (except on its last match) |
 | `questionEngine.reviewQueueMax` | 40 | Most missed questions kept on the device; the oldest go first |
+| `questionEngine.topTierStretch` | `harderType` | Year 6 stretch: the next harder question type of Year 6 (`sameType` = a normal Year 6 question) (#40) |
 
 The loader also checks that tiers are numbered 1, 2, 3, ... in order and that `maxStartTier` is not above the top tier.
 

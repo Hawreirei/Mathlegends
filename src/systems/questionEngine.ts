@@ -7,6 +7,10 @@
  *   goes to on-level; at the top tier stretch stays on the top tier.
  * - Nothing asked in the last `repeatWindow` questions is asked again. When the bank has nothing
  *   fresh left for a pick, a new question is generated (src/systems/generators) instead.
+ * - Stretch at the top Year (#40): there is no Year above, so with questionEngine.topTierStretch
+ *   `harderType` the stretch question is the next harder type of the top Year (an Infantry kill
+ *   gets a word problem, a Lancer kill a two-step problem; Cannon questions are already the
+ *   hardest type). The timer follows the question's type.
  * - Review (#29): questions missed in earlier matches come back. At most one in every
  *   `reviewEvery` questions is a review item of the same type as the minion; an item on its last
  *   match (matchesLeft 1) may come on any last hit, with the timer of its own type.
@@ -28,6 +32,11 @@ const TYPE_BY_MINION: Record<MinionType, QuestionType> = {
 };
 
 export const questionTypeFor = (m: MinionType): QuestionType => TYPE_BY_MINION[m];
+
+const TYPE_ORDER: QuestionType[] = ['fluency', 'application', 'multistep'];
+/** The next harder question type (multistep stays multistep). */
+export const harderType = (t: QuestionType): QuestionType =>
+  TYPE_ORDER[Math.min(TYPE_ORDER.length - 1, TYPE_ORDER.indexOf(t) + 1)]!;
 
 /** The minion whose timer fits a question type (Infantry for fluency, and so on). */
 export const minionForType = (t: QuestionType): MinionType =>
@@ -144,15 +153,21 @@ export function nextQuestion(e: QuestionEngine, playerTier: number, minion: Mini
   const tier = Math.max(1, Math.min(e.topTier, playerTier));
   const band = chooseBand(e, tier);
   const qTier = tierForBand(e, tier, band);
+  const qType =
+    band === 'stretch' &&
+    tier === e.topTier &&
+    e.ranks.questionEngine.topTierStretch === 'harderType'
+      ? harderType(type)
+      : type;
   const recent = new Set(e.recent);
-  const pool = e.pools.get(key(qTier, type)) ?? [];
+  const pool = e.pools.get(key(qTier, qType)) ?? [];
   const fresh = pool.filter((q) => !recent.has(q.id));
 
   let question: Question | undefined;
   let source: Pick['source'] = 'bank';
   if (fresh.length) question = fresh[Math.floor(e.rng() * fresh.length)];
   else {
-    const g = generateFresh(e, qTier, type, recent);
+    const g = generateFresh(e, qTier, qType, recent);
     if (g) {
       question = g;
       source = 'generated';
@@ -161,7 +176,7 @@ export function nextQuestion(e: QuestionEngine, playerTier: number, minion: Mini
       question = [...pool].sort((a, b) => e.recent.indexOf(a.id) - e.recent.indexOf(b.id))[0];
     }
   }
-  if (!question) throw new Error(`no questions at all for tier ${qTier} ${type}`);
+  if (!question) throw new Error(`no questions at all for tier ${qTier} ${qType}`);
 
   return {
     engine: { ...e, recent: remember(e, question.id), sinceReview: e.sinceReview + 1 },
