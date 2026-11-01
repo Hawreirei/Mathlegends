@@ -73,3 +73,67 @@ node scripts/validate-questions.ts path/to/file.json
 ```
 
 The command prints a count of items per tier and type. The target for #12 is at least 15 in every cell.
+
+## Generators (issue #11)
+
+Code: [`src/systems/generators/`](../src/systems/generators/) (pure TypeScript, one file per tier, shared helpers in `core.ts`).
+
+```ts
+import { generateQuestions } from './systems/generators';
+const qs = generateQuestions('t3.muldiv100', 'fluency', 20, 12345); // same seed, same 20 questions
+```
+
+- Each template writes the Indonesian and English text from one set of numbers, so the two languages always match.
+- Numbers are formatted per language: `1.250` and `0,5` in Indonesian, `1,250` and `0.5` in English. Money is shown as `Rp2.500` / `Rp2,500`.
+- Wrong choices come from common mistakes first (forgetting to carry, subtracting the smaller digit from the larger, adding denominators, mixing up area and perimeter, ignoring the order of operations), then near misses.
+- A wrong choice can never equal the answer, and equivalent fractions count as equal (2/4 is never offered next to 1/2).
+- Word problems use Indonesian names and contexts and repeat the name instead of using "he" or "she" in English.
+- Generated ids are `<topic>.g<hash of the English stem>`, so the same question always gets the same id.
+
+`tests/generators.test.ts` generates 40 questions per family and type, then checks that:
+- all of them pass the validator;
+- no text contains `undefined` or `NaN`;
+- no choice is negative;
+- the answer appears in all four positions;
+- the output is the same for a fixed seed.
+
+It also recomputes the answer from the question text for every "What is A op B?" item, every mixed-operations item, and the main word-problem templates (bus, LCM/HCF, percent, speed, area/perimeter, volume, rounding, equivalent fractions, ratio).
+
+### Coverage
+
+All 28 topics marked "Gen" in [CURRICULUM.md](CURRICULUM.md) have a generator. Topics without a generator, and the missing types below, are handwritten in #12.
+
+| Tier | Topic | Fluency | Application | Multistep |
+|---|---|---|---|---|
+| 1 | `t1.count20` | yes |  |  |
+| 1 | `t1.addsub20` | yes | yes | yes |
+| 1 | `t1.pattern` | yes |  |  |
+| 2 | `t2.place100` | yes |  |  |
+| 2 | `t2.addsub100` | yes | yes |  |
+| 2 | `t2.half_quarter` | yes |  |  |
+| 2 | `t2.equal_groups` | yes | yes |  |
+| 2 | `t2.money_time` |  | yes | yes |
+| 3 | `t3.place1000` | yes |  |  |
+| 3 | `t3.addsub1000` | yes | yes |  |
+| 3 | `t3.muldiv100` | yes | yes | yes |
+| 3 | `t3.fraction_compare` | yes |  |  |
+| 3 | `t3.std_units` | yes |  |  |
+| 4 | `t4.place10000` | yes |  |  |
+| 4 | `t4.multidigit` | yes | yes |  |
+| 4 | `t4.equiv_fractions` | yes |  |  |
+| 4 | `t4.decimals_intro` | yes |  |  |
+| 4 | `t4.perim_area` | yes | yes | yes |
+| 5 | `t5.big_numbers` | yes |  |  |
+| 5 | `t5.kpk_fpb` | yes | yes |  |
+| 5 | `t5.frac_addsub` | yes |  |  |
+| 5 | `t5.decimal_percent` | yes | yes | yes |
+| 5 | `t5.data_mean` | yes | yes |  |
+| 6 | `t6.frac_muldiv` | yes |  |  |
+| 6 | `t6.ratio` | yes | yes | yes |
+| 6 | `t6.speed_scale` |  | yes |  |
+| 6 | `t6.mixed_ops` | yes |  |  |
+| 6 | `t6.volume` | yes | yes |  |
+
+Limits:
+- `t2.money_time` generates money questions only. Telling the time needs clock pictures and is handwritten.
+- `t6.speed_scale` covers speed, time and map scale. `t6.chance` and the other topics without a generator are handwritten.
