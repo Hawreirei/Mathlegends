@@ -162,21 +162,44 @@ Rules (`src/systems/structures.ts`):
 
 A simulation with blue waves only (no defenders, old tower positions) took the red outer tower at 103 s, the inner at 191 s and the Nexus at 238 s. With the bot (#24) and an idle player, the bot's side takes the blue Nexus at about 14 minutes. With defending minions and a hero, matches should land near the 8 to 10 minute target; the simulator (#37) will measure it.
 
-## bot.json (issue #24)
+## bot.json (issues #24, #43)
 
-The basic bot (`src/systems/bot.ts`), one fixed difficulty; #43 adds a step per Year tier.
+The bot (`src/systems/bot.ts`). `base` holds every setting; each of the six `tiers` (one per Year) overrides some of them, and the match uses the step for the **player's Year** (`botForTier`). `newPlayer` is only for the simulator: a stand-in for a child in their first matches. `buildOrder` is the items the bot buys, in order.
 
-| Field | Value | Meaning |
-|---|---|---|
-| `decisionIntervalSec` | 0.3 | Re-thinks this often (its reaction time) |
-| `retreatHpFraction` / `returnHpFraction` | 0.3 / 0.85 | Walks home below 30% HP; comes back at 85% |
-| `engageRange` | 380 | Fights the player when this close... |
-| `engageMinHpFraction` | 0.5 | ...and at least half HP, and the player is not under their own tower |
-| `acquireRangeBonus` | 120 | Walks up to minions this far beyond its attack range |
-| `holdBackPx` | 120 | Stands this far behind its front minion |
-| `towerSafetyMarginPx` | 60 | Keeps this far outside an enemy tower's range unless a friendly minion is under it |
+| Setting | Meaning |
+|---|---|
+| `decisionIntervalSec` | Re-thinks this often (its reaction time) |
+| `retreatHpFraction` / `returnHpFraction` | Walks home below this share of HP; comes back at the second |
+| `engageRange` / `engageMinHpFraction` | Fights the player when this close and at least this healthy (aggression) |
+| `acquireRangeBonus`, `holdBackPx`, `towerSafetyMarginPx` | Lane positioning (same at every Year) |
+| `lastHitAccuracy` | Chance it takes a last hit it could take; otherwise it mistimes that one (#43) |
+| `skillUseChance` | Chance it uses a ready skill when it has a reason to, at each decision (#43) |
+| `defensiveSkillHpFraction` | Uses shield/buff-only skills below this share of HP, or when fighting (#43) |
+| `itemDelaySec` | Waits this long after it can afford the next item before buying it (#43) |
 
-Priority each decision: a minion it can kill in one blow (last hit), then the player (if the conditions above hold), then the weakest enemy minion in reach, else hold the lane behind its minions (or behind its own outer tower before the first wave).
+| Year | Reaction | Last hits | Skill use | Item delay | Engage range | Fights from HP | Retreats below HP |
+|---|---|---|---|---|---|---|---|
+| 1 | 0.85 s | 30% | 5% | 240 s | 220 | 85% | 50% |
+| 2 | 0.65 s | 50% | 20% | 140 s | 270 | 72% | 42% |
+| 3 | 0.48 s | 68% | 40% | 80 s | 320 | 62% | 36% |
+| 4 | 0.36 s | 80% | 55% | 45 s | 370 | 55% | 30% |
+| 5 | 0.27 s | 90% | 72% | 20 s | 420 | 48% | 27% |
+| 6 | 0.18 s | 100% | 95% | 3 s | 480 | 38% | 22% |
+
+Each decision, in order: a minion it can kill in one blow (unless it mistimes it), then the player (if the engage conditions hold), then the weakest enemy minion in reach, then an enemy tower or Nexus when its own minions are taking the tower's shots (#43), else hold the lane behind its minions. It casts skills with the same rules as the player (damage skills when the target is in range, the ultimate first against the hero; shield/speed skills when hurt or fighting) and buys `buildOrder` items. Its dice are seeded, so a match replays the same way in tests.
+
+### Difficulty check (simulator)
+
+`tests/botDifficulty.test.ts` plays the new player (answering 60% of questions right) against each Year's bot, six 10-minute matches each, and compares structure damage done minus taken ("push", a destroyed tower = 1) and the gold lead:
+
+| Bot Year | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|
+| New player's push | +0.49 | +0.35 | +0.05 | -0.50 | -0.26 | -0.51 |
+| New player's gold lead | +343 | +250 | +42 | -84 | -306 | -359 |
+
+The tests require the Year 1 bot to be beatable (push > +0.2, gold lead > +150), the Year 6 bot to be a real challenge (push < -0.2, gold lead < -150), and the gold lead to fall every Year.
+
+**Finding for #37 / #50:** in these bot-against-bot matches the lane is slow: about one tower falls in 10 minutes and no Nexus falls even in 20, against the 8 to 10 minute target (GDD section 3). Children who push on purpose will be faster than the simulated player, but tower toughness (`structures.json`) and the sudden-death decision should be checked in the balance simulator (#37) and the playtest (#50).
 
 ## minions.json: heroBodyRadius
 

@@ -55,7 +55,7 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 - **Year 6 has no star cap (decided 2026-11-01):** stars keep counting. The badge always shows 5 filled star icons, plus a gold "×N" label with the real total from the 6th star on (for example 5 stars plus "×9" for 9 stars), and the text reads "Kelas 6 · 9 bintang" / "Year 6 · 9 stars". The real total is saved, so it can be shown on a leaderboard or teacher view later. A loss at Year 6 takes one star off the total.
 - **Dropping a Year:** only after 2 straight losses at 0 stars, landing on 3 stars; never below Year 1. The accuracy bonus needs at least 5 answered questions. (Both chosen in #39, see `docs/RANK.md`.)
 - **Tier names [DECIDE]:** none in the MVP. Rank is shown as "Year 4, 2 stars" with a badge. Named tiers (the prototype's "Scholar") can be added later in `ranks.json`.
-- There is no human opponent, so the **bot is the matchmaking**: six difficulty steps, one per Year tier (last-hit accuracy, reaction time, item timing, aggression). Year 1 must be easy to beat; Year 6 a real challenge.
+- There is no human opponent, so the **bot is the matchmaking**: six difficulty steps, one per Year tier (last-hit accuracy, reaction time, skill use, item timing, aggression). Year 1 must be easy to beat; Year 6 a real challenge. Implemented in #43, numbers and simulator results in `docs/GAME-DATA.md`.
 
 ## 8. Hero, skills, items
 - **One playable hero** (an original balanced Fighter), with 3 skills and an ultimate. The bot uses a second hero entry with the same schema.

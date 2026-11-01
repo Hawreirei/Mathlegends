@@ -22,7 +22,8 @@ import { MinionView, shot } from '../entities/Minion';
 import { StructureView, towerShot } from '../entities/Structure';
 import { ATTACK_BUFFER_SEC } from '../systems/combat';
 import {
-  loadBot,
+  botForTier,
+  loadBotFile,
   loadSkills,
   loadItems,
   checkHeroSkills,
@@ -193,12 +194,13 @@ export class MatchScene extends Phaser.Scene {
       structures,
       playerHero: find(heroes.playerHero, 'playerHero'),
       botHero: find(heroes.botHero, 'botHero'),
-      bot: loadBot(botJson),
+      // The bot's difficulty follows the player's Year (#43).
+      bot: botForTier(loadBotFile(botJson), getState(this).profile.tier),
       skills,
       items: loadItems(itemsJson),
     };
     this.dangerRingDistance = structures.dangerRingDistance;
-    this.state = createMatch(this.cfg);
+    this.state = createMatch(this.cfg, Date.now() % 2 ** 31);
     // The question bank is validated at load; the seed changes every match.
     const engine = createQuestionEngine(
       loadQuestionBank(),

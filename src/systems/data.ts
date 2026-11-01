@@ -463,12 +463,10 @@ export type StructuresFile = z.infer<typeof structuresFileSchema>;
 export const loadStructures = (raw: unknown): StructuresFile =>
   parse(structuresFileSchema, raw, 'structures.json');
 
-// ---------- bot.json (#24)
+// ---------- bot.json (#24, #43)
 
-export const botFileSchema = z
+const botSettings = z
   .object({
-    version: z.literal(1),
-    _note: z.string().optional(),
     /** Seconds between decisions (the bot's reaction time). */
     decisionIntervalSec: positive,
     /** Go back to base below this fraction of max HP... */
@@ -485,12 +483,68 @@ export const botFileSchema = z
     holdBackPx: nonNegative,
     /** Stay this much further out than an enemy tower's range when no friendly minion is there. */
     towerSafetyMarginPx: nonNegative,
+    /** Chance of taking a last hit it could take (otherwise it mistimes that one) (#43). */
+    lastHitAccuracy: fraction,
+    /** Chance of using a ready skill when it has a reason to, at each decision (#43). */
+    skillUseChance: fraction,
+    /** Uses shield/buff-only skills below this fraction of max HP (or when fighting) (#43). */
+    defensiveSkillHpFraction: fraction,
+    /** Waits this long after it could afford the next item before buying it (#43). */
+    itemDelaySec: nonNegative,
+  })
+  .strict();
+
+const botOverride = botSettings.partial().strict();
+
+export const botFileSchema = z
+  .object({
+    version: z.literal(2),
+    _note: z.string().optional(),
+    base: botSettings,
+    /** One difficulty step per Year tier, 1 to 6 (#43). Each overrides `base`. */
+    tiers: z.array(botOverride.extend({ tier: z.number().int().min(1) }).strict()).min(1),
+    /** The simulator's stand-in for a child in their first matches (#43). */
+    newPlayer: botOverride,
+    /** Items the bot buys, in order (ids from items.json). */
+    buildOrder: z.array(id),
   })
   .strict()
-  .refine((b) => b.returnHpFraction > b.retreatHpFraction, {
-    message: 'returnHpFraction must be above retreatHpFraction',
-    path: ['returnHpFraction'],
+  .superRefine((f, ctx) => {
+    if (f.tiers.some((t, i) => t.tier !== i + 1))
+      ctx.addIssue({
+        code: 'custom',
+        path: ['tiers'],
+        message: 'tiers must be 1, 2, 3, ... in order',
+      });
+    for (const [i, o] of [f.base, ...f.tiers, { ...f.base, ...f.newPlayer }].entries()) {
+      const b = { ...f.base, ...o };
+      if (b.returnHpFraction <= b.retreatHpFraction)
+        ctx.addIssue({
+          code: 'custom',
+          path: [i === 0 ? 'base' : 'tiers', 'returnHpFraction'],
+          message: 'returnHpFraction must be above retreatHpFraction',
+        });
+    }
   });
 
-export type BotConfig = z.infer<typeof botFileSchema>;
-export const loadBot = (raw: unknown): BotConfig => parse(botFileSchema, raw, 'bot.json');
+export type BotFile = z.infer<typeof botFileSchema>;
+export type BotConfig = z.infer<typeof botSettings> & { buildOrder: string[] };
+export const loadBotFile = (raw: unknown): BotFile => parse(botFileSchema, raw, 'bot.json');
+
+/** The bot's settings for a Year tier (#43): base + that Year's step (clamped to 1..6). */
+export function botForTier(f: BotFile, tier: number): BotConfig {
+  const t = f.tiers[Math.max(0, Math.min(f.tiers.length - 1, tier - 1))]!;
+  const over: Partial<BotFile['base']> & { tier?: number } = { ...t };
+  delete over.tier;
+  return { ...f.base, ...over, buildOrder: f.buildOrder };
+}
+
+/** The simulator's "new player" settings (#43). */
+export const newPlayerBot = (f: BotFile): BotConfig => ({
+  ...f.base,
+  ...f.newPlayer,
+  buildOrder: f.buildOrder,
+});
+
+/** bot.json for a Year tier (3, the middle, when not given): base + that Year's step. */
+export const loadBot = (raw: unknown, tier = 3): BotConfig => botForTier(loadBotFile(raw), tier);

@@ -90,6 +90,8 @@ export interface MatchState {
   /** Item slots (#35): item ids or null. */
   playerItems: Inventory;
   botItems: Inventory;
+  /** Bot shopping (#43): next build-order index, and since when it could afford that item. */
+  botShop: { next: number; affordableSince: number | null };
 }
 
 export interface MatchInput {
@@ -158,7 +160,8 @@ export type MatchEvent =
       team: Team;
     };
 
-export function createMatch(cfg: MatchConfig): MatchState {
+/** `seed` makes the bot's dice (mistimed last hits, skill use) repeatable. */
+export function createMatch(cfg: MatchConfig, seed = 1): MatchState {
   return {
     now: 0,
     player: createHeroState(cfg.playerHero, cfg.map.heroSpawn.blue, 'blue'),
@@ -168,12 +171,13 @@ export function createMatch(cfg: MatchConfig): MatchState {
     minions: [],
     structures: createStructures(cfg.map, cfg.structures),
     lastHits: { infantry: 0, lancer: 0, cannon: 0 },
-    brain: createBrain(),
+    brain: createBrain(seed),
     winner: null,
     projectiles: [],
     nextProjectile: 0,
     playerItems: emptyInventory(cfg.econ),
     botItems: emptyInventory(cfg.econ),
+    botShop: { next: 0, affordableSince: null },
   };
 }
 
@@ -291,6 +295,30 @@ function heroHits(w: Work, who: 'player' | 'bot', target: Unit, cfg: MatchConfig
     team: attacker.team,
   });
   if (r.killed) grantKill(w, target, attacker.id, cfg);
+}
+
+/**
+ * The bot buys its build order (#43): once it can afford the next item it waits its Year's
+ * itemDelaySec (a slower bot shops late), then buys it, wherever it is.
+ */
+function botShopping(w: Work, cfg: MatchConfig): void {
+  const id = cfg.bot.buildOrder[w.botShop.next];
+  if (!id) return;
+  const r = buyItem(w.botProgress, w.botItems, cfg.items, id);
+  if (!r.ok) {
+    if (r.reason === 'gold') w.botShop = { ...w.botShop, affordableSince: null };
+    else w.botShop = { next: w.botShop.next + 1, affordableSince: null }; // full or unknown: skip
+    return;
+  }
+  const since = w.botShop.affordableSince ?? w.now;
+  if (w.now - since < cfg.bot.itemDelaySec) {
+    w.botShop = { ...w.botShop, affordableSince: since };
+    return;
+  }
+  w.botProgress = r.progress;
+  w.botItems = r.inventory;
+  w.bot = withItems(w.bot, cfg.botHero, itemEffects(r.inventory, cfg.items));
+  w.botShop = { next: w.botShop.next + 1, affordableSince: null };
 }
 
 /** Guardian Cloak's passive (#36): below hpBelow x max HP, a shield; then a cooldown. */
@@ -498,13 +526,15 @@ export function stepMatch(
     now,
     cfg.bot,
     cfg.econ,
+    { hero: cfg.botHero, skills: cfg.skills },
   );
   if (w.bot.alive) {
     w.bot = moveHero(w.bot, botMoveDir(w.brain, w.bot), dt, area);
     const target: Unit | undefined =
       w.brain.targetId === w.player.id
         ? w.player
-        : w.minions.find((m) => m.id === w.brain.targetId);
+        : (w.minions.find((m) => m.id === w.brain.targetId) ??
+          w.structures.find((t) => t.id === w.brain.targetId && isTargetable(t, w.structures)));
     if (
       target &&
       target.alive &&
@@ -512,6 +542,8 @@ export function stepMatch(
       Math.hypot(target.x - w.bot.x, target.y - w.bot.y) <= w.bot.attackRange
     )
       heroHits(w, 'bot', target, cfg);
+    // Skills (#43): the brain decides, the same rules as for the player cast them.
+    if (w.brain.skill !== null) castSkill(w, 'bot', w.brain.skill, cfg);
   }
 
   // Skill projectiles (#33).
@@ -605,6 +637,9 @@ export function stepMatch(
   };
   w.player = heal(w.player);
   w.bot = heal(w.bot);
+
+  // Bot shopping (#43).
+  botShopping(w, cfg);
 
   // Item passive (#36): an emergency shield when HP falls low.
   w.player = lowHpShield(w.player, now);

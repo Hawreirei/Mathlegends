@@ -3,24 +3,45 @@
  *
  * - lane:    stand just behind the front friendly minion (or behind its own outer tower when
  *            no minions are out), last-hit minions it can finish in one blow, otherwise hit the
- *            weakest enemy minion in reach, and fight the player when close and healthy;
+ *            weakest enemy minion in reach, fight the player when close and healthy, and hit an
+ *            enemy tower or Nexus when its own minions are taking the tower's shots (#43);
  * - retreat: below retreatHpFraction walk home and heal; return at returnHpFraction.
  *
  * It never walks into an enemy tower's range unless a friendly minion is already there to
  * take the tower's shots. Every threshold comes from src/data/bot.json.
  */
-import type { BotConfig } from './data';
+import type { BotConfig, Hero, Skill, SkillsFile } from './data';
+import { castProblem, skillInSlot } from './skills';
 import { damage, type EconomyConfig } from './economy';
 import type { HeroState } from './hero';
 import type { LaneMap, Point, Team } from './map';
 import type { MinionState } from './minions';
-import type { StructureState } from './structures';
+import { isTargetable, type StructureState } from './structures';
 
 export interface BotBrain {
   mode: 'lane' | 'retreat';
   nextDecisionAt: number;
   targetId: string | null;
   moveTo: Point | null;
+  /** A skill slot to cast this step (#43), or null. */
+  skill: number | null;
+  /** Random state (seeded, so a match replays the same way in tests). */
+  seed: number;
+}
+
+/** What the brain needs to use skills (#43). */
+export interface BotKit {
+  hero: Hero;
+  skills: SkillsFile;
+}
+
+/** One step of a small seeded random generator (mulberry32): a number in [0, 1) and the next seed. */
+export function nextRandom(seed: number): { value: number; seed: number } {
+  const next = (seed + 0x6d2b79f5) | 0;
+  let t = next;
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return { value: ((t ^ (t >>> 14)) >>> 0) / 4294967296, seed: next };
 }
 
 export interface BotWorld {
@@ -31,12 +52,44 @@ export interface BotWorld {
   map: LaneMap;
 }
 
-export const createBrain = (): BotBrain => ({
+export const createBrain = (seed = 1): BotBrain => ({
   mode: 'lane',
   nextDecisionAt: 0,
   targetId: null,
   moveTo: null,
+  skill: null,
+  seed,
 });
+
+const isDefensive = (s: Skill) => s.effects.every((e) => e.kind === 'buff' || e.kind === 'shield');
+
+/**
+ * The skill to cast now, if any (#43): a damage skill when its target is in range (the
+ * ultimate first against the hero), a shield/buff-only skill when hurt or fighting the hero;
+ * each only with probability skillUseChance.
+ */
+function chooseSkill(
+  w: BotWorld,
+  target: { id: string; x: number; y: number } | null,
+  now: number,
+  cfg: BotConfig,
+  kit: BotKit,
+  roll: () => number,
+): number | null {
+  const { bot, player } = w;
+  const slots = kit.hero.skills.map((_, i) => i);
+  const order = target?.id === player.id ? [...slots].reverse() : slots;
+  const hurt = bot.hp / bot.maxHp < cfg.defensiveSkillHpFraction;
+  for (const slot of order) {
+    const skill = skillInSlot(kit.hero.skills, slot, kit.skills);
+    if (!skill || castProblem(bot, skill, slot, now)) continue;
+    if (isDefensive(skill)) {
+      if (!(hurt || target?.id === player.id)) continue;
+    } else if (!target || dist(bot, target) > skill.range) continue;
+    if (roll() < cfg.skillUseChance) return slot;
+  }
+  return null;
+}
 
 const dist = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y);
 const forward = (team: Team) => (team === 'blue' ? 1 : -1);
@@ -86,25 +139,44 @@ export function thinkBot(
   now: number,
   cfg: BotConfig,
   econ: EconomyConfig,
+  kit?: BotKit,
 ): BotBrain {
   const { bot, player } = w;
-  if (!bot.alive) return { ...createBrain(), nextDecisionAt: now };
-  if (now < brain.nextDecisionAt) return brain;
+  if (!bot.alive) return { ...createBrain(brain.seed), nextDecisionAt: now };
+  // A skill is cast once; the next decision may pick another.
+  if (now < brain.nextDecisionAt) return brain.skill === null ? brain : { ...brain, skill: null };
   const next = now + cfg.decisionIntervalSec;
   const hpFrac = bot.hp / bot.maxHp;
+  let seed = brain.seed;
+  const roll = () => {
+    const r = nextRandom(seed);
+    seed = r.seed;
+    return r.value;
+  };
 
   let mode = brain.mode;
   if (hpFrac < cfg.retreatHpFraction) mode = 'retreat';
   else if (mode === 'retreat' && hpFrac >= cfg.returnHpFraction) mode = 'lane';
-  if (mode === 'retreat')
-    return { mode, nextDecisionAt: next, targetId: null, moveTo: w.map.heroSpawn[bot.team] };
+  if (mode === 'retreat') {
+    // Walking home: a shield or speed skill helps get there.
+    const skill = kit ? chooseSkill(w, null, now, cfg, kit, roll) : null;
+    return {
+      mode,
+      nextDecisionAt: next,
+      targetId: null,
+      moveTo: w.map.heroSpawn[bot.team],
+      skill,
+      seed,
+    };
+  }
 
   const margin = cfg.towerSafetyMarginPx;
   const reach = bot.attackRange + cfg.acquireRangeBonus;
   const enemies = w.minions.filter((m) => m.alive && m.team !== bot.team && dist(bot, m) <= reach);
   const safeTarget = (p: Point) => !isUnsafe(p, bot.team, w, margin);
 
-  // 1. A minion we can finish in one blow (last hit).
+  // 1. A minion we can finish in one blow (last hit) - unless it mistimes this one (#43).
+  const mistimed = roll() >= cfg.lastHitAccuracy;
   const finishable = enemies
     .filter(
       (m) =>
@@ -112,6 +184,8 @@ export function thinkBot(
         safeTarget(m),
     )
     .sort((a, b) => dist(bot, a) - dist(bot, b))[0];
+  // Mistimed: it hits something else this time (or waits), and the minion may die to others.
+  const lastHit = mistimed ? undefined : finishable;
   // 2. The player, if close, alive, not under their own tower, and we are healthy.
   const fightPlayer =
     player.alive &&
@@ -119,9 +193,23 @@ export function thinkBot(
     hpFrac >= cfg.engageMinHpFraction &&
     safeTarget(player);
   // 3. Otherwise the weakest enemy minion in reach.
-  const weakest = enemies.filter(safeTarget).sort((a, b) => a.hp - b.hp)[0];
+  const weakest = enemies
+    .filter((m) => safeTarget(m) && m !== finishable)
+    .sort((a, b) => a.hp - b.hp)[0];
 
-  const target = finishable ?? (fightPlayer ? player : (weakest ?? null));
+  // 4. Push (#43): an enemy tower or Nexus it can attack, while its own minions take the shots.
+  const structure = w.structures
+    .filter(
+      (t) =>
+        t.alive &&
+        t.team !== bot.team &&
+        isTargetable(t, w.structures) &&
+        dist(bot, t) <= reach &&
+        safeTarget(t),
+    )
+    .sort((a, b) => dist(bot, a) - dist(bot, b))[0];
+
+  const target = lastHit ?? (fightPlayer ? player : (weakest ?? structure ?? null));
   let moveTo: Point;
   if (target)
     moveTo =
@@ -130,7 +218,9 @@ export function thinkBot(
         : { x: bot.x, y: bot.y };
   else moveTo = laneAnchor(w, cfg);
   moveTo = makeSafe(moveTo, bot.team, w, margin);
-  return { mode, nextDecisionAt: next, targetId: target?.id ?? null, moveTo };
+  const skillTarget = target ?? (fightPlayer ? player : null);
+  const skill = kit ? chooseSkill(w, skillTarget, now, cfg, kit, roll) : null;
+  return { mode, nextDecisionAt: next, targetId: target?.id ?? null, moveTo, skill, seed };
 }
 
 /** Unit vector towards the brain's move target, or zero when there. */

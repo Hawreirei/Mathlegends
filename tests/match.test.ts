@@ -62,7 +62,9 @@ describe('bot.json', () => {
   });
 
   it('rejects a return threshold below the retreat threshold', () => {
-    expect(() => loadBot({ ...botJson, returnHpFraction: 0.2 })).toThrow(/returnHpFraction/);
+    expect(() => loadBot({ ...botJson, base: { ...botJson.base, returnHpFraction: 0.2 } })).toThrow(
+      /returnHpFraction/,
+    );
   });
 });
 
