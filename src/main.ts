@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import theme from './data/theme.json';
 import { BootScene } from './scenes/BootScene';
+import { MatchHudScene } from './scenes/MatchHudScene';
 import { MatchScene } from './scenes/MatchScene';
 import { MenuScene } from './scenes/MenuScene';
 import { ResultScene } from './scenes/ResultScene';
@@ -28,7 +29,7 @@ void loadFonts().then(() => {
       width: size.width,
       height: size.height,
     },
-    scene: [BootScene, MenuScene, MatchScene, ResultScene],
+    scene: [BootScene, MenuScene, MatchScene, MatchHudScene, ResultScene],
     callbacks: {
       preBoot: (g) => g.registry.set('state', createGameState(detectLang(navigator.language))),
     },

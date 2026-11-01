@@ -4,7 +4,6 @@
   "menu.play": "PLAY",
   "menu.rank": "{year} · {stars} stars",
   "match.quit": "Quit",
-  "match.placeholder": "Arena under construction",
   "match.debugWin": "Test: Win",
   "match.debugLose": "Test: Lose",
   "result.victory": "VICTORY!",

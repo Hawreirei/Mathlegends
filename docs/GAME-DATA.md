@@ -61,3 +61,20 @@ Filled in now with the rules approved in `docs/GDD.md`:
 | `questionMix` | 0.7 / 0.2 / 0.1 | On-level / review / stretch; must add up to 1 |
 
 The loader also checks that tiers are numbered 1, 2, 3, ... in order and that `maxStartTier` is not above the top tier.
+
+## map.json (issue #16)
+
+The single lane, loaded by [`src/systems/map.ts`](../src/systems/map.ts). Only the **blue** (left) side is written down; the red side is its mirror image across the middle, so both teams get exactly the same distances.
+
+| Field | Value | Meaning |
+|---|---|---|
+| `world.width` / `world.height` | 4400 / 1400 | World size in pixels |
+| `lane.y` / `lane.thickness` | 700 / 360 | Horizontal lane centre and width |
+| `river.y` / `river.thickness` | 1060 / 140 | Decorative river below the lane |
+| `blue.nexusX` | 300 | Blue Nexus (red: 4100) |
+| `blue.towerXs` | 1000, 1750 | Inner and outer blue towers (red: 3400, 2650) |
+| `blue.heroSpawnX` / `minionSpawnX` | 520 / 460 | Spawn points on the lane |
+| `camera.minVisibleWidth` | 1150 | Narrow (portrait) screens zoom out until at least this much lane is visible |
+| `camera.lerp` | 0.12 | How softly the camera follows the player (0 to 1; higher is tighter) |
+
+The loader rejects a lane that does not fit in the world, towers that are not in order from the Nexus towards the middle, or spawns on the wrong half. On tall portrait screens the camera centres the world vertically.
