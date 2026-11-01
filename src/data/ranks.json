@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "starsPerTier": 5,
+  "tiers": [
+    {
+      "tier": 1,
+      "label": {
+        "id": "Kelas 1",
+        "en": "Year 1"
+      },
+      "badge": "badge-year-1"
+    },
+    {
+      "tier": 2,
+      "label": {
+        "id": "Kelas 2",
+        "en": "Year 2"
+      },
+      "badge": "badge-year-2"
+    },
+    {
+      "tier": 3,
+      "label": {
+        "id": "Kelas 3",
+        "en": "Year 3"
+      },
+      "badge": "badge-year-3"
+    },
+    {
+      "tier": 4,
+      "label": {
+        "id": "Kelas 4",
+        "en": "Year 4"
+      },
+      "badge": "badge-year-4"
+    },
+    {
+      "tier": 5,
+      "label": {
+        "id": "Kelas 5",
+        "en": "Year 5"
+      },
+      "badge": "badge-year-5"
+    },
+    {
+      "tier": 6,
+      "label": {
+        "id": "Kelas 6",
+        "en": "Year 6"
+      },
+      "badge": "badge-year-6"
+    }
+  ],
+  "placement": {
+    "questions": 10,
+    "startOffset": -1,
+    "maxStartTier": 5
+  },
+  "stars": {
+    "win": 1,
+    "loss": -1,
+    "bonusAccuracy": 0.8,
+    "bonusStars": 1,
+    "demoteAfterLossesAtZero": 2
+  },
+  "questionMix": {
+    "onLevel": 0.7,
+    "review": 0.2,
+    "stretch": 0.1
+  }
+}
