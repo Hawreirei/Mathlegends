@@ -39,16 +39,16 @@ A 1-lane MOBA where every last-hit on a minion triggers a math question. The ans
 
 Tier = Kelas (grade) in the Indonesian curriculum (Kurikulum Merdeka). Fase A = Kelas 1-2, Fase B = Kelas 3-4, Fase C = Kelas 5-6.
 
-**DRAFT: this table is from general knowledge of the curriculum and has not been checked against the official Capaian Pembelajaran (CP). A teacher must verify it in issue #9 before any questions are written.**
+**DRAFT: not yet checked against the official Capaian Pembelajaran (CP). A teacher must verify docs/CURRICULUM.md before questions are written (#9).**
 
-| Tier | Fase | Core topics (draft) |
+| Tier | Fase | Topics (draft, from src/data/curriculum.json) |
 |---|---|---|
-| 1 | A | Numbers to 20, simple add/subtract, comparing, basic shapes |
-| 2 | A | Numbers to 100, add/subtract with regrouping, intro to multiplication/division as groups, time and money (Rp) |
-| 3 | B | Numbers to 1.000 (and beyond), multiplication/division facts, simple fractions, standard units of length/weight |
-| 4 | B | Four operations on large whole numbers, equivalent fractions, perimeter and area of squares/rectangles, angles |
-| 5 | C | Fractions, decimals and percent, KPK and FPB, averages and data charts, volume of cuboids |
-| 6 | C | Ratio, scale and speed, mixed operations, negative integers, coordinates, composite shapes, simple probability |
+| 1 | A | Counting and comparing numbers to 20, Addition and subtraction within 20, Simple number and object patterns, Recognising 2D and 3D shapes, Comparing length and weight (non-standard units) |
+| 2 | A | Numbers to 100 and place value, Addition and subtraction within 100, Halves and quarters, Multiplication as repeated addition, Money (Rupiah) and telling the time, Tally charts and pictograms |
+| 3 | B | Numbers to 1,000 and place value, Addition and subtraction within 1,000, Multiplication and division within 100, Comparing simple fractions, Standard units of length and weight (cm, m, g, kg), Picture graphs and bar charts |
+| 4 | B | Numbers to 10,000, Multi-digit multiplication and division, Equivalent fractions, Tenths and hundredths as decimals, Perimeter and area of squares and rectangles, Properties of triangles, quadrilaterals and polygons |
+| 5 | C | Numbers to 1,000,000, Lowest common multiple and highest common factor, Adding and subtracting fractions, Decimals and percentages, Measuring and comparing angles, Reading charts, mean and mode |
+| 6 | C | Multiplying and dividing fractions, Ratio and proportion, Speed and scale, Mixed operations (order of operations), Volume of cubes and cuboids, Chance: certain, possible, impossible |
 
 Years 7-12 are post-MVP.
 
