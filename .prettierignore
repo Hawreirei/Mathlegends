@@ -4,3 +4,4 @@ coverage
 package-lock.json
 issues.json
 *.md
+docs/design-prototype
