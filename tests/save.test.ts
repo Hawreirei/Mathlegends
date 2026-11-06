@@ -32,7 +32,14 @@ const memory = (init: Record<string, unknown> = {}) => {
 
 const DATA: SaveData = {
   profile: { placed: true, tier: 4, stars: 3, lossesAtZero: 1, matchesPlayed: 12 },
-  settings: { textScale: 1.2, colorBlind: true, extraTime: false },
+  settings: {
+    textScale: 1.2,
+    colorBlind: true,
+    extraTime: false,
+    sound: false,
+    music: true,
+    reduceMotion: true,
+  },
   review: [
     { question: bank[0]!, matchesLeft: 3 },
     { question: bank[100]!, matchesLeft: 1 },

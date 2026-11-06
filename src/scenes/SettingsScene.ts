@@ -29,7 +29,11 @@ const TEXT_KEYS: StringKey[] = ['settings.text1', 'settings.text2', 'settings.te
  */
 export class SettingsScene extends Phaser.Scene implements BackAware {
   backScreen(): Screen {
-    return this.page === 'transfer' ? 'settingsTransfer' : 'settings';
+    return this.page === 'transfer'
+      ? 'settingsTransfer'
+      : this.page === 'sound'
+        ? 'settingsSound'
+        : 'settings';
   }
 
   applyBack(a: BackAction): void {
@@ -38,7 +42,7 @@ export class SettingsScene extends Phaser.Scene implements BackAware {
   }
 
   private note: 'exported' | 'cleared' | 'confirm' | 'retake' | null = null;
-  private page: 'main' | 'transfer' = 'main';
+  private page: 'main' | 'transfer' | 'sound' = 'main';
   private transferNote: TransferNote | null = null;
   /** A checked save picked for import, waiting for the second tap. */
   private pendingImport: SaveData | null = null;
@@ -70,14 +74,31 @@ export class SettingsScene extends Phaser.Scene implements BackAware {
       .rectangle(w / 2, h / 2, panelW, panelH, hex(c.night), 0.95)
       .setStrokeStyle(4, hex(c.violet));
     const onTransfer = this.page === 'transfer';
+    const onSound = this.page === 'sound';
     this.add
       .text(
         w / 2,
         top + 55,
-        tr(this, onTransfer ? 'transfer.title' : 'settings.title'),
+        tr(
+          this,
+          onTransfer ? 'transfer.title' : onSound ? 'settings.soundTitle' : 'settings.title',
+        ),
         displayFont(52, c.gold),
       )
       .setOrigin(0.5);
+    if (onSound) {
+      const colW = Math.min(panelW - 80, 760);
+      this.soundPage(w / 2 - colW / 2, top + 150, colW);
+      new Button(
+        this,
+        w / 2,
+        top + panelH - 64,
+        tr(this, 'transfer.back'),
+        () => this.showPage('main'),
+        { width: 320, height: 76, style: 'secondary' },
+      );
+      return;
+    }
     if (onTransfer) {
       this.transfer(w / 2, top + 130, Math.min(panelW - 80, 760), portrait);
       new Button(
@@ -104,14 +125,61 @@ export class SettingsScene extends Phaser.Scene implements BackAware {
       this.answerData(left + 2 * pad + colW, yearEnd + 20, colW);
     }
 
+    // Bottom row: Sound and motion (#45) and Back.
+    const bw = Math.min(320, (panelW - 3 * pad) / 2);
     new Button(
       this,
-      w / 2,
+      w / 2 - bw / 2 - pad / 2,
+      top + panelH - 64,
+      tr(this, 'settings.soundButton'),
+      () => this.showPage('sound'),
+      { width: bw, height: 76, style: 'secondary', fontSize: 26 },
+    );
+    new Button(
+      this,
+      w / 2 + bw / 2 + pad / 2,
       top + panelH - 64,
       tr(this, 'settings.back'),
       () => goTo(this, 'Menu'),
-      { width: 320, height: 76, style: 'secondary' },
+      { width: bw, height: 76, style: 'secondary' },
     );
+  }
+
+  /** Sound effects, music and screen shake (#45), each on or off. Saved at once. */
+  private soundPage(x: number, y: number, colW: number): void {
+    const c = theme.colors;
+    const s = getState(this).settings;
+    const rows: [StringKey, StringKey, boolean, () => Settings][] = [
+      ['settings.sound', 'settings.soundHint', s.sound, () => ({ ...s, sound: !s.sound })],
+      ['settings.music', 'settings.musicHint', s.music, () => ({ ...s, music: !s.music })],
+      [
+        'settings.reduceMotion',
+        'settings.reduceMotionHint',
+        s.reduceMotion,
+        () => ({ ...s, reduceMotion: !s.reduceMotion }),
+      ],
+    ];
+    rows.forEach(([label, hint, on, next], i) => {
+      const rowY = y + i * 120;
+      this.add
+        .text(x, rowY, tr(this, label), bodyFont(30, c.white, '800'))
+        .setWordWrapWidth(colW - 200, true);
+      this.add
+        .text(x, rowY + 44, tr(this, hint), bodyFont(22, c.paper, '600'))
+        .setWordWrapWidth(colW - 200, true)
+        .setAlpha(0.8);
+      new Button(
+        this,
+        x + colW - 85,
+        rowY + 34,
+        tr(this, on ? 'settings.on' : 'settings.off'),
+        () => changeSettings(this, next()),
+        { width: 170, height: 68, fontSize: 28, style: on ? 'primary' : 'secondary' },
+      );
+    });
+    this.add
+      .text(x, y + 3 * 120 + 10, tr(this, 'settings.soundNote'), bodyFont(22, c.mint, '700'))
+      .setWordWrapWidth(colW, true);
   }
 
   /** Text size, colour-blind colours, extra time. Returns the y below the section. */
@@ -382,7 +450,7 @@ export class SettingsScene extends Phaser.Scene implements BackAware {
     this.layout();
   }
 
-  private showPage(p: 'main' | 'transfer'): void {
+  private showPage(p: SettingsScene['page']): void {
     this.page = p;
     this.note = null;
     this.transferNote = null;

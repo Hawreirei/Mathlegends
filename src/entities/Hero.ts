@@ -82,24 +82,55 @@ export class HeroView extends Phaser.GameObjects.Container {
   }
 }
 
-/** Floating damage number that rises and fades (#19; more juice in #44). */
-export function damageNumber(scene: Phaser.Scene, at: Point, amount: number): void {
+/**
+ * Floating damage number that rises and fades (#19). Since #45 hits close together on one target
+ * add up in one number (rules in src/systems/feel.ts): updateDamageNumber shows the new total.
+ * White = damage the player dealt, red (orange with colour-blind colours) = damage taken.
+ */
+export function damageNumber(
+  scene: Phaser.Scene,
+  at: Point,
+  amount: number,
+  taken: boolean,
+  lifetimeMs: number,
+): Phaser.GameObjects.Text {
   const t = scene.add
     .text(
       at.x + Phaser.Math.Between(-12, 12),
       at.y - 70,
       String(Math.round(amount)),
-      displayFont(34, theme.colors.white),
+      displayFont(taken ? 36 : 34, taken ? theme.colors.wrong : theme.colors.white),
     )
     .setOrigin(0.5)
     .setStroke(theme.colors.ink, 6)
     .setDepth(10_000);
+  riseAndFade(scene, t, lifetimeMs);
+  return t;
+}
+
+/** A new total on a number already shown: a small pop, and it lives a little longer. */
+export function updateDamageNumber(
+  scene: Phaser.Scene,
+  t: Phaser.GameObjects.Text,
+  amount: number,
+  lifetimeMs: number,
+): void {
+  if (!t.active) return;
+  scene.tweens.killTweensOf(t);
+  t.setText(String(Math.round(amount)))
+    .setAlpha(1)
+    .setScale(1.25);
+  scene.tweens.add({ targets: t, scale: 1, duration: 120, ease: 'Back.easeOut' });
+  riseAndFade(scene, t, lifetimeMs);
+}
+
+function riseAndFade(scene: Phaser.Scene, t: Phaser.GameObjects.Text, ms: number): void {
   scene.tweens.add({
     targets: t,
     y: t.y - 50,
     alpha: 0,
-    duration: 650,
-    ease: 'Cubic.easeOut',
+    duration: ms,
+    ease: 'Cubic.easeIn',
     onComplete: () => t.destroy(),
   });
 }

@@ -24,18 +24,35 @@ const reward = () => ({ gold: 14, exp: 30, at: { x: 0, y: 0 } });
 const session = (scale: number) => createSession(createQuestionEngine(bank, ranks, 1), econ, scale);
 
 describe('accessibility settings (#31)', () => {
-  it('defaults to normal text, normal colours, normal time', () => {
+  it('defaults to normal text, normal colours, normal time, sound and music on, motion on', () => {
     expect(createGameState('id').settings).toEqual(DEFAULT_SETTINGS);
-    expect(DEFAULT_SETTINGS).toEqual({ textScale: 1, colorBlind: false, extraTime: false });
+    expect(DEFAULT_SETTINGS).toEqual({
+      textScale: 1,
+      colorBlind: false,
+      extraTime: false,
+      sound: true,
+      music: true,
+      reduceMotion: false,
+    });
   });
 
   it('round-trips through storage and ignores bad values', () => {
-    const s = { textScale: 1.4, colorBlind: true, extraTime: true };
+    const s = {
+      textScale: 1.4,
+      colorBlind: true,
+      extraTime: true,
+      sound: false,
+      music: false,
+      reduceMotion: true,
+    };
     expect(
       parseSettings(JSON.parse(JSON.stringify(serializeSettings(s))), theme.textScales),
     ).toEqual(s);
     expect(
-      parseSettings({ textScale: 3, colorBlind: 'yes', extraTime: 1 }, theme.textScales),
+      parseSettings(
+        { textScale: 3, colorBlind: 'yes', extraTime: 1, sound: 0, music: 'off', reduceMotion: 1 },
+        theme.textScales,
+      ),
     ).toEqual(DEFAULT_SETTINGS);
     expect(parseSettings(null, theme.textScales)).toEqual(DEFAULT_SETTINGS);
     expect(parseSettings({ colorBlind: true }, theme.textScales)).toEqual({
@@ -95,5 +112,25 @@ describe('accessibility settings (#31)', () => {
     const keys = (o: object) => Object.keys(o).filter((k) => k.startsWith('settings.'));
     expect(keys(id).sort()).toEqual(keys(en).sort());
     expect(keys(en).length).toBeGreaterThan(15);
+  });
+});
+
+describe('mute and reduce motion (#45)', () => {
+  it('mute persists: sound and music off survive a save and reload', () => {
+    const muted = { ...DEFAULT_SETTINGS, sound: false, music: false };
+    const stored = JSON.stringify(serializeSettings(muted));
+    expect(parseSettings(JSON.parse(stored), theme.textScales)).toMatchObject({
+      sound: false,
+      music: false,
+    });
+  });
+
+  it('settings saved before #45 (no sound/music fields) load with sound and music on', () => {
+    expect(
+      parseSettings(
+        { version: 1, textScale: 1.2, colorBlind: true, extraTime: false },
+        theme.textScales,
+      ),
+    ).toEqual({ ...DEFAULT_SETTINGS, textScale: 1.2, colorBlind: true });
   });
 });

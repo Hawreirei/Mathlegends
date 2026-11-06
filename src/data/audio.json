@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "_note": "Original sounds and music (#45), synthesised in the browser with Web Audio from these recipes: no audio files. Frequencies in Hz, times in ms, volume 0-1. 'notes' plays the listed pitches one after another, each 'durationMs' long.",
+  "masterVolume": 0.6,
+  "sounds": {
+    "hit": { "wave": "square", "from": 420, "to": 180, "durationMs": 70, "volume": 0.18 },
+    "minionHit": { "wave": "triangle", "from": 300, "to": 160, "durationMs": 60, "volume": 0.08 },
+    "hurt": { "wave": "sawtooth", "from": 220, "to": 90, "durationMs": 140, "volume": 0.16 },
+    "lastHit": { "wave": "triangle", "notes": [660, 880], "durationMs": 70, "volume": 0.22 },
+    "question": { "wave": "sine", "notes": [784, 1046], "durationMs": 90, "volume": 0.2 },
+    "correct": {
+      "wave": "triangle",
+      "notes": [523, 659, 784, 1046],
+      "durationMs": 80,
+      "volume": 0.25
+    },
+    "wrong": { "wave": "square", "notes": [330, 247], "durationMs": 140, "volume": 0.14 },
+    "coin": { "wave": "square", "notes": [988, 1319], "durationMs": 60, "volume": 0.12 },
+    "levelUp": {
+      "wave": "triangle",
+      "notes": [392, 523, 659, 784, 1046],
+      "durationMs": 90,
+      "volume": 0.25
+    },
+    "skill": { "wave": "sawtooth", "from": 260, "to": 720, "durationMs": 160, "volume": 0.14 },
+    "towerDown": {
+      "wave": "sawtooth",
+      "from": 160,
+      "to": 40,
+      "durationMs": 520,
+      "volume": 0.3,
+      "noise": true
+    },
+    "victory": {
+      "wave": "triangle",
+      "notes": [523, 659, 784, 1046, 784, 1046],
+      "durationMs": 140,
+      "volume": 0.3
+    },
+    "defeat": {
+      "wave": "triangle",
+      "notes": [523, 466, 392, 330],
+      "durationMs": 220,
+      "volume": 0.25
+    },
+    "click": { "wave": "sine", "from": 900, "to": 700, "durationMs": 40, "volume": 0.12 }
+  },
+  "music": {
+    "bpm": 104,
+    "volume": 0.07,
+    "wave": "triangle",
+    "bassWave": "sine",
+    "_note": "Original 8-bar loop. Each bar: a bass root and four melody notes (0 = rest).",
+    "bars": [
+      { "bass": 131, "melody": [523, 659, 784, 659] },
+      { "bass": 110, "melody": [440, 523, 659, 523] },
+      { "bass": 175, "melody": [440, 523, 698, 659] },
+      { "bass": 196, "melody": [494, 587, 784, 0] },
+      { "bass": 131, "melody": [523, 784, 659, 523] },
+      { "bass": 110, "melody": [440, 659, 523, 440] },
+      { "bass": 175, "melody": [349, 440, 523, 587] },
+      { "bass": 196, "melody": [587, 494, 392, 0] }
+    ]
+  }
+}

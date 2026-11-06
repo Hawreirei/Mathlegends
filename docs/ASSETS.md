@@ -37,17 +37,27 @@ Self-hosted: bundled into the build from npm packages (latin subset), so the gam
 
 The OFL allows bundling the fonts with the game, including commercially, as long as the fonts are not sold on their own.
 
-## Audio plan (issue #14, built in #45)
+## Audio (issue #14 plan, built in #45)
 
-No audio files yet. Plan:
+**No audio files.** Every sound and the music are synthesised in the browser with Web Audio from short recipes in [`src/data/audio.json`](../src/data/audio.json) (a waveform, a pitch slide or a run of notes, a length and a volume; one has a noise burst). They were written for this project, so they are original and MIT like the code. Player: [`src/audio/AudioPlayer.ts`](../src/audio/AudioPlayer.ts).
+
+| Sound | What it is | Source | License |
+|---|---|---|---|
+| `hit`, `minionHit`, `hurt` | Short square/triangle/saw pitch drops | Original recipe, `audio.json` | MIT (project) |
+| `lastHit`, `question`, `coin` | Two-note blips | Original recipe | MIT (project) |
+| `correct`, `levelUp`, `victory` | Rising major arpeggios | Original recipe | MIT (project) |
+| `wrong`, `defeat` | Falling notes | Original recipe | MIT (project) |
+| `skill` | Rising saw sweep | Original recipe | MIT (project) |
+| `towerDown` | Low saw drop with a noise burst | Original recipe | MIT (project) |
+| `click` | Soft sine tick on every button | Original recipe | MIT (project) |
+| Music | Original 8-bar loop: a bass note and four melody notes per bar over C, Am, F and G, at 104 bpm | Original, `audio.json` `music` | MIT (project) |
+
+The plan as written in #14:
 
 1. **Sound effects:** generate original effects (hit, last hit, correct, wrong, coin, level up, tower shot, victory, defeat) with a small Web Audio synth in code, or with an sfxr-style tool whose output we own. Either way no third-party samples, and each sound is listed below with how it was made.
 2. **Music:** one short looping menu track and one match track. Options, in order of preference: commission or compose an original track; or use a CC0 track (for example from the Kenney or OpenGameArt CC0 collections), recorded here with its exact URL and author.
 3. **Rules:** CC0 or original only (no CC-BY-NC, no "free for personal use", no ripped game audio). Mute toggle, and sounds must not be needed to play (children may play muted in class).
 
-| File | What | Source | License |
-|---|---|---|---|
-| _none yet_ | | | |
 
 ## Design prototype (reference only)
 
