@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { totalExpToLevel } from '../systems/economy';
 import { formatDuration } from '../systems/gameState';
 import { computeHudLayout, type HudLayout, type Rect } from '../systems/hudLayout';
+import { superMinionsFor } from '../systems/minions';
 import type { StructureState } from '../systems/structures';
 import { safeAreaInGame } from '../systems/touch';
 import { skillButtonState, skillInSlot } from '../systems/skills';
@@ -92,15 +93,17 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
   layoutInfo?: HudLayout;
   private timerText?: Phaser.GameObjects.Text;
   private suddenDeathShown = false;
+  /** Teams whose super-minion banner (#69) was shown. */
+  private superShown = new Set<string>();
 
-  /** A short banner across the middle of the screen (sudden death, #37). */
-  private showBanner(text: string): void {
+  /** A short banner across the middle of the screen: a warning (red) or good news (green). */
+  private showBanner(text: string, good = false): void {
     const { width: w, height: h } = this.scale;
     const t = this.add
       .text(w / 2, h * 0.38, text, bodyFont(36, theme.colors.white, '800'))
       .setOrigin(0.5)
       .setPadding(28, 14, 28, 14)
-      .setBackgroundColor(theme.colors.wrong)
+      .setBackgroundColor(good ? theme.colors.correct : theme.colors.wrong)
       .setWordWrapWidth(w - 80, true)
       .setAlign('center')
       .setDepth(250);
@@ -129,6 +132,7 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
 
   create(): void {
     this.suddenDeathShown = false;
+    this.superShown = new Set();
     this.input.keyboard?.on('keydown-SPACE', () => this.game.events.emit(ATTACK_EVENT));
     this.input.keyboard?.on('keyup-SPACE', () => this.game.events.emit(ATTACK_RELEASE_EVENT));
     this.input.keyboard?.on('keydown-B', () => this.toggleShop());
@@ -189,6 +193,13 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
       this.suddenDeathShown = true;
       this.showBanner(tr(this, 'hud.suddenDeath'));
     }
+    // Super minions (#69): one banner per side, the first time it earns them.
+    for (const team of ['blue', 'red'] as const)
+      if (!this.superShown.has(team) && superMinionsFor(team, s.structures)) {
+        this.superShown.add(team);
+        const ours = team === s.player.team;
+        this.showBanner(tr(this, ours ? 'hud.superMinionsOurs' : 'hud.superMinionsTheirs'), ours);
+      }
     this.panel?.update(s.player, s.playerProgress);
     this.shop?.sync({ gold: s.playerProgress.gold, inventory: s.playerItems });
     // Skill buttons: cooldown sweep, seconds, mana and lock state (#33).

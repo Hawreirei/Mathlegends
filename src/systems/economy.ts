@@ -18,6 +18,8 @@ export interface EconomyConfig {
   passiveGoldPerSecond: number;
   startingGold: number;
   lastHitGold: Record<MinionType, number>;
+  /** Last-hit reward of a super minion (#69), before goldScale and the answer multiplier. */
+  superMinionReward?: { gold: number; exp: number };
   otherGold: { heroKill: number; tower: number };
   reward: {
     correct: number;
@@ -74,6 +76,10 @@ export function validateEconomy(c: EconomyConfig): string[] {
     pos(`lastHitGold.${m}`, c.lastHitGold?.[m]);
     pos(`questionSeconds.${m}`, c.questionSeconds?.[m]);
     pos(`exp.minion.${m}`, c.exp?.minion?.[m]);
+  }
+  if (c.superMinionReward) {
+    pos('superMinionReward.gold', c.superMinionReward.gold);
+    pos('superMinionReward.exp', c.superMinionReward.exp);
   }
   pos('passiveGoldPerSecond', c.passiveGoldPerSecond);
   pos('questionRevealSeconds', c.questionRevealSeconds);

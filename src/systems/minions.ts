@@ -3,6 +3,7 @@
  * Waves spawn on a timer from both bases, march along the lane, fight the nearest enemy
  * (minions first, heroes only when no enemy minion is near) and never respawn.
  * Later waves are stronger (#68): stats grow with match time, the same for both sides.
+ * After a side destroys the enemy's inner tower its waves lead with super minions (#69).
  */
 import { canAttack, resolveAttack, type Combatant } from './combat';
 import type { MinionsFile } from './data';
@@ -22,6 +23,8 @@ export interface MinionState extends Combatant {
   sprite: string;
   /** Last-hit gold multiplier from match-time growth (#68); 1 = base lastHitGold. */
   goldScale: number;
+  /** A super minion (#69). Its `kind` is the type whose question it asks. */
+  isSuper: boolean;
 }
 
 export interface AttackEvent {
@@ -61,9 +64,15 @@ export function growthMinutes(sec: number, m: MinionsFile): number {
   return Math.min(g.maxMinutes, Math.max(0, (sec - g.startsAfterSec) / 60));
 }
 
-/** A minion type's stats for a wave spawned at match time `sec` (#68). */
-export function minionStatsAt(kind: MinionType, sec: number, m: MinionsFile) {
-  const t = m.types[kind];
+/** True once `team` has destroyed the enemy's inner tower (#69): its waves bring super minions. */
+export function superMinionsFor(team: Team, structures: readonly StructureState[]): boolean {
+  const inner = structures.find((s) => s.team !== team && s.kind === 'tower' && s.index === 0);
+  return !!inner && !inner.alive;
+}
+
+/** A minion type's (or the super minion's) stats for a wave spawned at match time `sec` (#68). */
+export function minionStatsAt(kind: MinionType | 'super', sec: number, m: MinionsFile) {
+  const t = kind === 'super' ? m.super! : m.types[kind];
   const g = m.growth?.perMinute[kind];
   const min = growthMinutes(sec, m);
   if (!g || min === 0) return t;
@@ -79,8 +88,11 @@ export function spawnWave(
   c: EconomyConfig,
   m: MinionsFile,
   idPrefix: string,
+  opts: { superMinions?: boolean } = {},
 ): MinionState[] {
-  const kinds: MinionType[] = [
+  const sup = opts.superMinions ? m.super : undefined;
+  const kinds: (MinionType | 'super')[] = [
+    ...Array<'super'>(sup?.perWave ?? 0).fill('super'),
     ...Array<MinionType>(c.match.wave.infantry).fill('infantry'),
     ...Array<MinionType>(c.match.wave.lancer).fill('lancer'),
     ...(hasCannon(n, c) ? Array<MinionType>(c.match.wave.cannon).fill('cannon') : []),
@@ -94,10 +106,11 @@ export function spawnWave(
     const t = minionStatsAt(kind, sec, m);
     const col = Math.floor(slot / rows.length);
     const row = rows[slot % rows.length]!;
+    const isSuper = kind === 'super';
     return {
       id: `${idPrefix}-${team}-${slot}`,
       team,
-      kind,
+      kind: isSuper ? sup!.questionAs : kind,
       slot,
       wave: n,
       x: spawn.x - dir * col * m.spacing,
@@ -116,8 +129,9 @@ export function spawnWave(
       alive: true,
       nextAttackAt: 0,
       respawnAt: null,
-      sprite: `minion-${kind}-${team}`,
+      sprite: `minion-${kind}-${team}`, // minion-super-* for super minions
       goldScale,
+      isSuper,
     };
   });
 }

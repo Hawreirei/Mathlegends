@@ -16,13 +16,14 @@ const committed = new Map(
 );
 
 describe('placeholder sprites (#14)', () => {
-  it('include the full set: hero, bot hero, 3 minions per team, tower, Nexus, map tiles', () => {
+  it('include the full set: hero, bot hero, 3 minions + super minion per team, tower, Nexus, map tiles', () => {
     const needed = [...heroes.heroes.map((h) => h.sprite), 'tile-grass', 'tile-lane', 'tile-water'];
     for (const t of ['blue', 'red'])
       needed.push(
         `minion-infantry-${t}`,
         `minion-lancer-${t}`,
         `minion-cannon-${t}`,
+        `minion-super-${t}`,
         `tower-${t}`,
         `nexus-${t}`,
       );

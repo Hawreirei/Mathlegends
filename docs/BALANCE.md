@@ -27,7 +27,7 @@ Default: 200 matches per scenario, 20-minute limit, CSV to `balance-sim.csv` (gi
 
 ## CSV columns
 
-`scenario, seed, accuracy, winner (blue = player, red = bot, empty = draw), decidedBy (nexus or score), seconds, pushBlue, pushRed (structure damage done, a destroyed tower = 1), towersLostBlue, towersLostRed, goldBlue, goldRed (earned), levelBlue, levelRed, killsBlue, killsRed, questions, correct, mathShare`.
+`scenario, seed, accuracy, winner (blue = player, red = bot, empty = draw), decidedBy (nexus or score), seconds, pushBlue, pushRed (structure damage done, a destroyed tower = 1), towersLostBlue, towersLostRed, goldBlue, goldRed (earned), levelBlue, levelRed, killsBlue, killsRed, questions, correct, mathShare, superBlueAt, superRedAt (seconds when that side first earned super minions, #69; empty = never)`.
 
 ## Results
 
@@ -51,6 +51,17 @@ Default: 200 matches per scenario, 20-minute limit, CSV to `balance-sim.csv` (gi
 - **Difficulty by Year:** a new player wins 83% against the Year 1 bot, then 77, 43.5, 27.5, 17 and 9% against Years 2 to 6: every Year is harder than the one before.
 - **Minion growth (#68)** barely changes match length (about 3 s shorter on average). Without growth in gold, tougher minions cut farm income and squeezed the gold gaps between Years, so last-hit gold now grows 3% per minute too.
 - 2,000 matches took 5 minutes.
+
+### Super minions (#69)
+
+Rerunning after #69 gives the same table (within a match or two). In the simulator, super minions **arrive too late to matter**:
+
+- Every match earns them (the loser's inner tower always falls), and in 80% both sides do, because sudden death crumbles both bases.
+- The first super minions spawn a median **26 s** before the Nexus falls (10th to 90th percentile: 23 to 31 s). That is about one wave, which is still walking when the match ends.
+- 180 paired matches (Years 1, 3 and 6, seeds 1 to 60) with super minions on and off had **identical** results: the same winners and the same lengths.
+- **Comebacks:** the side that lost its inner tower first came back once in 180, with or without super minions. That is sudden death's design (the next building to crumble is the Nexus), not super minions.
+
+They matter when a player breaks the inner tower **before** sudden death, which simulated bots rarely do and children who push on purpose may. Re-check with playtest data (#50): if early super minions end matches too fast, lower `super.hp`/`atk` or `perWave` in `minions.json`.
 
 ## What the simulator changed: sudden death
 

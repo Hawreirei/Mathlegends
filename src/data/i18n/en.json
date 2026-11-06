@@ -122,5 +122,7 @@
   "quit.leave": "Leave",
   "result.forfeit": "You left.",
   "placement.quit": "Quit",
-  "hud.suddenDeath": "Sudden death! Towers and Nexus start to crumble."
+  "hud.suddenDeath": "Sudden death! Towers and Nexus start to crumble.",
+  "hud.superMinionsOurs": "Our super minions are coming!",
+  "hud.superMinionsTheirs": "Watch out! Enemy super minions are coming."
 }

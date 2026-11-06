@@ -71,6 +71,8 @@ export interface Victim {
   minionKind?: MinionType;
   /** Minion last-hit gold multiplier from match-time growth (#68). */
   goldScale?: number;
+  /** A super minion (#69): pays superMinionReward instead of its kind's reward. */
+  isSuper?: boolean;
   team: Team;
   x: number;
   y: number;
@@ -109,12 +111,14 @@ export function killRewards(
   const enemies = heroes.filter((h) => h.team !== v.team && h.alive);
   if (v.kind === 'minion' && v.minionKind) {
     const out: Reward[] = [];
+    const sup = v.isSuper ? c.superMinionReward : undefined;
+    const exp = sup?.exp ?? c.exp.minion[v.minionKind];
+    const gold = sup?.gold ?? c.lastHitGold[v.minionKind];
     for (const h of enemies) {
-      const exp = c.exp.minion[v.minionKind];
       if (h.id === killerId)
         out.push({
           heroId: h.id,
-          gold: c.lastHitGold[v.minionKind] * (v.goldScale ?? 1) * multiplier,
+          gold: gold * (v.goldScale ?? 1) * multiplier,
           exp: exp * multiplier,
           source: 'lastHit',
         });

@@ -17,6 +17,7 @@ import {
 } from './match';
 import { mathShare } from './rewards';
 import { createRng } from '../utils/rng';
+import { superMinionsFor } from './minions';
 
 export interface SimOptions {
   accuracy: number;
@@ -42,6 +43,8 @@ export interface SimResult {
   /** Highest math share seen after the first `settleSec` seconds. */
   maxShareAfterSettle: number;
   finalShare: number;
+  /** Match time each side first earned super minions (#69), or null. */
+  superAt: { blue: number | null; red: number | null };
 }
 
 export function simulateMatch(cfg: MatchConfig, o: SimOptions, settleSec = 120): SimResult {
@@ -63,6 +66,7 @@ export function simulateMatch(cfg: MatchConfig, o: SimOptions, settleSec = 120):
     correctByMinute: [],
     maxShareAfterSettle: 0,
     finalShare: 0,
+    superAt: { blue: null, red: null },
   };
   for (let i = 0; i < o.seconds / dt && !s.winner; i++) {
     // The player's brain sees the world from the player's side.
@@ -81,6 +85,8 @@ export function simulateMatch(cfg: MatchConfig, o: SimOptions, settleSec = 120):
       cfg,
     );
     s = step.state;
+    for (const team of ['blue', 'red'] as const)
+      if (r.superAt[team] === null && superMinionsFor(team, s.structures)) r.superAt[team] = s.now;
     for (const e of step.events) {
       if (e.type !== 'lastHit') continue;
       const right = rng() < o.accuracy;

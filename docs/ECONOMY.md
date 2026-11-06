@@ -76,7 +76,7 @@ Implemented in [`src/systems/progression.ts`](../src/systems/progression.ts) (pu
 | Event | Who gets what |
 |---|---|
 | Every second | Both heroes get `passiveGoldPerSecond` (3) gold, alive or dead |
-| A hero lands the killing blow on an enemy minion (last hit) | That hero: `lastHitGold[type]` gold and `exp.minion[type]` EXP, both x the answer multiplier (gold capped by the reward resolver below) |
+| A hero lands the killing blow on an enemy minion (last hit) | That hero: `lastHitGold[type]` gold and `exp.minion[type]` EXP, both x the answer multiplier (gold capped by the reward resolver below). Gold also x the minion's `goldScale` (#68). A super minion (#69) pays `superMinionReward` (60 gold, 90 EXP) instead |
 | An enemy minion dies to anything else | Every enemy hero within `exp.shareRangePx` (600 px): `exp.minion[type]` EXP, no gold |
 | A hero lands the killing blow on the enemy hero | That hero: `otherGold.heroKill` (150) gold and `exp.heroKill` (150) EXP |
 | A tower falls | Every hero on the other team: `otherGold.tower` (120) gold |

@@ -21,7 +21,7 @@ import { itemEffects, withItems } from './items';
 import { damage, type EconomyConfig, type MinionType } from './economy';
 import { createHeroState, moveHero, walkableArea, type HeroState, type Rect } from './hero';
 import type { LaneMap, Point, Team } from './map';
-import { spawnWave, stepMinions, wavesDue, type MinionState } from './minions';
+import { spawnWave, stepMinions, superMinionsFor, wavesDue, type MinionState } from './minions';
 import {
   addExp,
   addGold,
@@ -244,6 +244,7 @@ function victimOf(u: Unit): Victim {
     kind: 'minion',
     minionKind: u.kind,
     goldScale: 'goldScale' in u ? u.goldScale : 1,
+    isSuper: 'isSuper' in u && u.isSuper,
     team: u.team,
     x: u.x,
     y: u.y,
@@ -611,11 +612,15 @@ export function stepMatch(
 
   // 3. Waves.
   for (const n of wavesDue(prevNow, now, cfg.econ))
-    for (const team of ['blue', 'red'] as const)
-      for (const m of spawnWave(n, team, cfg.map, cfg.econ, cfg.minions, `w${n}`)) {
+    for (const team of ['blue', 'red'] as const) {
+      const superMinions = superMinionsFor(team, w.structures);
+      for (const m of spawnWave(n, team, cfg.map, cfg.econ, cfg.minions, `w${n}`, {
+        superMinions,
+      })) {
         w.minions.push(m);
         w.events.push({ type: 'spawn', minion: m });
       }
+    }
 
   // 4. Minions, then towers. Victims are looked up in the snapshot taken before each step.
   const units = () =>

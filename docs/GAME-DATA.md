@@ -154,8 +154,23 @@ Later waves are tougher, **the same for both sides**. A hero's level, items and 
 | `perMinute.infantry` | HP +12, ATK +1, armor +0.3 | At 9:45 (a typical match end): 525 HP, 30.75 ATK, 12.6 armor |
 | `perMinute.lancer` | HP +8, ATK +1.2, armor +0.2 | At 9:45: 370 HP, 38.5 ATK, 5.75 armor |
 | `perMinute.cannon` | HP +24, ATK +2, armor +0.5 | At 9:45: 1,030 HP, 62.5 ATK, 29.4 armor |
+| `perMinute.super` | HP +40, ATK +3, armor +0.5 | Super minions (#69); optional |
 
 Code: `minionStatsAt` and `growthMinutes` in `src/systems/minions.ts`; each minion carries its `goldScale`, which `killRewards` (`progression.ts`) multiplies into the last-hit gold before the answer multiplier.
+
+### super: super minions (issue #69)
+
+Once a side **destroys the enemy's inner tower** (by attack or by sudden-death crumbling), each of its new waves adds `perWave` super minions at the front. The other side keeps normal waves until it does the same. `superMinionsFor(team, structures)` in `src/systems/minions.ts` is the rule.
+
+| Field | Value | Compare: Cannon |
+|---|---|---|
+| `perWave` | 1 | |
+| `hp` / `atk` / `armor` | 1,600 / 60 / 35 (+ growth) | 820 / 45 / 25 |
+| `attackRange` / `attackSpeed` | 110 (melee) / 0.8 | 340 / 0.5 |
+| `moveSpeed` / `aggroRange` / `radius` | 130 / 420 / 42 | 120 / 420 / 34 |
+| `questionAs` | `cannon` | |
+
+A super minion is a variant, not a fourth type. Its `kind` is `questionAs`, so its last hit asks that type's question (÷, Cannon timer) and counts as that type in the answer log and last-hit counts. Its reward is `economy.json` `superMinionReward` (60 gold, 90 EXP), times `goldScale` and the answer multiplier. A wave with one super minion beats a normal wave and keeps pushing (tested). Sprite: `minion-super-{team}`, the ÷ token with a gold ring and a crown. The HUD shows a banner once per side: *"Minion super kita datang!"* / *"Our super minions are coming!"*, or *"Awas! Minion super musuh datang."* / *"Watch out! Enemy super minions are coming."*
 
 Behaviour (`src/systems/minions.ts`): march towards the enemy base; target the nearest enemy **minion** in aggro range, or the nearest enemy **hero** only if no enemy minion is near; walk into range and attack; friendly minions push apart so a wave keeps its shape; dead minions do not respawn. All minions decide from the same snapshot each step and attacks land simultaneously, so list order gives neither team an edge: a test runs 10 minutes of mirrored waves and requires equal kills (99 vs 99) with the fight holding the middle. The player's killing blow on a minion counts as a **last hit** and fires `ml-last-hit` (used by the question overlay in #27).
 

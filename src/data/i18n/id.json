@@ -122,5 +122,7 @@
   "quit.leave": "Keluar",
   "result.forfeit": "Kamu keluar.",
   "placement.quit": "Keluar",
-  "hud.suddenDeath": "Babak penentuan! Menara dan Nexus mulai runtuh."
+  "hud.suddenDeath": "Babak penentuan! Menara dan Nexus mulai runtuh.",
+  "hud.superMinionsOurs": "Minion super kita datang!",
+  "hud.superMinionsTheirs": "Awas! Minion super musuh datang."
 }
