@@ -59,6 +59,9 @@ export interface MatchSummary {
   correct: number;
   /** Share of the player's earned gold that came from last-hit questions. */
   mathShare: number;
+  /** Seconds when the player / the bot first earned super minions (#69); null = never. */
+  superBlueAt: number | null;
+  superRedAt: number | null;
 }
 
 const earned = (p: Progress) => Object.values(p.goldBySource).reduce((a, b) => a + b, 0);
@@ -77,6 +80,7 @@ export function summarize(
   questions: number,
   correct: number,
   econ: EconomyConfig,
+  superAt: { blue: number | null; red: number | null } = { blue: null, red: null },
 ): MatchSummary {
   const pushBlue = damageTo(s, 'red');
   const pushRed = damageTo(s, 'blue');
@@ -110,6 +114,8 @@ export function summarize(
     questions,
     correct,
     mathShare: round(mathShare(s.playerProgress)),
+    superBlueAt: superAt.blue === null ? null : Math.round(superAt.blue),
+    superRedAt: superAt.red === null ? null : Math.round(superAt.red),
   };
 }
 
@@ -145,7 +151,7 @@ export interface Scenario {
 /** One match of a scenario. */
 export function runMatch(sc: Scenario, seed: number, seconds: number): MatchSummary {
   const r = simulateMatch(sc.cfg, { accuracy: sc.accuracy, seed, seconds, player: sc.player });
-  return summarize(r.state, seed, sc.accuracy, r.questions, r.correct, sc.cfg.econ);
+  return summarize(r.state, seed, sc.accuracy, r.questions, r.correct, sc.cfg.econ, r.superAt);
 }
 
 export interface ScenarioResult {
@@ -209,6 +215,8 @@ export const CSV_COLUMNS: (keyof MatchSummary | 'scenario')[] = [
   'questions',
   'correct',
   'mathShare',
+  'superBlueAt',
+  'superRedAt',
 ];
 
 export function toCsvRows(name: string, rows: readonly MatchSummary[]): string[] {

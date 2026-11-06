@@ -405,24 +405,39 @@ export const loadRanks = (raw: unknown): RanksFile => parse(ranksFileSchema, raw
 
 // ---------- minions.json (#20)
 
+const minionStatsShape = {
+  hp: positive,
+  atk: positive,
+  armor: nonNegative,
+  attackRange: positive,
+  attackSpeed: positive,
+  moveSpeed: positive,
+  /** Pixels: how far a minion notices enemies. Must be at least its attack range. */
+  aggroRange: positive,
+  radius: positive,
+  hpRegen: nonNegative,
+};
+const aggroCheck = {
+  message: 'aggroRange must be at least attackRange',
+  path: ['aggroRange'],
+};
 const minionStats = z
+  .object(minionStatsShape)
+  .strict()
+  .refine((m) => m.aggroRange >= m.attackRange, aggroCheck);
+
+/**
+ * Super minions (#69): once a side destroys the enemy's inner tower, each of its waves adds
+ * `perWave` of these at the front. They ask the question (and use the timer) of `questionAs`.
+ */
+const superMinion = z
   .object({
-    hp: positive,
-    atk: positive,
-    armor: nonNegative,
-    attackRange: positive,
-    attackSpeed: positive,
-    moveSpeed: positive,
-    /** Pixels: how far a minion notices enemies. Must be at least its attack range. */
-    aggroRange: positive,
-    radius: positive,
-    hpRegen: nonNegative,
+    ...minionStatsShape,
+    perWave: z.number().int().min(1),
+    questionAs: z.enum(['infantry', 'lancer', 'cannon']),
   })
   .strict()
-  .refine((m) => m.aggroRange >= m.attackRange, {
-    message: 'aggroRange must be at least attackRange',
-    path: ['aggroRange'],
-  });
+  .refine((m) => m.aggroRange >= m.attackRange, aggroCheck);
 
 /** Stats a minion type gains per minute of match time (#68). */
 const minionGrowth = z.object({ hp: nonNegative, atk: nonNegative, armor: nonNegative }).strict();
@@ -448,11 +463,17 @@ export const minionsFileSchema = z
         /** Last-hit gold grows by this fraction per minute, so tougher minions still pay. */
         goldPerMinute: nonNegative,
         perMinute: z
-          .object({ infantry: minionGrowth, lancer: minionGrowth, cannon: minionGrowth })
+          .object({
+            infantry: minionGrowth,
+            lancer: minionGrowth,
+            cannon: minionGrowth,
+            super: minionGrowth.optional(),
+          })
           .strict(),
       })
       .strict()
       .optional(),
+    super: superMinion.optional(),
   })
   .strict();
 

@@ -27,6 +27,7 @@ export const SPRITE_SIZES: Record<string, { width: number; height: number }> = {
       [`minion-infantry-${t}`, { width: 56, height: 56 }],
       [`minion-lancer-${t}`, { width: 56, height: 56 }],
       [`minion-cannon-${t}`, { width: 72, height: 72 }],
+      [`minion-super-${t}`, { width: 96, height: 96 }],
       [`tower-${t}`, { width: 96, height: 160 }],
       [`nexus-${t}`, { width: 160, height: 160 }],
     ]),

@@ -89,6 +89,30 @@ function minion(t: Theme, team: Team, kind: 'infantry' | 'lancer' | 'cannon'): s
   return svg(s, s, body);
 }
 
+/**
+ * Super minion (#69): a bigger ÷ token with a gold ring and a three-point crown, so it differs
+ * from the Cannon by shape and size, not only colour.
+ */
+function superMinion(t: Theme, team: Team): string {
+  const c = t.teams[team];
+  const s = 96;
+  const m = s / 2;
+  const r = 34;
+  const w = t.colors.white;
+  const g = t.colors.gold;
+  const k = r * 0.5;
+  const body = [
+    `<path d="M${m - 22} 22 L${m - 22} 6 L${m - 11} 15 L${m} 3 L${m + 11} 15 L${m + 22} 6 L${m + 22} 22 Z" fill="${g}" stroke="${c.dark}" stroke-width="3" stroke-linejoin="round"/>`,
+    `<circle cx="${m}" cy="${m + 6}" r="${r + 6}" fill="${c.dark}"/>`,
+    `<circle cx="${m}" cy="${m + 6}" r="${r + 2}" fill="${g}"/>`,
+    `<circle cx="${m}" cy="${m + 5}" r="${r - 2}" fill="${c.main}"/>`,
+    `<path d="M${m - k} ${m + 5} H${m + k}" stroke="${w}" stroke-width="${r * 0.24}" stroke-linecap="round"/>`,
+    `<circle cx="${m}" cy="${m + 5 - k * 0.6}" r="${r * 0.14}" fill="${w}"/>`,
+    `<circle cx="${m}" cy="${m + 5 + k * 0.6}" r="${r * 0.14}" fill="${w}"/>`,
+  ].join('\n');
+  return svg(s, s, body);
+}
+
 /** Tower: arched gateway like the prototype; blue has a pointed roof, red a flat crown (shape differs, not only colour). */
 function tower(t: Theme, team: Team): string {
   const c = t.teams[team];
@@ -176,6 +200,7 @@ export function renderSprites(theme: Theme, heroes: HeroLooks = readHeroes()): M
   for (const team of ['blue', 'red'] as const) {
     for (const kind of ['infantry', 'lancer', 'cannon'] as const)
       out.set(`minion-${kind}-${team}`, minion(theme, team, kind));
+    out.set(`minion-super-${team}`, superMinion(theme, team));
     out.set(`tower-${team}`, tower(theme, team));
     out.set(`nexus-${team}`, nexus(theme, team));
   }

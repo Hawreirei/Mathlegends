@@ -10,6 +10,7 @@
   "passiveGoldPerSecond": 3,
   "startingGold": 300,
   "lastHitGold": { "infantry": 14, "lancer": 24, "cannon": 45 },
+  "superMinionReward": { "gold": 60, "exp": 90 },
   "otherGold": { "heroKill": 150, "tower": 120 },
   "reward": {
     "correct": 1.5,
