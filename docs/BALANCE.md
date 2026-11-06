@@ -35,21 +35,21 @@ Default: 200 matches per scenario, 20-minute limit, CSV to `balance-sim.csv` (gi
 
 | Scenario | Player wins | Ended at a Nexus | Average length | Average gold lead | Math share |
 |---|---|---|---|---|---|
-| mirror-30 | 35.5% | 200/200 | 10:10 | -273 | 24.2% |
-| mirror-50 | **46.5%** | 200/200 | 10:10 | -86 | 29.4% |
-| mirror-60 | 49.5% | 200/200 | 10:11 | +25 | 32.1% |
-| mirror-90 | 60.0% | 200/200 | 10:07 | +316 | 38.1% |
-| new-vs-y1 | 90.0% | 200/200 | 10:00 | +392 | 30.3% |
-| new-vs-y2 | 72.5% | 200/200 | 10:07 | +165 | 30.1% |
-| new-vs-y3 | 42.0% | 200/200 | 10:09 | -33 | 30.0% |
-| new-vs-y4 | 25.5% | 200/200 | 10:07 | -75 | 30.3% |
-| new-vs-y5 | 18.0% | 200/200 | 10:03 | -235 | 28.9% |
-| new-vs-y6 | 11.0% | 200/200 | 9:56 | -354 | 27.5% |
+| mirror-30 | 35.5% | 200/200 | 9:43 | -260 | 22.6% |
+| mirror-50 | **47.5%** | 200/200 | 9:43 | -78 | 27.2% |
+| mirror-60 | 58.0% | 200/200 | 9:41 | +35 | 30.0% |
+| mirror-90 | 62.5% | 200/200 | 9:39 | +345 | 36.6% |
+| new-vs-y1 | 85.5% | 200/200 | 9:32 | +361 | 29.2% |
+| new-vs-y2 | 76.5% | 200/200 | 9:39 | +172 | 28.7% |
+| new-vs-y3 | 44.0% | 200/200 | 9:42 | -41 | 28.0% |
+| new-vs-y4 | 29.0% | 200/200 | 9:39 | -50 | 28.3% |
+| new-vs-y5 | 23.0% | 200/200 | 9:36 | -214 | 27.3% |
+| new-vs-y6 | 9.5% | 200/200 | 9:30 | -346 | 25.6% |
 
-- **Mirror match:** at equal combat skill and equal economy (50% right) the player wins 46.5%: near 50%.
-- **Math skill is a modest edge, not decisive:** from 30% to 90% right answers the win rate goes from 35.5% to 60.0%; the gold lead moves by about 600 out of roughly 4,000 earned.
-- **Difficulty by Year:** a new player wins 90% against the Year 1 bot, then 72.5, 42, 25.5, 18 and 11% against Years 2 to 6: every Year is harder than the one before.
-- 2,000 matches took 7.5 minutes.
+- **Mirror match:** at equal combat skill and equal economy (50% right) the player wins 47.5%: near 50%.
+- **Math skill is a modest edge, not decisive:** from 30% to 90% right answers the win rate goes from 35.5% to 62.5%; the gold lead moves by about 600 out of roughly 4,000 earned.
+- **Difficulty by Year:** a new player wins 85.5% against the Year 1 bot, then 76.5, 44, 29, 23 and 9.5% against Years 2 to 6: every Year is harder than the one before.
+- 2,000 matches took 6 minutes. These results are after the crumble-order fix.
 
 ## What the simulator changed: sudden death
 
@@ -63,7 +63,7 @@ So sudden death is now on (`structures.json` `suddenDeath`, can be turned off):
 
 **Fixed after the first playtest:** the first version drained the Nexus directly, so 59 of 60 simulated matches (and the owner's first real match) ended while the losing side still had towers standing: the game seemed to stop for no reason. Now the crumbling follows the tower order, and `tests/balance.test.ts` checks that the loser always lost both towers before its Nexus fell.
 
-Every simulated match now ends at a Nexus in about 9 to 11 minutes, close to the 8 to 10 minute target. Real children who push on purpose will often finish earlier.
+Every simulated match now ends at a Nexus in about 9 to 10 minutes, close to the 8 to 10 minute target. Real children who push on purpose will often finish earlier.
 
 ## Checked in CI
 
@@ -76,5 +76,5 @@ Every simulated match now ends at a Nexus in about 9 to 11 minutes, close to the
 
 ## Notes for the playtest (#50)
 
-- **Math share** at 60% right is about 32%, inside the 30 to 40% target (docs/ECONOMY.md); it was 25% before, when the player had no skills or items and matches did not end.
+- **Math share** at 60% right is about 30%, inside the 30 to 40% target (docs/ECONOMY.md); it was 25% before, when the player had no skills or items and matches did not end.
 - The simulated player is a bot: children will push, retreat and shop differently. Use the CSV from the playtest's answer logs (#30) and win/loss records to re-check these numbers.
