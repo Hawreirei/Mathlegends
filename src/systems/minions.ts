@@ -2,6 +2,7 @@
  * Minion waves (#20). Pure TypeScript, no Phaser, so the balance simulator (#37) can run it.
  * Waves spawn on a timer from both bases, march along the lane, fight the nearest enemy
  * (minions first, heroes only when no enemy minion is near) and never respawn.
+ * Later waves are stronger (#68): stats grow with match time, the same for both sides.
  */
 import { canAttack, resolveAttack, type Combatant } from './combat';
 import type { MinionsFile } from './data';
@@ -19,6 +20,8 @@ export interface MinionState extends Combatant {
   aggroRange: number;
   radius: number;
   sprite: string;
+  /** Last-hit gold multiplier from match-time growth (#68); 1 = base lastHitGold. */
+  goldScale: number;
 }
 
 export interface AttackEvent {
@@ -51,6 +54,22 @@ export function wavesDue(prev: number, now: number, c: EconomyConfig): number[] 
 export const hasCannon = (n: number, c: EconomyConfig): boolean =>
   (n + 1) % c.match.cannonEveryNthWave === 0;
 
+/** Minutes of growth a wave spawned at `sec` gets (#68); 0 without a growth block. */
+export function growthMinutes(sec: number, m: MinionsFile): number {
+  const g = m.growth;
+  if (!g) return 0;
+  return Math.min(g.maxMinutes, Math.max(0, (sec - g.startsAfterSec) / 60));
+}
+
+/** A minion type's stats for a wave spawned at match time `sec` (#68). */
+export function minionStatsAt(kind: MinionType, sec: number, m: MinionsFile) {
+  const t = m.types[kind];
+  const g = m.growth?.perMinute[kind];
+  const min = growthMinutes(sec, m);
+  if (!g || min === 0) return t;
+  return { ...t, hp: t.hp + g.hp * min, atk: t.atk + g.atk * min, armor: t.armor + g.armor * min };
+}
+
 const dirOf = (team: Team) => (team === 'blue' ? 1 : -1);
 
 export function spawnWave(
@@ -69,8 +88,10 @@ export function spawnWave(
   const spawn = map.minionSpawn[team];
   const dir = dirOf(team);
   const rows = [0, -1, 1];
+  const sec = waveTime(n, c);
+  const goldScale = 1 + (m.growth?.goldPerMinute ?? 0) * growthMinutes(sec, m);
   return kinds.map((kind, slot) => {
-    const t = m.types[kind];
+    const t = minionStatsAt(kind, sec, m);
     const col = Math.floor(slot / rows.length);
     const row = rows[slot % rows.length]!;
     return {
@@ -96,6 +117,7 @@ export function spawnWave(
       nextAttackAt: 0,
       respawnAt: null,
       sprite: `minion-${kind}-${team}`,
+      goldScale,
     };
   });
 }

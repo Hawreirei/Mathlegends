@@ -240,7 +240,14 @@ function victimOf(u: Unit): Victim {
   if ('heroId' in u) return { kind: 'hero', team: u.team, x: u.x, y: u.y };
   if (u.kind === 'tower' || u.kind === 'nexus')
     return { kind: u.kind, team: u.team, x: u.x, y: u.y };
-  return { kind: 'minion', minionKind: u.kind, team: u.team, x: u.x, y: u.y };
+  return {
+    kind: 'minion',
+    minionKind: u.kind,
+    goldScale: 'goldScale' in u ? u.goldScale : 1,
+    team: u.team,
+    x: u.x,
+    y: u.y,
+  };
 }
 
 /** Mutable working copy used inside one step. */

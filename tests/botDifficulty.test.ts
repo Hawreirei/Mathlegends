@@ -176,11 +176,14 @@ describe('bot behaviour (#43)', () => {
 });
 
 describe('difficulty in simulated 10-minute matches (#43)', () => {
-  /** The new player (60% correct answers) against each Year's bot, 6 matches each. */
+  /**
+   * The new player (60% correct answers) against each Year's bot, 12 matches each. (6 was too
+   * few once minions grew with time, #68: neighbouring Years swapped places on noise alone.)
+   */
   const results = TIERS.map((tier) => {
     let push = 0;
     let gold = 0;
-    const seeds = [1, 2, 3, 4, 5, 6];
+    const seeds = Array.from({ length: 12 }, (_, i) => i + 1);
     for (const seed of seeds) {
       const s = simulateMatch(cfgFor(tier), {
         accuracy: 0.6,

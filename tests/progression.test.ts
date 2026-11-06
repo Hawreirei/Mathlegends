@@ -163,3 +163,23 @@ describe('kill rewards (values from economy.json)', () => {
     expect(r).toEqual([{ heroId: 'blue-hero', gold: c.otherGold.tower, exp: 0, source: 'tower' }]);
   });
 });
+
+describe('minion goldScale (#68)', () => {
+  it('scales the last-hit gold, not the EXP', () => {
+    const heroes = [
+      { id: 'p', team: 'blue' as const, x: 0, y: 0, alive: true },
+      { id: 'b', team: 'red' as const, x: 9999, y: 0, alive: true },
+    ];
+    const v = {
+      kind: 'minion' as const,
+      minionKind: 'infantry' as const,
+      team: 'red' as const,
+      x: 0,
+      y: 0,
+    };
+    const [base] = killRewards(v, 'p', heroes, c);
+    const [grown] = killRewards({ ...v, goldScale: 1.2 }, 'p', heroes, c);
+    expect(grown!.gold).toBeCloseTo(base!.gold * 1.2, 9);
+    expect(grown!.exp).toBe(base!.exp);
+  });
+});

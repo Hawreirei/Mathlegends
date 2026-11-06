@@ -142,6 +142,21 @@ Stats per minion type, loaded and checked by `loadMinions` in `src/systems/data.
 
 `spacing` (70) is the gap between minions in a fresh wave. `aggroRange` must be at least `attackRange` (checked).
 
+### growth: minions get stronger with match time (issue #68)
+
+Later waves are tougher, **the same for both sides**. A hero's level, items and stats never change minion stats. A wave spawned at match time *t* gets `base + perMinute x minutes`, where `minutes = (t - startsAfterSec) / 60`, kept between 0 and `maxMinutes`. Leave the `growth` block out for flat minions.
+
+| Field | Value | Meaning |
+|---|---|---|
+| `startsAfterSec` | 60 | Waves before 1:00 use the base stats |
+| `maxMinutes` | 12 | Growth stops after 12 minutes (13:00) |
+| `goldPerMinute` | 0.03 | Last-hit gold grows 3% per minute, so tougher minions still pay for the extra hits (EXP does not grow) |
+| `perMinute.infantry` | HP +12, ATK +1, armor +0.3 | At 9:45 (a typical match end): 525 HP, 30.75 ATK, 12.6 armor |
+| `perMinute.lancer` | HP +8, ATK +1.2, armor +0.2 | At 9:45: 370 HP, 38.5 ATK, 5.75 armor |
+| `perMinute.cannon` | HP +24, ATK +2, armor +0.5 | At 9:45: 1,030 HP, 62.5 ATK, 29.4 armor |
+
+Code: `minionStatsAt` and `growthMinutes` in `src/systems/minions.ts`; each minion carries its `goldScale`, which `killRewards` (`progression.ts`) multiplies into the last-hit gold before the answer multiplier.
+
 Behaviour (`src/systems/minions.ts`): march towards the enemy base; target the nearest enemy **minion** in aggro range, or the nearest enemy **hero** only if no enemy minion is near; walk into range and attack; friendly minions push apart so a wave keeps its shape; dead minions do not respawn. All minions decide from the same snapshot each step and attacks land simultaneously, so list order gives neither team an edge: a test runs 10 minutes of mirrored waves and requires equal kills (99 vs 99) with the fight holding the middle. The player's killing blow on a minion counts as a **last hit** and fires `ml-last-hit` (used by the question overlay in #27).
 
 ## structures.json (issue #21)

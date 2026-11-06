@@ -226,3 +226,75 @@ describe('heroes stay visible', () => {
       );
   });
 });
+
+describe('minion growth over match time (#68)', () => {
+  const g = mcfg.growth!;
+  const at = (sec: number) => (sec - econ.match.firstWaveSeconds) / econ.match.waveIntervalSeconds;
+  const infantry = (n: number, team: 'blue' | 'red' = 'blue') =>
+    spawnWave(n, team, map, econ, mcfg, 'g').find((m) => m.kind === 'infantry')!;
+
+  it('is configured in minions.json', () => {
+    expect(g).toBeDefined();
+    for (const k of ['infantry', 'lancer', 'cannon'] as const) {
+      expect(g.perMinute[k].hp).toBeGreaterThan(0);
+      expect(g.perMinute[k].atk).toBeGreaterThan(0);
+    }
+  });
+
+  it('a wave spawned at minute 6 is stronger than one at minute 1', () => {
+    const early = infantry(Math.round(at(60)));
+    const late = infantry(Math.round(at(360)));
+    expect(late.maxHp).toBeGreaterThan(early.maxHp);
+    expect(late.hp).toBe(late.maxHp);
+    expect(late.atk).toBeGreaterThan(early.atk);
+    expect(late.armor).toBeGreaterThanOrEqual(early.armor);
+  });
+
+  it('adds perMinute x minutes past startsAfterSec, and nothing before it', () => {
+    const base = mcfg.types.infantry;
+    const first = infantry(0);
+    expect(waveTime(0, econ)).toBeLessThanOrEqual(g.startsAfterSec);
+    expect(first.maxHp).toBe(base.hp);
+    expect(first.atk).toBe(base.atk);
+    const n = 15;
+    const minutes = Math.min(g.maxMinutes, (waveTime(n, econ) - g.startsAfterSec) / 60);
+    const m = infantry(n);
+    expect(m.maxHp).toBeCloseTo(base.hp + g.perMinute.infantry.hp * minutes, 6);
+    expect(m.atk).toBeCloseTo(base.atk + g.perMinute.infantry.atk * minutes, 6);
+    expect(m.armor).toBeCloseTo(base.armor + g.perMinute.infantry.armor * minutes, 6);
+  });
+
+  it('stops growing after maxMinutes', () => {
+    const capWave = Math.ceil(at(g.startsAfterSec + g.maxMinutes * 60));
+    expect(infantry(capWave + 10).maxHp).toBe(infantry(capWave).maxHp);
+    expect(infantry(capWave + 10).atk).toBe(infantry(capWave).atk);
+  });
+
+  it('is the same for blue and red at the same time', () => {
+    for (const n of [0, 5, 12, 20]) {
+      const b = spawnWave(n, 'blue', map, econ, mcfg, 'x');
+      const r = spawnWave(n, 'red', map, econ, mcfg, 'x');
+      expect(b.map((m) => [m.kind, m.maxHp, m.atk, m.armor])).toEqual(
+        r.map((m) => [m.kind, m.maxHp, m.atk, m.armor]),
+      );
+    }
+  });
+
+  it('without a growth block, minions keep their base stats', () => {
+    const flat = { ...mcfg, growth: undefined };
+    const m = spawnWave(20, 'blue', map, econ, flat, 'f').find((x) => x.kind === 'cannon')!;
+    expect(m.maxHp).toBe(mcfg.types.cannon.hp);
+    expect(m.atk).toBe(mcfg.types.cannon.atk);
+  });
+});
+
+describe('minion gold grows with its stats (#68)', () => {
+  it('later minions carry a bigger goldScale, the first waves pay base gold', () => {
+    const g = mcfg.growth!;
+    expect(spawnWave(0, 'blue', map, econ, mcfg, 'a')[0]!.goldScale).toBe(1);
+    const n = 15;
+    const minutes = Math.min(g.maxMinutes, (waveTime(n, econ) - g.startsAfterSec) / 60);
+    const m = spawnWave(n, 'red', map, econ, mcfg, 'b')[0]!;
+    expect(m.goldScale).toBeCloseTo(1 + g.goldPerMinute * minutes, 9);
+  });
+});
