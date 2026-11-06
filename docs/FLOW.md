@@ -6,6 +6,7 @@ Menu ──Play──> (first time) Placement: intro → 10 questions → "You s
   │──Play──> Match ──Nexus falls / Quit + Leave──> Result ──Play again──> Match      │
   │                                                  └──Menu──> Menu                │
   └──Settings──> Settings ──Move to another device──> transfer page                  │
+                     ├──Sound and motion──> sound page (#45)                         │
                      └──Retake placement quiz──> Placement ◄──────────────────────────┘
 ```
 
@@ -18,6 +19,7 @@ The phone's Back button, the browser's back button and **Esc** on a keyboard all
 | Menu | Leaves the game (the only screen that does) |
 | Settings, Placement (any step), Result | Back to the Menu. An unfinished placement quiz is not saved; Play starts it again. |
 | Settings → Move to another device | Back to Settings |
+| Settings → Sound and motion (#45) | Back to Settings |
 | Match with the shop open | Closes the shop |
 | Match with the quit question open | Closes the question (keep playing) |
 | Match | Asks "Leave the match? This match will count as a loss." |

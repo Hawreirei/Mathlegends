@@ -1,3 +1,4 @@
+import { sfx } from '../audio/AudioPlayer';
 import Phaser from 'phaser';
 import { setLang, setSettings, type GameState, type Lang } from '../systems/gameState';
 import type { Settings } from '../systems/settings';
@@ -50,7 +51,14 @@ export const SETTINGS_EVENT = 'ml-settings';
 export function changeSettings(scene: Phaser.Scene, settings: Settings): void {
   setStateAndSave(scene, setSettings(getState(scene), settings));
   applyAccessibility(settings);
+  sfx.configure(settings.sound, settings.music);
   scene.game.events.emit(SETTINGS_EVENT, settings);
+}
+
+/** Saves sound settings without redrawing any screen (the mute button, #45). */
+export function changeSoundSettings(scene: Phaser.Scene, settings: Settings): void {
+  setStateAndSave(scene, setSettings(getState(scene), settings));
+  sfx.configure(settings.sound, settings.music);
 }
 
 /**

@@ -259,3 +259,21 @@ Rules in [`src/systems/inventory.ts`](../src/systems/inventory.ts) (pure, tested
 - Items are not part of the skill damage budget, which is measured "with no items" (docs/ECONOMY.md).
 - The bot buys items from #43; until then only the player has them.
 - Spending and refunds change only the gold you hold, not the earned-gold totals used by the math-share cap (#28).
+
+## feel.json and audio.json (issue #45)
+
+Game feel. Rules in [`src/systems/feel.ts`](../src/systems/feel.ts) (pure, tested in `tests/feel.test.ts`), both files checked at load by `loadFeel` / `loadAudio`.
+
+| `feel.json` | Value | Meaning |
+|---|---|---|
+| `damageNumbers.mergeWindowSec` | 0.35 | Hits on the same target, in the same direction, within 0.35 s add up in one number that pops and shows the new total |
+| `damageNumbers.lifetimeSec` | 0.65 | How long a number rises and fades |
+| `damageNumbers.maxOnScreen` | 6 | Most numbers at once; the oldest goes when a new one needs room |
+| `damageNumbers.minAmount` | 1 | Smaller amounts are not shown |
+| `shake.heroHitRatio` | 0.12 | A hit on the player shakes the screen only if it takes at least 12% of max HP |
+| `shake.heroHit` / `heroDeath` / `towerDown` / `nexusDown` | 0.004 / 0.008 / 0.01 / 0.016 for 120 / 260 / 320 / 600 ms | Shake strength (fraction of the view) and length; at most 0.05 (checked) |
+| `soundMinGapSec` | hit 0.08, hurt 0.25, coin 0.12, minionHit 0.15 | A busy sound plays at most once per gap |
+
+Only hits that involve the player make numbers: white for damage the player dealt, red (orange with colour-blind colours) for damage taken. Shake never happens with **Reduce motion** on.
+
+`audio.json`: `masterVolume`, one recipe per sound (see docs/ASSETS.md) and the music loop (`bpm`, `volume`, `bars` of one bass note and four melody notes, 0 = rest). Which event makes which sound: `soundsFor` and `soundForOutcome` in `feel.ts`.

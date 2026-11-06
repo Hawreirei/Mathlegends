@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { sfx } from '../audio/AudioPlayer';
 import { displayFont, hex, theme } from './theme';
 
 export type ButtonStyle = 'primary' | 'secondary';
@@ -52,6 +53,7 @@ export class Button extends Phaser.GameObjects.Container {
     this.on('pointerup', () => {
       draw(false);
       text.setY(0);
+      sfx.play('click');
       onClick();
     });
     scene.add.existing(this);

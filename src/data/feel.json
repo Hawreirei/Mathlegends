@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "_note": "Game feel (#45): damage numbers, screen shake and sound throttling. Times in seconds, shake intensity as a fraction of the camera size.",
+  "damageNumbers": {
+    "mergeWindowSec": 0.35,
+    "lifetimeSec": 0.65,
+    "maxOnScreen": 6,
+    "minAmount": 1
+  },
+  "shake": {
+    "heroHitRatio": 0.12,
+    "heroHit": { "intensity": 0.004, "durationMs": 120 },
+    "heroDeath": { "intensity": 0.008, "durationMs": 260 },
+    "towerDown": { "intensity": 0.01, "durationMs": 320 },
+    "nexusDown": { "intensity": 0.016, "durationMs": 600 }
+  },
+  "soundMinGapSec": {
+    "hit": 0.08,
+    "hurt": 0.25,
+    "coin": 0.12,
+    "minionHit": 0.15
+  }
+}

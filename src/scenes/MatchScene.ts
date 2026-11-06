@@ -17,7 +17,20 @@ import {
   levelUpBurst,
   projectileDot,
   slash,
+  updateDamageNumber,
 } from '../entities/Hero';
+import feelJson from '../data/feel.json';
+import { sfx } from '../audio/AudioPlayer';
+import {
+  addDamage,
+  createDamageNumbers,
+  damageHit,
+  shakeFor,
+  soundForOutcome,
+  soundsFor,
+  type DamageNumbers,
+  type FeelContext,
+} from '../systems/feel';
 import { MinionView, shot } from '../entities/Minion';
 import { StructureView, towerShot } from '../entities/Structure';
 import { ATTACK_BUFFER_SEC } from '../systems/combat';
@@ -31,6 +44,7 @@ import {
   loadMinions,
   loadRanks,
   loadStructures,
+  loadFeel,
 } from '../systems/data';
 import { validateEconomy, type EconomyConfig } from '../systems/economy';
 import { recordMatch, type MatchResult } from '../systems/gameState';
@@ -129,6 +143,10 @@ export class MatchScene extends Phaser.Scene {
   private attackHeld = false;
   private lastAttackPress = -Infinity;
   private keys!: Keys;
+  /** Game feel (#45): damage numbers on screen and their text objects. */
+  private readonly feel = loadFeel(feelJson);
+  private dmg: DamageNumbers = createDamageNumbers();
+  private dmgViews = new Map<number, Phaser.GameObjects.Text>();
 
   constructor() {
     super('Match');
@@ -221,6 +239,8 @@ export class MatchScene extends Phaser.Scene {
     this.logRows = [];
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.saveLog());
     this.minionViews = new Map();
+    this.dmg = createDamageNumbers();
+    this.dmgViews = new Map();
     this.projectileViews = new Map();
     this.structureViews = new Map();
     this.ending = false;
@@ -367,10 +387,46 @@ export class MatchScene extends Phaser.Scene {
     return { move, attack, skill };
   }
 
+  /** Sounds, screen shake and damage numbers for one event (#45; rules in systems/feel.ts). */
+  private feelFx(e: MatchEvent): void {
+    const s = this.state;
+    const ctx: FeelContext = {
+      playerId: s.player.id,
+      playerMaxHp: s.player.maxHp,
+      kindOf: (id) =>
+        id === s.player.id || id === s.bot.id
+          ? 'hero'
+          : (s.structures.find((x) => x.id === id)?.kind ??
+            (this.minionViews.has(id) ? 'minion' : null)),
+    };
+    for (const name of soundsFor(e, ctx)) sfx.play(name);
+    const shake = shakeFor(e, ctx, this.feel, getState(this).settings.reduceMotion);
+    if (shake) this.cameras.main.shake(shake.durationMs, shake.intensity);
+    const hit = damageHit(e, s.player.id);
+    if (!hit) return;
+    const r = addDamage(this.dmg, hit, s.now, this.feel);
+    this.dmg = r.state;
+    for (const id of r.evicted) {
+      this.dmgViews.get(id)?.destroy();
+      this.dmgViews.delete(id);
+    }
+    if (!r.show) return;
+    const ms = this.feel.damageNumbers.lifetimeSec * 1000;
+    const view = this.dmgViews.get(r.show.item.id);
+    if (r.show.kind === 'update' && view?.active)
+      updateDamageNumber(this, view, r.show.item.amount, ms);
+    else {
+      const t = damageNumber(this, r.show.item.at, r.show.item.amount, hit.kind === 'taken', ms);
+      this.dmgViews.set(r.show.item.id, t);
+      t.once(Phaser.GameObjects.Events.DESTROY, () => this.dmgViews.delete(r.show!.item.id));
+    }
+  }
+
   /** Turns one rules event into visuals. */
   private show(e: MatchEvent): void {
     const playerId = this.state.player.id;
     const botId = this.state.bot.id;
+    this.feelFx(e);
     switch (e.type) {
       case 'spawn':
         this.minionViews.set(e.minion.id, new MinionView(this, e.minion));
@@ -378,13 +434,11 @@ export class MatchScene extends Phaser.Scene {
       case 'attack': {
         if (e.by === 'player' || e.by === 'bot') {
           slash(this, e.from, e.to, e.by === 'player' ? theme.colors.gold : theme.teams.red.main);
-          if (e.by === 'player' || e.targetId === playerId) damageNumber(this, e.to, e.damage);
           if (e.by === 'player') this.lastAttackPress = -Infinity;
         } else if (e.by === 'minion' && e.minionKind && e.minionKind !== 'infantry') {
           shot(this, e.from, e.to, theme.teams[e.team].main, e.minionKind === 'cannon');
         } else if (e.by === 'tower') {
           towerShot(this, e.from, e.to, theme.teams[e.team].main);
-          if (e.targetId === playerId) damageNumber(this, e.to, e.damage);
         }
         const mv = this.minionViews.get(e.targetId);
         if (mv) {
@@ -411,7 +465,6 @@ export class MatchScene extends Phaser.Scene {
         if (e.by === 'player') this.game.events.emit(SKILL_FAILED_EVENT, e.slot, e.reason);
         return;
       case 'skillHit': {
-        if (e.team === 'blue' || e.targetId === playerId) damageNumber(this, e.at, e.damage);
         const mv = this.minionViews.get(e.targetId);
         if (mv) {
           mv.flash();
@@ -532,6 +585,8 @@ export class MatchScene extends Phaser.Scene {
   /** Pays held last-hit rewards x the answer multiplier and tells the HUD. */
   private resolve(list: Resolution[]): void {
     for (const res of list) {
+      const sound = soundForOutcome(res.outcome);
+      if (sound) sfx.play(sound);
       const paid = applyLastHitReward(this.state, res.reward, res.multiplier, this.cfg);
       this.state = paid.state;
       for (const e of paid.events) this.show(e);
@@ -573,6 +628,7 @@ export class MatchScene extends Phaser.Scene {
   }
 
   finish(outcome: MatchResult['outcome'], forfeit = false): void {
+    sfx.play(outcome === 'victory' ? 'victory' : 'defeat');
     const missed = this.session.missed;
     // Missed questions come back in the next matches (#29); the queue is saved on the device.
     const ranks = loadRanks(ranksJson);

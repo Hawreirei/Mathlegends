@@ -1,12 +1,24 @@
 # Accessibility (issue #31)
 
-Players turn these on in **Menu → Settings → Accessibility** ("Pengaturan → Kemudahan bermain"). The choice is saved on the device (`localStorage` `mathlegends.settings`) and applies at once, in both languages.
+Players turn these on in **Menu → Settings → Accessibility** ("Pengaturan → Kemudahan bermain"). The choice is saved on the device (in the versioned save, `localStorage` `mathlegends.save`, see docs/SAVE.md) and applies at once, in both languages.
 
 | Option | Choices | What it does | Data |
 |---|---|---|---|
 | Question text size ("Ukuran huruf soal") | Normal / Large / Extra large (x1, x1.2, x1.4) | Enlarges the reading parts of the game: question text, answers, the feedback note and the Result screen review. A sample line on the Settings screen shows the size. | `theme.json` `textScales` |
 | Colour-blind colours ("Warna ramah buta warna") | Off / On | Right answers turn blue and wrong ones orange (Okabe-Ito pair, safe for red-green colour blindness) on the card, the timer bar, the feedback note and the Result screen. | `theme.json` `colorBlind` |
 | Extra time ("Waktu tambahan") | Off / On | Every question timer x1.5: Infantry 7.5 s, Lancer 12 s, Cannon 18 s. A waiting question also stays fresh 1.5x as long. | `economy.json` `extraTimeMultiplier` |
+
+### Sound and motion (#45)
+
+**Menu → Settings → Sound and motion** ("Suara dan gerak"):
+
+| Option | Choices | What it does |
+|---|---|---|
+| Sound effects ("Efek suara") | On / Off | Hits, coins, last hits, right and wrong answers, level-ups, towers falling, victory and defeat |
+| Music ("Musik") | On / Off | A quiet original loop in the background |
+| Reduce motion ("Kurangi gerakan") | Off / On | No screen shake |
+
+In a match the **speaker button** (left of the mini-map), or **M** on a keyboard, mutes sound and music together, or turns both back on. Every choice is saved with the other settings, so **mute persists** after a reload or the next day (tested). Sound is never needed to play: everything a sound says is also on screen, so a class can play muted.
 
 ## Details
 

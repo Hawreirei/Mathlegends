@@ -42,6 +42,8 @@ export interface HudLayout {
   touch: TouchLayout | null;
   /** The Shop button (#35), at the right end of the top bar. */
   shopButton: Rect;
+  /** The mute button (#45), just left of the mini-map. */
+  mute: Rect;
   /** The shop overlay (#35): over the map between the top bar and the bottom, clear of the touch controls. */
   shopPanel: Rect;
   /** Without touch controls: the Q E R F skill bar (#33), bottom right (landscape) or bottom centre (portrait). One square per slot. */
@@ -57,6 +59,8 @@ const SKILL_DISTANCE = 180;
 /** Desktop skill bar square (#33). */
 const SKILL_SLOT = 84;
 const TOUCH_MARGIN = 40;
+/** Mute button (#45): a square, left of the mini-map. */
+const MUTE = 56;
 
 /** `textScale` (#31): the question card grows with the player's text size, as space allows. */
 /** Game px kept clear above a grown question card so the hero stays visible (#31). */
@@ -89,8 +93,9 @@ export function computeHudLayout(
   const panelY = top + BAR_H + 14;
   const panelW = portrait ? 330 : 360;
   const heroPanel = { x: left, y: panelY, w: panelW, h: 124 };
-  const mmW = Math.min(portrait ? right - (left + panelW) - PAD : 380, 380);
+  const mmW = Math.min(portrait ? right - (left + panelW) - 2 * PAD - MUTE : 380, 380);
   const minimap = { x: right - mmW, y: panelY, w: mmW, h: Math.round(mmW * 0.34) };
+  const mute = { x: minimap.x - PAD - MUTE, y: panelY, w: MUTE, h: MUTE };
 
   let touchLayout: TouchLayout | null = null;
   if (touch) {
@@ -176,6 +181,7 @@ export function computeHudLayout(
     touch: touchLayout,
     skillBar,
     shopButton,
+    mute,
     // Same columns as the question card, from just under the top bar to the card's bottom.
     shopPanel: {
       x: questionCard.x,

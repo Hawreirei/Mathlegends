@@ -10,7 +10,7 @@ function backTo(s: Screen): Screen | null {
   if (a.kind === 'scene') return a.to === 'Menu' ? 'menu' : 'settings';
   if (a.kind === 'askQuit') return 'matchQuitConfirm';
   // close: the screen underneath
-  return s === 'settingsTransfer' ? 'settings' : 'match';
+  return s === 'settingsTransfer' || s === 'settingsSound' ? 'settings' : 'match';
 }
 
 describe('navigation (#44)', () => {
@@ -53,8 +53,9 @@ describe('navigation (#44)', () => {
     expect(backAction('match')).toEqual({ kind: 'askQuit' });
   });
 
-  it('Back from Settings sub-page returns to Settings, other screens to the Menu', () => {
+  it('Back from a Settings sub-page returns to Settings, other screens to the Menu', () => {
     expect(backAction('settingsTransfer')).toEqual({ kind: 'close' });
+    expect(backAction('settingsSound')).toEqual({ kind: 'close' });
     for (const s of [
       'settings',
       'placementIntro',

@@ -609,3 +609,118 @@ export const newPlayerBot = (f: BotFile): BotConfig => ({
 
 /** bot.json for a Year tier (3, the middle, when not given): base + that Year's step. */
 export const loadBot = (raw: unknown, tier = 3): BotConfig => botForTier(loadBotFile(raw), tier);
+
+// ---------- feel.json (#45)
+
+const shake = z.object({ intensity: z.number().min(0).max(0.05), durationMs: positive }).strict();
+
+export const feelFileSchema = z
+  .object({
+    version: z.literal(1),
+    _note: z.string().optional(),
+    damageNumbers: z
+      .object({
+        /** Hits on the same target within this many seconds add up in one number. */
+        mergeWindowSec: nonNegative,
+        lifetimeSec: positive,
+        /** Most numbers on screen at once; the oldest goes when a new one needs room. */
+        maxOnScreen: z.number().int().min(1),
+        /** Smaller amounts are not shown. */
+        minAmount: nonNegative,
+      })
+      .strict(),
+    shake: z
+      .object({
+        /** A hit on the player shakes when it takes at least this share of max HP. */
+        heroHitRatio: z.number().min(0).max(1),
+        heroHit: shake,
+        heroDeath: shake,
+        towerDown: shake,
+        nexusDown: shake,
+      })
+      .strict(),
+    /** A sound plays again only after this many seconds (sounds not listed: no limit). */
+    soundMinGapSec: z.record(z.string(), nonNegative),
+  })
+  .strict();
+
+export type FeelFile = z.infer<typeof feelFileSchema>;
+export const loadFeel = (raw: unknown): FeelFile => parse(feelFileSchema, raw, 'feel.json');
+
+// ---------- audio.json (#45)
+
+const wave = z.enum(['sine', 'square', 'triangle', 'sawtooth']);
+const hz = z.number().min(20).max(8000);
+const volume = z.number().min(0).max(1);
+
+const soundRecipe = z
+  .object({
+    wave,
+    /** A pitch slide from `from` to `to` ... */
+    from: hz.optional(),
+    to: hz.optional(),
+    /** ... or a short run of notes, each durationMs long. */
+    notes: z.array(hz).min(1).optional(),
+    durationMs: positive,
+    volume,
+    /** Mix in a burst of noise (crumbling, crashes). */
+    noise: z.boolean().optional(),
+  })
+  .strict()
+  .refine((s) => (s.notes ? s.from === undefined : s.from !== undefined && s.to !== undefined), {
+    message: 'give either notes, or from and to',
+  });
+
+export const SOUND_NAMES = [
+  'hit',
+  'minionHit',
+  'hurt',
+  'lastHit',
+  'question',
+  'correct',
+  'wrong',
+  'coin',
+  'levelUp',
+  'skill',
+  'towerDown',
+  'victory',
+  'defeat',
+  'click',
+] as const;
+export type SoundName = (typeof SOUND_NAMES)[number];
+
+export const audioFileSchema = z
+  .object({
+    version: z.literal(1),
+    _note: z.string().optional(),
+    masterVolume: volume,
+    sounds: z.object(Object.fromEntries(SOUND_NAMES.map((n) => [n, soundRecipe]))).strict(),
+    music: z
+      .object({
+        _note: z.string().optional(),
+        bpm: z.number().min(40).max(240),
+        volume,
+        wave,
+        bassWave: wave,
+        bars: z
+          .array(
+            z
+              .object({
+                bass: hz,
+                /** Four beats; 0 = rest. */
+                melody: z.array(z.union([z.literal(0), hz])).length(4),
+              })
+              .strict(),
+          )
+          .min(1),
+      })
+      .strict(),
+  })
+  .strict();
+
+export type SoundRecipe = z.infer<typeof soundRecipe>;
+export type AudioFile = Omit<z.infer<typeof audioFileSchema>, 'sounds'> & {
+  sounds: Record<SoundName, SoundRecipe>;
+};
+export const loadAudio = (raw: unknown): AudioFile =>
+  parse(audioFileSchema, raw, 'audio.json') as AudioFile;

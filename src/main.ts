@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import theme from './data/theme.json';
+import { sfx } from './audio/AudioPlayer';
 import { BootScene } from './scenes/BootScene';
 import { MatchHudScene } from './scenes/MatchHudScene';
 import { MatchScene } from './scenes/MatchScene';
@@ -71,10 +72,21 @@ void loadFonts().then(() => {
         const { profile, settings, review } = data;
         // Accessibility settings (#31) apply before any screen is drawn.
         applyAccessibility(settings);
+        // Sound and music switches (#45); nothing plays until the first tap or key.
+        sfx.configure(settings.sound, settings.music);
         g.registry.set('state', createGameState(lang, review, settings, profile));
       },
     },
   });
+
+  // Browsers allow audio only after a user gesture (#45).
+  const unlock = () => {
+    sfx.unlock();
+    if (sfx.unlocked)
+      for (const t of ['pointerdown', 'keydown'])
+        window.removeEventListener(t, unlock, { capture: true });
+  };
+  for (const t of ['pointerdown', 'keydown']) window.addEventListener(t, unlock, { capture: true });
 
   // Phone/browser Back button and Esc stay inside the game (#44).
   installBackHandling(game);

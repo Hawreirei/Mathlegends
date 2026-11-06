@@ -58,6 +58,7 @@ function shapes(l: HudLayout): [string, Shape][] {
     ['minimap', rect(l.minimap)],
     ['questionCard', rect(l.questionCard)],
     ['shopButton', rect(l.shopButton)],
+    ['mute', rect(l.mute)],
   ];
   if (l.touch) {
     out.push(['joystick', { kind: 'circle', c: l.touch.joystick, rad: l.touch.joystickRadius }]);

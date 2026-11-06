@@ -21,7 +21,8 @@ import { bodyFont, displayFont, hex, textScale, theme, ts } from '../ui/theme';
 import { QUESTION_RESOLVED_EVENT, type MatchScene } from './MatchScene';
 import type { Resolution } from '../systems/questionSession';
 import { fmt } from '../systems/generators/core';
-import { getState, responsive, tr } from './shared';
+import { changeSoundSettings, getState, responsive, tr } from './shared';
+import { MuteButton } from '../ui/MuteButton';
 
 /** Fired on game.events when the player presses attack (touch button or Space) or a skill. */
 export const ATTACK_EVENT = 'ml-attack';
@@ -95,6 +96,15 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
   private suddenDeathShown = false;
   /** Teams whose super-minion banner (#69) was shown. */
   private superShown = new Set<string>();
+  private mute?: MuteButton;
+
+  /** Mutes sound and music together, or turns both back on (#45). */
+  private toggleMute(): void {
+    const s = getState(this).settings;
+    const on = !(s.sound || s.music);
+    changeSoundSettings(this, { ...s, sound: on, music: on });
+    this.mute?.setMuted(!on);
+  }
 
   /** A short banner across the middle of the screen: a warning (red) or good news (green). */
   private showBanner(text: string, good = false): void {
@@ -136,6 +146,7 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
     this.input.keyboard?.on('keydown-SPACE', () => this.game.events.emit(ATTACK_EVENT));
     this.input.keyboard?.on('keyup-SPACE', () => this.game.events.emit(ATTACK_RELEASE_EVENT));
     this.input.keyboard?.on('keydown-B', () => this.toggleShop());
+    this.input.keyboard?.on('keydown-M', () => this.toggleMute());
     responsive(this, () => this.layout());
     const onFailed = (slot: number) => this.skillButtons[slot]?.nudge();
     this.game.events.on(SKILL_FAILED_EVENT, onFailed);
@@ -305,6 +316,9 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
           : totalExpToLevel(econ, level + 1),
     }));
     this.minimap = new Minimap(this, l.minimap, m.cfg.map);
+    // Mute (#45): sound and music together; M on a keyboard. Saved like every setting.
+    const st = getState(this).settings;
+    this.mute = new MuteButton(this, l.mute, !st.sound && !st.music, () => this.toggleMute());
 
     this.question?.destroy();
     this.question = new QuestionOverlay(this, l.questionCard, (slot) =>
