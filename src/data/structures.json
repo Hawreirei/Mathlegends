@@ -17,7 +17,7 @@
     "enabled": true,
     "afterSec": 420,
     "extraDamagePerMinute": 1.0,
-    "nexusDrainPerSec": 0.003,
-    "drainPerTowerLost": 1.0
+    "crumblePerSec": 0.008,
+    "crumbleFasterPerTowerLost": 0.5
   }
 }

@@ -58,8 +58,10 @@ The first runs showed that **no match ever ended**: not one of hundreds reached 
 So sudden death is now on (`structures.json` `suddenDeath`, can be turned off):
 
 - **From 7:00**, towers and Nexus take extra damage: x2 after one minute, x3 after two, and so on.
-- **Both Nexus crumble** a little each second, faster as time goes on and faster for a side that has lost towers (x2 with one tower lost, x3 with two). The side behind falls first. If both fall in the same moment, the side ahead (structure damage, then gold) wins.
-- The HUD shows it: the timer turns red and a banner says *"Babak penentuan! Nexus mulai runtuh."* / *"Sudden death! The Nexus starts to crumble."*
+- **Each base crumbles in order**: the outer tower first, then the inner tower, then the Nexus, the same order players must destroy them in. It goes faster as time goes on and faster for a side that has lost towers (x1.5 with one tower lost, x2 with two). The side behind falls first. A tower that crumbles pays the other side its tower gold. If both Nexus fall in the same moment, the side ahead (structure damage, then gold) wins.
+- The HUD shows it: the timer turns red and a banner says *"Babak penentuan! Menara dan Nexus mulai runtuh."* / *"Sudden death! Towers and Nexus start to crumble."*
+
+**Fixed after the first playtest:** the first version drained the Nexus directly, so 59 of 60 simulated matches (and the owner's first real match) ended while the losing side still had towers standing: the game seemed to stop for no reason. Now the crumbling follows the tower order, and `tests/balance.test.ts` checks that the loser always lost both towers before its Nexus fell.
 
 Every simulated match now ends at a Nexus in about 9 to 11 minutes, close to the 8 to 10 minute target. Real children who push on purpose will often finish earlier.
 
@@ -67,7 +69,7 @@ Every simulated match now ends at a Nexus in about 9 to 11 minutes, close to the
 
 `tests/balance.test.ts` (about 160 matches, under 40 s):
 
-- every match ends at a Nexus within 8 to 11 minutes;
+- every match ends at a Nexus within 8 to 11 minutes, and never while the losing side still has a tower;
 - the mirror match at 50% right answers stays between 35% and 65%;
 - math skill is a modest edge at equal combat skill: 90% right beats 30% right, but by at most 50 points, with neither below 10% or above 80%;
 - the Year 1 bot loses at least 75% of the time to the new player and the Year 6 bot at most 35%.
