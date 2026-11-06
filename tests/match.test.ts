@@ -256,3 +256,31 @@ describe('shop in the match (#35)', () => {
     expect(playerBuy(s, 'comet-spear', cfg).result).toEqual({ ok: false, reason: 'gold' });
   });
 });
+
+describe('minion growth ignores heroes (#68)', () => {
+  it('a much stronger, higher-level hero does not change minion stats', () => {
+    const strong = {
+      ...cfg,
+      playerHero: {
+        ...cfg.playerHero,
+        base: { ...cfg.playerHero.base, atk: cfg.playerHero.base.atk * 5, hp: 9999 },
+      },
+    };
+    const spawned = (c: MatchConfig, boost: boolean) => {
+      let s = createMatch(c);
+      if (boost) s = { ...s, player: { ...s.player, level: 15 } };
+      const out: string[] = [];
+      for (let t = 0; t < 400; t++) {
+        const r = stepMatch(s, idle, 1, c);
+        s = r.state;
+        for (const e of r.events)
+          if (e.type === 'spawn')
+            out.push(`${e.minion.id}:${e.minion.maxHp}:${e.minion.atk}:${e.minion.armor}`);
+      }
+      return out;
+    };
+    const normal = spawned(cfg, false);
+    expect(normal.length).toBeGreaterThan(20);
+    expect(spawned(strong, true)).toEqual(normal);
+  });
+});

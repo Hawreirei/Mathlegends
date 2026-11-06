@@ -69,6 +69,8 @@ export function applyLevel(s: HeroState, def: Hero, level: number): HeroState {
 export interface Victim {
   kind: 'minion' | 'hero' | 'tower' | 'nexus';
   minionKind?: MinionType;
+  /** Minion last-hit gold multiplier from match-time growth (#68). */
+  goldScale?: number;
   team: Team;
   x: number;
   y: number;
@@ -91,7 +93,8 @@ export interface Reward {
 
 /**
  * Who earns what when something dies.
- * - Minion: the hero who landed the killing blow gets lastHitGold and minion EXP, both x multiplier
+ * - Minion: the hero who landed the killing blow gets lastHitGold (x the minion's goldScale, #68)
+ *   and minion EXP, both x multiplier
  *   (the question result, #28); other enemy heroes within exp.shareRangePx get the minion EXP.
  * - Hero: the enemy hero who landed the killing blow gets heroKill gold and EXP.
  * - Tower: every enemy hero gets the tower gold (team reward).
@@ -111,7 +114,7 @@ export function killRewards(
       if (h.id === killerId)
         out.push({
           heroId: h.id,
-          gold: c.lastHitGold[v.minionKind] * multiplier,
+          gold: c.lastHitGold[v.minionKind] * (v.goldScale ?? 1) * multiplier,
           exp: exp * multiplier,
           source: 'lastHit',
         });

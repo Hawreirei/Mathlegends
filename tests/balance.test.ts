@@ -118,9 +118,11 @@ describe('balance in simulated matches (#37)', () => {
     expect(lo).toBeGreaterThanOrEqual(0.1);
   });
 
-  it('the bot Year still decides how hard it is (#43)', { timeout: 60_000 }, () => {
-    const y1 = aggregate('y1', 0.6, runs(20, 0.6, gameConfig(1), newPlayerBot(file))).winRate;
-    const y6 = aggregate('y6', 0.6, runs(20, 0.6, gameConfig(6), newPlayerBot(file))).winRate;
+  // 80 matches each. Win rates over blocks of 40 seeds swing from 70% to 95% for Year 1 (true
+  // rate ~83% over 200), so 20 or 40 matches were too few for a 75% bar once minions grew (#68).
+  it('the bot Year still decides how hard it is (#43)', { timeout: 180_000 }, () => {
+    const y1 = aggregate('y1', 0.6, runs(80, 0.6, gameConfig(1), newPlayerBot(file))).winRate;
+    const y6 = aggregate('y6', 0.6, runs(80, 0.6, gameConfig(6), newPlayerBot(file))).winRate;
     expect(y1).toBeGreaterThanOrEqual(0.75);
     expect(y6).toBeLessThanOrEqual(0.35);
   });

@@ -24,7 +24,7 @@ Exact numbers live in `src/data/economy.json` (issue #8). They are tunable guess
 - The match ends at once on Nexus destruction. **Sudden death (added in #37, as decided below):** the balance simulator showed matches never ended on their own, so from 7:00 towers and Nexus take growing extra damage and each base slowly crumbles in order (outer tower, inner tower, then Nexus), faster for a side that has lost towers. A match never ends while the losing side still has a tower standing. Matches now end in about 9 to 11 minutes; the side ahead wins. Details: `docs/BALANCE.md`.
 
 ## 4. The map
-One horizontal lane, your base on the left, the enemy base on the right. Each side has one Nexus and **2 towers**. Minion waves spawn on a timer from both bases. Every Nth wave includes a Cannon minion.
+One horizontal lane, your base on the left, the enemy base on the right. Each side has one Nexus and **2 towers**. Minion waves spawn on a timer from both bases. Every Nth wave includes a Cannon minion. Later waves are tougher (more HP, attack and armor) and pay a little more gold, the same for both sides; your hero never changes minion stats (#68).
 
 | Minion | Role | Question type | Timer | Reward |
 |---|---|---|---|---|

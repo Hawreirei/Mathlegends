@@ -424,6 +424,9 @@ const minionStats = z
     path: ['aggroRange'],
   });
 
+/** Stats a minion type gains per minute of match time (#68). */
+const minionGrowth = z.object({ hp: nonNegative, atk: nonNegative, armor: nonNegative }).strict();
+
 export const minionsFileSchema = z
   .object({
     version: z.literal(1),
@@ -433,6 +436,23 @@ export const minionsFileSchema = z
     spacing: positive,
     /** Minions keep at least their radius plus this from any hero, so heroes stay visible in a fight. */
     heroBodyRadius: nonNegative,
+    /**
+     * Minions get stronger as the match goes on (#68), the same for both sides; heroes never
+     * change minion stats. A wave spawned at time t gets base + perMinute x minutes, where
+     * minutes = (t - startsAfterSec) / 60, clamped to [0, maxMinutes]. Absent = no growth.
+     */
+    growth: z
+      .object({
+        startsAfterSec: nonNegative,
+        maxMinutes: nonNegative,
+        /** Last-hit gold grows by this fraction per minute, so tougher minions still pay. */
+        goldPerMinute: nonNegative,
+        perMinute: z
+          .object({ infantry: minionGrowth, lancer: minionGrowth, cannon: minionGrowth })
+          .strict(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 

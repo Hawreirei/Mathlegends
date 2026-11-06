@@ -31,25 +31,26 @@ Default: 200 matches per scenario, 20-minute limit, CSV to `balance-sim.csv` (gi
 
 ## Results
 
-`npm run sim` (200 matches per scenario, 2,000 in all):
+`npm run sim` (200 matches per scenario, 2,000 in all), with minions growing over match time (#68). The numbers before #68 are in brackets.
 
 | Scenario | Player wins | Ended at a Nexus | Average length | Average gold lead | Math share |
 |---|---|---|---|---|---|
-| mirror-30 | 35.5% | 200/200 | 9:43 | -260 | 22.6% |
-| mirror-50 | **47.5%** | 200/200 | 9:43 | -78 | 27.2% |
-| mirror-60 | 58.0% | 200/200 | 9:41 | +35 | 30.0% |
-| mirror-90 | 62.5% | 200/200 | 9:39 | +345 | 36.6% |
-| new-vs-y1 | 85.5% | 200/200 | 9:32 | +361 | 29.2% |
-| new-vs-y2 | 76.5% | 200/200 | 9:39 | +172 | 28.7% |
-| new-vs-y3 | 44.0% | 200/200 | 9:42 | -41 | 28.0% |
-| new-vs-y4 | 29.0% | 200/200 | 9:39 | -50 | 28.3% |
-| new-vs-y5 | 23.0% | 200/200 | 9:36 | -214 | 27.3% |
-| new-vs-y6 | 9.5% | 200/200 | 9:30 | -346 | 25.6% |
+| mirror-30 | 41.0% (35.5) | 200/200 | 9:40 | -281 | 22.6% |
+| mirror-50 | **45.5%** (47.5) | 200/200 | 9:40 | -100 | 27.9% |
+| mirror-60 | 51.5% (58.0) | 200/200 | 9:39 | +23 | 30.3% |
+| mirror-90 | 69.5% (62.5) | 200/200 | 9:36 | +336 | 36.4% |
+| new-vs-y1 | 83.0% (85.5) | 200/200 | 9:31 | +341 | 29.3% |
+| new-vs-y2 | 77.0% (76.5) | 200/200 | 9:37 | +142 | 28.5% |
+| new-vs-y3 | 43.5% (44.0) | 200/200 | 9:40 | -33 | 28.5% |
+| new-vs-y4 | 27.5% (29.0) | 200/200 | 9:36 | -122 | 27.9% |
+| new-vs-y5 | 17.0% (23.0) | 200/200 | 9:34 | -224 | 27.6% |
+| new-vs-y6 | 9.0% (9.5) | 200/200 | 9:26 | -387 | 26.4% |
 
-- **Mirror match:** at equal combat skill and equal economy (50% right) the player wins 47.5%: near 50%.
-- **Math skill is a modest edge, not decisive:** from 30% to 90% right answers the win rate goes from 35.5% to 62.5%; the gold lead moves by about 600 out of roughly 4,000 earned.
-- **Difficulty by Year:** a new player wins 85.5% against the Year 1 bot, then 76.5, 44, 29, 23 and 9.5% against Years 2 to 6: every Year is harder than the one before.
-- 2,000 matches took 6 minutes. These results are after the crumble-order fix.
+- **Mirror match:** at equal combat skill and equal economy (50% right) the player wins 45.5%: near 50%.
+- **Math skill is a modest edge, not decisive:** from 30% to 90% right answers the win rate goes from 41% to 69.5%; the gold lead moves by about 600 out of roughly 4,000 earned.
+- **Difficulty by Year:** a new player wins 83% against the Year 1 bot, then 77, 43.5, 27.5, 17 and 9% against Years 2 to 6: every Year is harder than the one before.
+- **Minion growth (#68)** barely changes match length (about 3 s shorter on average). Without growth in gold, tougher minions cut farm income and squeezed the gold gaps between Years, so last-hit gold now grows 3% per minute too.
+- 2,000 matches took 5 minutes.
 
 ## What the simulator changed: sudden death
 
@@ -67,12 +68,14 @@ Every simulated match now ends at a Nexus in about 9 to 10 minutes, close to the
 
 ## Checked in CI
 
-`tests/balance.test.ts` (about 160 matches, under 40 s):
+`tests/balance.test.ts` (about 280 matches, about 40 s):
 
 - every match ends at a Nexus within 8 to 11 minutes, and never while the losing side still has a tower;
 - the mirror match at 50% right answers stays between 35% and 65%;
 - math skill is a modest edge at equal combat skill: 90% right beats 30% right, but by at most 50 points, with neither below 10% or above 80%;
-- the Year 1 bot loses at least 75% of the time to the new player and the Year 6 bot at most 35%.
+- the Year 1 bot loses at least 75% of the time to the new player and the Year 6 bot at most 35% (80 matches each: over blocks of 40 seeds the Year 1 rate swings from 70% to 95%, so smaller samples fail on noise).
+
+`tests/botDifficulty.test.ts` also checks that the new player's gold lead shrinks Year by Year, over 12 matches per Year.
 
 ## Notes for the playtest (#50)
 
