@@ -11,8 +11,8 @@ import {
   type MatchSummary,
 } from '../src/systems/balanceSim';
 import { loadBotFile, loadStructures, newPlayerBot } from '../src/systems/data';
-import { createMatch, suddenDeathMultiplier } from '../src/systems/match';
-import { winner } from '../src/systems/structures';
+import { createMatch, stepMatch, suddenDeathMultiplier } from '../src/systems/match';
+import { isTargetable, winner } from '../src/systems/structures';
 
 const file = loadBotFile(botJson);
 const SECONDS = 1200;
@@ -40,6 +40,39 @@ describe('sudden death (#37)', () => {
     expect(suddenDeathMultiplier(sd.afterSec + 600, off)).toBe(1);
   });
 
+  it('crumbles each base in order: outer tower, then inner tower, then the Nexus', () => {
+    const at = sd.afterSec + 60;
+    let s = { ...createMatch(mirror), now: at };
+    const hp = (team: string, kind: string) =>
+      s.structures.filter((x) => x.team === team && x.kind === kind).map((x) => Math.round(x.hp));
+    const full = createMatch(mirror).structures;
+    s = stepMatch(s, { move: { x: 0, y: 0 }, attack: false }, 0.5, mirror).state;
+    for (const team of ['blue', 'red']) {
+      const towers = s.structures.filter((x) => x.team === team && x.kind === 'tower');
+      const changed = towers.filter((t) => t.hp < full.find((f) => f.id === t.id)!.hp);
+      expect(changed, `${team}: only the outer tower crumbles`).toHaveLength(1);
+      expect(hp(team, 'nexus')).toEqual([
+        full.find((f) => f.team === team && f.kind === 'nexus')!.hp,
+      ]);
+    }
+  });
+
+  it('a tower that crumbles pays the other side its tower gold', () => {
+    const base = createMatch(mirror);
+    const outerBlue = base.structures.find(
+      (x) => x.team === 'blue' && x.kind === 'tower' && isTargetable(x, base.structures),
+    )!;
+    let s = {
+      ...base,
+      now: sd.afterSec + 120,
+      structures: base.structures.map((x) => (x.id === outerBlue.id ? { ...x, hp: 1 } : x)),
+    };
+    const gold = s.botProgress.goldBySource.tower;
+    s = stepMatch(s, { move: { x: 0, y: 0 }, attack: false }, 0.1, mirror).state;
+    expect(s.structures.find((x) => x.id === outerBlue.id)!.alive).toBe(false);
+    expect(s.botProgress.goldBySource.tower).toBe(gold + mirror.econ.otherGold.tower);
+  });
+
   it('if both Nexus fall in the same step, the side ahead on score wins', () => {
     const s = createMatch(mirror);
     const both = s.structures.map((x) => (x.kind === 'nexus' ? { ...x, hp: 0, alive: false } : x));
@@ -59,9 +92,12 @@ describe('balance in simulated matches (#37)', () => {
   const strong = runs(40, 0.9);
   const all = [...even, ...weak, ...strong];
 
-  it('every match ends at a Nexus, within about 8 to 11 minutes', () => {
+  it('every match ends at a Nexus, within about 8 to 11 minutes, never with towers standing', () => {
     for (const r of all) {
       expect(r.decidedBy).toBe('nexus');
+      // The loser lost both towers before its Nexus fell (the first playtest found matches
+      // ending with towers still up).
+      expect(r.winner === 'blue' ? r.towersLostRed : r.towersLostBlue).toBe(2);
       expect(r.seconds).toBeGreaterThanOrEqual(480);
       expect(r.seconds).toBeLessThanOrEqual(660);
     }

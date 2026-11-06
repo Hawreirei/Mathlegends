@@ -462,17 +462,18 @@ export const structuresFileSchema = z
      * Sudden death (#37, GDD section 3). From `afterSec` on:
      * - towers and Nexus take extra damage: +extraDamagePerMinute x per minute (x2 after one
      *   minute, x3 after two...);
-     * - each Nexus loses nexusDrainPerSec x max HP per second, times the minutes since sudden
-     *   death began, times (1 + drainPerTowerLost x towers that side has lost). The side behind
-     *   falls first; if both fall at once, the side ahead on score wins.
+     * - each side's front structure crumbles (outer tower, then inner tower, then the Nexus):
+     *   crumblePerSec x its max HP per second, times the minutes since sudden death began,
+     *   times (1 + crumbleFasterPerTowerLost x towers that side has lost). The side behind
+     *   falls first; if both Nexus fall at once, the side ahead on score wins.
      */
     suddenDeath: z
       .object({
         enabled: z.boolean(),
         afterSec: nonNegative,
         extraDamagePerMinute: nonNegative,
-        nexusDrainPerSec: nonNegative,
-        drainPerTowerLost: nonNegative,
+        crumblePerSec: nonNegative,
+        crumbleFasterPerTowerLost: nonNegative,
       })
       .strict(),
   })

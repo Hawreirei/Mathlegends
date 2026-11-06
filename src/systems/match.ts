@@ -181,6 +181,33 @@ export function createMatch(cfg: MatchConfig, seed = 1): MatchState {
   };
 }
 
+/**
+ * Sudden death crumbling (#37, fixed after the first playtest): each side's FRONT structure
+ * crumbles, in the same order players must destroy them: outer tower, then inner tower, then
+ * the Nexus. So a match never ends while that side still has a tower standing. A side that has
+ * lost towers crumbles faster. A tower that falls this way pays the other side its tower gold,
+ * as if destroyed.
+ */
+function crumble(w: Work, now: number, dt: number, cfg: MatchConfig): void {
+  const sd = cfg.structures.suddenDeath;
+  const minutes = (now - sd.afterSec) / 60;
+  for (const team of ['blue', 'red'] as const) {
+    const front = w.structures.find(
+      (x) => x.team === team && x.alive && isTargetable(x, w.structures),
+    );
+    if (!front) continue;
+    const lost = w.structures.filter(
+      (t) => t.team === team && t.kind === 'tower' && !t.alive,
+    ).length;
+    const loss =
+      front.maxHp * sd.crumblePerSec * minutes * (1 + sd.crumbleFasterPerTowerLost * lost) * dt;
+    const hp = front.hp - loss;
+    const next = hp > 0 ? { ...front, hp } : { ...front, hp: 0, alive: false };
+    w.structures = w.structures.map((x) => (x.id === front.id ? next : x));
+    if (!next.alive && next.kind === 'tower') grantKill(w, next, 'sudden-death', cfg);
+  }
+}
+
 /** Structure damage done by `team` (a destroyed structure = 1), then gold, as one number. */
 function sideScore(s: MatchState, team: Team): number {
   const enemy = team === 'blue' ? 'red' : 'blue';
@@ -672,18 +699,7 @@ export function stepMatch(
   w.bot = lowHpShield(w.bot, now);
 
   // Sudden death (#37): both Nexus drain, faster for a side that has lost towers.
-  if (sd.enabled && now > sd.afterSec && sd.nexusDrainPerSec > 0) {
-    const minutes = (now - sd.afterSec) / 60;
-    w.structures = w.structures.map((x) => {
-      if (x.kind !== 'nexus' || !x.alive) return x;
-      const lost = w.structures.filter(
-        (t) => t.team === x.team && t.kind === 'tower' && !t.alive,
-      ).length;
-      const hp =
-        x.hp - x.maxHp * sd.nexusDrainPerSec * minutes * (1 + sd.drainPerTowerLost * lost) * dt;
-      return hp > 0 ? { ...x, hp } : { ...x, hp: 0, alive: false };
-    });
-  }
+  if (sd.enabled && now > sd.afterSec && sd.crumblePerSec > 0) crumble(w, now, dt, cfg);
 
   // 6. Winner. Both Nexus down in the same step (sudden death): the side ahead wins.
   const win = winner(w.structures, (team) => sideScore(w, team));

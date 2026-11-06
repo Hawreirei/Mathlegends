@@ -155,7 +155,7 @@ Behaviour (`src/systems/minions.ts`): march towards the enemy base; target the n
 | `dangerRingDistance` | 220 | Show an enemy tower's red range ring when the player is this close to its edge |
 | `suddenDeath.enabled` / `afterSec` | true / 420 | Sudden death from 7:00 (#37) |
 | `suddenDeath.extraDamagePerMinute` | 1.0 | Towers and Nexus take x2 damage after one minute of sudden death, x3 after two... |
-| `suddenDeath.nexusDrainPerSec` / `drainPerTowerLost` | 0.003 / 1.0 | Each Nexus drains 0.3% of max HP per second x minutes of sudden death x (1 + towers that side lost) |
+| `suddenDeath.crumblePerSec` / `crumbleFasterPerTowerLost` | 0.008 / 0.5 | Each side's front structure (outer tower, then inner tower, then Nexus) crumbles 0.8% of its max HP per second x minutes of sudden death x (1 + 0.5 x towers that side lost). A tower that crumbles pays the other side its tower gold. |
 
 Rules (`src/systems/structures.ts`):
 - **Protection order:** the outer tower can be attacked first; the inner tower only after the outer falls; the Nexus only after both towers fall. Protected structures show a soft white bubble.
