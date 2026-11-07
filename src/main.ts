@@ -96,3 +96,15 @@ void loadFonts().then(() => {
 
   window.mathlegends = { game };
 });
+
+// Offline play (#51): the service worker stores the game on the first visit. Production only:
+// in development it would serve stale files.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register(`${import.meta.env.BASE_URL}sw.js`, { scope: import.meta.env.BASE_URL })
+      .catch(() => {
+        // No offline play on this browser; the game still works online.
+      });
+  });
+}

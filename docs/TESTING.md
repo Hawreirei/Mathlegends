@@ -30,7 +30,9 @@ Coverage on 2026-11-07: **98% of statements, 95% of branches, 99% of functions, 
 5. **Finish:** red's towers are down and its Nexus at 1 HP; the hero attacks it.
 6. **Result:** the Victory screen in the chosen language, the match saved (1 match played, at least 1 star), and no errors in the page.
 
-It runs 4 times: **desktop** (1280 x 720, mouse and keyboard) and **phone** (390 x 844, touch), each in **Indonesian** and **English**. About 25 s in all. The test sets up steps 3 and 5 through the `window.mathlegends` handle so it does not wait minutes for waves; all input is real.
+`e2e/offline.spec.ts` checks offline play and installability (docs/OFFLINE.md).
+
+The smoke test runs 4 times: **desktop** (1280 x 720, mouse and keyboard) and **phone** (390 x 844, touch), each in **Indonesian** and **English**. About 25 s in all. The test sets up steps 3 and 5 through the `window.mathlegends` handle so it does not wait minutes for waves; all input is real.
 
 To run it locally:
 

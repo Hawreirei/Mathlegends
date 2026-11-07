@@ -16,6 +16,7 @@
     "validate:questions": "node scripts/validate-questions.ts",
     "build:questions": "node scripts/build-question-bank.ts",
     "build:sprites": "node scripts/build-sprites.ts",
+    "build:icons": "node scripts/build-icons.ts",
     "sim": "node scripts/balance-sim.ts",
     "check:bundle": "node scripts/check-bundle.ts",
     "perf": "node scripts/perf.ts"

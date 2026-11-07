@@ -7,7 +7,7 @@ A 1-lane MOBA where every last-hit on a minion triggers a math question. The ans
 
 | Item | Decision |
 |---|---|
-| Platform | Web (mobile browser first), later installable PWA |
+| Platform | Web (mobile browser first), installable and playable offline (PWA, #51) |
 | Engine | Phaser 3 + TypeScript + Vite |
 | Hosting | GitHub Pages via GitHub Actions |
 | MVP mode | Single player, 1v1 vs a bot on one lane, one hero. No server: everything runs in the browser. |
