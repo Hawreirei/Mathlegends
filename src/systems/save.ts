@@ -1,7 +1,7 @@
 /**
  * Versioned save (#41). Pure TypeScript, no Phaser.
  *
- * One JSON document holds a player's progress: profile (Year, stars, placement), accessibility
+ * One JSON document holds a player's progress: profile (Year, stars), accessibility
  * settings and the review queue. It lives in localStorage under `mathlegends.save` and is the
  * format of the export file used to move progress to another device.
  *

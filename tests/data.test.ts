@@ -47,7 +47,6 @@ describe('committed data files', () => {
     const r = loadRanks(ranksJson);
     expect(r.tiers.map((t) => t.tier)).toEqual([1, 2, 3, 4, 5, 6]);
     expect(r.starsPerTier).toBe(5);
-    expect(r.placement.maxStartTier).toBe(5);
     expect(r.questionMix.onLevel + r.questionMix.review + r.questionMix.stretch).toBeCloseTo(1);
   });
 });
@@ -125,11 +124,5 @@ describe('ranks loader', () => {
     const r = clone();
     r.tiers[1]!.tier = 3;
     expect(() => loadRanks(r)).toThrow(/tiers must be numbered 1, 2, 3/);
-  });
-
-  it('rejects a placement cap above the top tier', () => {
-    const r = clone();
-    r.placement.maxStartTier = 9;
-    expect(() => loadRanks(r)).toThrow(/maxStartTier/);
   });
 });

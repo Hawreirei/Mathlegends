@@ -56,13 +56,7 @@ describe('navigation (#44)', () => {
   it('Back from a Settings sub-page returns to Settings, other screens to the Menu', () => {
     expect(backAction('settingsTransfer')).toEqual({ kind: 'close' });
     expect(backAction('settingsSound')).toEqual({ kind: 'close' });
-    for (const s of [
-      'settings',
-      'placementIntro',
-      'placementQuiz',
-      'placementDone',
-      'result',
-    ] as const)
+    for (const s of ['settings', 'result'] as const)
       expect(backAction(s)).toEqual({ kind: 'scene', to: 'Menu' });
   });
 });

@@ -21,9 +21,8 @@ export interface MatchResult {
   forfeit?: boolean;
 }
 
+/** Everyone starts in Year 1 and climbs by winning (#39); there is no placement quiz. */
 export interface Profile {
-  /** True once the placement quiz (#38) has set the starting Year. */
-  placed: boolean;
   /** Losses in a row while at 0 stars (#39: 2 drop a Year). */
   lossesAtZero: number;
   tier: number;
@@ -42,7 +41,6 @@ export interface GameState {
 }
 
 export const NEW_PROFILE: Profile = {
-  placed: false,
   tier: 1,
   stars: 0,
   lossesAtZero: 0,
@@ -98,19 +96,10 @@ export function formatDuration(sec: number): string {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
-/** After the placement quiz (#38): start at `tier` with 0 stars. */
-export function applyPlacement(s: GameState, tier: number): GameState {
-  return { ...s, profile: { ...s.profile, placed: true, tier, stars: 0, lossesAtZero: 0 } };
-}
-
-/** "Retake the placement quiz": the next Play starts with the quiz again. */
-export function resetPlacement(s: GameState): GameState {
-  return { ...s, profile: { ...s.profile, placed: false } };
-}
-
 /**
  * Saved profile from storage, or a new one. Anything malformed falls back to the new profile.
- * (A versioned save with export/import comes in #41.)
+ * Saves from before the placement quiz was removed carry a `placed` flag; it is ignored, and
+ * the Year and stars are kept.
  */
 export function parseProfile(raw: unknown, topTier: number, starsPerTier = 5): Profile {
   if (!raw || typeof raw !== 'object') return { ...NEW_PROFILE };
@@ -122,7 +111,6 @@ export function parseProfile(raw: unknown, topTier: number, starsPerTier = 5): P
   // Below the top Year stars stay under starsPerTier; the top Year has no cap (#39).
   if (r.tier! < topTier && r.stars! >= starsPerTier) return { ...NEW_PROFILE };
   return {
-    placed: r.placed === true,
     tier: r.tier!,
     stars: r.stars!,
     lossesAtZero: int(r.lossesAtZero, 0, 100) ? r.lossesAtZero! : 0,

@@ -107,7 +107,7 @@ describe('Year 6 has no star cap (#39)', () => {
   });
 
   it('is saved uncapped, while lower Years reject 5 or more stars', () => {
-    const save = { placed: true, tier: 6, stars: 23, lossesAtZero: 0, matchesPlayed: 40 };
+    const save = { tier: 6, stars: 23, lossesAtZero: 0, matchesPlayed: 40 };
     expect(parseProfile(save, 6, 5).stars).toBe(23);
     expect(parseProfile({ ...save, tier: 4 }, 6, 5).tier).toBe(1); // broken save: new profile
   });

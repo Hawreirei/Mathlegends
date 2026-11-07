@@ -1,14 +1,13 @@
 # Screens and navigation (issue #44)
 
 ```
-Menu ──Play──> (first time) Placement: intro → 10 questions → "You start in Year N" → Match
-  │                                                                                 │
-  │──Play──> Match ──Nexus falls / Quit + Leave──> Result ──Play again──> Match      │
-  │                                                  └──Menu──> Menu                │
-  └──Settings──> Settings ──Move to another device──> transfer page                  │
-                     ├──Sound and motion──> sound page (#45)                         │
-                     └──Retake placement quiz──> Placement ◄──────────────────────────┘
+Menu ──Play──> Match ──Nexus falls / Quit + Leave──> Result ──Play again──> Match
+  │                                                     └──Menu──> Menu
+  └──Settings──> Settings ──Move to another device──> transfer page
+                     └──Sound and motion──> sound page (#45)
 ```
+
+Play always starts a match: everyone begins in Year 1 (the placement quiz was removed on 2026-11-07, see RANK.md).
 
 ## Back button
 
@@ -17,7 +16,7 @@ The phone's Back button, the browser's back button and **Esc** on a keyboard all
 | Screen | Back does |
 |---|---|
 | Menu | Leaves the game (the only screen that does) |
-| Settings, Placement (any step), Result | Back to the Menu. An unfinished placement quiz is not saved; Play starts it again. |
+| Settings, Result | Back to the Menu |
 | Settings → Move to another device | Back to Settings |
 | Settings → Sound and motion (#45) | Back to Settings |
 | Match with the shop open | Closes the shop |
@@ -32,7 +31,7 @@ How: while the player is anywhere but the Menu, the game keeps one extra entry i
 
 ## No dead ends
 
-`tests/navigation.test.ts` checks, over the full screen graph, that every screen can reach the Menu (by a button or Back) and that the Menu can reach every screen. The placement quiz has a **Quit** button too.
+`tests/navigation.test.ts` checks, over the full screen graph, that every screen can reach the Menu (by a button or Back) and that the Menu can reach every screen.
 
 ## Transitions
 
@@ -40,4 +39,4 @@ Screens fade out and in (0.16 s). A second tap during the fade is ignored, so a 
 
 ## Checked in a browser
 
-On a phone viewport (Playwright, with the real Back button): Menu → Play → placement intro → Back → Menu; quiz → Back → Menu; Settings → Move to another device → Back → Settings → Back → Menu; placement → match; Shop → Back → match; Back → quit question → Back → match; Quit → Leave → Result (loss recorded, `forfeit: true`); Play again → match; Quit → Leave → Result → Back → Menu → Back leaves the page. On desktop, Esc: shop → closed, then quit question → closed; Esc on the Menu does nothing.
+On a phone viewport (Playwright, with the real Back button): Settings → Move to another device → Back → Settings → Back → Menu; Play → match; Shop → Back → match; Back → quit question → Back → match; Quit → Leave → Result (loss recorded, `forfeit: true`); Play again → match; Quit → Leave → Result → Back → Menu → Back leaves the page. On desktop, Esc: shop → closed, then quit question → closed; Esc on the Menu does nothing.

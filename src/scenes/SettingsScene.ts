@@ -13,7 +13,6 @@ import type { StringKey } from '../utils/i18n';
 import { browserStorage, loadAnswerLogRaw, saveAnswerLogRaw } from '../utils/storage';
 import ranks from '../data/ranks.json';
 import { loadRanks } from '../systems/data';
-import { resetPlacement } from '../systems/gameState';
 import { enter, goTo, type BackAware } from './nav';
 import type { BackAction, Screen } from '../systems/navigation';
 import { changeSettings, getState, responsive, setStateAndSave, tr } from './shared';
@@ -41,7 +40,7 @@ export class SettingsScene extends Phaser.Scene implements BackAware {
     else if (a.kind === 'scene') goTo(this, a.to);
   }
 
-  private note: 'exported' | 'cleared' | 'confirm' | 'retake' | null = null;
+  private note: 'exported' | 'cleared' | 'confirm' | null = null;
   private page: 'main' | 'transfer' | 'sound' = 'main';
   private transferNote: TransferNote | null = null;
   /** A checked save picked for import, waiting for the second tap. */
@@ -247,41 +246,26 @@ export class SettingsScene extends Phaser.Scene implements BackAware {
     return y + 440;
   }
 
-  /** Current Year and "Retake placement quiz" (tap twice) (#38). Returns the y below. */
+  /** Current Year and "Move to another device". Returns the y below. */
   private year(x: number, y: number, colW: number): number {
     const c = theme.colors;
     const st = getState(this);
-    const confirm = this.note === 'retake';
     this.add.text(x, y, tr(this, 'settings.yearTitle'), bodyFont(32, c.white, '800'));
     this.add
       .text(
         x,
         y + 50,
-        confirm
-          ? tr(this, 'settings.retakeHint')
-          : tr(this, 'settings.yearInfo', {
-              rank: rankLabel(st.lang, st.profile.tier, st.profile.stars),
-            }),
-        bodyFont(24, confirm ? c.gold : c.paper, '600'),
+        tr(this, 'settings.yearInfo', {
+          rank: rankLabel(st.lang, st.profile.tier, st.profile.stars),
+        }),
+        bodyFont(24, c.paper, '600'),
       )
       .setWordWrapWidth(colW, true);
     const half = (colW - 16) / 2;
-    new Button(
-      this,
-      x + half / 2,
-      y + 130,
-      tr(this, confirm ? 'settings.retakeConfirm' : 'settings.retake'),
-      () => {
-        if (!confirm) return this.setNote('retake');
-        setStateAndSave(this, resetPlacement(getState(this)));
-        goTo(this, 'Placement');
-      },
-      { width: half, height: 64, fontSize: 20, style: confirm ? 'primary' : 'secondary' },
-    );
     // Export / import the versioned save (#41) on its own page.
     new Button(
       this,
-      x + colW - half / 2,
+      x + half / 2,
       y + 130,
       tr(this, 'settings.transfer'),
       () => this.showPage('transfer'),

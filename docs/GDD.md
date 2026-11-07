@@ -8,7 +8,7 @@ A single-player, 1-lane MOBA for Indonesian primary students (Year/Kelas 1 to 6)
 Name: **MathLegends** (working title, name check in #60). Runs in a phone or desktop browser. No server, no accounts.
 
 ## 2. Core loop
-1. Open the game, take the placement quiz the first time (10 questions) to get a starting Year tier.
+1. Open the game. Everyone starts in Year 1.
 2. Start a match against the bot. The bot's strength follows your Year tier.
 3. Farm minion waves, fight the bot, buy items, level up.
 4. On your own last hit: 4-choice question, 5 / 8 / 12 seconds depending on the minion type. The game never pauses.
@@ -49,7 +49,7 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 
 ## 7. Rank and the bot
 - 6 tiers (Year 1 to Year 6), 5 stars each. Floor at Year 1.
-- **Placement quiz (kept, decided 2026-11-01):** the first time a child plays, 10 adaptive questions set the starting Year (estimated level minus 1, never above Year 5). Starting everyone at Year 1 was rejected: Year 5 and 6 students would need about 25 stars (2 to 4 hours) of Year 1 sums before reaching their level. Details: `docs/RANK.md`.
+- **No placement quiz (decided 2026-11-07, reversing 2026-11-01):** everyone starts in Year 1 and climbs by winning. The quiz was removed at the owner's request. Trade-off: a Year 5 or 6 student plays about 20 wins of easier Years first. Details: `docs/RANK.md`.
 - **Stars:** win +1; win with 80% or more correct answers +1 bonus (2 in total); loss -1.
 - **Climbing (decided 2026-11-01):** reaching the 5th star moves you up at once to the next Year with 0 stars. A 2-star win that crosses the line carries the extra star over (4 stars + 2 = next Year with 1 star).
 - **Year 6 has no star cap (decided 2026-11-01):** stars keep counting. The badge always shows 5 filled star icons, plus a gold "×N" label with the real total from the 6th star on (for example 5 stars plus "×9" for 9 stars), and the text reads "Kelas 6 · 9 bintang" / "Year 6 · 9 stars". The real total is saved, so it can be shown on a leaderboard or teacher view later. A loss at Year 6 takes one star off the total.
@@ -78,7 +78,7 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 
 ## 12. MVP scope
 
-**In:** single player vs bot, 1 lane, 1 hero, 8 items, Year 1 to 6 with about 270 bilingual questions, placement quiz, rank with stars, local saves, ID/EN, GitHub Pages deploy, PWA by v0.1.0.
+**In:** single player vs bot, 1 lane, 1 hero, 8 items, Year 1 to 6 with about 270 bilingual questions, rank with stars (everyone starts in Year 1), local saves, ID/EN, GitHub Pages deploy, PWA by v0.1.0.
 
 **Out (post-MVP backlog, M8):** online multiplayer, accounts and cloud save, teacher dashboard, jungle, 3v3 or 5v5, extra heroes and hero select, Year 7 to 12, payments.
 

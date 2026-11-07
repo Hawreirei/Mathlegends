@@ -318,19 +318,6 @@ export const ranksFileSchema = z
     tiers: z
       .array(z.object({ tier: z.number().int().positive(), label: localized, badge: id }).strict())
       .min(1),
-    placement: z
-      .object({
-        questions: z.number().int().positive(),
-        /** Start tier = estimated mastery + startOffset, then capped. */
-        startOffset: z.number().int(),
-        maxStartTier: z.number().int().positive(),
-        /** The Year of the first question (#38). */
-        firstTier: z.number().int().positive(),
-        /** Timer per placement question; a timeout counts as wrong. */
-        secondsPerQuestion: z.number().positive(),
-        questionType: z.enum(['fluency', 'application', 'multistep']),
-      })
-      .strict(),
     stars: z
       .object({
         win: z.number().int().positive(),
@@ -384,12 +371,6 @@ export const ranksFileSchema = z
         code: 'custom',
         path: ['stars', 'starsAfterDemotion'],
         message: `starsAfterDemotion must be below starsPerTier (${r.starsPerTier})`,
-      });
-    if (r.placement.maxStartTier > r.tiers.length)
-      ctx.addIssue({
-        code: 'custom',
-        path: ['placement', 'maxStartTier'],
-        message: `maxStartTier (${r.placement.maxStartTier}) is above the top tier (${r.tiers.length})`,
       });
     const m = r.questionMix;
     if (Math.abs(m.onLevel + m.review + m.stretch - 1) > 1e-9)

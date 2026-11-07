@@ -89,12 +89,6 @@ Filled in now with the rules approved in `docs/GDD.md`:
 |---|---|---|
 | `tiers` | 6 | Year 1 to 6; labels "Kelas N" / "Year N" (no named tiers in the MVP), badge texture key per tier |
 | `starsPerTier` | 5 | |
-| `placement.questions` | 10 | Placement quiz length |
-| `placement.startOffset` | -1 | Start tier = estimated mastery - 1 |
-| `placement.maxStartTier` | 5 | Nobody starts above Year 5 |
-| `placement.firstTier` | 3 | Year of the first placement question (#38) |
-| `placement.secondsPerQuestion` | 15 | Timer per placement question; a timeout counts as wrong |
-| `placement.questionType` | `fluency` | Question type used (short, quick to read) |
 | `stars.win` / `stars.loss` | +1 / -1 | |
 | `stars.bonusAccuracy` / `bonusStars` | 0.8 / +1 | Win with 80%+ accuracy earns an extra star |
 | `stars.demoteAfterLossesAtZero` | 2 | Drop a tier only after 2 straight losses at 0 stars |
