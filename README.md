@@ -29,7 +29,7 @@ Free, in the browser, on phones, tablets and computers. Indonesian and English. 
 - **Game engine:** [Phaser](https://phaser.io/) (MIT).
 - **Fonts:** [Fredoka](https://fonts.google.com/specimen/Fredoka) and [Nunito](https://fonts.google.com/specimen/Nunito) (SIL Open Font License 1.1), self-hosted via [Fontsource](https://fontsource.org/).
 - **Art, sounds and music:** all original, made for this game (drawn and synthesised in code); every asset and its license is listed in [docs/ASSETS.md](docs/ASSETS.md).
-- **Questions:** written and generated for the Indonesian Kurikulum Merdeka, Year 1 to 6 ([docs/CURRICULUM.md](docs/CURRICULUM.md)); a teacher review is pending.
+- **Questions:** written and generated for the Indonesian Kurikulum Merdeka, Year 1 to 6 ([docs/CURRICULUM.md](docs/CURRICULUM.md)); the curriculum map and a spot-check of the questions were reviewed by a teacher.
 - MathLegends is an original game. It is not affiliated with, and uses no names, heroes, art or audio from, Mobile Legends or any other game.
 - **License:** MIT ([LICENSE](LICENSE)).
 

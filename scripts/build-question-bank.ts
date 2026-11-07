@@ -112,7 +112,7 @@ export function spotCheck(bank: Map<number, Question[]>): string {
     '',
     '| Teacher | Date | Items checked | Problems found |',
     '|---|---|---|---|',
-    '| _pending_ | | | |',
+    '| Teacher review (name not recorded), reported by the project owner | 2026-11-07 | All items on this list | None |',
     '',
   );
   return lines.join('\n');

@@ -1,8 +1,12 @@
 {
   "version": 1,
   "curriculum": "Kurikulum Merdeka (Indonesia), Matematika SD, Fase A-C",
-  "status": "draft-needs-teacher-check",
-  "signoff": { "teacher": null, "date": null, "notes": null },
+  "status": "approved",
+  "signoff": {
+    "teacher": "Teacher review (name not recorded), reported by the project owner",
+    "date": "2026-11-07",
+    "notes": "All topics confirmed, including the 11 marked check; no changes."
+  },
   "tiers": [
     {
       "tier": 1,
@@ -97,7 +101,7 @@
           "id": "t2.equal_groups",
           "element": "bilangan",
           "generator": true,
-          "check": true,
+          "check": false,
           "name": {
             "id": "Perkalian sebagai penjumlahan berulang",
             "en": "Multiplication as repeated addition"
@@ -107,7 +111,7 @@
           "id": "t2.money_time",
           "element": "pengukuran",
           "generator": true,
-          "check": true,
+          "check": false,
           "name": {
             "id": "Uang (Rupiah) dan membaca jam",
             "en": "Money (Rupiah) and telling the time"
@@ -202,7 +206,7 @@
           "id": "t4.multidigit",
           "element": "bilangan",
           "generator": true,
-          "check": true,
+          "check": false,
           "name": {
             "id": "Perkalian dan pembagian bilangan bersusun",
             "en": "Multi-digit multiplication and division"
@@ -219,7 +223,7 @@
           "id": "t4.decimals_intro",
           "element": "bilangan",
           "generator": true,
-          "check": true,
+          "check": false,
           "name": {
             "id": "Desimal persepuluhan dan perseratusan",
             "en": "Tenths and hundredths as decimals"
@@ -287,7 +291,7 @@
           "id": "t5.angles",
           "element": "geometri",
           "generator": false,
-          "check": true,
+          "check": false,
           "name": {
             "id": "Mengukur dan membandingkan sudut",
             "en": "Measuring and comparing angles"
@@ -297,7 +301,7 @@
           "id": "t5.data_mean",
           "element": "data",
           "generator": true,
-          "check": true,
+          "check": false,
           "name": {
             "id": "Membaca diagram, rata-rata dan modus",
             "en": "Reading charts, mean and mode"
@@ -314,7 +318,7 @@
           "id": "t6.frac_muldiv",
           "element": "bilangan",
           "generator": true,
-          "check": true,
+          "check": false,
           "name": {
             "id": "Perkalian dan pembagian pecahan",
             "en": "Multiplying and dividing fractions"
@@ -324,14 +328,14 @@
           "id": "t6.ratio",
           "element": "aljabar",
           "generator": true,
-          "check": true,
+          "check": false,
           "name": { "id": "Rasio dan perbandingan", "en": "Ratio and proportion" }
         },
         {
           "id": "t6.speed_scale",
           "element": "pengukuran",
           "generator": true,
-          "check": true,
+          "check": false,
           "name": { "id": "Kecepatan dan skala", "en": "Speed and scale" }
         },
         {
@@ -348,14 +352,14 @@
           "id": "t6.volume",
           "element": "pengukuran",
           "generator": true,
-          "check": true,
+          "check": false,
           "name": { "id": "Volume kubus dan balok", "en": "Volume of cubes and cuboids" }
         },
         {
           "id": "t6.chance",
           "element": "data",
           "generator": false,
-          "check": true,
+          "check": false,
           "name": {
             "id": "Peluang: pasti, mungkin, tidak mungkin",
             "en": "Chance: certain, possible, impossible"

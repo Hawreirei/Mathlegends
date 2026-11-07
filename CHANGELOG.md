@@ -2,6 +2,12 @@
 
 All notable changes to MathLegends. Versions follow [Semantic Versioning](https://semver.org/); the format follows [Keep a Changelog](https://keepachangelog.com/). How a version is released: [docs/RELEASE.md](docs/RELEASE.md).
 
+## [Unreleased]
+
+### Changed
+
+- **Teacher reviews done:** the curriculum map (#9) and the question spot-check (#12) were approved by a teacher on 2026-11-07, with no changes.
+
 ## [0.1.0] - 2026-11-07
 
 The first public version: a pilot for playtesting with a class (#49). **Play: https://hawreirei.github.io/Mathlegends/**
