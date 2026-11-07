@@ -4,13 +4,13 @@ Everything is saved in the browser on the device; nothing goes to a server.
 
 | What | Where (`localStorage`) | In the export file |
 |---|---|---|
-| Year, stars, placement done, losses at 0 stars, matches played | `mathlegends.save` | yes |
+| Year, stars, losses at 0 stars, matches played | `mathlegends.save` | yes |
 | Accessibility settings (#31) | `mathlegends.save` | yes |
 | Missed questions waiting to come back (#29) | `mathlegends.save` | yes |
 | Language | `mathlegends.lang` (device preference) | no |
 | Anonymous answer log (#30) | `mathlegends.answers` (research data, own CSV export) | no |
 
-The save is written after every change (a match, the placement quiz, a settings change, an import) and read once when the game starts, so **a refresh keeps the rank**.
+The save is written after every change (a match, a settings change, an import) and read once when the game starts, so **a refresh keeps the rank**.
 
 ## Format (version 2)
 
@@ -19,7 +19,7 @@ The save is written after every change (a match, the placement quiz, a settings 
   "app": "mathlegends",
   "version": 2,
   "savedAt": "2026-11-01T10:00:00.000Z",
-  "profile": { "placed": true, "tier": 4, "stars": 3, "lossesAtZero": 0, "matchesPlayed": 12 },
+  "profile": { "tier": 4, "stars": 3, "lossesAtZero": 0, "matchesPlayed": 12 },
   "settings": { "textScale": 1.2, "colorBlind": false, "extraTime": true },
   "review": [{ "question": { "id": "t3.muldiv100.h004", "...": "full question" }, "matchesLeft": 2 }]
 }

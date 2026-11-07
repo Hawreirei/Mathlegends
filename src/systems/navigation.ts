@@ -11,9 +11,6 @@ export type Screen =
   | 'settingsTransfer'
   /** Settings → Sound and motion (#45). */
   | 'settingsSound'
-  | 'placementIntro'
-  | 'placementQuiz'
-  | 'placementDone'
   | 'match'
   | 'matchShop'
   | 'matchQuitConfirm'
@@ -41,9 +38,6 @@ export function backAction(screen: Screen): BackAction {
     case 'match':
       return { kind: 'askQuit' };
     case 'settings':
-    case 'placementIntro':
-    case 'placementQuiz':
-    case 'placementDone':
     case 'result':
       return { kind: 'scene', to: 'Menu' };
   }
@@ -51,13 +45,10 @@ export function backAction(screen: Screen): BackAction {
 
 /** Every screen and the ways forward from it (buttons), for the no-dead-ends test. */
 export const EXITS: Record<Screen, readonly Screen[]> = {
-  menu: ['placementIntro', 'match', 'settings'],
-  settings: ['menu', 'settingsTransfer', 'settingsSound', 'placementIntro'],
+  menu: ['match', 'settings'],
+  settings: ['menu', 'settingsTransfer', 'settingsSound'],
   settingsTransfer: ['settings'],
   settingsSound: ['settings'],
-  placementIntro: ['placementQuiz', 'menu'],
-  placementQuiz: ['placementDone', 'menu'],
-  placementDone: ['match'],
   match: ['matchShop', 'matchQuitConfirm', 'result'],
   matchShop: ['match'],
   matchQuitConfirm: ['match', 'result'],

@@ -31,7 +31,7 @@ const memory = (init: Record<string, unknown> = {}) => {
 };
 
 const DATA: SaveData = {
-  profile: { placed: true, tier: 4, stars: 3, lossesAtZero: 1, matchesPlayed: 12 },
+  profile: { tier: 4, stars: 3, lossesAtZero: 1, matchesPlayed: 12 },
   settings: {
     textScale: 1.2,
     colorBlind: true,

@@ -31,7 +31,7 @@ A 1-lane MOBA where every last-hit on a minion triggers a math question. The ans
 ## 3. Rank system (Year 1 to Year 6)
 
 - 6 tiers x 5 stars. Floor at Year 1.
-- Placement quiz of 10 adaptive questions sets the start tier (never above Year 5).
+- Everyone starts in Year 1 and climbs by winning (the placement quiz was removed on 2026-11-07).
 - Question mix per rank: 70% on-level, 20% review from below, 10% stretch from above (Year 6 stretch uses the hardest Year 6 items).
 - **Bot difficulty follows rank.** There is no human opponent, so the bot is the matchmaking: Year 1 bot is gentle, Year 6 bot is strong. Values live in `src/data/bot.json`.
 - Minion type controls question type: Infantry = fluency (5s), Lancer = application (8s), Cannon = multi-step (12s, bigger reward).
@@ -92,7 +92,7 @@ Rule: **game rules live in `systems/` with no Phaser import**, so they can be te
 | M2 Core Slice | Playable 1v1 lane vs a basic bot, ID/EN | 63 |
 | M3 Math Engine | Last-hit questions and rewards | 31 |
 | M4 Hero & Items | 1 hero, 8 items, balance sim | 29 |
-| M5 Rank System | Year 1 to 6, placement, saves | 25 |
+| M5 Rank System | Year 1 to 6, saves | 25 |
 | M6 AI & Flow | Rank-scaled bot, full flow, juice | 19 |
 | M7 QA & Release | Tests, perf, pilot, PWA, v0.1.0 | 38 |
 | M8 Post-MVP | More heroes, Year 7-12, 3v3, cloud, teacher dashboard, online (only if pilot succeeds) | 168 |
@@ -112,7 +112,7 @@ Total MVP effort from the backlog is in `ISSUES.md` (260h, an estimate, not meas
 |---|---|---|
 | Scope creep to full MOBA | 6+ months lost | MVP list is frozen; M8 is locked until the pilot passes |
 | Questions break game flow | Students quit | Non-pausing overlay, tunable timers, replay test |
-| Rank by grade frustrates weak students | Churn | Placement quiz, 50% reward floor, review mix, bot difficulty scaled to rank |
+| Rank by grade frustrates weak students | Churn | Start in Year 1, 50% reward floor, review mix, bot difficulty scaled to rank |
 | Curriculum map is wrong | Questions teach the wrong order | Teacher sign-off on docs/CURRICULUM.md before writing questions |
 | Progress lives only in the browser | Lost saves | Export/import in #41, tell testers |
 | Math skill decides every match | Unfair | Fairness cap and simulator |

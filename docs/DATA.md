@@ -22,7 +22,7 @@ One row per question that was **shown and ended**: answered right, answered wron
 
 | Column | Type | Meaning |
 |---|---|---|
-| `matchId` | text | Random id of the match, e.g. `m-mh0x2k1c-4f7q2c` (`p-...` for a placement quiz). Same for every row of one match. |
+| `matchId` | text | Random id of the match, e.g. `m-mh0x2k1c-4f7q2c` (`p-...` in old rows from the removed placement quiz). Same for every row of one match. |
 | `matchStart` | ISO 8601 (UTC) | When the match started, e.g. `2026-11-01T03:15:00.000Z`. |
 | `seq` | integer | 1 for the first question of the match, then 2, 3, ... |
 | `matchSec` | number | Match clock (or quiz clock) in seconds when the question appeared. |
@@ -32,14 +32,14 @@ One row per question that was **shown and ended**: answered right, answered wron
 | `topic` | text | Curriculum topic id, see [CURRICULUM.md](CURRICULUM.md), e.g. `t3.muldiv100`. |
 | `itemId` | text | Question id, see [QUESTIONS.md](QUESTIONS.md). Generated ids are stable for the same question. |
 | `itemSource` | text | `handwritten`, `generated` or `gensoal`. |
-| `band` | text | Why it was chosen: `onLevel` (player's Year), `review` (a lower Year), `stretch` (the Year above), `missed` (missed in an earlier match, #29) or `placement` (placement quiz, #38). |
-| `minion` | text | The minion last-hit: `infantry`, `lancer` or `cannon`; `none` in the placement quiz. |
+| `band` | text | Why it was chosen: `onLevel` (player's Year), `review` (a lower Year), `stretch` (the Year above), `missed` (missed in an earlier match, #29); old logs may also hold `placement` (the placement quiz, removed). |
+| `minion` | text | The minion last-hit: `infantry`, `lancer` or `cannon`; `none` in old placement-quiz rows. |
 | `outcome` | text | `correct`, `wrong` or `timeout`. |
 | `correct` | 0/1 | 1 if correct. |
 | `chosenIndex` | 0-3 | The answer picked, as its position in the question's `choices` in the bank (not the shuffled position on screen). Empty on a timeout. |
 | `answerIndex` | 0-3 | Position of the right answer in `choices`. |
 | `responseMs` | integer | Milliseconds from the question appearing to the tap. Empty on a timeout. Game time: it runs with the match, so a stalled browser tab can stretch it. |
-| `timeLimitSec` | number | Seconds the player had (Infantry 5, Lancer 8, Cannon 12, placement 15; see `economy.json` and `ranks.json`), x1.5 when the Extra time setting is on (#31). |
+| `timeLimitSec` | number | Seconds the player had (Infantry 5, Lancer 8, Cannon 12; see `economy.json`), x1.5 when the Extra time setting is on (#31). |
 | `lang` | `id`/`en` | Language the question was shown in. |
 
 To see the question text, look the `itemId` up in `src/data/questions/t*.json`. Questions the engine generated on the fly (when the bank ran out) have `itemSource` `generated` and may not be in the bank files; their ids are hashes of the English text.

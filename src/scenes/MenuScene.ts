@@ -65,18 +65,11 @@ export class MenuScene extends Phaser.Scene implements BackAware {
       .setAlign('center');
 
     const playY = portrait ? h * 0.64 : h * 0.6;
-    new Button(
-      this,
-      cx,
-      playY,
-      `${tr(this, 'menu.play')}  ➜`,
-      () => goTo(this, s.profile.placed ? 'Match' : 'Placement'),
-      {
-        width: 360,
-        height: 96,
-        fontSize: 40,
-      },
-    );
+    new Button(this, cx, playY, `${tr(this, 'menu.play')}  ➜`, () => goTo(this, 'Match'), {
+      width: 360,
+      height: 96,
+      fontSize: 40,
+    });
 
     // Settings (#30): the answer data export; accessibility options come in #31.
     new Button(

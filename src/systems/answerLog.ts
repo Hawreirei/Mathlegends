@@ -8,7 +8,6 @@
  */
 import type { Lang } from './gameState';
 import type { Resolution } from './questionSession';
-import type { Question } from './questions';
 
 export const LOG_VERSION = 1;
 /** Most rows kept on the device; the oldest go first (about 1 MB of storage). */
@@ -30,9 +29,10 @@ export interface AnswerRow {
   itemId: string;
   /** handwritten, generated or gensoal. */
   itemSource: string;
-  /** onLevel, review, stretch, missed (missed in an earlier match) or placement (#38). */
+  /** onLevel, review, stretch or missed (missed in an earlier match). Logs saved before the
+   * placement quiz was removed may also hold `placement` rows. */
   band: string;
-  /** infantry, lancer or cannon; `none` in the placement quiz. */
+  /** infantry, lancer or cannon (`none` in old placement-quiz rows). */
   minion: string;
   outcome: 'correct' | 'wrong' | 'timeout';
   correct: 0 | 1;
@@ -69,7 +69,7 @@ export const COLUMNS: readonly (keyof AnswerRow)[] = [
 ];
 
 /**
- * A random id like "m-lx3k9a-4f7q2c" (prefix "p" for a placement quiz). `rand` returns numbers
+ * A random id like "m-lx3k9a-4f7q2c". `rand` returns numbers
  * in [0, 1).
  */
 export function newMatchId(
@@ -166,38 +166,4 @@ export const csvFileName = (now: Date) =>
 /** Summary for the Settings screen. */
 export function logSummary(rows: readonly AnswerRow[]): { answers: number; matches: number } {
   return { answers: rows.length, matches: new Set(rows.map((r) => r.matchId)).size };
-}
-
-/** A placement quiz answer (#38) as a log row: band `placement`, minion `none`. */
-export function placementRow(
-  q: Question,
-  info: MatchLogInfo,
-  seq: number,
-  shownAt: number,
-  chosen: number | null,
-  responseSec: number | null,
-  timeLimitSec: number,
-): AnswerRow {
-  const correct = chosen === q.answerIndex;
-  return {
-    matchId: info.matchId,
-    matchStart: info.matchStart,
-    seq,
-    matchSec: Math.round(shownAt * 10) / 10,
-    playerTier: info.playerTier,
-    questionTier: q.tier,
-    questionType: q.type,
-    topic: q.topic,
-    itemId: q.id,
-    itemSource: q.source ?? '',
-    band: 'placement',
-    minion: 'none',
-    outcome: chosen === null ? 'timeout' : correct ? 'correct' : 'wrong',
-    correct: correct ? 1 : 0,
-    chosenIndex: chosen,
-    answerIndex: q.answerIndex,
-    responseMs: responseSec === null ? null : Math.round(responseSec * 1000),
-    timeLimitSec,
-    lang: info.lang,
-  };
 }
