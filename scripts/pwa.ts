@@ -52,10 +52,15 @@ export function manifest(m: ManifestInput): string {
 /**
  * Files the service worker stores on the first visit: everything the game needs to start and
  * play, relative to `base`. The `.woff` font fallbacks are left out: every browser with service
- * workers reads `.woff2`.
+ * workers reads `.woff2`. version.json is left out so it always tells which build is live.
  */
 export const precacheList = (files: readonly string[]): string[] =>
-  ['', ...files.filter((f) => f !== 'index.html' && f !== 'sw.js' && !f.endsWith('.woff'))].sort();
+  [
+    '',
+    ...files.filter(
+      (f) => f !== 'index.html' && f !== 'sw.js' && f !== 'version.json' && !f.endsWith('.woff'),
+    ),
+  ].sort();
 
 /** A version that changes whenever any precached file name (all hashed) or index.html changes. */
 export const cacheVersion = (files: readonly string[], indexHtml: string): string =>
@@ -103,6 +108,8 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin || !url.pathname.startsWith(BASE)) return;
+  // Which build is live (#53): always from the network, never stored.
+  if (url.pathname === BASE + 'version.json') return;
   if (req.mode === 'navigate') {
     event.respondWith(
       fetch(req)

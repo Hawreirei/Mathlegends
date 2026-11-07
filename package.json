@@ -1,7 +1,7 @@
 {
   "name": "mathlegends",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -17,6 +17,7 @@
     "build:questions": "node scripts/build-question-bank.ts",
     "build:sprites": "node scripts/build-sprites.ts",
     "build:icons": "node scripts/build-icons.ts",
+    "screenshots": "node scripts/screenshots.ts",
     "sim": "node scripts/balance-sim.ts",
     "check:bundle": "node scripts/check-bundle.ts",
     "perf": "node scripts/perf.ts"

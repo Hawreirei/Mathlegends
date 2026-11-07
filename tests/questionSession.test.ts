@@ -8,6 +8,7 @@ import { createQuestionEngine } from '../src/systems/questionEngine';
 import {
   answer,
   createSession,
+  finalCounts,
   onLastHit,
   tick,
   type Resolution,
@@ -127,5 +128,17 @@ describe('question session (#27)', () => {
     s = tick(s, 100).session;
     expect(s.asked).toBe(3);
     expect(s.correct).toBe(1);
+  });
+});
+
+describe('final counts when the match ends', () => {
+  it('a question still on screen was cut short: it is not counted as asked', () => {
+    let s = onLastHit(fresh(), 'infantry', reward(), 10, 3).session;
+    s = answer(s, correctSlot(s), 11).session;
+    s = tick(s, 20).session;
+    expect(finalCounts(s)).toEqual({ asked: 1, correct: 1 });
+    const open = onLastHit(s, 'lancer', reward(), 21, 3).session;
+    expect(open.active).not.toBeNull();
+    expect(finalCounts(open)).toEqual({ asked: 1, correct: 1 });
   });
 });

@@ -1,6 +1,7 @@
 {
   "boot.loading": "Loading...",
   "menu.tagline": "Answer right, rule the lane.",
+  "menu.version": "v{version}",
   "menu.play": "PLAY",
   "menu.rank": "{year} · {stars}",
   "match.quit": "Quit",
