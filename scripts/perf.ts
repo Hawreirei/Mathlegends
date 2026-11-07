@@ -1,7 +1,7 @@
 /**
  * Performance check (#48): first load on a slow phone connection, and frame times in a busy
- * late-game fight on a slowed-down CPU. Needs Playwright with Chromium (#47 adds it to the
- * project; here it is resolved from the environment) and a production build being served:
+ * late-game fight on a slowed-down CPU. Needs Playwright's Chromium (a dev dependency since #47:
+ * `npx playwright install chromium` once) and a production build being served:
  *
  *   npm run build && npx vite preview --port 4173
  *   node scripts/perf.ts                       # defaults below

@@ -13,6 +13,7 @@ npm run dev        # local dev server
 npm run lint       # ESLint
 npm test           # Vitest
 npm run build      # type-check and build to dist/
+npm run e2e        # smoke test in a real browser (after build; see docs/TESTING.md)
 ```
 
 Requires Node 22 or newer.

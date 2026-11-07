@@ -54,5 +54,13 @@ export default defineConfig({
   test: {
     include: ['tests/**/*.test.ts'],
     environment: 'node',
+    // Coverage gate (#46): the game rules in src/systems must stay at least 80% covered.
+    // `npm run test:coverage` (CI) fails below it; the report shows what is not covered.
+    coverage: {
+      provider: 'v8',
+      include: ['src/systems/**/*.ts'],
+      reporter: ['text-summary', 'text'],
+      thresholds: { statements: 80, branches: 80, functions: 80, lines: 80 },
+    },
   },
 });

@@ -208,3 +208,64 @@ describe('music', () => {
     }
   });
 });
+
+describe('skills, last hits and other events (#45)', () => {
+  const skillHit = (p: Partial<Extract<MatchEvent, { type: 'skillHit' }>>): MatchEvent =>
+    ({
+      type: 'skillHit',
+      skillId: 's',
+      targetId: 'm1',
+      at,
+      damage: 50,
+      killed: false,
+      team: 'blue',
+      ...p,
+    }) as MatchEvent;
+
+  it('sounds: the player casting, being hit by a skill, a last hit; nothing for spawns', () => {
+    const cast = (by: 'player' | 'bot') =>
+      ({
+        type: 'skill',
+        by,
+        heroId: 'h',
+        skillId: 's',
+        slot: 0,
+        from: at,
+        at,
+        dashTo: null,
+        blasts: [],
+      }) as MatchEvent;
+    expect(soundsFor(cast('player'), ctx)).toEqual(['skill']);
+    expect(soundsFor(cast('bot'), ctx)).toEqual([]);
+    expect(soundsFor(skillHit({ targetId: ctx.playerId, team: 'red' }), ctx)).toEqual(['hurt']);
+    expect(soundsFor(skillHit({}), ctx)).toEqual([]);
+    expect(
+      soundsFor({ type: 'lastHit', kind: 'infantry', minionId: 'm', gold: 14, exp: 30, at }, ctx),
+    ).toEqual(['lastHit']);
+    expect(soundsFor({ type: 'winner', team: 'blue' }, ctx)).toEqual([]);
+  });
+
+  it('damage numbers from skills: dealt by blue, taken by the player, none for red hitting minions', () => {
+    expect(damageHit(skillHit({}), ctx.playerId)?.kind).toBe('dealt');
+    expect(damageHit(skillHit({ targetId: ctx.playerId, team: 'red' }), ctx.playerId)?.kind).toBe(
+      'taken',
+    );
+    expect(damageHit(skillHit({ team: 'red' }), ctx.playerId)).toBeNull();
+    expect(damageHit({ type: 'winner', team: 'red' }, ctx.playerId)).toBeNull();
+  });
+
+  it('shake: a skill that kills the player shakes; other events do not', () => {
+    expect(shakeFor(skillHit({ targetId: ctx.playerId, killed: true }), ctx, feel, false)).toEqual(
+      feel.shake.heroDeath,
+    );
+    expect(shakeFor({ type: 'winner', team: 'blue' }, ctx, feel, false)).toBeNull();
+    expect(
+      shakeFor(
+        attack({ targetId: 'm1', killed: true }),
+        { ...ctx, kindOf: () => null },
+        feel,
+        false,
+      ),
+    ).toBeNull();
+  });
+});

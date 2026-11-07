@@ -155,3 +155,11 @@ describe('a match updates the profile (#39)', () => {
     expect(next.lastMatch?.rank?.delta).toBe(2);
   });
 });
+
+describe('a capped top Year (topTierUncapped: false)', () => {
+  it('stops at starsPerTier - 1 instead of counting on', () => {
+    const capped = { ...ranks, stars: { ...ranks.stars, topTierUncapped: false } };
+    const after = applyMatch(at(6, ranks.starsPerTier - 1), WIN_BONUS, capped).after;
+    expect(after).toEqual(at(6, ranks.starsPerTier - 1));
+  });
+});
