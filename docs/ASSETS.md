@@ -26,6 +26,17 @@ npm run build:sprites
 
 Colour-blind check: the two teams differ by **shape** as well as colour (blue tower has a pointed roof, red has a crown; blue hero has a sparkle, red a flower). Minion types differ by symbol (+, ×, ÷) and the Cannon is bigger; the super minion adds a gold ring and a crown and is bigger still. Badges differ by number, sparkle count (1 to 6) and lightness, not only colour (#42, tested in `tests/rankDisplay.test.ts`). A full palette review is part of #31.
 
+## App icons (issue #51)
+
+| File | What | Size | Source | License |
+|---|---|---|---|---|
+| `public/icons/icon.svg` | Nova's star token on the game's night blue, rounded square | 512 x 512 | Original, `scripts/build-icons.ts` | MIT (project) |
+| `public/icons/icon-192.png`, `icon-512.png` | The same, as PNG for Android | 192, 512 | Original, rendered by `build-icons.ts` | MIT (project) |
+| `public/icons/icon-maskable-512.png` | Full-bleed background, token inside the central safe zone, for Android's round or squircle crops | 512 x 512 | Original, `build-icons.ts` | MIT (project) |
+| `public/icons/apple-touch-icon.png` | Home-screen icon on iPhone and iPad | 180 x 180 | Original, `build-icons.ts` | MIT (project) |
+
+Run `npm run build:icons` after changing the theme colours.
+
 ## Fonts (issue #14)
 
 Self-hosted: bundled into the build from npm packages (latin subset), so the game sends **no requests to Google Fonts** and works offline. Loaded in [`src/ui/fonts.ts`](../src/ui/fonts.ts).

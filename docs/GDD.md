@@ -78,7 +78,7 @@ Timers are tunable and have an accessibility option of 1.5x (#31).
 
 ## 12. MVP scope
 
-**In:** single player vs bot, 1 lane, 1 hero, 8 items, Year 1 to 6 with about 270 bilingual questions, rank with stars (everyone starts in Year 1), local saves, ID/EN, GitHub Pages deploy, PWA by v0.1.0.
+**In:** single player vs bot, 1 lane, 1 hero, 8 items, Year 1 to 6 with about 270 bilingual questions, rank with stars (everyone starts in Year 1), local saves, ID/EN, GitHub Pages deploy, installable and playable offline (PWA, #51).
 
 **Out (post-MVP backlog, M8):** online multiplayer, accounts and cloud save, teacher dashboard, jungle, 3v3 or 5v5, extra heroes and hero select, Year 7 to 12, payments.
 

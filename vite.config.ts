@@ -1,4 +1,9 @@
+import { readdirSync, statSync } from 'node:fs';
+import { join, relative } from 'node:path';
 import { defineConfig, type Plugin } from 'vitest/config';
+import idStrings from './src/data/i18n/id.json' with { type: 'json' };
+import theme from './src/data/theme.json' with { type: 'json' };
+import { cacheVersion, manifest, precacheList, serviceWorker } from './scripts/pwa.ts';
 
 // GitHub Pages serves the site at /<repo-name>/ and the path is case-sensitive.
 // The repo is Hawreirei/Mathlegends, so keep this as '/Mathlegends/'.
@@ -36,9 +41,62 @@ function preloadFonts(): Plugin {
   };
 }
 
+/** Every file in public/ (copied as-is into the build), relative to it. */
+function publicFiles(dir = 'public'): string[] {
+  const out: string[] = [];
+  const walk = (d: string) => {
+    for (const f of readdirSync(d)) {
+      const p = join(d, f);
+      if (statSync(p).isDirectory()) walk(p);
+      else out.push(relative(dir, p).split('\\').join('/'));
+    }
+  };
+  walk(dir);
+  return out;
+}
+
+/**
+ * Installable and offline (#51): writes manifest.webmanifest (name and description from the
+ * Indonesian strings) and sw.js, the service worker that stores every file of this build on the
+ * first visit. Rules and the worker's code: scripts/pwa.ts.
+ */
+function pwa(): Plugin {
+  return {
+    name: 'mathlegends-pwa',
+    apply: 'build',
+    enforce: 'post',
+    generateBundle(_options, bundle) {
+      this.emitFile({
+        type: 'asset',
+        fileName: 'manifest.webmanifest',
+        source: manifest({
+          base: BASE,
+          name: 'MathLegends',
+          description: idStrings['menu.tagline'],
+          lang: 'id',
+          background: theme.colors.ink,
+          theme: theme.colors.ink,
+        }),
+      });
+      const files = precacheList([
+        ...Object.keys(bundle),
+        'manifest.webmanifest',
+        ...publicFiles(),
+      ]);
+      const index = bundle['index.html'];
+      const html = index && index.type === 'asset' ? String(index.source) : '';
+      this.emitFile({
+        type: 'asset',
+        fileName: 'sw.js',
+        source: serviceWorker(BASE, files, cacheVersion(files, html)),
+      });
+    },
+  };
+}
+
 export default defineConfig({
   base: BASE,
-  plugins: [preloadFonts()],
+  plugins: [preloadFonts(), pwa()],
   build: {
     chunkSizeWarningLimit: 2000,
     // Phaser cannot decode Vite's inline (non-base64) SVG data URLs, so always emit SVGs as files.
