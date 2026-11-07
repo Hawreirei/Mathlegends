@@ -15,6 +15,10 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run validate:questions
-      - run: npm test
+      # Unit tests with the coverage gate (#46): src/systems at least 80% covered.
+      - run: npm run test:coverage
       - run: npm run build
       - run: npm run check:bundle
+      # Smoke test (#47): a short match on desktop and phone screens, in Indonesian and English.
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e

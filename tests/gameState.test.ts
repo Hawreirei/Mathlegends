@@ -72,3 +72,21 @@ describe('no placement quiz: everyone starts in Year 1', () => {
     expect(parseProfile(old, 6)).toEqual(NEW_PROFILE);
   });
 });
+
+describe('malformed saved profiles', () => {
+  it('fall back to a new profile', () => {
+    for (const bad of [
+      null,
+      'Year 3',
+      42,
+      { tier: 'x', stars: 0, matchesPlayed: 0 },
+      { tier: 9, stars: 0, matchesPlayed: 0 },
+    ])
+      expect(parseProfile(bad, 6)).toEqual(NEW_PROFILE);
+  });
+
+  it('drop a broken loss counter but keep the rest', () => {
+    const p = { tier: 2, stars: 1, lossesAtZero: -3, matchesPlayed: 4 };
+    expect(parseProfile(p, 6)).toEqual({ ...p, lossesAtZero: 0 });
+  });
+});
