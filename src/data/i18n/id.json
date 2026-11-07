@@ -133,5 +133,6 @@
   "placement.quit": "Keluar",
   "hud.suddenDeath": "Babak penentuan! Menara dan Nexus mulai runtuh.",
   "hud.superMinionsOurs": "Minion super kita datang!",
-  "hud.superMinionsTheirs": "Awas! Minion super musuh datang."
+  "hud.superMinionsTheirs": "Awas! Minion super musuh datang.",
+  "debug.fps": "{fps} fps · CPU {ms} ms (terlama {worst})"
 }

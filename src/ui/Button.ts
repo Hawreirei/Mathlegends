@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { sfx } from '../audio/AudioPlayer';
+import { bakedImage, bakeKey, bakeTexture } from './bake';
 import { displayFont, hex, theme } from './theme';
 
 export type ButtonStyle = 'primary' | 'secondary';
@@ -22,9 +23,8 @@ export class Button extends Phaser.GameObjects.Container {
     const edge = primary ? theme.colors.goldDark : theme.colors.ink;
     const textColor = primary ? theme.colors.ink : theme.colors.white;
 
-    const g = scene.add.graphics();
-    const draw = (pressed: boolean) => {
-      g.clear();
+    // Both faces are drawn once and cached (#48): up, and pressed (shifted down onto its edge).
+    const paint = (pressed: boolean) => (g: Phaser.GameObjects.Graphics) => {
       g.fillStyle(hex(edge), 1).fillRoundedRect(-w / 2, -h / 2 + 8, w, h, 22);
       g.fillStyle(hex(face), 1).fillRoundedRect(-w / 2, -h / 2 + (pressed ? 6 : 0), w, h, 22);
       if (!primary)
@@ -36,7 +36,11 @@ export class Button extends Phaser.GameObjects.Container {
           22,
         );
     };
-    draw(false);
+    const box = { x: -w / 2 - 3, y: -h / 2 - 3, w: w + 6, h: h + 14 };
+    const keyOf = (pressed: boolean) => bakeKey('button', primary, w, h, face, edge, pressed);
+    const g = bakedImage(scene, keyOf(false), box, paint(false));
+    bakeTexture(scene, keyOf(true), box, paint(true));
+    const draw = (pressed: boolean) => g.setTexture(keyOf(pressed));
     const text = scene.add
       .text(0, 0, label, displayFont(opts.fontSize ?? 34, textColor))
       .setOrigin(0.5);
