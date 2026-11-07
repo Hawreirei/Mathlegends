@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import type { Point } from '../systems/map';
 import type { StructureState } from '../systems/structures';
+import { Bar } from '../ui/Bar';
 import { hex, theme } from '../ui/theme';
 
 /**
@@ -9,7 +10,7 @@ import { hex, theme } from '../ui/theme';
  */
 export class StructureView extends Phaser.GameObjects.Container {
   private readonly img: Phaser.GameObjects.Image;
-  private readonly bar: Phaser.GameObjects.Graphics;
+  private readonly bar: Bar;
   private readonly bubble: Phaser.GameObjects.Arc;
   private readonly barY: number;
   private destroyedShown = false;
@@ -22,27 +23,35 @@ export class StructureView extends Phaser.GameObjects.Container {
     this.bubble = scene.add
       .circle(0, tower ? -60 : -50, tower ? 95 : 110, hex(theme.colors.white), 0.12)
       .setStrokeStyle(4, hex(theme.colors.white), 0.45);
-    this.bar = scene.add.graphics();
-    this.add([this.bubble, this.img, this.bar]);
+    this.add([this.bubble, this.img]);
+    // Health bar: Rectangles, not Graphics (#48).
+    const w = 120;
+    this.bar = new Bar(
+      scene,
+      -w / 2 - 3,
+      this.barY - 3,
+      w + 6,
+      18,
+      theme.teams[s.team].main,
+      theme.colors.night,
+      {
+        trackAlpha: 0.9,
+        inset: 3,
+        container: this,
+      },
+    );
     this.setDepth(s.y);
     scene.add.existing(this);
   }
 
   sync(s: StructureState, targetable: boolean): void {
     this.bubble.setVisible(s.alive && !targetable);
-    this.bar.clear();
+    this.bar.setVisible(s.alive);
     if (!s.alive) {
       if (!this.destroyedShown) this.showDestroyed();
       return;
     }
-    const w = 120;
-    const frac = Math.max(0, s.hp / s.maxHp);
-    this.bar
-      .fillStyle(hex(theme.colors.night), 0.9)
-      .fillRoundedRect(-w / 2 - 3, this.barY - 3, w + 6, 18, 6);
-    this.bar
-      .fillStyle(hex(theme.teams[s.team].main), 1)
-      .fillRoundedRect(-w / 2, this.barY, w * frac, 12, 4);
+    this.bar.set(s.hp / s.maxHp);
   }
 
   /** Grey it out and sink it a little, with a puff. */

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import type { Point } from '../systems/map';
 import type { SkillButtonState } from '../systems/skills';
+import { bakedImage, bakeKey, bakeTexture } from './bake';
 import { bodyFont, displayFont, hex, theme } from './theme';
 
 /**
@@ -15,7 +16,8 @@ import { bodyFont, displayFont, hex, theme } from './theme';
  */
 export class SkillButton {
   private readonly c: Phaser.GameObjects.Container;
-  private readonly face: Phaser.GameObjects.Graphics;
+  /** The face is one of a few cached images (#48): base colour, dimmed, locked, low mana. */
+  private readonly face: Phaser.GameObjects.Image;
   private readonly sweep: Phaser.GameObjects.Graphics;
   private readonly secs: Phaser.GameObjects.Text;
   private readonly label: Phaser.GameObjects.Text;
@@ -32,10 +34,12 @@ export class SkillButton {
     onPress: () => void,
   ) {
     this.c = scene.add.container(at.x, at.y).setDepth(50);
-    const shadow = scene.add.graphics();
-    shadow.fillStyle(hex(theme.colors.ink), 0.5);
-    this.fill(shadow, 0, 6, r);
-    this.face = scene.add.graphics();
+    const box = { x: -r - 3, y: -r - 3, w: 2 * r + 6, h: 2 * r + 12 };
+    const shadow = bakedImage(scene, bakeKey('skill-shadow', shape, r), box, (g) => {
+      g.fillStyle(hex(theme.colors.ink), 0.5);
+      this.fill(g, 0, 6, r);
+    });
+    this.face = scene.add.image(0, 0, '__DEFAULT');
     this.sweep = scene.add.graphics();
     this.label = scene.add
       .text(
@@ -96,16 +100,27 @@ export class SkillButton {
     const c = theme.colors;
     const base = this.ultimate ? c.gold : c.violet;
     const r = this.r;
-    this.face.clear();
     this.sweep.clear();
     this.c.setVisible(!st.empty);
     if (st.empty) return;
     const dim = st.locked || (st.noMana && st.cooldownLeft <= 0);
-    this.face.fillStyle(hex(st.locked ? c.night : base), st.locked ? 0.9 : dim ? 0.45 : 0.95);
-    this.fill(this.face, 0, 0, r);
-    this.face.lineStyle(4, hex(st.noMana && !st.locked ? theme.teams.blue.light : c.white), 0.85);
-    if (this.shape === 'circle') this.face.strokeCircle(0, 0, r);
-    else this.face.strokeRoundedRect(-r, -r, r * 2, r * 2, 14);
+    const fillColor = st.locked ? c.night : base;
+    const alpha = st.locked ? 0.9 : dim ? 0.45 : 0.95;
+    const rim = st.noMana && !st.locked ? theme.teams.blue.light : c.white;
+    const box = { x: -r - 3, y: -r - 3, w: 2 * r + 6, h: 2 * r + 6 };
+    const face = bakeTexture(
+      this.scene,
+      bakeKey('skill-face', this.shape, r, fillColor, alpha, rim),
+      box,
+      (g) => {
+        g.fillStyle(hex(fillColor), alpha);
+        this.fill(g, 0, 0, r);
+        g.lineStyle(4, hex(rim), 0.85);
+        if (this.shape === 'circle') g.strokeCircle(0, 0, r);
+        else g.strokeRoundedRect(-r, -r, r * 2, r * 2, 14);
+      },
+    );
+    this.face.setTexture(face.key).setOrigin(face.originX, face.originY);
     if (st.cooldownLeft > 0 && !st.locked) {
       // The part of the cooldown still to go: a pie from 12 o'clock on round buttons, a
       // curtain that drops from the top on square ones.

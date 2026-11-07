@@ -23,6 +23,8 @@ import type { Resolution } from '../systems/questionSession';
 import { fmt } from '../systems/generators/core';
 import { changeSoundSettings, getState, responsive, tr } from './shared';
 import { MuteButton } from '../ui/MuteButton';
+import { FpsMeter, fpsMeterWanted } from '../ui/FpsMeter';
+import { Bar } from '../ui/Bar';
 
 /** Fired on game.events when the player presses attack (touch button or Space) or a skill. */
 export const ATTACK_EVENT = 'ml-attack';
@@ -125,7 +127,8 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
       onComplete: () => t.destroy(),
     });
   }
-  private nexusBars?: Phaser.GameObjects.Graphics;
+  /** Nexus health in the top bar (#25); Rectangles, not Graphics (#48). */
+  private nexusBars?: { blue: Bar; red: Bar };
   private respawnText?: Phaser.GameObjects.Text;
   private panel?: HeroPanel;
   private minimap?: Minimap;
@@ -242,43 +245,31 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
   }
 
   private drawNexusBars(structures: StructureState[]): void {
-    const l = this.layoutInfo;
-    const g = this.nexusBars;
-    if (!l || !g) return;
-    g.clear();
-    const draw = (r: Rect, team: 'blue' | 'red') => {
+    if (!this.nexusBars) return;
+    for (const team of ['blue', 'red'] as const) {
       const n = structures.find((x) => x.kind === 'nexus' && x.team === team);
-      const frac = n ? n.hp / n.maxHp : 0;
-      // The Nexus diamond sits inside the box at the outer end; the bar fills the rest.
-      const D = 24;
-      const bx = team === 'blue' ? r.x + D : r.x;
-      const bw = r.w - D;
-      g.fillStyle(hex(theme.colors.ink), 1).fillRoundedRect(bx, r.y, bw, r.h, r.h / 2);
-      const fw = Math.max(0, Math.min(1, frac)) * (bw - 6);
-      // Blue drains towards the timer from the outer end; red mirrors it.
-      const fx = team === 'blue' ? bx + 3 + (bw - 6 - fw) : bx + 3;
-      if (fw > 0)
-        g.fillStyle(hex(theme.teams[team].main), 1).fillRoundedRect(
-          fx,
-          r.y + 3,
-          fw,
-          r.h - 6,
-          (r.h - 6) / 2,
-        );
+      this.nexusBars[team].set(n ? n.hp / n.maxHp : 0);
+    }
+  }
+
+  /** Nexus bars and their diamonds (#25). The diamond sits inside the box at the outer end. */
+  private buildNexusBars(l: HudLayout): { blue: Bar; red: Bar } {
+    const D = 24;
+    const g = this.add.graphics();
+    const make = (r: Rect, team: 'blue' | 'red') => {
+      const color = theme.teams[team].main;
       const dx = team === 'blue' ? r.x + 9 : r.x + r.w - 9;
       const dy = r.y + r.h / 2;
-      g.fillStyle(hex(theme.teams[team].main), 1).fillTriangle(
-        dx,
-        dy - 12,
-        dx + 9,
-        dy,
-        dx,
-        dy + 12,
-      );
+      g.fillStyle(hex(color), 1).fillTriangle(dx, dy - 12, dx + 9, dy, dx, dy + 12);
       g.fillTriangle(dx, dy - 12, dx - 9, dy, dx, dy + 12);
+      // Blue drains towards the timer from the outer end; red mirrors it.
+      const bx = team === 'blue' ? r.x + D : r.x;
+      return new Bar(this, bx, r.y, r.w - D, r.h, color, theme.colors.ink, {
+        inset: 3,
+        from: team === 'blue' ? 'right' : 'left',
+      });
     };
-    draw(l.nexusBlue, 'blue');
-    draw(l.nexusRed, 'red');
+    return { blue: make(l.nexusBlue, 'blue'), red: make(l.nexusRed, 'red') };
   }
 
   private layout(): void {
@@ -304,7 +295,7 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
     this.timerText = this.add
       .text(l.timer.x + l.timer.w / 2, l.timer.y + l.timer.h / 2, '0:00', displayFont(36))
       .setOrigin(0.5);
-    this.nexusBars = this.add.graphics();
+    this.nexusBars = this.buildNexusBars(l);
 
     const m = this.match;
     const econ = m.cfg.econ;
@@ -319,6 +310,11 @@ export class MatchHudScene extends Phaser.Scene implements BackAware {
     // Mute (#45): sound and music together; M on a keyboard. Saved like every setting.
     const st = getState(this).settings;
     this.mute = new MuteButton(this, l.mute, !st.sound && !st.music, () => this.toggleMute());
+    // Frame-rate meter for testing on a real phone (#48): add ?fps to the address.
+    if (fpsMeterWanted())
+      new FpsMeter(this, w / 2, l.topBar.h + 6, (fps, ms, worst) =>
+        tr(this, 'debug.fps', { fps, ms, worst }),
+      );
 
     this.question?.destroy();
     this.question = new QuestionOverlay(this, l.questionCard, (slot) =>

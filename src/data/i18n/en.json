@@ -133,5 +133,6 @@
   "placement.quit": "Quit",
   "hud.suddenDeath": "Sudden death! Towers and Nexus start to crumble.",
   "hud.superMinionsOurs": "Our super minions are coming!",
-  "hud.superMinionsTheirs": "Watch out! Enemy super minions are coming."
+  "hud.superMinionsTheirs": "Watch out! Enemy super minions are coming.",
+  "debug.fps": "{fps} fps · CPU {ms} ms (worst {worst})"
 }

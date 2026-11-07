@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import type { HeroState } from '../systems/hero';
 import type { Rect } from '../systems/hudLayout';
 import type { Progress } from '../systems/progression';
+import { bakedImage, bakeKey } from './bake';
+import { Bar } from './Bar';
 import { bodyFont, displayFont, hex, theme } from './theme';
 
 /**
@@ -9,7 +11,9 @@ import { bodyFont, displayFont, hex, theme } from './theme';
  * EXP bar and gold. Numbers and the level badge read the same in both languages.
  */
 export class HeroPanel {
-  private readonly bars: Phaser.GameObjects.Graphics;
+  private readonly hp: Bar;
+  private readonly mana: Bar;
+  private readonly exp: Bar;
   private readonly hpText: Phaser.GameObjects.Text;
   private readonly levelText: Phaser.GameObjects.Text;
   private readonly goldText: Phaser.GameObjects.Text;
@@ -19,14 +23,21 @@ export class HeroPanel {
 
   constructor(
     scene: Phaser.Scene,
-    private readonly r: Rect,
+    r: Rect,
     sprite: string,
     private readonly levelExp: (level: number) => { from: number; to: number },
   ) {
     const c = theme.colors;
-    const bg = scene.add.graphics();
-    bg.fillStyle(hex(c.night), 0.97).fillRoundedRect(r.x, r.y, r.w, r.h, 18);
-    bg.lineStyle(3, hex(c.violet), 0.9).strokeRoundedRect(r.x, r.y, r.w, r.h, 18);
+    // Drawn once and cached (#48).
+    bakedImage(
+      scene,
+      bakeKey('hero-panel', r.w, r.h),
+      { x: -3, y: -3, w: r.w + 6, h: r.h + 6 },
+      (g) => {
+        g.fillStyle(hex(c.night), 0.97).fillRoundedRect(0, 0, r.w, r.h, 18);
+        g.lineStyle(3, hex(c.violet), 0.9).strokeRoundedRect(0, 0, r.w, r.h, 18);
+      },
+    ).setPosition(r.x, r.y);
 
     const px = r.x + 58;
     const py = r.y + r.h / 2;
@@ -37,7 +48,10 @@ export class HeroPanel {
 
     this.barX = r.x + 116;
     this.barW = r.x + r.w - 16 - this.barX;
-    this.bars = scene.add.graphics();
+    const y0 = r.y + 16;
+    this.hp = new Bar(scene, this.barX, y0, this.barW, 28, theme.teams.blue.main, c.ink);
+    this.mana = new Bar(scene, this.barX, y0 + 34, this.barW, 12, c.mint, c.ink);
+    this.exp = new Bar(scene, this.barX, y0 + 52, this.barW, 8, c.gold, c.ink);
     this.hpText = scene.add
       .text(this.barX + this.barW / 2, r.y + 30, '', bodyFont(20, c.white, '800'))
       .setOrigin(0.5)
@@ -51,22 +65,10 @@ export class HeroPanel {
   }
 
   update(h: HeroState, p: Progress): void {
-    const c = theme.colors;
-    const g = this.bars;
-    const x = this.barX;
-    const w = this.barW;
-    const y0 = this.r.y + 16;
-    const bar = (y: number, height: number, frac: number, color: string) => {
-      g.fillStyle(hex(c.ink), 1).fillRoundedRect(x, y, w, height, height / 2);
-      const fw = Math.max(0, Math.min(1, frac)) * w;
-      if (fw > 0)
-        g.fillStyle(hex(color), 1).fillRoundedRect(x, y, Math.max(fw, height), height, height / 2);
-    };
-    g.clear();
-    bar(y0, 28, h.alive ? h.hp / h.maxHp : 0, theme.teams.blue.main);
-    bar(y0 + 34, 12, h.maxMana > 0 ? h.mana / h.maxMana : 0, c.mint);
+    this.hp.set(h.alive ? h.hp / h.maxHp : 0);
+    this.mana.set(h.maxMana > 0 ? h.mana / h.maxMana : 0);
     const lv = this.levelExp(p.level);
-    bar(y0 + 52, 8, lv.to > lv.from ? (p.exp - lv.from) / (lv.to - lv.from) : 1, c.gold);
+    this.exp.set(lv.to > lv.from ? (p.exp - lv.from) / (lv.to - lv.from) : 1);
     this.hpText.setText(`${Math.ceil(h.hp)} / ${Math.round(h.maxHp)}`);
     this.levelText.setText(String(p.level));
     this.goldText.setText(String(Math.floor(p.gold)));

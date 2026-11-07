@@ -3,6 +3,8 @@ import type { Lang } from '../systems/gameState';
 import type { Rect } from '../systems/hudLayout';
 import type { ActiveQuestion, Reveal } from '../systems/questionSession';
 import { choiceText, localize } from '../utils/i18n';
+import { bakedImage, bakeKey, bakeTexture } from './bake';
+import { Bar } from './Bar';
 import { bodyFont, displayFont, hex, textScale, theme, ts } from './theme';
 
 const PAD = 20;
@@ -19,9 +21,10 @@ const GAP = 16;
 type SlotLook = 'normal' | 'right' | 'wrongPick' | 'dim';
 export class QuestionOverlay {
   private readonly root: Phaser.GameObjects.Container;
-  private readonly timerBar: Phaser.GameObjects.Graphics;
+  private readonly timerBar: Bar;
   private readonly seconds: Phaser.GameObjects.Text;
   private shownId: string | null = null;
+  private timerColor = '';
   /** False while the right answer is being shown. */
   private answering = false;
   private readonly barY: number;
@@ -35,7 +38,20 @@ export class QuestionOverlay {
     this.barY = r.y + PAD;
     // The timer bar and seconds live outside `root`, which is cleared for every new question
     // (clearing destroys its children; re-adding destroyed objects crashed the second question).
-    this.timerBar = scene.add.graphics().setDepth(101).setVisible(false);
+    this.timerBar = new Bar(
+      scene,
+      r.x + PAD,
+      this.barY,
+      r.w - 2 * PAD,
+      16,
+      theme.colors.correct,
+      theme.colors.ink,
+      {
+        trackAlpha: 0.15,
+      },
+    )
+      .setDepth(101)
+      .setVisible(false);
     this.seconds = scene.add
       .text(r.x + r.w - PAD, this.barY + 34, '', displayFont(40, theme.colors.ink))
       .setOrigin(1, 0)
@@ -92,10 +108,17 @@ export class QuestionOverlay {
     this.shownId = key;
     this.answering = !reveal;
 
-    const card = scene.add.graphics();
-    card.fillStyle(hex(c.ink), 0.35).fillRoundedRect(r.x + 6, r.y + 10, r.w, r.h, 26);
-    card.fillStyle(hex(c.paper), 0.97).fillRoundedRect(r.x, r.y, r.w, r.h, 26);
-    card.lineStyle(5, hex(c.gold), 1).strokeRoundedRect(r.x, r.y, r.w, r.h, 26);
+    // The card and the answer buttons are drawn once per size and colour and cached (#48).
+    const card = bakedImage(
+      scene,
+      bakeKey('question-card', r.w, r.h, c.paper, c.gold),
+      { x: -4, y: -4, w: r.w + 14, h: r.h + 18 },
+      (g) => {
+        g.fillStyle(hex(c.ink), 0.35).fillRoundedRect(6, 10, r.w, r.h, 26);
+        g.fillStyle(hex(c.paper), 0.97).fillRoundedRect(0, 0, r.w, r.h, 26);
+        g.lineStyle(5, hex(c.gold), 1).strokeRoundedRect(0, 0, r.w, r.h, 26);
+      },
+    ).setPosition(r.x, r.y);
     this.root.add(card);
 
     // Answers: 2 x 2 grid at the bottom.
@@ -131,26 +154,25 @@ export class QuestionOverlay {
             ? 'wrongPick'
             : 'dim';
       const face = look === 'right' ? c.correct : look === 'wrongPick' ? c.wrong : c.white;
-      const g = scene.add.graphics().setAlpha(look === 'dim' ? 0.45 : 1);
-      const draw = (pressed: boolean) => {
-        g.clear();
-        g.fillStyle(hex(c.violet), 1).fillRoundedRect(x, y + 6, btnW, btnH, 18);
+      const box = { x: -3, y: -3, w: btnW + 6, h: btnH + 12 };
+      const paint = (pressed: boolean) => (g: Phaser.GameObjects.Graphics) => {
+        g.fillStyle(hex(c.violet), 1).fillRoundedRect(0, 6, btnW, btnH, 18);
         g.fillStyle(hex(pressed ? c.gold : face), 1).fillRoundedRect(
-          x,
-          y + (pressed ? 4 : 0),
+          0,
+          pressed ? 4 : 0,
           btnW,
           btnH,
           18,
         );
-        g.lineStyle(3, hex(c.violet), 1).strokeRoundedRect(
-          x,
-          y + (pressed ? 4 : 0),
-          btnW,
-          btnH,
-          18,
-        );
+        g.lineStyle(3, hex(c.violet), 1).strokeRoundedRect(0, pressed ? 4 : 0, btnW, btnH, 18);
       };
-      draw(false);
+      const keyOf = (pressed: boolean) =>
+        bakeKey('answer', btnW, btnH, pressed ? c.gold : face, c.violet);
+      const g = bakedImage(scene, keyOf(false), box, paint(false))
+        .setPosition(x, y)
+        .setAlpha(look === 'dim' ? 0.45 : 1);
+      if (!reveal) bakeTexture(scene, keyOf(true), box, paint(true));
+      const draw = (pressed: boolean) => g.setTexture(keyOf(pressed));
       const label = scene.add
         .text(
           x + btnW / 2,
@@ -197,21 +219,16 @@ export class QuestionOverlay {
   }
 
   private drawTimer(q: ActiveQuestion, now: number): void {
-    const { r } = this;
     const total = q.deadline - q.shownAt;
     const left = Math.max(0, q.deadline - now);
     const frac = total > 0 ? left / total : 0;
-    const w = r.w - 2 * PAD;
     const color =
       frac > 0.5 ? theme.colors.correct : frac > 0.25 ? theme.colors.gold : theme.colors.wrong;
-    this.timerBar.clear();
-    this.timerBar
-      .fillStyle(hex(theme.colors.ink), 0.15)
-      .fillRoundedRect(r.x + PAD, this.barY, w, 16, 8);
-    if (frac > 0)
-      this.timerBar
-        .fillStyle(hex(color), 1)
-        .fillRoundedRect(r.x + PAD, this.barY, Math.max(16, w * frac), 16, 8);
+    if (color !== this.timerColor) {
+      this.timerColor = color;
+      this.timerBar.setColor(color);
+    }
+    this.timerBar.set(frac);
     this.seconds
       .setText(String(Math.ceil(left)))
       .setColor(frac > 0.25 ? theme.colors.ink : theme.colors.wrong);

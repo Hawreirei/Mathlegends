@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import type { Point } from '../systems/map';
 import type { MinionState } from '../systems/minions';
+import { Bar } from '../ui/Bar';
 import { hex, theme } from '../ui/theme';
 
 /**
@@ -9,29 +10,38 @@ import { hex, theme } from '../ui/theme';
  */
 export class MinionView extends Phaser.GameObjects.Container {
   private readonly img: Phaser.GameObjects.Image;
-  private readonly bar: Phaser.GameObjects.Graphics;
-  private readonly barW: number;
+  /** Health bar, shown once damaged: Rectangles, not Graphics (#48). */
+  private readonly bar: Bar;
 
   constructor(scene: Phaser.Scene, m: MinionState) {
     super(scene, m.x, m.y);
     this.img = scene.add.image(0, 0, m.sprite);
-    this.bar = scene.add.graphics();
-    this.barW = m.radius * 2;
-    this.add([this.img, this.bar]);
+    this.add(this.img);
+    const w = m.radius * 2;
+    this.bar = new Bar(
+      scene,
+      -w / 2 - 1,
+      -m.radius - 15,
+      w + 2,
+      8,
+      theme.teams[m.team].main,
+      theme.colors.night,
+      {
+        trackAlpha: 0.85,
+        inset: 1,
+        rounded: false,
+        container: this,
+      },
+    ).setVisible(false);
     scene.add.existing(this);
     this.sync(m);
   }
 
   sync(m: MinionState): void {
     this.setPosition(m.x, m.y).setDepth(m.y);
-    this.bar.clear();
-    if (m.hp >= m.maxHp) return;
-    const y = -m.radius - 14;
-    const w = this.barW;
-    this.bar.fillStyle(hex(theme.colors.night), 0.85).fillRect(-w / 2 - 1, y - 1, w + 2, 8);
-    this.bar
-      .fillStyle(hex(theme.teams[m.team === 'blue' ? 'blue' : 'red'].main), 1)
-      .fillRect(-w / 2, y, w * Math.max(0, m.hp / m.maxHp), 6);
+    const hurt = m.hp < m.maxHp;
+    this.bar.setVisible(hurt);
+    if (hurt) this.bar.set(m.hp / m.maxHp);
   }
 
   /**
@@ -46,7 +56,7 @@ export class MinionView extends Phaser.GameObjects.Container {
 
   /** Shrink and fade, then remove. */
   die(): void {
-    this.bar.clear();
+    this.bar.setVisible(false);
     this.scene.tweens.add({
       targets: this,
       alpha: 0,

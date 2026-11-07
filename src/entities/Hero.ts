@@ -1,10 +1,13 @@
 import Phaser from 'phaser';
 import type { Point, Team } from '../systems/map';
 import type { HeroState } from '../systems/hero';
+import { Bar } from '../ui/Bar';
 import { displayFont, hex, theme } from '../ui/theme';
 
 const BAR_W = 76;
 const BAR_H = 10;
+/** Height of the health bar above the hero. */
+const BAR_Y = -64;
 
 /**
  * Draws a hero from its HeroState (#17, #19): token sprite, health bar, hit flash and,
@@ -12,23 +15,40 @@ const BAR_H = 10;
  */
 export class HeroView extends Phaser.GameObjects.Container {
   private readonly img: Phaser.GameObjects.Image;
-  private readonly bar: Phaser.GameObjects.Graphics;
+  private readonly bar: Bar;
+  /** White strip after the HP fill while shielded (#33). */
+  private readonly shieldStrip: Phaser.GameObjects.Rectangle;
   private readonly countdown: Phaser.GameObjects.Text;
   /** Shield ring and buff glow (#33). */
   private readonly aura: Phaser.GameObjects.Graphics;
+  private auraShown = '';
 
-  constructor(
-    scene: Phaser.Scene,
-    state: HeroState,
-    sprite: string,
-    private readonly team: Team,
-    base: Point,
-  ) {
+  constructor(scene: Phaser.Scene, state: HeroState, sprite: string, team: Team, base: Point) {
     super(scene, state.x, state.y);
     this.img = scene.add.image(0, 0, sprite);
-    this.bar = scene.add.graphics();
     this.aura = scene.add.graphics();
-    this.add([this.aura, this.img, this.bar]);
+    this.add([this.aura, this.img]);
+    // Health bar: Rectangles, not Graphics (#48).
+    this.bar = new Bar(
+      scene,
+      -BAR_W / 2 - 2,
+      BAR_Y - 2,
+      BAR_W + 4,
+      BAR_H + 4,
+      theme.teams[team].main,
+      theme.colors.night,
+      {
+        trackAlpha: 0.9,
+        inset: 2,
+        rounded: false,
+        container: this,
+      },
+    );
+    this.shieldStrip = scene.add
+      .rectangle(0, BAR_Y, 1, BAR_H, hex(theme.colors.white), 0.95)
+      .setOrigin(0)
+      .setVisible(false);
+    this.add(this.shieldStrip);
     scene.add.existing(this);
     this.countdown = scene.add
       .text(base.x, base.y, '', displayFont(56, theme.colors.white))
@@ -50,27 +70,20 @@ export class HeroView extends Phaser.GameObjects.Container {
     this.setPosition(s.x, s.y);
     this.setDepth(s.y);
     const frac = Math.max(0, Math.min(1, s.hp / s.maxHp));
-    const y = -64;
-    this.bar.clear();
-    this.bar
-      .fillStyle(hex(theme.colors.night), 0.9)
-      .fillRoundedRect(-BAR_W / 2 - 2, y - 2, BAR_W + 4, BAR_H + 4, 4);
-    if (frac > 0)
-      this.bar
-        .fillStyle(hex(theme.teams[this.team].main), 1)
-        .fillRoundedRect(-BAR_W / 2, y, BAR_W * frac, BAR_H, 3);
+    this.bar.set(frac);
     // Shield: white ring plus a white strip after the HP fill (#33). Buff: soft gold glow.
     const shield = (s.shield ?? 0) > 0 ? (s.shield ?? 0) : 0;
-    this.aura.clear();
-    if (s.buffs.length) this.aura.fillStyle(hex(theme.colors.gold), 0.22).fillCircle(0, 0, 56);
-    if (shield > 0) {
-      this.aura.lineStyle(5, hex(theme.colors.white), 0.85).strokeCircle(0, 0, 52);
-      const sw = Math.min(BAR_W * (1 - frac), BAR_W * (shield / s.maxHp));
-      if (sw > 0)
-        this.bar
-          .fillStyle(hex(theme.colors.white), 0.95)
-          .fillRect(-BAR_W / 2 + BAR_W * frac, y, sw, BAR_H);
+    const auraKey = `${s.buffs.length > 0}|${shield > 0}`;
+    if (auraKey !== this.auraShown) {
+      this.auraShown = auraKey;
+      this.aura.clear();
+      if (s.buffs.length) this.aura.fillStyle(hex(theme.colors.gold), 0.22).fillCircle(0, 0, 56);
+      if (shield > 0) this.aura.lineStyle(5, hex(theme.colors.white), 0.85).strokeCircle(0, 0, 52);
+      this.aura.setVisible(auraKey !== 'false|false');
     }
+    const sw = shield > 0 ? Math.min(BAR_W * (1 - frac), BAR_W * (shield / s.maxHp)) : 0;
+    this.shieldStrip.setVisible(sw > 0);
+    if (sw > 0) this.shieldStrip.setPosition(-BAR_W / 2 + BAR_W * frac, BAR_Y).setSize(sw, BAR_H);
   }
 
   /** Short white flash when hit. */
