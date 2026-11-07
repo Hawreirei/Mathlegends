@@ -85,3 +85,12 @@ describe('service worker', () => {
     expect(src).toMatch(/k\.startsWith\('mathlegends-'\) && k !== CACHE[\s\S]*caches\.delete/);
   });
 });
+
+describe('version.json (#53)', () => {
+  it('is never stored, so it always tells which build is live', () => {
+    expect(precacheList(['version.json', 'assets/a.js'])).not.toContain('version.json');
+    expect(serviceWorker(BASE, [''], 'v')).toContain(
+      "if (url.pathname === BASE + 'version.json') return;",
+    );
+  });
+});

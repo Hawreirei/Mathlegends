@@ -85,6 +85,7 @@ import {
   tick,
   timeLimit,
   type Resolution,
+  finalCounts,
   type Session,
 } from '../systems/questionSession';
 import type { Progress } from '../systems/progression';
@@ -630,13 +631,14 @@ export class MatchScene extends Phaser.Scene {
   finish(outcome: MatchResult['outcome'], forfeit = false): void {
     sfx.play(outcome === 'victory' ? 'victory' : 'defeat');
     const missed = this.session.missed;
+    const counts = finalCounts(this.session);
     // Missed questions come back in the next matches (#29); the queue is saved on the device.
     const ranks = loadRanks(ranksJson);
     const review = updateReviewQueue(this.session.engine.review, missed, ranks);
     // Stars and Year (#39).
     const rank = applyMatch(
       getState(this).profile,
-      { won: outcome === 'victory', answered: this.session.asked, correct: this.session.correct },
+      { won: outcome === 'victory', answered: counts.asked, correct: counts.correct },
       ranks,
     );
     setStateAndSave(
@@ -646,8 +648,8 @@ export class MatchScene extends Phaser.Scene {
         {
           outcome,
           durationSec: this.now,
-          answered: this.session.asked,
-          correct: this.session.correct,
+          answered: counts.asked,
+          correct: counts.correct,
           missed,
           rank,
           forfeit,

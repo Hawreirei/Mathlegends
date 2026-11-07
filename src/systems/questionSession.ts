@@ -107,6 +107,16 @@ export const createSession = (
 
 type Result = { session: Session; resolutions: Resolution[] };
 
+/**
+ * The counts for the Result screen and the star bonus when the match ends. A question still on
+ * screen when the Nexus falls was cut short, not answered: it does not count as asked (otherwise
+ * the Result said "0 of 1" next to "every answer right").
+ */
+export const finalCounts = (s: Session): { asked: number; correct: number } => ({
+  asked: s.asked - (s.active ? 1 : 0),
+  correct: s.correct,
+});
+
 /** Base seconds a question gets: its own timeSec, else the timer of the minion matching its type (before Extra time). */
 export const timeLimit = (econ: EconomyConfig, q: Question): number =>
   q.timeSec ?? econ.questionSeconds[minionForType(q.type)];

@@ -1,8 +1,10 @@
+import { execSync } from 'node:child_process';
 import { readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { defineConfig, type Plugin } from 'vitest/config';
 import idStrings from './src/data/i18n/id.json' with { type: 'json' };
 import theme from './src/data/theme.json' with { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 import { cacheVersion, manifest, precacheList, serviceWorker } from './scripts/pwa.ts';
 
 // GitHub Pages serves the site at /<repo-name>/ and the path is case-sensitive.
@@ -40,6 +42,23 @@ function preloadFonts(): Plugin {
     },
   };
 }
+
+/**
+ * Which build this is (#52, #53): the version from package.json and the git commit (GitHub
+ * Actions sets GITHUB_SHA). Shown on the Menu and written to version.json, so anyone can check
+ * that the live site is the tagged release.
+ */
+function gitCommit(): string {
+  if (process.env.GITHUB_SHA) return process.env.GITHUB_SHA;
+  try {
+    return execSync('git rev-parse HEAD', { stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString()
+      .trim();
+  } catch {
+    return 'dev';
+  }
+}
+const COMMIT = gitCommit();
 
 /** Every file in public/ (copied as-is into the build), relative to it. */
 function publicFiles(dir = 'public'): string[] {
@@ -85,6 +104,12 @@ function pwa(): Plugin {
       ]);
       const index = bundle['index.html'];
       const html = index && index.type === 'asset' ? String(index.source) : '';
+      // Never stored by the service worker, so it always tells what is live.
+      this.emitFile({
+        type: 'asset',
+        fileName: 'version.json',
+        source: JSON.stringify({ version: pkg.version, commit: COMMIT }, null, 2),
+      });
       this.emitFile({
         type: 'asset',
         fileName: 'sw.js',
@@ -97,6 +122,10 @@ function pwa(): Plugin {
 export default defineConfig({
   base: BASE,
   plugins: [preloadFonts(), pwa()],
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+    __APP_COMMIT__: JSON.stringify(COMMIT),
+  },
   build: {
     chunkSizeWarningLimit: 2000,
     // Phaser cannot decode Vite's inline (non-base64) SVG data URLs, so always emit SVGs as files.

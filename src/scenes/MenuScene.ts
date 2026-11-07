@@ -81,6 +81,17 @@ export class MenuScene extends Phaser.Scene implements BackAware {
       { width: 300, height: 72, fontSize: 28, style: 'secondary' },
     );
 
+    // Which version this is (#52), small in the bottom-left corner.
+    this.add
+      .text(
+        safe.left + 16,
+        h - safe.bottom - 12,
+        tr(this, 'menu.version', { version: __APP_VERSION__ }),
+        bodyFont(18, c.paper, '600'),
+      )
+      .setOrigin(0, 1)
+      .setAlpha(0.6);
+
     // Rank badge with star icons (#42).
     const rankY = portrait ? h - 120 : h * 0.9;
     new RankBadge(this, cx, rankY, {

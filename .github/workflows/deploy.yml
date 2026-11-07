@@ -35,3 +35,25 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # After every deploy (#53): the live site must serve exactly this commit, and a short match must
+  # play on it, on a phone screen and a desktop screen, in both languages (e2e/smoke.spec.ts).
+  verify-live:
+    needs: deploy
+    runs-on: ubuntu-latest
+    env:
+      SITE: https://hawreirei.github.io/Mathlegends/
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Wait until the live site serves this commit
+        run: node scripts/wait-live.ts "$SITE" "${{ github.sha }}"
+      - run: npx playwright install --with-deps chromium
+      - name: Play on the live site
+        run: npm run e2e
+        env:
+          E2E_BASE_URL: ${{ env.SITE }}

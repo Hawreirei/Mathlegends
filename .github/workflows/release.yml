@@ -1,0 +1,38 @@
+name: Release
+# Publishes the version in package.json (#52): creates the tag vX.Y.Z on the commit it runs on and
+# a GitHub Release whose text is that version's section of CHANGELOG.md.
+# Run it from the Actions tab (Release > Run workflow) on main, after the deploy of that commit has
+# passed its verify-live job. Checklist: docs/RELEASE.md.
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Version from package.json
+        id: v
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Release notes from CHANGELOG.md
+        run: node scripts/release-notes.ts "${{ steps.v.outputs.version }}" > notes.md
+      - name: Stop if this version was already released
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/v${{ steps.v.outputs.version }}"; then
+            echo "v${{ steps.v.outputs.version }} already exists: bump the version in package.json and CHANGELOG.md first."
+            exit 1
+          fi
+      - name: Tag and publish the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          gh release create "v$VERSION" \
+            --target "${{ github.sha }}" \
+            --title "MathLegends v$VERSION" \
+            --notes-file notes.md
